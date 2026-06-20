@@ -31,7 +31,7 @@ export function SongRow({ song, index, showIndex = false }: SongRowProps) {
       >
         <CoverImage src={song.coverSrc} alt="" className="size-11 shrink-0 rounded-xl" />
         <div className="min-w-0 flex-1">
-          <strong className={`block truncate text-sm ${isActive ? "text-[var(--jb-green)]" : ""}`}>
+          <strong className={`block truncate text-sm ${isActive ? "text-[var(--family-pink)]" : ""}`}>
             {song.title}
           </strong>
           <span className="block truncate text-xs text-[var(--jb-muted)]">

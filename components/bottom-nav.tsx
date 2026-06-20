@@ -27,7 +27,7 @@ export function BottomNav() {
             href={href}
             className={cn(
               "grid justify-items-center gap-0.5 text-[11px] font-extrabold transition",
-              active ? "text-[var(--jb-green)]" : "text-[var(--jb-muted)]",
+              active ? "text-[var(--family-pink)]" : "text-[var(--jb-muted)]",
             )}
           >
             <Icon className="size-5" strokeWidth={active ? 2.5 : 2} />

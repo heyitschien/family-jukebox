@@ -1,6 +1,7 @@
 import { FeaturedShelf } from "@/components/featured-shelf";
 import { Topbar } from "@/components/topbar";
-import { getAllTags, songs } from "@/data/songs";
+import { getAllTags } from "@/data/songs";
+import { getRotatedFeaturedShelf } from "@/lib/featured-rotation";
 
 export default function SongsPage() {
   return (
@@ -9,10 +10,10 @@ export default function SongsPage() {
       <header className="mb-4 px-1">
         <h1 className="text-3xl font-extrabold tracking-tight">All songs</h1>
         <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">
-          Every family anthem in one shelf.
+          Spotlight picks from each family member up front — rotates daily.
         </p>
       </header>
-      <FeaturedShelf songs={songs} tags={getAllTags()} />
+      <FeaturedShelf songs={getRotatedFeaturedShelf()} tags={getAllTags()} />
     </main>
   );
 }

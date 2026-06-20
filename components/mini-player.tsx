@@ -55,7 +55,7 @@ export function MiniPlayer() {
         <div className="flex w-full items-center gap-2.5 text-[11px] text-[var(--jb-muted-2)]">
           <span>{formatTime(currentTime)}</span>
           <div className="h-[5px] flex-1 overflow-hidden rounded-full bg-white/15">
-            <div className="h-full bg-[var(--jb-green)] transition-all" style={{ width: `${progress}%` }} />
+            <div className="family-progress h-full transition-all" style={{ width: `${progress}%` }} />
           </div>
           <span>{formatTime(duration)}</span>
         </div>
@@ -73,7 +73,7 @@ export function MiniPlayer() {
         <div className="hidden items-center gap-2.5 text-[var(--jb-muted)] sm:flex">
           <Volume2 className="size-4" />
           <div className="h-[5px] w-24 overflow-hidden rounded-full bg-white/15">
-            <div className="h-full w-[70%] bg-[var(--jb-green)]" />
+            <div className="family-progress h-full w-[70%]" />
           </div>
         </div>
       </div>

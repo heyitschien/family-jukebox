@@ -48,7 +48,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
               className={cn(
                 "shrink-0 rounded-full border px-3.5 py-2 text-[13px] font-extrabold whitespace-nowrap transition",
                 active
-                  ? "border-transparent bg-[var(--jb-green)] text-[#03100a]"
+                  ? "border-transparent bg-family-accent text-[#1a0812]"
                   : "border-white/[0.09] bg-white/[0.07] text-[var(--jb-muted)] hover:text-[var(--jb-text)]",
               )}
             >
@@ -71,7 +71,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
                 <button
                   type="button"
                   onClick={() => playSong(song)}
-                  className="absolute right-2.5 bottom-2.5 grid size-[38px] place-items-center rounded-full bg-[var(--jb-green)] text-sm font-black text-[#03100a] opacity-100 shadow-[0_10px_24px_rgba(0,0,0,0.35)] transition sm:opacity-0 sm:group-hover:opacity-100"
+                  className="absolute right-2.5 bottom-2.5 grid size-[38px] place-items-center rounded-full bg-family-accent text-sm font-black text-[#1a0812] opacity-100 shadow-[0_10px_24px_rgba(255,111,177,0.35)] transition sm:opacity-0 sm:group-hover:opacity-100"
                   aria-label={`Play ${song.title}`}
                 >
                   ▶

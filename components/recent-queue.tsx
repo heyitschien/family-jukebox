@@ -8,24 +8,37 @@ import { getMemberBySlug } from "@/data/members";
 import { members } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { songs as allSongs } from "@/data/songs";
+import { isSpotlightSong } from "@/lib/featured-rotation";
 
 type RecentQueueProps = {
   songs: Song[];
 };
 
 function QueueBadge({ song }: { song: Song }) {
-  if (song.featured) {
-    return <span className="rounded-full bg-[#bafbd2] px-2 py-1.5 text-[11px] font-black text-[#08110b]">Featured</span>;
+  if (isSpotlightSong(song)) {
+    return (
+      <span className="rounded-full bg-family-accent px-2 py-1.5 text-[11px] font-black text-[#1a0812]">
+        Spotlight
+      </span>
+    );
   }
   if (song.videoSrc) {
-    return <span className="rounded-full bg-[#bafbd2] px-2 py-1.5 text-[11px] font-black text-[#08110b]">Video</span>;
+    return (
+      <span className="rounded-full bg-[rgba(108,183,255,0.25)] px-2 py-1.5 text-[11px] font-black text-[var(--family-ocean)]">
+        Video
+      </span>
+    );
   }
-  return <span className="rounded-full bg-[#bafbd2] px-2 py-1.5 text-[11px] font-black text-[#08110b]">New</span>;
+  return (
+    <span className="rounded-full bg-white/10 px-2 py-1.5 text-[11px] font-black text-[var(--jb-muted)]">
+      New
+    </span>
+  );
 }
 
 export function RecentQueue({ songs }: RecentQueueProps) {
   const { playSong } = usePlayer();
-  const recent = [...songs].reverse().slice(0, 5);
+  const recent = [...songs].slice(0, 5);
   const videoCount = allSongs.filter((s) => s.videoSrc).length;
 
   return (
@@ -76,19 +89,19 @@ export function RecentQueue({ songs }: RecentQueueProps) {
               inspired it, what game created it, and why it made us laugh.
             </p>
             <div className="mt-3.5 flex flex-wrap gap-2">
-              <span className="rounded-full bg-[var(--jb-green)] px-3 py-2 text-[13px] font-extrabold text-[#03100a]">
+              <span className="rounded-full bg-family-accent px-3 py-2 text-[13px] font-extrabold text-[#1a0812]">
                 {allSongs.length} songs
               </span>
-              <span className="rounded-full border border-white/[0.09] bg-white/[0.07] px-3 py-2 text-[13px] font-extrabold text-[var(--jb-muted)]">
+              <span className="rounded-full border border-white/[0.09] bg-white/[0.07] px-3 py-2 text-[13px] font-extrabold text-[var(--family-ocean)]">
                 {videoCount} videos
               </span>
-              <span className="rounded-full border border-white/[0.09] bg-white/[0.07] px-3 py-2 text-[13px] font-extrabold text-[var(--jb-muted)]">
+              <span className="rounded-full border border-white/[0.09] bg-white/[0.07] px-3 py-2 text-[13px] font-extrabold text-[var(--family-pink)]">
                 {members.length} artists
               </span>
             </div>
             <Link
               href="/family"
-              className="mt-4 inline-block text-sm font-bold text-[#bafbd2] hover:underline"
+              className="mt-4 inline-block text-sm font-bold text-family-glow hover:underline"
             >
               Meet the family →
             </Link>

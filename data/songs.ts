@@ -28,7 +28,6 @@ export const songs: Song[] = [
     prompt: "Make a fun song about gravity doing something unexpected.",
     story: "Ocean's adventure anthem from family music day — made together with Gemini.",
     tags: ["adventure", "space", "ocean"],
-    featured: true,
   },
   {
     slug: "mountains-to-the-shore",

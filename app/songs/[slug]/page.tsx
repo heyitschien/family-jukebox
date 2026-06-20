@@ -8,6 +8,7 @@ import { SongDetailActions } from "@/components/song-detail-actions";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
+import { isSpotlightSong } from "@/lib/featured-rotation";
 
 type SongPageProps = {
   params: Promise<{ slug: string }>;
@@ -54,7 +55,7 @@ export default async function SongPage({ params }: SongPageProps) {
           className="mx-auto aspect-square w-full max-w-sm rounded-lg shadow-[0_20px_60px_rgba(0,0,0,0.45)]"
         />
         <p className="mt-6 text-xs font-extrabold uppercase tracking-wider text-[var(--jb-muted)]">
-          {song.featured ? "Featured · " : ""}Family song
+          {isSpotlightSong(song) ? "Today’s spotlight · " : ""}Family song
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">{song.title}</h1>
         {author ? (

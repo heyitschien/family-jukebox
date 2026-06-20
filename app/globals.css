@@ -18,21 +18,28 @@
   --jb-text: #f7fbff;
   --jb-muted: #a7b3c2;
   --jb-muted-2: #7d8b9b;
-  --jb-green: #1ed760;
-  --jb-radius: 24px;
+
+  /* Family palette — from design mock + cover vibes (pink kids, ocean blue) */
+  --family-pink: #ff6fb1;
+  --family-ocean: #6cb7ff;
+  --family-lilac: #c4b5fd;
+  --family-glow: #ffb8d9;
+  --family-accent: #ff7eb9;
+  --family-accent-deep: #e85a9a;
+
   --background: var(--jb-bg);
   --foreground: var(--jb-text);
   --border: rgba(255, 255, 255, 0.08);
-  --ring: rgba(30, 215, 96, 0.4);
+  --ring: rgba(255, 111, 177, 0.45);
   --card: #192330;
   --card-foreground: var(--jb-text);
-  --primary: var(--jb-green);
-  --primary-foreground: #03100a;
+  --primary: var(--family-pink);
+  --primary-foreground: #1a0812;
   --secondary: rgba(255, 255, 255, 0.07);
   --secondary-foreground: var(--jb-text);
   --muted: rgba(255, 255, 255, 0.07);
   --muted-foreground: var(--jb-muted);
-  --accent: rgba(255, 255, 255, 0.08);
+  --accent: rgba(255, 111, 177, 0.12);
   --accent-foreground: var(--jb-text);
   --destructive: #ff6b6b;
   --input: rgba(255, 255, 255, 0.1);
@@ -51,8 +58,9 @@
   body {
     color: var(--jb-text);
     background:
-      radial-gradient(circle at top left, rgba(30, 215, 96, 0.16), transparent 34%),
-      radial-gradient(circle at 80% 10%, rgba(255, 111, 177, 0.14), transparent 28%),
+      radial-gradient(circle at top left, rgba(255, 111, 177, 0.16), transparent 34%),
+      radial-gradient(circle at 80% 10%, rgba(108, 183, 255, 0.18), transparent 28%),
+      radial-gradient(circle at 50% 100%, rgba(196, 181, 253, 0.08), transparent 40%),
       linear-gradient(180deg, #071015 0%, var(--jb-bg) 45%, #07090c 100%);
     min-height: 100dvh;
   }
@@ -65,5 +73,29 @@
   }
   .scrollbar-none::-webkit-scrollbar {
     display: none;
+  }
+
+  .bg-family-accent {
+    background: linear-gradient(135deg, var(--family-pink) 0%, var(--family-ocean) 100%);
+  }
+
+  .text-family-glow {
+    color: var(--family-glow);
+  }
+
+  .shadow-family {
+    box-shadow: 0 18px 40px rgba(255, 111, 177, 0.28);
+  }
+
+  .border-family-soft {
+    border-color: rgba(255, 111, 177, 0.28);
+  }
+
+  .bg-family-soft {
+    background: rgba(255, 111, 177, 0.12);
+  }
+
+  .family-progress {
+    background: linear-gradient(90deg, var(--family-pink), var(--family-ocean));
   }
 }

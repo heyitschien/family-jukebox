@@ -28,7 +28,7 @@ export function SongDetailActions({ song, queue }: SongDetailActionsProps) {
       <button
         type="button"
         onClick={handleMainPlay}
-        className="grid size-14 place-items-center rounded-full bg-[var(--jb-green)] text-xl text-[#041008] shadow-[0_18px_40px_rgba(30,215,96,0.32)]"
+        className="grid size-14 place-items-center rounded-full bg-family-accent text-xl text-[#1a0812] shadow-family"
         aria-label={isCurrent && isPlaying ? "Pause" : "Play"}
       >
         {isCurrent && isPlaying ? (

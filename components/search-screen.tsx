@@ -64,7 +64,7 @@ export function SearchScreen({ songs, tags, members, ages }: SearchScreenProps) 
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Songs, kids, ages, tags..."
-          className="w-full rounded-full border border-white/[0.07] bg-white/[0.08] py-3 pr-4 pl-11 text-[var(--jb-text)] outline-none placeholder:text-[var(--jb-muted-2)] focus:border-[rgba(30,215,96,0.4)]"
+          className="w-full rounded-full border border-white/[0.07] bg-white/[0.08] py-3 pr-4 pl-11 text-[var(--jb-text)] outline-none placeholder:text-[var(--jb-muted-2)] focus:border-[rgba(255,111,177,0.45)]"
         />
       </div>
 
@@ -140,7 +140,7 @@ function FilterChip({
       className={cn(
         "rounded-full border px-3.5 py-2 text-[13px] font-extrabold whitespace-nowrap transition",
         active
-          ? "border-transparent bg-[var(--jb-green)] text-[#03100a]"
+          ? "border-transparent bg-family-accent text-[#1a0812]"
           : "border-white/[0.09] bg-white/[0.07] text-[var(--jb-muted)]",
       )}
     >
