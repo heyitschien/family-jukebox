@@ -2,6 +2,12 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import { AppShell } from "@/components/app-shell";
+import {
+  buildShareMetadata,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site-metadata";
 
 import "./globals.css";
 
@@ -11,16 +17,20 @@ const inter = Inter({
   weight: ["400", "600", "700", "800", "900"],
 });
 
+const share = buildShareMetadata();
+
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Family Jukebox",
-    template: "%s · Family Jukebox",
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
   },
-  description: "Songs, silly memories, and little family anthems.",
-  openGraph: {
-    title: "Family Jukebox",
-    description: "Songs, silly memories, and little family anthems.",
-    type: "website",
+  description: SITE_DESCRIPTION,
+  openGraph: share.openGraph,
+  twitter: share.twitter,
+  icons: {
+    icon: "/og-share.jpg",
+    apple: "/og-share.jpg",
   },
 };
 

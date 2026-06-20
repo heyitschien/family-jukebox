@@ -8,6 +8,8 @@ import { Topbar } from "@/components/topbar";
 import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
 
+import { buildShareMetadata } from "@/lib/site-metadata";
+
 type MemberPageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -20,7 +22,10 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
   const { slug } = await params;
   const member = getMemberBySlug(slug);
   if (!member) return { title: "Member not found · Family Jukebox" };
-  return { title: `${member.name} · Family Jukebox`, description: member.description };
+  return buildShareMetadata({
+    title: `${member.name} · Family Jukebox`,
+    description: member.description,
+  });
 }
 
 export default async function MemberPage({ params }: MemberPageProps) {

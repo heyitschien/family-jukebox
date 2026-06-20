@@ -10,6 +10,8 @@ import { Topbar } from "@/components/topbar";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
 
+import { buildShareMetadata } from "@/lib/site-metadata";
+
 type SongPageProps = {
   params: Promise<{ slug: string }>;
 };
@@ -22,10 +24,10 @@ export async function generateMetadata({ params }: SongPageProps): Promise<Metad
   const { slug } = await params;
   const song = getSongBySlug(slug);
   if (!song) return { title: "Song not found · Family Jukebox" };
-  return {
+  return buildShareMetadata({
     title: `${song.title} · Family Jukebox`,
     description: song.subtitle ?? "A family song worth replaying.",
-  };
+  });
 }
 
 export default async function SongPage({ params }: SongPageProps) {
