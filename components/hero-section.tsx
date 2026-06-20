@@ -43,13 +43,15 @@ export function HeroSection({ featuredSongs, dayIndex, spotlightNames }: HeroSec
   const initialFeatured = featuredSongs[0]!;
   const featured = featuredSongs[featuredIndex] ?? initialFeatured;
   const { playing, toggle } = useSongPlayback(featured);
-  const author = featured ? getMemberBySlug(featured.authorSlug) : undefined;
+  const author = getMemberBySlug(featured.authorSlug);
 
   useEffect(() => {
-    setFeaturedIndex(getRefreshFeaturedIndex(dayIndex, featuredSongs.length));
-  }, [dayIndex, featuredSongs.length]);
+    const frameId = window.requestAnimationFrame(() => {
+      setFeaturedIndex(getRefreshFeaturedIndex(dayIndex, featuredSongs.length));
+    });
 
-  if (!featured) return null;
+    return () => window.cancelAnimationFrame(frameId);
+  }, [dayIndex, featuredSongs.length]);
 
   return (
     <section
