@@ -7,6 +7,11 @@ export function getDayIndex(): number {
   return Math.floor((Date.now() - start.getTime()) / (1000 * 60 * 60 * 24));
 }
 
+/** Request-time seed to vary hero feature on each refresh. */
+export function getRefreshSeed(): number {
+  return Date.now();
+}
+
 /** One spotlight song per family member — rotates daily through their catalog. */
 export function getSpotlightSongPerMember(): Song[] {
   const day = getDayIndex();
@@ -20,11 +25,15 @@ export function getSpotlightSongPerMember(): Song[] {
     .filter((song): song is Song => song !== undefined);
 }
 
-/** Hero spotlight — rotates so a different family member leads each day. */
-export function getHeroFeaturedSong(): Song {
-  const spotlight = getSpotlightSongPerMember();
-  if (spotlight.length === 0) return songs[0];
-  return spotlight[getDayIndex() % spotlight.length] ?? songs[0];
+/** Hero spotlight — daily base rotation with optional refresh seed offset. */
+export function getHeroFeaturedSong(refreshSeed = 0): Song {
+  if (songs.length === 0) {
+    throw new Error("No songs available for hero rotation");
+  }
+
+  const dayOffset = getDayIndex() % songs.length;
+  const refreshOffset = Math.abs(Math.trunc(refreshSeed)) % songs.length;
+  return songs[(dayOffset + refreshOffset) % songs.length] ?? songs[0];
 }
 
 /** Shelf order: each member's spotlight first, then the rest. */

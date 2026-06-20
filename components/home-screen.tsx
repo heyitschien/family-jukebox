@@ -18,10 +18,11 @@ type QuickPickTileProps = {
   song: Song;
   label: string;
   index: number;
+  queue: Song[];
 };
 
-function QuickPickTile({ song, label, index }: QuickPickTileProps) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song);
+function QuickPickTile({ song, label, index, queue }: QuickPickTileProps) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song, { queue });
   const gradient = gradients[index % gradients.length];
 
   return (
@@ -58,7 +59,7 @@ export function QuickPickGrid({ songs }: QuickPickGridProps) {
   return (
     <div className="grid grid-cols-2 gap-2 px-4">
       {picks.map((song, i) => (
-        <QuickPickTile key={song.slug} song={song} label={song.title} index={i} />
+        <QuickPickTile key={song.slug} song={song} label={song.title} index={i} queue={picks} />
       ))}
     </div>
   );

@@ -3,10 +3,16 @@ import { HeroSection } from "@/components/hero-section";
 import { RecentQueue } from "@/components/recent-queue";
 import { Topbar } from "@/components/topbar";
 import { getAllTags } from "@/data/songs";
-import { getHeroFeaturedSong, getRotatedFeaturedShelf } from "@/lib/featured-rotation";
+import {
+  getHeroFeaturedSong,
+  getRefreshSeed,
+  getRotatedFeaturedShelf,
+} from "@/lib/featured-rotation";
+
+export const dynamic = "force-dynamic";
 
 export default function HomePage() {
-  const featured = getHeroFeaturedSong();
+  const featured = getHeroFeaturedSong(getRefreshSeed());
   const shelfSongs = getRotatedFeaturedShelf();
 
   return (

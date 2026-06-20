@@ -71,6 +71,14 @@ export function MiniPlayer() {
       </div>
 
       <div className="flex items-center justify-end gap-2">
+        <button
+          type="button"
+          onClick={skipNext}
+          aria-label="Next"
+          className="inline-flex size-11 items-center justify-center rounded-full border border-white/10 bg-white/10 text-[var(--jb-text)] [-webkit-tap-highlight-color:transparent] sm:hidden"
+        >
+          <SkipNextIcon />
+        </button>
         <PlayIconButton
           size="sm"
           variant="light"

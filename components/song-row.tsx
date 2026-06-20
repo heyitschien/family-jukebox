@@ -13,10 +13,11 @@ type SongRowProps = {
   song: Song;
   index?: number;
   showIndex?: boolean;
+  queue?: Song[];
 };
 
-export function SongRow({ song, index, showIndex = false }: SongRowProps) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song);
+export function SongRow({ song, index, showIndex = false, queue }: SongRowProps) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song, { queue });
   const author = getMemberBySlug(song.authorSlug);
 
   return (

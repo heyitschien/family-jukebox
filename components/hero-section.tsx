@@ -28,11 +28,14 @@ export function HeroSection({ featured }: HeroSectionProps) {
     >
       <div className="relative z-10 max-w-3xl">
         <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
-          ✨ Today&apos;s spotlight · {author?.name ?? "Family"}
+          ✨ Now featuring · {featured.title}
         </span>
         <h1 className="text-[clamp(48px,12vw,92px)] leading-[0.88] font-extrabold tracking-[-0.075em]">
           Family Jukebox
         </h1>
+        <p className="mt-3 text-sm font-black text-[var(--jb-text)] sm:text-base">
+          {author?.name ?? "Family"} · changes on refresh and rotates daily
+        </p>
         <p className="mt-4 max-w-[590px] text-base leading-relaxed text-[var(--jb-muted)] sm:text-lg">
           A polished little web app for the songs we made together — silly fox trails, gravity
           shifts, pink glasses, pixels into magic, and every family anthem in one place.

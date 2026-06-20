@@ -28,7 +28,7 @@ export function MemberSongList({ songs }: { songs: Song[] }) {
   return (
     <div className="grid gap-2">
       {songs.map((song, i) => (
-        <SongRow key={song.slug} song={song} index={i} showIndex />
+        <SongRow key={song.slug} song={song} index={i} showIndex queue={songs} />
       ))}
     </div>
   );
