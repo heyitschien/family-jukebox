@@ -93,8 +93,10 @@ function useRefreshFeaturedSong(initialFeatured: Song, featuredSongs: Song[] = [
       next = candidates[(baseIndex + step) % candidates.length] ?? initialFeatured;
     }
 
-    setActiveFeatured(next);
     writeStoredHeroRotation({ day, step, slug: next.slug });
+
+    const frame = window.requestAnimationFrame(() => setActiveFeatured(next));
+    return () => window.cancelAnimationFrame(frame);
   }, [candidates, initialFeatured]);
 
   return activeFeatured;
