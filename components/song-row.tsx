@@ -12,11 +12,12 @@ import { cn } from "@/lib/utils";
 type SongRowProps = {
   song: Song;
   index?: number;
+  queue?: Song[];
   showIndex?: boolean;
 };
 
-export function SongRow({ song, index, showIndex = false }: SongRowProps) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song);
+export function SongRow({ song, index, queue, showIndex = false }: SongRowProps) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song, queue);
   const author = getMemberBySlug(song.authorSlug);
 
   return (

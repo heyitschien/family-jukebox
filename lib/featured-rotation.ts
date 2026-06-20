@@ -22,9 +22,21 @@ export function getSpotlightSongPerMember(): Song[] {
 
 /** Hero spotlight — rotates so a different family member leads each day. */
 export function getHeroFeaturedSong(): Song {
+  const heroSongs = getHeroFeaturedSongs();
+  return heroSongs[getDailyHeroSongIndex(heroSongs)] ?? songs[0];
+}
+
+/** Hero candidates: today's member spotlights first, then the rest of the catalog. */
+export function getHeroFeaturedSongs(): Song[] {
   const spotlight = getSpotlightSongPerMember();
-  if (spotlight.length === 0) return songs[0];
-  return spotlight[getDayIndex() % spotlight.length] ?? songs[0];
+  const spotlightSlugs = new Set(spotlight.map((song) => song.slug));
+  const rest = songs.filter((song) => !spotlightSlugs.has(song.slug));
+  return [...spotlight, ...rest];
+}
+
+export function getDailyHeroSongIndex(heroSongs = getHeroFeaturedSongs()): number {
+  if (heroSongs.length === 0) return 0;
+  return getDayIndex() % heroSongs.length;
 }
 
 /** Shelf order: each member's spotlight first, then the rest. */

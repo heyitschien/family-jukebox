@@ -71,6 +71,14 @@ export function MiniPlayer() {
       </div>
 
       <div className="flex items-center justify-end gap-2">
+        <button
+          type="button"
+          onClick={skipPrev}
+          aria-label="Previous"
+          className="inline-flex size-9 items-center justify-center text-[var(--jb-muted)] [-webkit-tap-highlight-color:transparent] sm:hidden"
+        >
+          <SkipPrevIcon />
+        </button>
         <PlayIconButton
           size="sm"
           variant="light"
@@ -79,6 +87,14 @@ export function MiniPlayer() {
           onClick={togglePlay}
           className="sm:hidden"
         />
+        <button
+          type="button"
+          onClick={skipNext}
+          aria-label="Next"
+          className="inline-flex size-9 items-center justify-center text-[var(--jb-muted)] [-webkit-tap-highlight-color:transparent] sm:hidden"
+        >
+          <SkipNextIcon />
+        </button>
         <div className="hidden items-center gap-2.5 text-[var(--jb-muted)] sm:flex">
           <VolumeIcon />
           <div className="h-[5px] w-24 overflow-hidden rounded-full bg-white/15">

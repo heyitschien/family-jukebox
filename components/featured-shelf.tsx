@@ -15,8 +15,8 @@ type FeaturedShelfProps = {
   tags: string[];
 };
 
-function FeaturedAlbumCard({ song }: { song: Song }) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song);
+function FeaturedAlbumCard({ song, queue }: { song: Song; queue: Song[] }) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song, queue);
   const author = getMemberBySlug(song.authorSlug);
 
   return (
@@ -100,7 +100,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
 
       <div className="mt-4 grid grid-cols-2 gap-2.5 sm:gap-3.5 md:grid-cols-4 xl:grid-cols-6">
         {filtered.map((song) => (
-          <FeaturedAlbumCard key={song.slug} song={song} />
+          <FeaturedAlbumCard key={song.slug} song={song} queue={filtered} />
         ))}
       </div>
     </section>
