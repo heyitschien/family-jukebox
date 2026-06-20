@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Family Jukebox
 
-## Getting Started
+A warm, playful family music archive — songs made together with kids, cousins, and family. No backend, no database, no auth. Just add files to the repo and push.
 
-First, run the development server:
+## Run locally
 
 ```bash
+cd family-jukebox
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How to add a new song
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Add audio file to `public/assets/songs/`
+2. Add cover image to `public/assets/covers/`
+3. Optional: add video to `public/assets/videos/` (keep it small)
+4. Add a new object to `data/songs.ts`
+5. Commit and push to GitHub
+6. Vercel redeploys automatically
 
-## Learn More
+### Asset folders
 
-To learn more about Next.js, take a look at the following resources:
+```txt
+public/assets/songs/   -> .mp3 or .m4a files
+public/assets/covers/  -> .jpg, .png cover images
+public/assets/videos/  -> optional .mp4 videos
+data/songs.ts          -> song metadata
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Naming convention
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Use lowercase filenames with dashes instead of spaces:
 
-## Deploy on Vercel
+```txt
+dinosaur-kitchen-dance.mp3
+dinosaur-kitchen-dance.jpg
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for a copy-paste example.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Compress from a music video (MP4)
+
+If you start with an MP4, **do not commit the raw video** unless it is tiny. Extract audio + cover instead:
+
+```bash
+./scripts/process-video.sh path/to/your-song.mp4 song-slug-name
+```
+
+This creates:
+
+- `public/assets/songs/song-slug-name.mp3` (128 kbps — good for web)
+- `public/assets/covers/song-slug-name.jpg` (frame from the video)
+
+You do **not** need to send a separate image — the cover is pulled from the video automatically.
+
+## File size warning
+
+Keep files small. GitHub does not allow files over **100 MB**. For larger videos, use unlisted YouTube, Google Drive, Cloudflare R2, or Supabase Storage later.
+
+**Recommended for the repo:**
+
+- Audio: MP3 at 128 kbps (~2–4 MB per song)
+- Covers: JPG under ~300 KB
+- Videos: skip for V1, or keep under ~10 MB
+
+## Deploy to Vercel
+
+1. Push this repo to GitHub
+2. Go to [vercel.com/new](https://vercel.com/new)
+3. Import the GitHub repo
+4. Deploy (no env vars needed)
+
+Every push to `main` redeploys the site.
+
+## Tech stack
+
+- Next.js App Router
+- TypeScript
+- Tailwind CSS
+- shadcn/ui
+- Local assets in `/public`
