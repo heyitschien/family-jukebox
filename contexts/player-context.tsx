@@ -35,73 +35,101 @@ function formatTime(seconds: number): string {
   return `${m}:${s.toString().padStart(2, "0")}`;
 }
 
+function songSrcMatches(audio: HTMLAudioElement, audioSrc: string): boolean {
+  if (!audio.src) return false;
+  try {
+    const pathname = new URL(audio.src, window.location.origin).pathname;
+    return pathname === audioSrc || pathname.endsWith(audioSrc);
+  } catch {
+    return audio.src.endsWith(audioSrc);
+  }
+}
+
 export { formatTime };
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const queueRef = useRef<Song[]>([]);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [queue, setQueue] = useState<Song[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  const playSong = useCallback((song: Song) => {
-    setQueue([song]);
+  // Mobile browsers require play() inside the tap handler — not in useEffect.
+  const startPlayback = useCallback((song: Song, nextQueue: Song[]) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    queueRef.current = nextQueue;
+    setQueue(nextQueue);
     setCurrentSong(song);
-    setIsPlaying(true);
+    setCurrentTime(0);
+    setDuration(0);
+
+    if (!songSrcMatches(audio, song.audioSrc)) {
+      audio.src = song.audioSrc;
+    }
+
+    void audio
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
   }, []);
 
-  const playQueue = useCallback((songs: Song[], startIndex = 0) => {
-    if (songs.length === 0) return;
-    const index = Math.min(startIndex, songs.length - 1);
-    setQueue(songs);
-    setCurrentSong(songs[index] ?? null);
-    setIsPlaying(true);
-  }, []);
+  const playSong = useCallback(
+    (song: Song) => {
+      startPlayback(song, [song]);
+    },
+    [startPlayback],
+  );
+
+  const playQueue = useCallback(
+    (songs: Song[], startIndex = 0) => {
+      if (songs.length === 0) return;
+      const index = Math.min(startIndex, songs.length - 1);
+      const song = songs[index];
+      if (song) startPlayback(song, songs);
+    },
+    [startPlayback],
+  );
 
   const togglePlay = useCallback(() => {
-    if (!currentSong) return;
-    setIsPlaying((prev) => !prev);
-  }, [currentSong]);
-
-  const pause = useCallback(() => setIsPlaying(false), []);
-
-  const skipNext = useCallback(() => {
-    if (queue.length === 0) return;
-    const idx = queue.findIndex((s) => s.slug === currentSong?.slug);
-    const next = queue[idx + 1] ?? queue[0];
-    if (next) {
-      setCurrentSong(next);
-      setIsPlaying(true);
-    }
-  }, [currentSong, queue]);
-
-  const skipPrev = useCallback(() => {
-    if (queue.length === 0) return;
-    const idx = queue.findIndex((s) => s.slug === currentSong?.slug);
-    const prev = queue[idx - 1] ?? queue[queue.length - 1];
-    if (prev) {
-      setCurrentSong(prev);
-      setIsPlaying(true);
-    }
-  }, [currentSong, queue]);
-
-  useEffect(() => {
     const audio = audioRef.current;
     if (!audio || !currentSong) return;
 
-    const src = currentSong.audioSrc;
-    if (!audio.src.endsWith(src)) {
-      audio.src = src;
-      audio.load();
-    }
-
-    if (isPlaying) {
-      void audio.play().catch(() => setIsPlaying(false));
+    if (audio.paused) {
+      void audio
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => setIsPlaying(false));
     } else {
       audio.pause();
+      setIsPlaying(false);
     }
-  }, [currentSong, isPlaying]);
+  }, [currentSong]);
+
+  const pause = useCallback(() => {
+    const audio = audioRef.current;
+    audio?.pause();
+    setIsPlaying(false);
+  }, []);
+
+  const skipNext = useCallback(() => {
+    const q = queueRef.current;
+    if (q.length === 0) return;
+    const idx = q.findIndex((s) => s.slug === currentSong?.slug);
+    const next = q[idx + 1] ?? q[0];
+    if (next) startPlayback(next, q);
+  }, [currentSong, startPlayback]);
+
+  const skipPrev = useCallback(() => {
+    const q = queueRef.current;
+    if (q.length === 0) return;
+    const idx = q.findIndex((s) => s.slug === currentSong?.slug);
+    const prev = q[idx - 1] ?? q[q.length - 1];
+    if (prev) startPlayback(prev, q);
+  }, [currentSong, startPlayback]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -109,28 +137,36 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
     const onTimeUpdate = () => setCurrentTime(audio.currentTime);
     const onLoadedMetadata = () => setDuration(audio.duration);
+    const onPlay = () => setIsPlaying(true);
+    const onPause = () => setIsPlaying(false);
     const onEnded = () => {
-      if (queue.length <= 1) {
+      const q = queueRef.current;
+      if (q.length <= 1) {
         setIsPlaying(false);
         return;
       }
-      skipNext();
+      const idx = q.findIndex((s) => s.slug === currentSong?.slug);
+      const next = q[idx + 1];
+      if (next) {
+        startPlayback(next, q);
+      } else {
+        setIsPlaying(false);
+      }
     };
 
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("loadedmetadata", onLoadedMetadata);
+    audio.addEventListener("play", onPlay);
+    audio.addEventListener("pause", onPause);
     audio.addEventListener("ended", onEnded);
     return () => {
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("loadedmetadata", onLoadedMetadata);
+      audio.removeEventListener("play", onPlay);
+      audio.removeEventListener("pause", onPause);
       audio.removeEventListener("ended", onEnded);
     };
-  }, [queue.length, skipNext]);
-
-  useEffect(() => {
-    setCurrentTime(0);
-    setDuration(0);
-  }, [currentSong?.slug]);
+  }, [currentSong?.slug, startPlayback]);
 
   return (
     <PlayerContext.Provider
@@ -149,7 +185,12 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
-      <audio ref={audioRef} preload="metadata" className="hidden" />
+      <audio
+        ref={audioRef}
+        preload="metadata"
+        playsInline
+        className="pointer-events-none fixed h-0 w-0 opacity-0"
+      />
     </PlayerContext.Provider>
   );
 }
