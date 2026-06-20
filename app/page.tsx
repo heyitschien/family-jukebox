@@ -1,6 +1,8 @@
 import { SiteHeader } from "@/components/site-header";
 import { FeaturedSong } from "@/components/featured-song";
+import { MemberCard } from "@/components/member-card";
 import { SongGrid } from "@/components/song-grid";
+import { getAllAges, members } from "@/data/members";
 import { getAllTags, songs } from "@/data/songs";
 
 export default function HomePage() {
@@ -22,9 +24,23 @@ export default function HomePage() {
             Songs, silly memories, and little family anthems.
           </p>
           <p className="mx-auto mt-4 max-w-2xl text-base leading-relaxed text-amber-900/70 sm:mx-0">
-            A living archive of songs we made together — for cousins, kids, family nights,
-            inside jokes, and memories worth replaying.
+            A living archive of songs we made together — our girls, Ocean, and Tio Chien —
+            for cousin nights, inside jokes, and memories worth replaying.
           </p>
+        </section>
+
+        <section className="mb-14 space-y-5">
+          <div>
+            <h2 className="text-2xl font-bold text-amber-950">The family</h2>
+            <p className="mt-1 text-amber-900/70">
+              Browse by person — Marceline, Eliana, Solene, Ocean, and Tio Chien.
+            </p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {members.map((member) => (
+              <MemberCard key={member.slug} member={member} />
+            ))}
+          </div>
         </section>
 
         {featuredSong ? <FeaturedSong song={featuredSong} /> : null}
@@ -32,9 +48,16 @@ export default function HomePage() {
         <section className="mt-14 space-y-6">
           <div>
             <h2 className="text-2xl font-bold text-amber-950">All songs</h2>
-            <p className="mt-1 text-amber-900/70">Browse, search, and replay the family collection.</p>
+            <p className="mt-1 text-amber-900/70">
+              Grouped by author. Search by name, age, or tag.
+            </p>
           </div>
-          <SongGrid songs={gallerySongs.length > 0 ? gallerySongs : songs} tags={getAllTags()} />
+          <SongGrid
+            songs={gallerySongs.length > 0 ? gallerySongs : songs}
+            tags={getAllTags()}
+            members={members}
+            ages={getAllAges()}
+          />
         </section>
       </main>
 

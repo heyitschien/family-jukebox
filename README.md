@@ -1,6 +1,6 @@
 # Family Jukebox
 
-A warm, playful family music archive — songs made together with kids, cousins, and family. No backend, no database, no auth. Just add files to the repo and push.
+A warm, playful family music archive — songs by Marceline, Eliana, Solene, Ocean, and Tio Chien. No backend, no database, no auth. Just add files to the repo and push.
 
 ## Run locally
 
@@ -12,73 +12,55 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+## Family members
+
+| Person | Age | Role |
+|--------|-----|------|
+| Marceline | 3 | our girls |
+| Eliana | 6 | our girls |
+| Solene | 8 | our girls |
+| Ocean | 10 | our guy |
+| Tio Chien | 11 | Tio |
+
+Bios and ages live in `data/members.ts`. Each person has a page at `/members/[slug]`.
+
 ## How to add a new song
 
-1. Add audio file to `public/assets/songs/`
-2. Add cover image to `public/assets/covers/`
-3. Optional: add video to `public/assets/videos/` (keep it small)
-4. Add a new object to `data/songs.ts`
-5. Commit and push to GitHub
-6. Vercel redeploys automatically
+1. Put source MP4 in `family-music-asset-june-19/<Name-Age>/` (local, not committed)
+2. Run `./scripts/process-video.sh <author> <video.mp4> <song-slug>`
+3. Add song to `data/songs.ts` with `authorSlug`
+4. Push to GitHub → Vercel redeploys
 
-### Asset folders
+### Asset folders (by author)
 
 ```txt
-public/assets/songs/   -> .mp3 or .m4a files
-public/assets/covers/  -> .jpg, .png cover images
-public/assets/videos/  -> optional .mp4 videos
-data/songs.ts          -> song metadata
+public/assets/marceline/
+public/assets/eliana/
+public/assets/solene/
+public/assets/ocean/
+public/assets/tio-chien/
+data/members.ts    -> family bios, ages, roles
+data/songs.ts      -> song metadata + authorSlug
 ```
 
-### Naming convention
-
-Use lowercase filenames with dashes instead of spaces:
-
-```txt
-dinosaur-kitchen-dance.mp3
-dinosaur-kitchen-dance.jpg
-```
-
-See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for a copy-paste example.
+See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for copy-paste examples.
 
 ## Compress from a music video (MP4)
 
-If you start with an MP4, **do not commit the raw video** unless it is tiny. Extract audio + cover instead:
-
 ```bash
-./scripts/process-video.sh path/to/your-song.mp4 song-slug-name
+./scripts/process-video.sh ocean ../family-music-asset-june-19/Ocean-10/Gravity_Shift.mp4 gravity-shift
 ```
 
-This creates:
-
-- `public/assets/songs/song-slug-name.mp3` (128 kbps — good for web)
-- `public/assets/covers/song-slug-name.jpg` (frame from the video)
-
-You do **not** need to send a separate image — the cover is pulled from the video automatically.
+Creates `public/assets/ocean/gravity-shift.mp3` and `.jpg`. Cover is extracted from the video automatically.
 
 ## File size warning
 
-Keep files small. GitHub does not allow files over **100 MB**. For larger videos, use unlisted YouTube, Google Drive, Cloudflare R2, or Supabase Storage later.
-
-**Recommended for the repo:**
-
-- Audio: MP3 at 128 kbps (~2–4 MB per song)
-- Covers: JPG under ~300 KB
-- Videos: skip for V1, or keep under ~10 MB
+Keep files small. GitHub max is **100 MB** per file. Audio + cover only in the repo — skip big videos.
 
 ## Deploy to Vercel
 
-1. Push this repo to GitHub
-2. Go to [vercel.com/new](https://vercel.com/new)
-3. Import the GitHub repo
-4. Deploy (no env vars needed)
-
-Every push to `main` redeploys the site.
+Live at [family-jukebox.vercel.app](https://family-jukebox.vercel.app). Push to `main` on GitHub to redeploy.
 
 ## Tech stack
 
-- Next.js App Router
-- TypeScript
-- Tailwind CSS
-- shadcn/ui
-- Local assets in `/public`
+Next.js · TypeScript · Tailwind · shadcn/ui · local assets in `/public`

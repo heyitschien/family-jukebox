@@ -5,6 +5,7 @@ import { CoverImage } from "@/components/cover-image";
 import { SongPlayer } from "@/components/song-player";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
+import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,8 @@ type FeaturedSongProps = {
 };
 
 export function FeaturedSong({ song }: FeaturedSongProps) {
+  const author = getMemberBySlug(song.authorSlug);
+
   return (
     <section className="overflow-hidden rounded-[2rem] border border-amber-200/70 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-6 shadow-sm sm:p-8">
       <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-amber-400/30 px-3 py-1 text-sm font-medium text-amber-900">
@@ -34,6 +37,14 @@ export function FeaturedSong({ song }: FeaturedSongProps) {
             </h2>
             {song.subtitle ? (
               <p className="mt-2 text-lg text-amber-900/75">{song.subtitle}</p>
+            ) : null}
+            {author ? (
+              <Link
+                href={`/members/${author.slug}`}
+                className="mt-3 inline-flex text-sm font-medium text-amber-800 hover:text-amber-950"
+              >
+                {author.emoji} by {author.name}, age {author.age} →
+              </Link>
             ) : null}
           </div>
 

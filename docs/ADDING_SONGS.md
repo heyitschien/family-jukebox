@@ -1,72 +1,86 @@
 # Adding a New Song
 
-This is the simple workflow for the family jukebox. No uploads, no admin panel — just files + one data entry.
+Simple workflow — files + two data entries (member + song).
 
 ## Quick steps
 
-1. **Audio** — drop your `.mp3` into `public/assets/songs/`
-2. **Cover** — drop your `.jpg` into `public/assets/covers/`
-3. **Optional video** — only if small; put in `public/assets/videos/`
-4. **Metadata** — add an entry in `data/songs.ts`
-5. **Push** — commit and push to GitHub; Vercel updates the site
+1. Put the source MP4 in `family-music-asset-june-19/<Name-Age>/` (or anywhere local)
+2. Run the process script with **author slug** + **song slug**
+3. Add or update the person in `data/members.ts` (if new)
+4. Add the song in `data/songs.ts` with matching `authorSlug`
+5. Push to GitHub → Vercel updates
 
-## Starting from an MP4?
+## Family members (author slugs)
 
-Run this from the project root (requires [ffmpeg](https://ffmpeg.org/)):
+| Slug | Name | Age | Role |
+|------|------|-----|------|
+| `marceline` | Marceline | 3 | our girls |
+| `eliana` | Eliana | 6 | our girls |
+| `solene` | Solene | 8 | our girls |
+| `ocean` | Ocean | 10 | our guy |
+| `tio-chien` | Tio Chien | 11 | Tio |
+
+Edit bios in `data/members.ts` anytime.
+
+## Starting from an MP4
 
 ```bash
-./scripts/process-video.sh ../family-music-asset-june-19/My_Song.mp4 my-song-slug
+./scripts/process-video.sh solene ../family-music-asset-june-19/Solene-8/Foxes_of_the_Garden.mp4 foxes-of-the-garden
 ```
 
-That extracts:
+Creates:
 
-- MP3 audio (light, Spotify-style playback)
-- JPG cover art (from ~3 seconds into the video)
+- `public/assets/solene/foxes-of-the-garden.mp3`
+- `public/assets/solene/foxes-of-the-garden.jpg`
 
-You do **not** need to send a separate image file.
+Cover art is pulled from the video — no separate image needed.
 
-## Naming convention
-
-Use lowercase filenames. Use dashes instead of spaces.
+## Asset folders (by author)
 
 ```txt
-dinosaur-kitchen-dance.mp3
-dinosaur-kitchen-dance.jpg
-dinosaur-kitchen-dance.mp4   (optional)
+public/assets/marceline/
+public/assets/eliana/
+public/assets/solene/
+public/assets/ocean/
+public/assets/tio-chien/
 ```
 
-The `slug` in `data/songs.ts` should match the filename (without extension).
+Each folder holds that person's `.mp3` and `.jpg` files.
 
-## Copy-paste example
-
-Add this to the `songs` array in `data/songs.ts`:
+## Copy-paste song example
 
 ```ts
 {
-  slug: "dinosaur-kitchen-dance",
-  title: "Dinosaur Kitchen Dance",
-  subtitle: "A silly cousin song from our family music day",
-  people: ["Ocean", "Euro", "Cousins"],
+  slug: "foxes-of-the-garden",
+  title: "Foxes of the Garden",
+  subtitle: "Sneaky foxes and secret garden adventures",
+  authorSlug: "solene",
   dateCreated: "2026-06-19",
-  audioSrc: "/assets/songs/dinosaur-kitchen-dance.mp3",
-  coverSrc: "/assets/covers/dinosaur-kitchen-dance.jpg",
-  // videoSrc: "/assets/videos/dinosaur-kitchen-dance.mp4",  // optional — skip for lighter repo
-  prompt: "Make a silly song about cousins turning into dinosaurs and dancing in the kitchen.",
-  story: "Made during a family hangout after we created games and music together using Gemini.",
-  lyrics: "",
-  tags: ["silly", "cousins", "dance", "dinosaur"],
+  audioSrc: "/assets/solene/foxes-of-the-garden.mp3",
+  coverSrc: "/assets/solene/foxes-of-the-garden.jpg",
+  story: "Made during family music day with Gemini.",
+  tags: ["animals", "garden", "solene"],
   featured: false,
+},
+```
+
+## Copy-paste member example
+
+Only needed for a **new** family member:
+
+```ts
+{
+  slug: "new-name",
+  name: "New Name",
+  age: 7,
+  role: "girl", // or "boy" or "tio"
+  emoji: "🎵",
+  description: "A short warm bio for the family page.",
 },
 ```
 
 ## Tips
 
-- **Featured song** — set `featured: true` on one song to highlight it on the homepage
-- **Tags** — use tags you might search later (`cousins`, `silly`, `Solane`, etc.)
-- **Keep it light** — audio + cover is enough for a Spotify-like family player
-- **Big videos** — host on YouTube (unlisted) and add the link in `story` for now
-
-## File size limits
-
-- GitHub: **100 MB max per file**
-- Aim for MP3s around 2–4 MB and covers under 300 KB
+- **Search** — site searches by name, age (`6`, `age 6`), tags, and titles
+- **Member page** — each person gets `/members/[slug]` automatically
+- **Keep it light** — audio + cover only in the repo; skip big videos

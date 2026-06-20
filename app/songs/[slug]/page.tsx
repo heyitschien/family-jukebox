@@ -9,7 +9,7 @@ import { SongPlayer } from "@/components/song-player";
 import { SongVideo } from "@/components/song-video";
 import { Badge } from "@/components/ui/badge";
 import { buttonVariants } from "@/components/ui/button";
-import { getSongBySlug, songs } from "@/data/songs";
+import { getSongAuthor, getSongBySlug, songs } from "@/data/songs";
 import { cn } from "@/lib/utils";
 
 type SongPageProps = {
@@ -46,6 +46,8 @@ export default async function SongPage({ params }: SongPageProps) {
   if (!song) {
     notFound();
   }
+
+  const author = getSongAuthor(song);
 
   return (
     <>
@@ -84,10 +86,15 @@ export default async function SongPage({ params }: SongPageProps) {
             </div>
 
             <div className="flex flex-wrap gap-4 text-sm text-amber-900/80">
-              <span className="inline-flex items-center gap-2">
-                <Users className="size-4" />
-                {song.people.join(", ")}
-              </span>
+              {author ? (
+                <Link
+                  href={`/members/${author.slug}`}
+                  className="inline-flex items-center gap-2 rounded-full bg-amber-50 px-3 py-1 font-medium text-amber-900 ring-1 ring-amber-200 hover:bg-amber-100"
+                >
+                  <Users className="size-4" />
+                  {author.emoji} {author.name}, age {author.age}
+                </Link>
+              ) : null}
               <span className="inline-flex items-center gap-2">
                 <CalendarDays className="size-4" />
                 {song.dateCreated}

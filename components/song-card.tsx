@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { CalendarDays, Play, Users } from "lucide-react";
+import { CalendarDays, Play, UserRound } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
 import { Badge } from "@/components/ui/badge";
+import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 
 type SongCardProps = {
@@ -10,6 +11,8 @@ type SongCardProps = {
 };
 
 export function SongCard({ song }: SongCardProps) {
+  const author = getMemberBySlug(song.authorSlug);
+
   return (
     <Link
       href={`/songs/${song.slug}`}
@@ -41,10 +44,12 @@ export function SongCard({ song }: SongCardProps) {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 text-xs text-amber-800/70">
-          <span className="inline-flex items-center gap-1">
-            <Users className="size-3.5" />
-            {song.people.join(", ")}
-          </span>
+          {author ? (
+            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 font-medium text-amber-900 ring-1 ring-amber-200/80">
+              <UserRound className="size-3.5" />
+              {author.name}, {author.age}
+            </span>
+          ) : null}
           <span className="inline-flex items-center gap-1">
             <CalendarDays className="size-3.5" />
             {song.dateCreated}
