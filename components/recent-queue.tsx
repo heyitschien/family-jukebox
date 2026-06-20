@@ -3,12 +3,14 @@
 import Link from "next/link";
 
 import { CoverImage } from "@/components/cover-image";
-import { usePlayer } from "@/contexts/player-context";
+import { PlayIconButton } from "@/components/play-icon-button";
+import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import { members } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { songs as allSongs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
+import { cn } from "@/lib/utils";
 
 type RecentQueueProps = {
   songs: Song[];
@@ -36,8 +38,47 @@ function QueueBadge({ song }: { song: Song }) {
   );
 }
 
+function QueueRow({ song }: { song: Song }) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song);
+  const author = getMemberBySlug(song.authorSlug);
+
+  return (
+    <div
+      className={cn(
+        "grid grid-cols-[auto_44px_1fr_auto] items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
+        isCurrent
+          ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
+          : "border-white/[0.045] bg-white/[0.045]",
+      )}
+    >
+      <PlayIconButton
+        size="sm"
+        playing={playing}
+        label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
+        onClick={toggle}
+      />
+      <CoverImage src={song.coverSrc} alt="" className="size-11 rounded-xl" />
+      <Link href={`/songs/${song.slug}`} className="min-w-0 text-left">
+        <strong
+          className={cn(
+            "block truncate text-sm",
+            isCurrent && "text-[var(--family-pink)]",
+          )}
+        >
+          {song.title}
+        </strong>
+        <span className="block truncate text-xs text-[var(--jb-muted)]">
+          {author?.name} · {song.tags.slice(0, 3).join(" · ")}
+        </span>
+      </Link>
+      <div className="hidden sm:block">
+        <QueueBadge song={song} />
+      </div>
+    </div>
+  );
+}
+
 export function RecentQueue({ songs }: RecentQueueProps) {
-  const { playSong } = usePlayer();
   const recent = [...songs].slice(0, 5);
   const videoCount = allSongs.filter((s) => s.videoSrc).length;
 
@@ -52,28 +93,9 @@ export function RecentQueue({ songs }: RecentQueueProps) {
             </p>
           </div>
           <div className="grid gap-2">
-            {recent.map((song) => {
-              const author = getMemberBySlug(song.authorSlug);
-              return (
-                <button
-                  key={song.slug}
-                  type="button"
-                  onClick={() => playSong(song)}
-                  className="grid grid-cols-[44px_1fr_auto] items-center gap-3 rounded-2xl border border-white/[0.045] bg-white/[0.045] p-2 text-left transition hover:bg-white/[0.08] active:bg-white/[0.12]"
-                >
-                  <CoverImage src={song.coverSrc} alt="" className="size-11 rounded-xl" />
-                  <div className="min-w-0">
-                    <strong className="block truncate text-sm">{song.title}</strong>
-                    <span className="block truncate text-xs text-[var(--jb-muted)]">
-                      {author?.name} · {song.tags.slice(0, 3).join(" · ")}
-                    </span>
-                  </div>
-                  <div className="hidden sm:block">
-                    <QueueBadge song={song} />
-                  </div>
-                </button>
-              );
-            })}
+            {recent.map((song) => (
+              <QueueRow key={song.slug} song={song} />
+            ))}
           </div>
         </div>
 

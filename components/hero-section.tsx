@@ -5,13 +5,15 @@ import type { Song } from "@/data/songs";
 import { getMemberBySlug } from "@/data/members";
 import { getFairRotationQueue, getSpotlightAuthorNames } from "@/lib/featured-rotation";
 import { PlayIconButton } from "@/components/play-icon-button";
+import { useSongPlayback } from "@/hooks/use-song-playback";
 
 type HeroSectionProps = {
   featured: Song;
 };
 
 export function HeroSection({ featured }: HeroSectionProps) {
-  const { playSong, playQueue } = usePlayer();
+  const { playQueue } = usePlayer();
+  const { playing, toggle } = useSongPlayback(featured);
   const author = getMemberBySlug(featured.authorSlug);
   const spotlightNames = getSpotlightAuthorNames();
 
@@ -41,8 +43,9 @@ export function HeroSection({ featured }: HeroSectionProps) {
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <PlayIconButton
             size="xl"
+            playing={playing}
             label="Play spotlight song"
-            onClick={() => playSong(featured)}
+            onClick={toggle}
           />
           <button
             type="button"

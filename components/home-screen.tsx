@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 
-import { usePlayer } from "@/contexts/player-context";
+import { PlayIconButton } from "@/components/play-icon-button";
+import { useSongPlayback } from "@/hooks/use-song-playback";
 import type { Song } from "@/data/songs";
+import { cn } from "@/lib/utils";
 
 const gradients = [
   "from-emerald-700 to-teal-900",
@@ -19,19 +21,30 @@ type QuickPickTileProps = {
 };
 
 function QuickPickTile({ song, label, index }: QuickPickTileProps) {
-  const { playSong } = usePlayer();
+  const { playing, toggle, isCurrent } = useSongPlayback(song);
   const gradient = gradients[index % gradients.length];
 
   return (
-    <button
-      type="button"
-      onClick={() => playSong(song)}
-      className={`flex h-[4.5rem] items-center gap-3 overflow-hidden rounded-md bg-gradient-to-br ${gradient} p-3 text-left shadow-md active:scale-[0.98]`}
+    <div
+      className={cn(
+        "relative flex h-[4.5rem] items-center gap-3 overflow-hidden rounded-md bg-gradient-to-br p-3 shadow-md",
+        gradient,
+        isCurrent && "ring-2 ring-[var(--family-pink)]",
+      )}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={song.coverSrc} alt="" className="size-11 shrink-0 rounded shadow" />
-      <span className="line-clamp-2 text-sm font-bold leading-tight text-white">{label}</span>
-    </button>
+      <Link href={`/songs/${song.slug}`} className="min-w-0 flex-1">
+        <span className="line-clamp-2 text-sm font-bold leading-tight text-white">{label}</span>
+      </Link>
+      <PlayIconButton
+        size="sm"
+        playing={playing}
+        label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
+        onClick={toggle}
+        className="shrink-0"
+      />
+    </div>
   );
 }
 

@@ -5,7 +5,7 @@ import { useMemo, useState } from "react";
 
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
-import { usePlayer } from "@/contexts/player-context";
+import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { cn } from "@/lib/utils";
@@ -15,9 +15,48 @@ type FeaturedShelfProps = {
   tags: string[];
 };
 
+function FeaturedAlbumCard({ song }: { song: Song }) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song);
+  const author = getMemberBySlug(song.authorSlug);
+
+  return (
+    <article
+      className={cn(
+        "group relative min-w-0 rounded-[20px] border p-2.5 transition hover:-translate-y-0.5 sm:rounded-[22px] sm:p-3",
+        isCurrent
+          ? "border-[rgba(255,111,177,0.35)] bg-white/[0.09]"
+          : "border-white/[0.06] bg-white/[0.055] hover:bg-white/[0.09]",
+      )}
+    >
+      <div className="relative aspect-square overflow-hidden rounded-[18px] bg-gradient-to-br from-[#314155] to-[#14202c] shadow-[0_16px_30px_rgba(0,0,0,0.22)]">
+        <CoverImage src={song.coverSrc} alt="" className="size-full" />
+        <PlayIconButton
+          size="sm"
+          playing={playing}
+          label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
+          onClick={toggle}
+          className="absolute right-2 bottom-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
+        />
+      </div>
+      <Link href={`/songs/${song.slug}`} className="mt-3 block min-w-0">
+        <h3
+          className={cn(
+            "truncate text-sm font-bold tracking-tight sm:text-[15px]",
+            isCurrent && "text-[var(--family-pink)]",
+          )}
+        >
+          {song.title}
+        </h3>
+        <p className="mt-1 line-clamp-2 min-h-[35px] text-xs leading-snug text-[var(--jb-muted)] sm:text-[13px]">
+          {song.subtitle ?? `${author?.name ?? "Family"} · family song`}
+        </p>
+      </Link>
+    </article>
+  );
+}
+
 export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  const { playSong } = usePlayer();
 
   const filtered = useMemo(() => {
     if (!activeTag) return songs;
@@ -60,31 +99,9 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
       </div>
 
       <div className="mt-4 grid grid-cols-2 gap-2.5 sm:gap-3.5 md:grid-cols-4 xl:grid-cols-6">
-        {filtered.map((song) => {
-          const author = getMemberBySlug(song.authorSlug);
-          return (
-            <article
-              key={song.slug}
-              className="group relative min-w-0 rounded-[20px] border border-white/[0.06] bg-white/[0.055] p-2.5 transition hover:-translate-y-0.5 hover:bg-white/[0.09] sm:rounded-[22px] sm:p-3"
-            >
-              <div className="relative aspect-square overflow-hidden rounded-[18px] bg-gradient-to-br from-[#314155] to-[#14202c] shadow-[0_16px_30px_rgba(0,0,0,0.22)]">
-                <CoverImage src={song.coverSrc} alt="" className="size-full" />
-                <PlayIconButton
-                  size="sm"
-                  label={`Play ${song.title}`}
-                  onClick={() => playSong(song)}
-                  className="absolute right-2 bottom-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
-                />
-              </div>
-              <Link href={`/songs/${song.slug}`} className="mt-3 block min-w-0">
-                <h3 className="truncate text-sm font-bold tracking-tight sm:text-[15px]">{song.title}</h3>
-                <p className="mt-1 line-clamp-2 min-h-[35px] text-xs leading-snug text-[var(--jb-muted)] sm:text-[13px]">
-                  {song.subtitle ?? `${author?.name ?? "Family"} · family song`}
-                </p>
-              </Link>
-            </article>
-          );
-        })}
+        {filtered.map((song) => (
+          <FeaturedAlbumCard key={song.slug} song={song} />
+        ))}
       </div>
     </section>
   );

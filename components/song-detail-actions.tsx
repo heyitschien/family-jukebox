@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
+import { useSongPlayback } from "@/hooks/use-song-playback";
 import type { Song } from "@/data/songs";
 
 type SongDetailActionsProps = {
@@ -12,24 +13,16 @@ type SongDetailActionsProps = {
 };
 
 export function SongDetailActions({ song, queue }: SongDetailActionsProps) {
-  const { playSong, playQueue, currentSong, isPlaying, togglePlay } = usePlayer();
-  const isCurrent = currentSong?.slug === song.slug;
-
-  const handleMainPlay = () => {
-    if (isCurrent) {
-      togglePlay();
-    } else {
-      playSong(song);
-    }
-  };
+  const { playQueue } = usePlayer();
+  const { playing, toggle } = useSongPlayback(song);
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
       <PlayIconButton
         size="lg"
-        playing={isCurrent && isPlaying}
-        label={isCurrent && isPlaying ? "Pause" : `Play ${song.title}`}
-        onClick={handleMainPlay}
+        playing={playing}
+        label={playing ? "Pause" : `Play ${song.title}`}
+        onClick={toggle}
       />
       <button
         type="button"

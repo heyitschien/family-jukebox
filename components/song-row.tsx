@@ -3,9 +3,11 @@
 import Link from "next/link";
 
 import { CoverImage } from "@/components/cover-image";
-import { usePlayer } from "@/contexts/player-context";
+import { PlayIconButton } from "@/components/play-icon-button";
+import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
+import { cn } from "@/lib/utils";
 
 type SongRowProps = {
   song: Song;
@@ -14,31 +16,43 @@ type SongRowProps = {
 };
 
 export function SongRow({ song, index, showIndex = false }: SongRowProps) {
-  const { playSong, currentSong, isPlaying } = usePlayer();
+  const { playing, toggle, isCurrent } = useSongPlayback(song);
   const author = getMemberBySlug(song.authorSlug);
-  const isActive = currentSong?.slug === song.slug && isPlaying;
 
   return (
-    <div className="flex items-center gap-3 rounded-2xl border border-white/[0.045] bg-white/[0.045] p-2 transition hover:bg-white/[0.08]">
+    <div
+      className={cn(
+        "flex items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
+        isCurrent
+          ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
+          : "border-white/[0.045] bg-white/[0.045]",
+      )}
+    >
       {showIndex && index !== undefined ? (
         <span className="w-5 shrink-0 text-center text-sm text-[var(--jb-muted)]">{index + 1}</span>
       ) : null}
-      <button
-        type="button"
-        onClick={() => playSong(song)}
-        className="flex min-w-0 flex-1 items-center gap-3 text-left"
-        aria-label={`Play ${song.title}`}
-      >
+      <PlayIconButton
+        size="sm"
+        playing={playing}
+        label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
+        onClick={toggle}
+      />
+      <Link href={`/songs/${song.slug}`} className="flex min-w-0 flex-1 items-center gap-3">
         <CoverImage src={song.coverSrc} alt="" className="size-11 shrink-0 rounded-xl" />
         <div className="min-w-0 flex-1">
-          <strong className={`block truncate text-sm ${isActive ? "text-[var(--family-pink)]" : ""}`}>
+          <strong
+            className={cn(
+              "block truncate text-sm",
+              isCurrent && "text-[var(--family-pink)]",
+            )}
+          >
             {song.title}
           </strong>
           <span className="block truncate text-xs text-[var(--jb-muted)]">
             {author?.name} · {song.tags.slice(0, 3).join(" · ")}
           </span>
         </div>
-      </button>
+      </Link>
       <Link
         href={`/songs/${song.slug}`}
         className="shrink-0 px-2 text-xs text-[var(--jb-muted)] hover:text-white"

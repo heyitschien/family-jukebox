@@ -18,6 +18,8 @@ type PlayerContextValue = {
   currentTime: number;
   duration: number;
   playSong: (song: Song) => void;
+  toggleSong: (song: Song) => void;
+  isSongPlaying: (song: Song) => boolean;
   playQueue: (songs: Song[], startIndex?: number) => void;
   togglePlay: () => void;
   pause: () => void;
@@ -82,6 +84,36 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       startPlayback(song, [song]);
     },
     [startPlayback],
+  );
+
+  const isSongPlaying = useCallback(
+    (song: Song) => currentSong?.slug === song.slug && isPlaying,
+    [currentSong, isPlaying],
+  );
+
+  const toggleSong = useCallback(
+    (song: Song) => {
+      const audio = audioRef.current;
+      if (!audio) return;
+
+      const isSameSong = currentSong?.slug === song.slug;
+
+      if (isSameSong) {
+        if (audio.paused) {
+          void audio
+            .play()
+            .then(() => setIsPlaying(true))
+            .catch(() => setIsPlaying(false));
+        } else {
+          audio.pause();
+          setIsPlaying(false);
+        }
+        return;
+      }
+
+      startPlayback(song, [song]);
+    },
+    [currentSong, startPlayback],
   );
 
   const playQueue = useCallback(
@@ -176,6 +208,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         currentTime,
         duration,
         playSong,
+        toggleSong,
+        isSongPlaying,
         playQueue,
         togglePlay,
         pause,
