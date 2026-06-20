@@ -19,12 +19,12 @@ export function CoverImage({ src, alt, className, sizes }: CoverImageProps) {
     return (
       <div
         className={cn(
-          "flex items-center justify-center bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100",
+          "flex items-center justify-center bg-gradient-to-br from-[#282828] to-[#121212]",
           className,
         )}
         aria-label={alt}
       >
-        <Music2 className="size-10 text-amber-700/60" strokeWidth={1.5} />
+        <Music2 className="size-10 text-[#b3b3b3]/60" strokeWidth={1.5} />
       </div>
     );
   }

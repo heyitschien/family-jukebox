@@ -13,27 +13,17 @@ export function SongVideo({ videoSrc, title }: SongVideoProps) {
 
   if (hasError) {
     return (
-      <div className="flex items-start gap-2 rounded-2xl border border-amber-200/70 bg-amber-50 p-4 text-sm text-amber-900">
+      <div className="flex items-start gap-2 rounded-2xl border border-white/10 bg-white/[0.05] p-4 text-sm text-[var(--jb-muted)]">
         <AlertCircle className="mt-0.5 size-4 shrink-0" />
-        <p>
-          Video not found yet. Add it to{" "}
-          <code className="rounded bg-amber-100 px-1">public/assets/videos/</code> or keep
-          audio + cover only for a lighter repo.
-        </p>
+        <p>Video not found yet. Add it to public/assets or keep audio + cover only.</p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-amber-200/70 bg-black shadow-sm">
-      <video
-        controls
-        preload="metadata"
-        className="aspect-video w-full"
-        onError={() => setHasError(true)}
-      >
+    <div className="overflow-hidden rounded-xl bg-black">
+      <video controls preload="metadata" className="aspect-video w-full" onError={() => setHasError(true)}>
         <source src={videoSrc} type="video/mp4" />
-        Your browser does not support the video element.
       </video>
       <p className="sr-only">{title} video</p>
     </div>

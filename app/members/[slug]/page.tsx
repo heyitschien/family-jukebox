@@ -3,14 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
-import { MemberCard } from "@/components/member-card";
-import { SiteHeader } from "@/components/site-header";
-import { SongCard } from "@/components/song-card";
-import { Badge } from "@/components/ui/badge";
-import { buttonVariants } from "@/components/ui/button";
+import { MemberPlayHeader, MemberSongList } from "@/components/member-play-header";
+import { Topbar } from "@/components/topbar";
 import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
-import { cn } from "@/lib/utils";
 
 type MemberPageProps = {
   params: Promise<{ slug: string }>;
@@ -23,90 +19,68 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: MemberPageProps): Promise<Metadata> {
   const { slug } = await params;
   const member = getMemberBySlug(slug);
-
-  if (!member) {
-    return { title: "Member not found · Family Jukebox" };
-  }
-
-  return {
-    title: `${member.name} · Family Jukebox`,
-    description: member.description,
-  };
+  if (!member) return { title: "Member not found · Family Jukebox" };
+  return { title: `${member.name} · Family Jukebox`, description: member.description };
 }
 
 export default async function MemberPage({ params }: MemberPageProps) {
   const { slug } = await params;
   const member = getMemberBySlug(slug);
-
-  if (!member) {
-    notFound();
-  }
+  if (!member) notFound();
 
   const memberSongs = getSongsByAuthor(member.slug);
+  const heroCover = memberSongs[0]?.coverSrc;
 
   return (
-    <>
-      <SiteHeader />
-      <main className="mx-auto w-full max-w-4xl flex-1 px-4 py-8 sm:px-6 sm:py-12">
-        <Link
-          href="/"
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            "mb-6 inline-flex rounded-full text-amber-900 hover:bg-amber-100",
-          )}
-        >
-          <ArrowLeft className="size-4" />
-          Back to jukebox
-        </Link>
+    <main className="min-w-0 px-3 pb-4 lg:px-0">
+      <Topbar />
 
-        <section className="rounded-[2rem] border border-amber-200/70 bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50 p-6 sm:p-8">
-          <div className="flex flex-wrap items-start gap-4">
-            <span className="flex size-16 items-center justify-center rounded-3xl bg-white text-4xl shadow-sm">
-              {member.emoji}
-            </span>
-            <div className="flex-1">
-              <div className="flex flex-wrap items-center gap-2">
-                <h1 className="text-4xl font-bold text-amber-950">{member.name}</h1>
-                <Badge className="rounded-full bg-white/80 text-amber-900">
-                  age {member.age}
-                </Badge>
-                <Badge className="rounded-full bg-amber-400/40 text-amber-950">
-                  {getRoleLabel(member.role)}
-                </Badge>
-              </div>
-              <p className="mt-4 max-w-2xl text-base leading-relaxed text-amber-900/80">
-                {member.description}
-              </p>
-            </div>
+      <Link
+        href="/family"
+        className="mb-4 inline-flex items-center gap-2 text-sm font-bold text-[var(--jb-muted)] hover:text-white"
+      >
+        <ArrowLeft className="size-4" />
+        Back
+      </Link>
+
+      <section
+        className="relative overflow-hidden rounded-[32px] border border-white/[0.08] p-6 sm:p-8"
+        style={{
+          backgroundImage: heroCover
+            ? `linear-gradient(180deg, rgba(7,12,16,0.2) 0%, rgba(7,12,16,0.92) 70%), url(${heroCover})`
+            : undefined,
+          backgroundSize: "cover",
+          backgroundPosition: "center top",
+          backgroundColor: "#17212c",
+        }}
+      >
+        <div className="relative z-10 pt-24 sm:pt-32">
+          <p className="text-xs font-extrabold uppercase tracking-wider text-[var(--jb-muted)]">
+            {getRoleLabel(member.role)}
+          </p>
+          <h1 className="mt-2 text-5xl font-extrabold tracking-tight sm:text-7xl">{member.name}</h1>
+          <p className="mt-2 text-sm font-bold text-[var(--jb-muted)]">
+            {memberSongs.length} {memberSongs.length === 1 ? "song" : "songs"} · age {member.age}
+          </p>
+          <div className="mt-6">
+            <MemberPlayHeader songs={memberSongs} memberName={member.name} />
           </div>
-        </section>
+        </div>
+      </section>
 
-        <section className="mt-10 space-y-5">
-          <h2 className="text-2xl font-bold text-amber-950">
-            {memberSongs.length} {memberSongs.length === 1 ? "song" : "songs"}
-          </h2>
-          {memberSongs.length > 0 ? (
-            <div className="grid gap-5 sm:grid-cols-2">
-              {memberSongs.map((song) => (
-                <SongCard key={song.slug} song={song} />
-              ))}
-            </div>
-          ) : (
-            <p className="text-amber-900/70">No songs yet — check back after the next music day.</p>
-          )}
-        </section>
+      <section className="mt-6 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+        <h2 className="mb-4 text-xl font-bold">Popular</h2>
+        {memberSongs.length > 0 ? (
+          <MemberSongList songs={memberSongs} />
+        ) : (
+          <p className="text-[var(--jb-muted)]">No songs yet — check back after the next music day.</p>
+        )}
+      </section>
 
-        <section className="mt-12 space-y-4">
-          <h2 className="text-lg font-semibold text-amber-950">More family</h2>
-          <div className="grid gap-3 sm:grid-cols-2">
-            {members
-              .filter((other) => other.slug !== member.slug)
-              .map((other) => (
-                <MemberCard key={other.slug} member={other} compact />
-              ))}
-          </div>
-        </section>
-      </main>
-    </>
+      <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+        <h2 className="text-lg font-bold">About {member.name}</h2>
+        <p className="mt-3 leading-relaxed text-[var(--jb-muted)]">{member.description}</p>
+      </section>
+    </main>
   );
 }

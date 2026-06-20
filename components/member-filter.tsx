@@ -16,7 +16,7 @@ export function MemberFilter({
 }: MemberFilterProps) {
   return (
     <div className="space-y-2">
-      <p className="text-sm font-medium text-amber-900/80">Family member</p>
+      <p className="text-sm font-medium text-[#b3b3b3]">Family member</p>
       <div className="flex flex-wrap gap-2">
         <button
           type="button"
@@ -24,8 +24,8 @@ export function MemberFilter({
           className={cn(
             "rounded-full px-4 py-2 text-sm font-medium transition",
             activeMember === null
-              ? "bg-amber-500 text-amber-950 shadow-sm"
-              : "bg-white text-amber-900 ring-1 ring-amber-200 hover:bg-amber-50",
+              ? "bg-white text-black"
+              : "bg-[#282828] text-white hover:bg-[#3e3e3e]",
           )}
         >
           Everyone
@@ -40,8 +40,8 @@ export function MemberFilter({
             className={cn(
               "rounded-full px-4 py-2 text-sm font-medium transition",
               activeMember === member.slug
-                ? "bg-amber-500 text-amber-950 shadow-sm"
-                : "bg-white text-amber-900 ring-1 ring-amber-200 hover:bg-amber-50",
+                ? "bg-white text-black"
+                : "bg-[#282828] text-white hover:bg-[#3e3e3e]",
             )}
           >
             {member.emoji} {member.name}
