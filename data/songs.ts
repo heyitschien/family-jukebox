@@ -78,7 +78,7 @@ export const songs: Song[] = [
     authorSlug: "solene",
     dateCreated: "2026-06-19",
     audioSrc: "/assets/solene/solenes-painted-trail.mp3",
-    coverSrc: "/assets/solene/solenes-painted-trail.jpg",
+    coverSrc: "/assets/solene/solene-s-painted-trail.jpg",
     tags: ["art", "color", "solene"],
   },
   {
