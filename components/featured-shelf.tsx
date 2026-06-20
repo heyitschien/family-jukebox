@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { CoverImage } from "@/components/cover-image";
+import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
@@ -68,14 +69,12 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
             >
               <div className="relative aspect-square overflow-hidden rounded-[18px] bg-gradient-to-br from-[#314155] to-[#14202c] shadow-[0_16px_30px_rgba(0,0,0,0.22)]">
                 <CoverImage src={song.coverSrc} alt="" className="size-full" />
-                <button
-                  type="button"
+                <PlayIconButton
+                  size="sm"
+                  label={`Play ${song.title}`}
                   onClick={() => playSong(song)}
-                  className="absolute right-2.5 bottom-2.5 grid size-[38px] place-items-center rounded-full bg-family-accent text-sm font-black text-[#1a0812] opacity-100 shadow-[0_10px_24px_rgba(255,111,177,0.35)] transition sm:opacity-0 sm:group-hover:opacity-100"
-                  aria-label={`Play ${song.title}`}
-                >
-                  ▶
-                </button>
+                  className="absolute right-2 bottom-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
+                />
               </div>
               <Link href={`/songs/${song.slug}`} className="mt-3 block min-w-0">
                 <h3 className="truncate text-sm font-bold tracking-tight sm:text-[15px]">{song.title}</h3>

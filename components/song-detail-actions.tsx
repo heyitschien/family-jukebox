@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Pause, Play } from "lucide-react";
 
+import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
 import type { Song } from "@/data/songs";
 
@@ -24,29 +24,23 @@ export function SongDetailActions({ song, queue }: SongDetailActionsProps) {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-3">
-      <button
-        type="button"
+    <div className="flex flex-wrap items-center justify-center gap-3">
+      <PlayIconButton
+        size="lg"
+        playing={isCurrent && isPlaying}
+        label={isCurrent && isPlaying ? "Pause" : `Play ${song.title}`}
         onClick={handleMainPlay}
-        className="grid size-14 place-items-center rounded-full bg-family-accent text-xl text-[#1a0812] shadow-family"
-        aria-label={isCurrent && isPlaying ? "Pause" : "Play"}
-      >
-        {isCurrent && isPlaying ? (
-          <Pause className="size-6 fill-current" />
-        ) : (
-          <Play className="size-6 fill-current ml-0.5" />
-        )}
-      </button>
+      />
       <button
         type="button"
         onClick={() => playQueue(queue, queue.findIndex((s) => s.slug === song.slug))}
-        className="rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-black"
+        className="inline-flex min-h-11 items-center rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-black [-webkit-tap-highlight-color:transparent]"
       >
         Play artist mix
       </button>
       <Link
         href={`/members/${song.authorSlug}`}
-        className="rounded-full bg-white px-5 py-3 text-sm font-black text-[#050608]"
+        className="inline-flex min-h-11 items-center rounded-full bg-white px-5 py-3 text-sm font-black text-[#050608]"
       >
         View artist
       </Link>

@@ -4,6 +4,7 @@ import { usePlayer } from "@/contexts/player-context";
 import type { Song } from "@/data/songs";
 import { getMemberBySlug } from "@/data/members";
 import { getFairRotationQueue, getSpotlightAuthorNames } from "@/lib/featured-rotation";
+import { PlayIconButton } from "@/components/play-icon-button";
 
 type HeroSectionProps = {
   featured: Song;
@@ -38,18 +39,15 @@ export function HeroSection({ featured }: HeroSectionProps) {
           Rotating spotlight: {spotlightNames}
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
+          <PlayIconButton
+            size="xl"
+            label="Play spotlight song"
             onClick={() => playSong(featured)}
-            className="grid size-[62px] place-items-center rounded-full bg-family-accent text-[26px] text-[#1a0812] shadow-family transition hover:scale-105 active:scale-95"
-            aria-label="Play spotlight song"
-          >
-            ▶
-          </button>
+          />
           <button
             type="button"
             onClick={() => playQueue(getFairRotationQueue(), 0)}
-            className="rounded-full bg-[var(--jb-text)] px-5 py-4 text-sm font-black text-[#050608]"
+            className="inline-flex min-h-11 items-center rounded-full bg-[var(--jb-text)] px-5 py-3 text-sm font-black text-[#050608] [-webkit-tap-highlight-color:transparent]"
           >
             Play family mix
           </button>

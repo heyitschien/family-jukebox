@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Pause, Play, SkipBack, SkipForward, Volume2 } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { PlayIconButton } from "@/components/play-icon-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
 import { getMemberBySlug } from "@/data/members";
 
@@ -37,19 +37,28 @@ export function MiniPlayer() {
 
       <div className="hidden justify-center sm:grid sm:gap-2">
         <div className="flex items-center justify-center gap-4 text-[var(--jb-muted)]">
-          <button type="button" onClick={skipPrev} aria-label="Previous" className="hover:text-white">
-            <SkipBack className="size-5" />
-          </button>
           <button
             type="button"
-            onClick={togglePlay}
-            aria-label={isPlaying ? "Pause" : "Play"}
-            className="grid size-[38px] place-items-center rounded-full bg-[var(--jb-text)] text-[#050608]"
+            onClick={skipPrev}
+            aria-label="Previous"
+            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent]"
           >
-            {isPlaying ? <Pause className="size-4 fill-current" /> : <Play className="size-4 fill-current ml-0.5" />}
+            <SkipPrevIcon />
           </button>
-          <button type="button" onClick={skipNext} aria-label="Next" className="hover:text-white">
-            <SkipForward className="size-5" />
+          <PlayIconButton
+            size="md"
+            variant="light"
+            playing={isPlaying}
+            label="Toggle playback"
+            onClick={togglePlay}
+          />
+          <button
+            type="button"
+            onClick={skipNext}
+            aria-label="Next"
+            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent]"
+          >
+            <SkipNextIcon />
           </button>
         </div>
         <div className="flex w-full items-center gap-2.5 text-[11px] text-[var(--jb-muted-2)]">
@@ -62,21 +71,45 @@ export function MiniPlayer() {
       </div>
 
       <div className="flex items-center justify-end gap-2">
-        <button
-          type="button"
+        <PlayIconButton
+          size="sm"
+          variant="light"
+          playing={isPlaying}
+          label="Toggle playback"
           onClick={togglePlay}
-          aria-label={isPlaying ? "Pause" : "Play"}
-          className="grid size-10 place-items-center rounded-full bg-[var(--jb-text)] text-[#050608] sm:hidden"
-        >
-          {isPlaying ? <Pause className="size-4 fill-current" /> : <Play className="size-4 fill-current ml-0.5" />}
-        </button>
+          className="sm:hidden"
+        />
         <div className="hidden items-center gap-2.5 text-[var(--jb-muted)] sm:flex">
-          <Volume2 className="size-4" />
+          <VolumeIcon />
           <div className="h-[5px] w-24 overflow-hidden rounded-full bg-white/15">
             <div className="family-progress h-full w-[70%]" />
           </div>
         </div>
       </div>
     </aside>
+  );
+}
+
+function SkipPrevIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-5 fill-current" aria-hidden>
+      <path d="M6 6h2v12H6V6zm3.5 6 8.5 6V6l-8.5 6z" />
+    </svg>
+  );
+}
+
+function SkipNextIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-5 fill-current" aria-hidden>
+      <path d="M16 18h2V6h-2v12zM6 18l8.5-6L6 6v12z" />
+    </svg>
+  );
+}
+
+function VolumeIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-4 fill-current" aria-hidden>
+      <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z" />
+    </svg>
   );
 }

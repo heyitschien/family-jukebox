@@ -76,7 +76,8 @@
   }
 
   .bg-family-accent {
-    background: linear-gradient(135deg, var(--family-pink) 0%, var(--family-ocean) 100%);
+    background-color: var(--family-pink);
+    background-image: linear-gradient(135deg, var(--family-pink) 0%, var(--family-ocean) 100%);
   }
 
   .text-family-glow {
