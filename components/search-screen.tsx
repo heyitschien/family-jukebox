@@ -115,7 +115,9 @@ export function SearchScreen({ songs, tags, members, ages }: SearchScreenProps) 
 
       <div className="pt-2">
         {filtered.length > 0 ? (
-          filtered.map((song, i) => <SongRow key={song.slug} song={song} index={i} showIndex />)
+          filtered.map((song, i) => (
+            <SongRow key={song.slug} song={song} index={i} showIndex playlist={filtered} />
+          ))
         ) : (
           <EmptyState />
         )}

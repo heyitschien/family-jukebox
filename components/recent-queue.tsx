@@ -4,6 +4,7 @@ import Link from "next/link";
 
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
+import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import { members } from "@/data/members";
@@ -14,6 +15,7 @@ import { cn } from "@/lib/utils";
 
 type RecentQueueProps = {
   songs: Song[];
+  familyQueue: Song[];
 };
 
 function QueueBadge({ song }: { song: Song }) {
@@ -38,8 +40,8 @@ function QueueBadge({ song }: { song: Song }) {
   );
 }
 
-function QueueRow({ song }: { song: Song }) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song);
+function QueueRow({ song, playlist }: { song: Song; playlist: Song[] }) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
   const author = getMemberBySlug(song.authorSlug);
 
   return (
@@ -78,7 +80,8 @@ function QueueRow({ song }: { song: Song }) {
   );
 }
 
-export function RecentQueue({ songs }: RecentQueueProps) {
+export function RecentQueue({ songs, familyQueue }: RecentQueueProps) {
+  const { playQueue } = usePlayer();
   const recent = [...songs].slice(0, 5);
   const videoCount = allSongs.filter((s) => s.videoSrc).length;
 
@@ -86,15 +89,26 @@ export function RecentQueue({ songs }: RecentQueueProps) {
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
       <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
-          <div className="mb-4">
-            <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Recently added</h2>
-            <p className="text-sm font-bold text-[var(--jb-muted)]">
-              Keep the page feeling like an app, not a folder dump.
-            </p>
+          <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
+            <div>
+              <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Recently added</h2>
+              <p className="text-sm font-bold text-[var(--jb-muted)]">
+                Play one song and the rest of this list keeps going.
+              </p>
+            </div>
+            {recent.length > 1 ? (
+              <button
+                type="button"
+                onClick={() => playQueue(recent, 0)}
+                className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-white/10 bg-white/10 px-4 py-2.5 text-sm font-bold [-webkit-tap-highlight-color:transparent]"
+              >
+                Play list
+              </button>
+            ) : null}
           </div>
           <div className="grid gap-2">
             {recent.map((song) => (
-              <QueueRow key={song.slug} song={song} />
+              <QueueRow key={song.slug} song={song} playlist={recent} />
             ))}
           </div>
         </div>
@@ -121,9 +135,16 @@ export function RecentQueue({ songs }: RecentQueueProps) {
                 {members.length} artists
               </span>
             </div>
+            <button
+              type="button"
+              onClick={() => playQueue(familyQueue, 0)}
+              className="mt-4 inline-flex min-h-11 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
+            >
+              Play family mix
+            </button>
             <Link
               href="/family"
-              className="mt-4 inline-block text-sm font-bold text-family-glow hover:underline"
+              className="mt-3 inline-block text-sm font-bold text-family-glow hover:underline"
             >
               Meet the family →
             </Link>

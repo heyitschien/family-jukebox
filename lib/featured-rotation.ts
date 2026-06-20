@@ -7,6 +7,17 @@ export function getDayIndex(): number {
   return Math.floor((Date.now() - start.getTime()) / (1000 * 60 * 60 * 24));
 }
 
+/** Per-request seed so the hero changes on every refresh while staying daily-fair. */
+export function createRefreshSeed(): number {
+  return Math.floor(Math.random() * 10_000);
+}
+
+function rotateArray<T>(items: T[], offset: number): T[] {
+  if (items.length === 0) return items;
+  const normalized = ((offset % items.length) + items.length) % items.length;
+  return [...items.slice(normalized), ...items.slice(0, normalized)];
+}
+
 /** One spotlight song per family member — rotates daily through their catalog. */
 export function getSpotlightSongPerMember(): Song[] {
   const day = getDayIndex();
@@ -20,24 +31,27 @@ export function getSpotlightSongPerMember(): Song[] {
     .filter((song): song is Song => song !== undefined);
 }
 
-/** Hero spotlight — rotates so a different family member leads each day. */
-export function getHeroFeaturedSong(): Song {
+/** Hero spotlight — rotates daily and shifts on each page refresh. */
+export function getHeroFeaturedSong(refreshSeed = 0): Song {
   const spotlight = getSpotlightSongPerMember();
   if (spotlight.length === 0) return songs[0];
-  return spotlight[getDayIndex() % spotlight.length] ?? songs[0];
+  const index = (getDayIndex() + refreshSeed) % spotlight.length;
+  return spotlight[index] ?? songs[0];
 }
 
 /** Shelf order: each member's spotlight first, then the rest. */
-export function getRotatedFeaturedShelf(): Song[] {
+export function getRotatedFeaturedShelf(refreshSeed = 0): Song[] {
   const spotlight = getSpotlightSongPerMember();
   const spotlightSlugs = new Set(spotlight.map((song) => song.slug));
   const rest = songs.filter((song) => !spotlightSlugs.has(song.slug));
-  return [...spotlight, ...rest];
+  const rotatedSpotlight = rotateArray(spotlight, getDayIndex() + refreshSeed);
+  const rotatedRest = rotateArray(rest, refreshSeed);
+  return [...rotatedSpotlight, ...rotatedRest];
 }
 
 /** Play queue interleaves by author so everyone appears in the mix. */
-export function getFairRotationQueue(): Song[] {
-  const day = getDayIndex();
+export function getFairRotationQueue(refreshSeed = 0): Song[] {
+  const day = getDayIndex() + refreshSeed;
   const byMember = new Map<string, Song[]>();
 
   for (const song of songs) {
@@ -63,6 +77,10 @@ export function getFairRotationQueue(): Song[] {
   }
 
   return queue.length > 0 ? queue : [...songs];
+}
+
+export function getRotatedSpotlightSongs(refreshSeed = 0): Song[] {
+  return rotateArray(getSpotlightSongPerMember(), getDayIndex() + refreshSeed);
 }
 
 export function isSpotlightSong(song: Song): boolean {

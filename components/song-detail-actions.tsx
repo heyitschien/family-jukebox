@@ -14,7 +14,7 @@ type SongDetailActionsProps = {
 
 export function SongDetailActions({ song, queue }: SongDetailActionsProps) {
   const { playQueue } = usePlayer();
-  const { playing, toggle } = useSongPlayback(song);
+  const { playing, toggle } = useSongPlayback(song, { singleOnly: true });
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
