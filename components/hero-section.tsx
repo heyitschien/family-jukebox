@@ -1,21 +1,55 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { usePlayer } from "@/contexts/player-context";
 import type { Song } from "@/data/songs";
 import { getMemberBySlug } from "@/data/members";
-import { getFairRotationQueue, getSpotlightAuthorNames } from "@/lib/featured-rotation";
+import { getFairRotationQueue } from "@/lib/featured-rotation";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 
+const HERO_VISIT_STORAGE_KEY = "family-jukebox:hero-visit";
+
 type HeroSectionProps = {
-  featured: Song;
+  featuredSongs: Song[];
+  dayIndex: number;
+  spotlightNames: string;
 };
 
-export function HeroSection({ featured }: HeroSectionProps) {
+function getRefreshFeaturedIndex(dayIndex: number, totalSongs: number): number {
+  if (totalSongs <= 1) return 0;
+
+  try {
+    const rawValue = window.sessionStorage.getItem(HERO_VISIT_STORAGE_KEY);
+    const stored = rawValue ? (JSON.parse(rawValue) as { dayIndex?: number; visitIndex?: number }) : null;
+    const lastVisitIndex = typeof stored?.visitIndex === "number" ? stored.visitIndex : -1;
+    const visitIndex = stored?.dayIndex === dayIndex ? (lastVisitIndex + 1) % totalSongs : 0;
+
+    window.sessionStorage.setItem(
+      HERO_VISIT_STORAGE_KEY,
+      JSON.stringify({ dayIndex, visitIndex }),
+    );
+
+    return visitIndex;
+  } catch {
+    return 0;
+  }
+}
+
+export function HeroSection({ featuredSongs, dayIndex, spotlightNames }: HeroSectionProps) {
   const { playQueue } = usePlayer();
+  const [featuredIndex, setFeaturedIndex] = useState(0);
+  const initialFeatured = featuredSongs[0]!;
+  const featured = featuredSongs[featuredIndex] ?? initialFeatured;
   const { playing, toggle } = useSongPlayback(featured);
-  const author = getMemberBySlug(featured.authorSlug);
-  const spotlightNames = getSpotlightAuthorNames();
+  const author = featured ? getMemberBySlug(featured.authorSlug) : undefined;
+
+  useEffect(() => {
+    setFeaturedIndex(getRefreshFeaturedIndex(dayIndex, featuredSongs.length));
+  }, [dayIndex, featuredSongs.length]);
+
+  if (!featured) return null;
 
   return (
     <section
@@ -28,7 +62,7 @@ export function HeroSection({ featured }: HeroSectionProps) {
     >
       <div className="relative z-10 max-w-3xl">
         <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
-          ✨ Today&apos;s spotlight · {author?.name ?? "Family"}
+          ✨ Now featuring · {author?.name ?? "Family"}
         </span>
         <h1 className="text-[clamp(48px,12vw,92px)] leading-[0.88] font-extrabold tracking-[-0.075em]">
           Family Jukebox
@@ -37,8 +71,12 @@ export function HeroSection({ featured }: HeroSectionProps) {
           A polished little web app for the songs we made together — silly fox trails, gravity
           shifts, pink glasses, pixels into magic, and every family anthem in one place.
         </p>
+        <p className="mt-3 max-w-[590px] text-sm font-bold text-[var(--jb-text)] sm:text-base">
+          Featuring: {featured.title}
+          {featured.subtitle ? ` — ${featured.subtitle}` : ""}
+        </p>
         <p className="mt-2 text-sm font-bold text-[var(--family-ocean)]">
-          Rotating spotlight: {spotlightNames}
+          Daily spotlight rotation: {spotlightNames}
         </p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <PlayIconButton
@@ -49,7 +87,7 @@ export function HeroSection({ featured }: HeroSectionProps) {
           />
           <button
             type="button"
-            onClick={() => playQueue(getFairRotationQueue(), 0)}
+            onClick={() => playQueue(getFairRotationQueue(dayIndex), 0)}
             className="inline-flex min-h-11 items-center rounded-full bg-[var(--jb-text)] px-5 py-3 text-sm font-black text-[#050608] [-webkit-tap-highlight-color:transparent]"
           >
             Play family mix

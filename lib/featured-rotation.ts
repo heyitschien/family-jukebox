@@ -1,6 +1,12 @@
 import { members } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
 
+function rotateList<T>(items: T[], startIndex: number): T[] {
+  if (items.length === 0) return [];
+  const normalizedStart = ((startIndex % items.length) + items.length) % items.length;
+  return [...items.slice(normalizedStart), ...items.slice(0, normalizedStart)];
+}
+
 /** Day index for fair daily rotation across the family. */
 export function getDayIndex(): number {
   const start = new Date(new Date().getFullYear(), 0, 0);
@@ -8,8 +14,8 @@ export function getDayIndex(): number {
 }
 
 /** One spotlight song per family member — rotates daily through their catalog. */
-export function getSpotlightSongPerMember(): Song[] {
-  const day = getDayIndex();
+export function getSpotlightSongPerMember(dayIndex = getDayIndex()): Song[] {
+  const day = dayIndex;
 
   return members
     .map((member) => {
@@ -20,24 +26,29 @@ export function getSpotlightSongPerMember(): Song[] {
     .filter((song): song is Song => song !== undefined);
 }
 
-/** Hero spotlight — rotates so a different family member leads each day. */
-export function getHeroFeaturedSong(): Song {
-  const spotlight = getSpotlightSongPerMember();
-  if (spotlight.length === 0) return songs[0];
-  return spotlight[getDayIndex() % spotlight.length] ?? songs[0];
-}
-
 /** Shelf order: each member's spotlight first, then the rest. */
-export function getRotatedFeaturedShelf(): Song[] {
-  const spotlight = getSpotlightSongPerMember();
+export function getRotatedFeaturedShelf(dayIndex = getDayIndex()): Song[] {
+  const spotlight = getSpotlightSongPerMember(dayIndex);
   const spotlightSlugs = new Set(spotlight.map((song) => song.slug));
   const rest = songs.filter((song) => !spotlightSlugs.has(song.slug));
   return [...spotlight, ...rest];
 }
 
+/** Hero spotlight pool uses the daily shelf order, then rotates per visit. */
+export function getHeroRotationPool(dayIndex = getDayIndex()): Song[] {
+  return rotateList(getRotatedFeaturedShelf(dayIndex), dayIndex);
+}
+
+/** Hero spotlight — rotates daily and can advance through the daily pool on refresh. */
+export function getHeroFeaturedSong(visitIndex = 0, dayIndex = getDayIndex()): Song {
+  const pool = getHeroRotationPool(dayIndex);
+  if (pool.length === 0) return songs[0];
+  return pool[visitIndex % pool.length] ?? songs[0];
+}
+
 /** Play queue interleaves by author so everyone appears in the mix. */
-export function getFairRotationQueue(): Song[] {
-  const day = getDayIndex();
+export function getFairRotationQueue(dayIndex = getDayIndex()): Song[] {
+  const day = dayIndex;
   const byMember = new Map<string, Song[]>();
 
   for (const song of songs) {
@@ -69,8 +80,8 @@ export function isSpotlightSong(song: Song): boolean {
   return getSpotlightSongPerMember().some((spotlight) => spotlight.slug === song.slug);
 }
 
-export function getSpotlightAuthorNames(): string {
-  return getSpotlightSongPerMember()
+export function getSpotlightAuthorNames(dayIndex = getDayIndex()): string {
+  return getSpotlightSongPerMember(dayIndex)
     .map((song) => members.find((m) => m.slug === song.authorSlug)?.name)
     .filter(Boolean)
     .join(", ");

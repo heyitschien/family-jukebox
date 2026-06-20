@@ -38,8 +38,17 @@ function QueueBadge({ song }: { song: Song }) {
   );
 }
 
-function QueueRow({ song }: { song: Song }) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song);
+type QueueRowProps = {
+  song: Song;
+  queue: Song[];
+  startIndex: number;
+};
+
+function QueueRow({ song, queue, startIndex }: QueueRowProps) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song, {
+    queue,
+    startIndex,
+  });
   const author = getMemberBySlug(song.authorSlug);
 
   return (
@@ -93,8 +102,8 @@ export function RecentQueue({ songs }: RecentQueueProps) {
             </p>
           </div>
           <div className="grid gap-2">
-            {recent.map((song) => (
-              <QueueRow key={song.slug} song={song} />
+            {recent.map((song, index) => (
+              <QueueRow key={song.slug} song={song} queue={recent} startIndex={index} />
             ))}
           </div>
         </div>

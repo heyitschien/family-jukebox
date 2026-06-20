@@ -16,12 +16,14 @@ export function MiniPlayer() {
     skipPrev,
     currentTime,
     duration,
+    queue,
   } = usePlayer();
 
   if (!currentSong) return null;
 
   const author = getMemberBySlug(currentSong.authorSlug);
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const hasQueueNavigation = queue.length > 1;
 
   return (
     <aside className="fixed inset-x-2.5 bottom-[calc(66px+env(safe-area-inset-bottom))] z-50 grid min-h-[66px] grid-cols-[1fr_auto] items-center gap-3 rounded-[22px] border border-white/10 bg-[rgba(10,14,18,0.92)] px-3 py-2.5 shadow-[0_18px_70px_rgba(0,0,0,0.45)] backdrop-blur-[22px] sm:inset-x-[18px] sm:bottom-[18px] sm:min-h-[74px] sm:grid-cols-[1fr_minmax(260px,560px)_1fr] sm:gap-4 sm:rounded-[24px] sm:px-4 sm:py-3 lg:bottom-[18px]">
@@ -40,8 +42,9 @@ export function MiniPlayer() {
           <button
             type="button"
             onClick={skipPrev}
+            disabled={!hasQueueNavigation}
             aria-label="Previous"
-            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent]"
+            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <SkipPrevIcon />
           </button>
@@ -55,8 +58,9 @@ export function MiniPlayer() {
           <button
             type="button"
             onClick={skipNext}
+            disabled={!hasQueueNavigation}
             aria-label="Next"
-            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent]"
+            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent] disabled:cursor-not-allowed disabled:opacity-40"
           >
             <SkipNextIcon />
           </button>
@@ -71,14 +75,33 @@ export function MiniPlayer() {
       </div>
 
       <div className="flex items-center justify-end gap-2">
-        <PlayIconButton
-          size="sm"
-          variant="light"
-          playing={isPlaying}
-          label="Toggle playback"
-          onClick={togglePlay}
-          className="sm:hidden"
-        />
+        <div className="flex items-center gap-1 sm:hidden">
+          <button
+            type="button"
+            onClick={skipPrev}
+            disabled={!hasQueueNavigation}
+            aria-label="Previous"
+            className="inline-flex size-10 items-center justify-center rounded-full bg-white/10 text-[var(--jb-text)] [-webkit-tap-highlight-color:transparent] disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <SkipPrevIcon />
+          </button>
+          <PlayIconButton
+            size="sm"
+            variant="light"
+            playing={isPlaying}
+            label="Toggle playback"
+            onClick={togglePlay}
+          />
+          <button
+            type="button"
+            onClick={skipNext}
+            disabled={!hasQueueNavigation}
+            aria-label="Next"
+            className="inline-flex size-10 items-center justify-center rounded-full bg-white/10 text-[var(--jb-text)] [-webkit-tap-highlight-color:transparent] disabled:cursor-not-allowed disabled:opacity-40"
+          >
+            <SkipNextIcon />
+          </button>
+        </div>
         <div className="hidden items-center gap-2.5 text-[var(--jb-muted)] sm:flex">
           <VolumeIcon />
           <div className="h-[5px] w-24 overflow-hidden rounded-full bg-white/15">
