@@ -4,13 +4,22 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { DiscoverMembersShelf } from "@/components/discover-members-shelf";
 import { SongDetailActions } from "@/components/song-detail-actions";
 import { SongPlayCount } from "@/components/song-play-count";
+import { SongShelf } from "@/components/song-shelf";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
 import { getAlbumForSong, getAlbumSongs } from "@/data/albums";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
+import {
+  getDiscoverMembers,
+  getDiscoverSongs,
+  getMoreFromAlbum,
+  getMoreFromArtist,
+  getSimilarSongs,
+} from "@/lib/music-discovery";
 
 import { buildShareMetadata } from "@/lib/site-metadata";
 
@@ -41,6 +50,13 @@ export default async function SongPage({ params }: SongPageProps) {
   const artistQueue = getSongsByAuthor(song.authorSlug);
   const parentAlbum = getAlbumForSong(song);
   const albumQueue = parentAlbum ? getAlbumSongs(parentAlbum) : artistQueue;
+  const moreFromArtist = getMoreFromArtist(song);
+  const moreFromAlbum = parentAlbum ? getMoreFromAlbum(song, albumQueue) : [];
+  const similarSongs =
+    getSimilarSongs(song).length > 0
+      ? getSimilarSongs(song)
+      : getDiscoverSongs([song.slug, ...moreFromArtist.map((entry) => entry.slug)], 6);
+  const discoverMembers = getDiscoverMembers(song.authorSlug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -136,6 +152,49 @@ export default async function SongPage({ params }: SongPageProps) {
             </pre>
           </section>
         ) : null}
+      </div>
+
+      {moreFromAlbum.length > 0 && parentAlbum ? (
+        <div className="mx-auto mt-6 max-w-lg">
+          <SongShelf
+            songs={moreFromAlbum}
+            title={`More from ${parentAlbum.title}`}
+            subtitle="Other tracks on this album"
+            viewAllHref={`/albums/${parentAlbum.slug}`}
+            viewAllLabel="View album"
+            compact
+          />
+        </div>
+      ) : null}
+
+      {moreFromArtist.length > 0 && author ? (
+        <div className="mx-auto mt-4 max-w-lg">
+          <SongShelf
+            songs={moreFromArtist}
+            title={`More from ${author.name}`}
+            subtitle="Keep listening to this cousin's catalog"
+            viewAllHref={`/members/${author.slug}`}
+            viewAllLabel="View artist"
+            compact
+          />
+        </div>
+      ) : null}
+
+      {similarSongs.length > 0 ? (
+        <div className="mx-auto mt-4 max-w-lg">
+          <SongShelf
+            songs={similarSongs}
+            title="Similar vibes"
+            subtitle="Songs from other family artists you might like"
+            viewAllHref="/songs"
+            viewAllLabel="Browse songs"
+            compact
+          />
+        </div>
+      ) : null}
+
+      <div className="mx-auto mt-4 max-w-lg">
+        <DiscoverMembersShelf members={discoverMembers} />
       </div>
     </main>
   );

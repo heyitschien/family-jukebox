@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
+import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
@@ -50,18 +51,25 @@ export function MiniPlayer() {
 
       {/* Mobile — stacked, full transport row */}
       <div className="flex flex-col gap-3 px-3.5 pb-3.5 pt-3 sm:hidden">
-        <Link href={`/songs/${currentSong.slug}`} className="flex min-w-0 items-center gap-3">
-          <CoverImage
-            src={currentSong.coverSrc}
-            alt=""
-            className="size-11 shrink-0 rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.35)] ring-1 ring-white/10"
-          />
+        <div className="flex min-w-0 items-center gap-3">
+          <Link href={`/songs/${currentSong.slug}`} className="shrink-0">
+            <CoverImage
+              src={currentSong.coverSrc}
+              alt=""
+              className="size-11 shrink-0 rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.35)] ring-1 ring-white/10"
+            />
+          </Link>
           <div className="min-w-0 flex-1">
-            <strong className="block truncate text-[15px] font-semibold leading-tight">
+            <Link href={`/songs/${currentSong.slug}`} className="block truncate text-[15px] font-semibold leading-tight">
               {currentSong.title}
-            </strong>
+            </Link>
             <span className="mt-0.5 block truncate text-[13px] text-[var(--jb-muted)]">
-              {author?.name ?? "Family"} · Cousin Radio
+              {author ? (
+                <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
+              ) : (
+                "Family"
+              )}
+              {" · Cousin Radio"}
             </span>
           </div>
           <div className="shrink-0 text-right text-[11px] tabular-nums text-[var(--jb-muted-2)]">
@@ -69,7 +77,7 @@ export function MiniPlayer() {
             <span className="mx-0.5 opacity-50">/</span>
             <span>{formatTime(duration)}</span>
           </div>
-        </Link>
+        </div>
 
         <PlayerTransportControls
           isPlaying={isPlaying}
@@ -86,15 +94,24 @@ export function MiniPlayer() {
 
       {/* Desktop — three-column bar */}
       <div className="hidden min-h-[74px] grid-cols-[1fr_minmax(260px,560px)_1fr] items-center gap-4 px-4 py-3 sm:grid">
-        <Link href={`/songs/${currentSong.slug}`} className="flex min-w-0 items-center gap-3">
-          <CoverImage src={currentSong.coverSrc} alt="" className="size-[54px] shrink-0 rounded-[14px]" />
+        <div className="flex min-w-0 items-center gap-3">
+          <Link href={`/songs/${currentSong.slug}`} className="shrink-0">
+            <CoverImage src={currentSong.coverSrc} alt="" className="size-[54px] shrink-0 rounded-[14px]" />
+          </Link>
           <div className="min-w-0">
-            <strong className="block truncate text-sm">{currentSong.title}</strong>
+            <Link href={`/songs/${currentSong.slug}`} className="block truncate text-sm font-semibold">
+              {currentSong.title}
+            </Link>
             <span className="text-[13px] text-[var(--jb-muted)]">
-              {author?.name ?? "Family"} · Cousin Radio
+              {author ? (
+                <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
+              ) : (
+                "Family"
+              )}
+              {" · Cousin Radio"}
             </span>
           </div>
-        </Link>
+        </div>
 
         <div className="grid gap-2">
           <PlayerTransportControls

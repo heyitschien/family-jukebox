@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 
+import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
@@ -92,8 +93,12 @@ export function AlbumCard({ album, className, size = "md", showKind = false }: A
           {album.title}
         </p>
         <p className="mt-0.5 truncate text-xs text-[var(--jb-muted)]">
-          {author?.name ?? "Family"} · {albumSongs.length}{" "}
-          {albumSongs.length === 1 ? "track" : "tracks"}
+          {author ? (
+            <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
+          ) : (
+            "Family"
+          )}{" "}
+          · {albumSongs.length} {albumSongs.length === 1 ? "track" : "tracks"}
           {showKind ? ` · ${getAlbumKindLabel(album)}` : ""}
         </p>
       </Link>

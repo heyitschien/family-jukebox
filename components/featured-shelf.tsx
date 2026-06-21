@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
@@ -49,7 +50,16 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
           {song.title}
         </h3>
         <p className="mt-1 line-clamp-2 min-h-[35px] text-xs leading-snug text-[var(--jb-muted)] sm:text-[13px]">
-          {song.subtitle ?? `${author?.name ?? "Family"} · family song`}
+          {song.subtitle ?? (
+            <>
+              {author ? (
+                <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
+              ) : (
+                "Family"
+              )}
+              {" · family song"}
+            </>
+          )}
         </p>
       </Link>
     </article>
