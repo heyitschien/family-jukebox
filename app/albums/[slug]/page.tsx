@@ -16,6 +16,7 @@ import {
   getAlbumSongs,
   getAlbumTrackCount,
 } from "@/data/albums";
+import { getSongsByAuthor, getSongsSimilarToCollection } from "@/data/songs";
 import { buildShareMetadata } from "@/lib/site-metadata";
 
 type AlbumPageProps = {
@@ -45,6 +46,13 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   const albumSongs = getAlbumSongs(album);
   const trackCount = getAlbumTrackCount(album);
   const relatedAlbums = getAlbumsByAuthor(album.authorSlug).filter((entry) => entry.slug !== album.slug);
+  const artistSongs = getSongsByAuthor(album.authorSlug);
+  const moreByArtist = artistSongs.filter((song) => !album.songSlugs.includes(song.slug)).slice(0, 5);
+  const similarSongs = getSongsSimilarToCollection(albumSongs, {
+    limit: 6,
+    excludeAuthorSlug: album.authorSlug,
+    excludeSongSlugs: album.songSlugs,
+  });
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -134,6 +142,31 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
               </li>
             ))}
           </ul>
+        </section>
+      ) : null}
+
+      {moreByArtist.length > 0 ? (
+        <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+          <h2 className="text-lg font-bold">More songs from {author?.name ?? "this artist"}</h2>
+          <div className="mt-3 grid gap-2">
+            {moreByArtist.map((song) => (
+              <SongRow key={song.slug} song={song} playlist={artistSongs} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {similarSongs.length > 0 ? (
+        <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+          <h2 className="text-lg font-bold">Keep listening</h2>
+          <p className="mt-1 text-sm text-[var(--jb-muted)]">
+            Similar tracks from other family artists so the listening never stops.
+          </p>
+          <div className="mt-3 grid gap-2">
+            {similarSongs.map((song) => (
+              <SongRow key={song.slug} song={song} playlist={similarSongs} />
+            ))}
+          </div>
         </section>
       ) : null}
 

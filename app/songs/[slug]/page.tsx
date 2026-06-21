@@ -5,11 +5,12 @@ import { ArrowLeft, CalendarDays } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
 import { SongDetailActions } from "@/components/song-detail-actions";
+import { SongRow } from "@/components/song-row";
 import { SongPlayCount } from "@/components/song-play-count";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
 import { getAlbumForSong, getAlbumSongs } from "@/data/albums";
-import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
+import { getSimilarSongs, getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
 
 import { buildShareMetadata } from "@/lib/site-metadata";
@@ -41,6 +42,11 @@ export default async function SongPage({ params }: SongPageProps) {
   const artistQueue = getSongsByAuthor(song.authorSlug);
   const parentAlbum = getAlbumForSong(song);
   const albumQueue = parentAlbum ? getAlbumSongs(parentAlbum) : artistQueue;
+  const moreFromArtist = artistQueue.filter((entry) => entry.slug !== song.slug).slice(0, 6);
+  const similarSongs = getSimilarSongs(song, {
+    limit: 6,
+    excludeAuthorSlug: song.authorSlug,
+  });
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -137,6 +143,41 @@ export default async function SongPage({ params }: SongPageProps) {
           </section>
         ) : null}
       </div>
+
+      {moreFromArtist.length > 0 ? (
+        <section className="mx-auto mt-6 max-w-lg rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+          <div className="mb-3 flex items-end justify-between gap-3">
+            <h2 className="text-lg font-bold">More from {author?.name ?? "this artist"}</h2>
+            {author ? (
+              <Link
+                href={`/members/${author.slug}`}
+                className="text-xs font-extrabold uppercase tracking-wide text-[var(--family-pink)] hover:underline"
+              >
+                View artist
+              </Link>
+            ) : null}
+          </div>
+          <div className="grid gap-2">
+            {moreFromArtist.map((related) => (
+              <SongRow key={related.slug} song={related} playlist={artistQueue} />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      {similarSongs.length > 0 ? (
+        <section className="mx-auto mt-4 max-w-lg rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+          <h2 className="text-lg font-bold">Similar songs to keep going</h2>
+          <p className="mt-1 text-sm text-[var(--jb-muted)]">
+            Shared vibes and tags from other family artists.
+          </p>
+          <div className="mt-3 grid gap-2">
+            {similarSongs.map((related) => (
+              <SongRow key={related.slug} song={related} playlist={similarSongs} />
+            ))}
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }

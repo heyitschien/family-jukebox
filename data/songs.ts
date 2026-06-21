@@ -178,6 +178,65 @@ export function getSongsByAuthor(authorSlug: string): Song[] {
   return songs.filter((song) => song.authorSlug === authorSlug);
 }
 
+function buildSongTagSet(seedSongs: Song[]): Set<string> {
+  const tags = new Set<string>();
+  for (const seed of seedSongs) {
+    for (const tag of seed.tags) {
+      tags.add(tag.toLowerCase());
+    }
+  }
+  return tags;
+}
+
+function countSharedTags(tagSet: Set<string>, candidate: Song): number {
+  return candidate.tags.reduce((count, tag) => {
+    return tagSet.has(tag.toLowerCase()) ? count + 1 : count;
+  }, 0);
+}
+
+type SimilarSongOptions = {
+  limit?: number;
+  excludeAuthorSlug?: string;
+  excludeSongSlugs?: Iterable<string>;
+};
+
+export function getSongsSimilarToCollection(
+  seedSongs: Song[],
+  { limit = 6, excludeAuthorSlug, excludeSongSlugs }: SimilarSongOptions = {},
+): Song[] {
+  if (seedSongs.length === 0) return [];
+  const tagSet = buildSongTagSet(seedSongs);
+  const blockedSlugs = new Set<string>(excludeSongSlugs ?? []);
+
+  return songs
+    .filter((candidate) => {
+      if (blockedSlugs.has(candidate.slug)) return false;
+      if (excludeAuthorSlug && candidate.authorSlug === excludeAuthorSlug) return false;
+      return true;
+    })
+    .map((candidate) => ({
+      song: candidate,
+      sharedTagCount: countSharedTags(tagSet, candidate),
+    }))
+    .filter((entry) => entry.sharedTagCount > 0)
+    .sort((a, b) => {
+      if (b.sharedTagCount !== a.sharedTagCount) return b.sharedTagCount - a.sharedTagCount;
+      if (b.song.featured !== a.song.featured) return Number(b.song.featured) - Number(a.song.featured);
+      const dateCmp = b.song.dateCreated.localeCompare(a.song.dateCreated);
+      if (dateCmp !== 0) return dateCmp;
+      return a.song.title.localeCompare(b.song.title);
+    })
+    .slice(0, limit)
+    .map((entry) => entry.song);
+}
+
+export function getSimilarSongs(song: Song, options: SimilarSongOptions = {}): Song[] {
+  return getSongsSimilarToCollection([song], {
+    ...options,
+    excludeSongSlugs: [song.slug, ...(options.excludeSongSlugs ?? [])],
+  });
+}
+
 export function getSongAuthor(song: Song): FamilyMember | undefined {
   return getMemberBySlug(song.authorSlug);
 }

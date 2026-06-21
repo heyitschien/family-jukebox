@@ -7,8 +7,7 @@ import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { Topbar } from "@/components/topbar";
 import { usePlayer } from "@/contexts/player-context";
-import { getAlbumSongs, type Album } from "@/data/albums";
-import { getAlbumAuthor } from "@/data/albums";
+import { getAlbumAuthor, getAlbumSongs, getAlbumsByAuthor, type Album } from "@/data/albums";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
 import { getAlbumHeroBadge, getSpotlightAlbumAuthorNames } from "@/lib/album-rotation";
 import { cn } from "@/lib/utils";
@@ -28,6 +27,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
     ),
   );
   const [isPaused, setIsPaused] = useState(false);
+  const [quickViewOpen, setQuickViewOpen] = useState(false);
   const touchStartX = useRef(0);
   const familyQueue = getFairRotationQueue(refreshSeed);
 
@@ -36,6 +36,9 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   const author = getAlbumAuthor(activeAlbum);
   const spotlightNames = getSpotlightAlbumAuthorNames();
   const heroBadge = getAlbumHeroBadge(activeAlbum, featuredAlbum);
+  const siblingAlbums = author
+    ? getAlbumsByAuthor(author.slug).filter((album) => album.slug !== activeAlbum.slug).slice(0, 3)
+    : [];
 
   const isAlbumPlaying =
     isPlaying &&
@@ -48,6 +51,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
     (index: number) => {
       if (albums.length === 0) return;
       const normalized = ((index % albums.length) + albums.length) % albums.length;
+      setQuickViewOpen(false);
       setActiveIndex(normalized);
     },
     [albums.length],
@@ -57,23 +61,50 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   const rotatePrev = useCallback(() => rotateTo(activeIndex - 1), [activeIndex, rotateTo]);
 
   useEffect(() => {
-    if (isPaused || albums.length <= 1) return;
+    if (isPaused || quickViewOpen || albums.length <= 1) return;
     const timer = setInterval(rotateNext, 6000);
     return () => clearInterval(timer);
-  }, [isPaused, albums.length, rotateNext]);
+  }, [isPaused, quickViewOpen, albums.length, rotateNext]);
 
-  const playActiveAlbum = useCallback(() => {
+  useEffect(() => {
+    if (!quickViewOpen) return;
+    const previousOverflow = document.body.style.overflow;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setQuickViewOpen(false);
+      }
+    };
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", closeOnEscape);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+    };
+  }, [quickViewOpen]);
+
+  const playActiveAlbum = () => {
     if (activeSongs.length === 0) return;
     playQueue(activeSongs, 0);
-  }, [activeSongs, playQueue]);
+  };
 
-  const handlePlayToggle = useCallback(() => {
+  const handlePlayToggle = () => {
     if (isAlbumPlaying) {
       togglePlay();
       return;
     }
     playActiveAlbum();
-  }, [isAlbumPlaying, playActiveAlbum, togglePlay]);
+  };
+
+  const handleCardActivate = useCallback(
+    (index: number) => {
+      if (index !== activeIndex) {
+        rotateTo(index);
+        return;
+      }
+      setQuickViewOpen(true);
+    },
+    [activeIndex, rotateTo],
+  );
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0]?.clientX ?? 0;
@@ -133,10 +164,17 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               const authorName = getAlbumAuthor(album)?.name ?? "Family";
 
               return (
-                <button
+                <div
                   key={album.slug}
-                  type="button"
-                  onClick={() => rotateTo(i)}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleCardActivate(i)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      handleCardActivate(i);
+                    }
+                  }}
                   className="absolute top-1/2 left-1/2 cursor-pointer border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent]"
                   style={{
                     width: `${coverSize}px`,
@@ -164,6 +202,22 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                     }}
                   >
                     <CoverImage src={album.coverSrc} alt="" className="size-full" />
+                    {isFront ? (
+                      <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
+                        <div
+                          className="pointer-events-auto"
+                          onClick={(event) => event.stopPropagation()}
+                        >
+                          <PlayIconButton
+                            size="lg"
+                            playing={isAlbumPlaying}
+                            label={isAlbumPlaying ? "Pause album" : `Play ${album.title}`}
+                            onClick={handlePlayToggle}
+                            className="shadow-[0_16px_40px_rgba(0,0,0,0.45)] ring-2 ring-black/20"
+                          />
+                        </div>
+                      </div>
+                    ) : null}
                     <div
                       className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8"
                       style={{ opacity: isFront ? 1 : 0 }}
@@ -171,7 +225,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                       <p className="truncate text-xs font-bold text-white">{authorName}</p>
                     </div>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
@@ -205,6 +259,14 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
           <p className="mt-3 text-lg font-bold" style={{ color: activeAlbum.accentColor }}>
             {activeAlbum.title}
           </p>
+          {author ? (
+            <Link
+              href={`/members/${author.slug}`}
+              className="mt-1 inline-block text-sm font-bold text-[var(--jb-muted)] hover:text-white hover:underline"
+            >
+              by {author.name}
+            </Link>
+          ) : null}
           <p className="mt-1 text-sm text-[var(--jb-muted)]">
             {activeAlbum.subtitle ?? `${activeSongs.length} songs`}
           </p>
@@ -246,6 +308,119 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
           </Link>
         </div>
       </div>
+
+      {quickViewOpen ? (
+        <div
+          className="fixed inset-0 z-[70] flex items-end justify-center bg-black/65 p-3 sm:items-center sm:p-6"
+          role="dialog"
+          aria-modal
+          aria-label={`${activeAlbum.title} quick view`}
+          onClick={() => setQuickViewOpen(false)}
+        >
+          <div
+            className="max-h-[88vh] w-full max-w-3xl overflow-y-auto rounded-[26px] border border-white/[0.1] bg-[#0b1016] p-4 shadow-[0_30px_80px_rgba(0,0,0,0.55)] sm:p-6"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs font-extrabold uppercase tracking-wide text-[var(--jb-muted)]">
+                  Album spotlight
+                </p>
+                <h2 className="mt-1 text-2xl font-extrabold tracking-tight sm:text-3xl">{activeAlbum.title}</h2>
+                {author ? (
+                  <Link
+                    href={`/members/${author.slug}`}
+                    className="mt-1 inline-block text-sm font-bold text-[var(--family-pink)] hover:underline"
+                    onClick={() => setQuickViewOpen(false)}
+                  >
+                    {author.name}
+                  </Link>
+                ) : null}
+              </div>
+              <button
+                type="button"
+                onClick={() => setQuickViewOpen(false)}
+                className="rounded-full border border-white/10 px-3 py-1.5 text-xs font-extrabold text-[var(--jb-muted)] hover:text-white"
+              >
+                Close
+              </button>
+            </div>
+
+            <div className="mt-4 grid gap-4 sm:grid-cols-[180px_1fr] sm:items-start">
+              <CoverImage
+                src={activeAlbum.coverSrc}
+                alt={`${activeAlbum.title} cover`}
+                className="mx-auto aspect-square w-full max-w-[220px] rounded-2xl shadow-[0_20px_60px_rgba(0,0,0,0.5)]"
+              />
+              <div className="space-y-3">
+                <div className="flex flex-wrap items-center gap-2.5">
+                  <PlayIconButton
+                    size="xl"
+                    playing={isAlbumPlaying}
+                    label={isAlbumPlaying ? "Pause album" : `Play ${activeAlbum.title}`}
+                    onClick={handlePlayToggle}
+                  />
+                  <Link
+                    href={`/albums/${activeAlbum.slug}`}
+                    className="inline-flex min-h-11 items-center rounded-full bg-white px-4 py-2.5 text-sm font-black text-[#050608]"
+                    onClick={() => setQuickViewOpen(false)}
+                  >
+                    Open album page
+                  </Link>
+                  {author ? (
+                    <Link
+                      href={`/members/${author.slug}`}
+                      className="inline-flex min-h-11 items-center rounded-full border border-white/15 bg-white/10 px-4 py-2.5 text-sm font-bold"
+                      onClick={() => setQuickViewOpen(false)}
+                    >
+                      Open artist
+                    </Link>
+                  ) : null}
+                </div>
+                <p className="text-sm text-[var(--jb-muted)]">
+                  Jump into tracks directly, then keep moving to the artist page or related albums.
+                </p>
+                <div className="space-y-2">
+                  {activeSongs.slice(0, 6).map((song, i) => (
+                    <button
+                      key={song.slug}
+                      type="button"
+                      onClick={() => {
+                        playQueue(activeSongs, i);
+                        setQuickViewOpen(false);
+                      }}
+                      className="flex w-full items-center justify-between gap-3 rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 text-left hover:bg-white/[0.08]"
+                    >
+                      <span className="truncate text-sm font-bold">{song.title}</span>
+                      <span className="shrink-0 text-[11px] font-extrabold uppercase tracking-wide text-[var(--jb-muted)]">
+                        Play
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {siblingAlbums.length > 0 ? (
+              <div className="mt-5 border-t border-white/[0.08] pt-4">
+                <p className="text-sm font-bold text-[var(--jb-muted)]">More from this artist</p>
+                <div className="mt-2 grid gap-2 sm:grid-cols-3">
+                  {siblingAlbums.map((related) => (
+                    <Link
+                      key={related.slug}
+                      href={`/albums/${related.slug}`}
+                      className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2 text-sm font-bold hover:bg-white/[0.08]"
+                      onClick={() => setQuickViewOpen(false)}
+                    >
+                      {related.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }

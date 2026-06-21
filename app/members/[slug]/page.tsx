@@ -38,6 +38,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
   const memberSongs = getSongsByAuthor(member.slug);
   const { series, discography } = groupAlbumsByKind(getAlbumsByAuthor(member.slug));
   const heroCover = memberSongs[0]?.coverSrc;
+  const otherMembers = members.filter((entry) => entry.slug !== member.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -120,6 +121,23 @@ export default async function MemberPage({ params }: MemberPageProps) {
         <h2 className="text-lg font-bold">About {member.name}</h2>
         <p className="mt-3 leading-relaxed text-[var(--jb-muted)]">{member.description}</p>
       </section>
+
+      {otherMembers.length > 0 ? (
+        <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+          <h2 className="text-lg font-bold">Keep exploring artists</h2>
+          <div className="mt-3 grid gap-2 sm:grid-cols-2">
+            {otherMembers.map((other) => (
+              <Link
+                key={other.slug}
+                href={`/members/${other.slug}`}
+                className="rounded-xl border border-white/[0.08] bg-white/[0.04] px-3 py-2.5 text-sm font-bold hover:bg-white/[0.08]"
+              >
+                {other.name}
+              </Link>
+            ))}
+          </div>
+        </section>
+      ) : null}
     </main>
   );
 }
