@@ -14,10 +14,7 @@ type AlbumHeroShowcaseProps = {
   bundles: AlbumBundle[];
 };
 
-function ActiveAlbumPanel({ bundle }: { bundle: AlbumBundle }) {
-  const leadSong = bundle.songs[0];
-  if (!leadSong) return null;
-
+function ActiveAlbumPanel({ bundle, leadSong }: { bundle: AlbumBundle; leadSong: Song }) {
   const { playing, toggle } = useSongPlayback(leadSong, { playlist: bundle.songs });
 
   return (
@@ -89,7 +86,8 @@ export function AlbumHeroShowcase({ bundles }: AlbumHeroShowcaseProps) {
   }, [activeIndex, bundles]);
 
   if (!activeBundle) return null;
-  if (activeBundle.songs.length === 0) return null;
+  const leadSong = activeBundle.songs[0];
+  if (!leadSong) return null;
 
   return (
     <section className="relative -mx-3 overflow-hidden rounded-b-[34px] border border-white/[0.08] bg-[rgba(11,15,20,0.75)] p-4 shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:mx-0 sm:rounded-[32px] sm:p-6">
@@ -133,7 +131,7 @@ export function AlbumHeroShowcase({ bundles }: AlbumHeroShowcaseProps) {
             })}
           </div>
 
-          <ActiveAlbumPanel bundle={activeBundle} />
+          <ActiveAlbumPanel bundle={activeBundle} leadSong={leadSong} />
         </div>
 
         <div className="grid gap-4">

@@ -6,6 +6,7 @@ import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import type { AlbumBundle } from "@/data/albums";
+import type { Song } from "@/data/songs";
 import { cn } from "@/lib/utils";
 
 type AlbumShowcaseGridProps = {
@@ -15,10 +16,7 @@ type AlbumShowcaseGridProps = {
   className?: string;
 };
 
-function AlbumShowcaseCard({ bundle }: { bundle: AlbumBundle }) {
-  const leadSong = bundle.songs[0];
-  if (!leadSong) return null;
-
+function AlbumShowcaseCard({ bundle, leadSong }: { bundle: AlbumBundle; leadSong: Song }) {
   const { playing, toggle, isCurrent } = useSongPlayback(leadSong, { playlist: bundle.songs });
 
   return (
@@ -94,9 +92,11 @@ export function AlbumShowcaseGrid({
         <p className="text-sm font-bold text-[var(--jb-muted)]">{description}</p>
       </div>
       <div className="grid grid-cols-2 gap-2.5 sm:gap-3.5 md:grid-cols-3 xl:grid-cols-5">
-        {bundles.map((bundle) => (
-          <AlbumShowcaseCard key={bundle.album.slug} bundle={bundle} />
-        ))}
+        {bundles.map((bundle) => {
+          const leadSong = bundle.songs[0];
+          if (!leadSong) return null;
+          return <AlbumShowcaseCard key={bundle.album.slug} bundle={bundle} leadSong={leadSong} />;
+        })}
       </div>
     </section>
   );
