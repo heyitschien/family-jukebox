@@ -7,6 +7,7 @@ import { CoverImage } from "@/components/cover-image";
 import { SongDetailActions } from "@/components/song-detail-actions";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
+import { getAlbumForSong } from "@/data/albums";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
 
@@ -37,6 +38,7 @@ export default async function SongPage({ params }: SongPageProps) {
 
   const author = getSongAuthor(song);
   const artistQueue = getSongsByAuthor(song.authorSlug);
+  const album = getAlbumForSong(song.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -90,6 +92,21 @@ export default async function SongPage({ params }: SongPageProps) {
             </span>
           ))}
         </div>
+
+        {album ? (
+          <div className="mt-6 rounded-2xl border border-white/[0.09] bg-white/[0.05] p-4 text-left">
+            <p className="text-xs font-extrabold uppercase tracking-wider text-[var(--jb-muted)]">
+              From album
+            </p>
+            <Link
+              href={`/albums/${album.slug}`}
+              className="mt-1 inline-block text-base font-extrabold hover:underline"
+            >
+              {album.title}
+            </Link>
+            <p className="mt-1 text-sm text-[var(--jb-muted)]">{album.subtitle}</p>
+          </div>
+        ) : null}
       </section>
 
       {song.videoSrc ? (
