@@ -24,7 +24,7 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
+        "flex min-w-0 items-center gap-3 overflow-hidden rounded-2xl border p-2 transition hover:bg-white/[0.08]",
         isCurrent
           ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
           : "border-white/[0.045] bg-white/[0.045]",

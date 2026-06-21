@@ -21,7 +21,7 @@ import {
   getSimilarSongs,
 } from "@/lib/music-discovery";
 
-import { buildCoverShareImage, buildShareMetadata } from "@/lib/site-metadata";
+import { buildShareMetadata } from "@/lib/site-metadata";
 
 type SongPageProps = {
   params: Promise<{ slug: string }>;
@@ -42,7 +42,12 @@ export async function generateMetadata({ params }: SongPageProps): Promise<Metad
       song.subtitle ??
       (author ? `A family song by ${author.name} — tap to listen on Family Jukebox.` : "A family song worth replaying."),
     path: `/songs/${song.slug}`,
-    image: buildCoverShareImage(song.title, song.coverSrc),
+    image: {
+      url: `/songs/${song.slug}/opengraph-image`,
+      width: 1200,
+      height: 630,
+      alt: `${song.title} preview card`,
+    },
   });
 }
 

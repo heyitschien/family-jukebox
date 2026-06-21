@@ -23,7 +23,7 @@ export function DiscoverMembersShelf({
         <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">{subtitle}</p>
       </div>
 
-      <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none">
+      <div className="flex gap-3 overflow-x-auto overscroll-x-contain pb-1 scrollbar-none">
         {memberList.map((member) => {
           const songs = getSongsByAuthor(member.slug);
           const cover = songs[0]?.coverSrc;

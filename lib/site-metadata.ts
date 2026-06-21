@@ -47,6 +47,7 @@ export function buildShareMetadata(overrides?: {
   const description = overrides?.description ?? SITE_DESCRIPTION;
   const pageUrl = overrides?.path ? `${SITE_URL}${overrides.path}` : SITE_URL;
   const image = overrides?.image ?? defaultShareImage;
+  const imageUrl = image.url.startsWith("http") ? image.url : `${SITE_URL}${image.url}`;
 
   return {
     title,
@@ -58,13 +59,13 @@ export function buildShareMetadata(overrides?: {
       type: "website",
       siteName: SITE_NAME,
       url: pageUrl,
-      images: [image],
+      images: [{ ...image, url: imageUrl }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [image.url],
+      images: [imageUrl],
     },
   };
 }

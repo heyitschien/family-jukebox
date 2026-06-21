@@ -97,7 +97,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
         ) : null}
       </div>
 
-      <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
+      <div className="flex gap-2 overflow-x-auto overscroll-x-contain pb-1 scrollbar-none">
         {chips.map((chip) => {
           const isAll = chip === "All";
           const active = isAll ? activeTag === null : activeTag === chip;

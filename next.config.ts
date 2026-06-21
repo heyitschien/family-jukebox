@@ -1,6 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  /**
+   * Keep metadata in <head> for all user-agents.
+   * This avoids missing link previews in HTML-limited crawlers/messaging apps.
+   */
+  htmlLimitedBots: /.*/,
   async headers() {
     return [
       {

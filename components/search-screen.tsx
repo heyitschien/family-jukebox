@@ -101,7 +101,7 @@ export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
         {filteredAlbums.length > 0 ? (
           <div className="mb-6">
             <h2 className="mb-3 text-lg font-bold">Albums</h2>
-            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+            <div className="flex gap-4 overflow-x-auto overscroll-x-contain pb-2 scrollbar-none">
               {filteredAlbums.map((album) => (
                 <AlbumCard key={album.slug} album={album} />
               ))}

@@ -38,7 +38,7 @@ export function AlbumShelf({
         ) : null}
       </div>
 
-      <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none">
+      <div className="flex gap-4 overflow-x-auto overscroll-x-contain pb-2 snap-x snap-mandatory scrollbar-none">
         {albums.map((album) => (
           <AlbumCard key={album.slug} album={album} className="snap-start" />
         ))}
@@ -51,7 +51,7 @@ export function AlbumShelfCompact({ albums }: { albums: Album[] }) {
   const { playQueue } = usePlayer();
 
   return (
-    <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none">
+    <div className="flex gap-3 overflow-x-auto overscroll-x-contain pb-1 scrollbar-none">
       {albums.map((album) => {
         const albumSongs = getAlbumSongs(album);
         return (
