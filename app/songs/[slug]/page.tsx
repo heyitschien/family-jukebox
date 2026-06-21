@@ -115,6 +115,9 @@ export default async function SongPage({ params }: SongPageProps) {
         {song.lyrics ? (
           <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-5">
             <h2 className="text-lg font-bold">Lyrics</h2>
+            <p className="mt-1 text-xs text-[var(--jb-muted)]">
+              Transcribed from the recording — close to the song, but not always word-perfect.
+            </p>
             <pre className="mt-3 whitespace-pre-wrap font-sans text-sm leading-relaxed text-[var(--jb-muted)]">
               {song.lyrics}
             </pre>

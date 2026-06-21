@@ -1,4 +1,5 @@
 import { getMemberBySlug, type FamilyMember } from "@/data/members";
+import { songLyrics } from "@/data/lyrics";
 
 export type Song = {
   slug: string;
@@ -27,6 +28,7 @@ export const songs: Song[] = [
     coverSrc: "/assets/ocean/gravity-shift.jpg",
     prompt: "Make a fun song about gravity doing something unexpected.",
     story: "Ocean's adventure anthem from family music day — made together with Gemini.",
+    lyrics: songLyrics["gravity-shift"],
     tags: ["adventure", "space", "ocean"],
   },
   {
@@ -38,6 +40,7 @@ export const songs: Song[] = [
     audioSrc: "/assets/ocean/mountains-to-the-shore.mp3",
     coverSrc: "/assets/ocean/mountains-to-the-shore.jpg",
     story: "Another Ocean original — nature, journey, and cousin-road-trip energy.",
+    lyrics: songLyrics["mountains-to-the-shore"],
     tags: ["nature", "journey", "ocean"],
   },
   {
@@ -49,6 +52,7 @@ export const songs: Song[] = [
     audioSrc: "/assets/marceline/dash-and-go.mp3",
     coverSrc: "/assets/marceline/dash-and-go.jpg",
     story: "Marceline's silly sprint song — made during a family hangout after games and music together.",
+    lyrics: songLyrics["dash-and-go"],
     tags: ["silly", "dance", "energy", "marceline"],
   },
   {
@@ -59,6 +63,7 @@ export const songs: Song[] = [
     dateCreated: "2026-06-19",
     audioSrc: "/assets/eliana/pink-glasses-everywhere.mp3",
     coverSrc: "/assets/eliana/pink-glasses-everywhere.jpg",
+    lyrics: songLyrics["pink-glasses-everywhere"],
     tags: ["silly", "colorful", "eliana"],
   },
   {
@@ -69,6 +74,7 @@ export const songs: Song[] = [
     dateCreated: "2026-06-19",
     audioSrc: "/assets/solene/foxes-of-the-garden.mp3",
     coverSrc: "/assets/solene/foxes-of-the-garden.jpg",
+    lyrics: songLyrics["foxes-of-the-garden"],
     tags: ["animals", "garden", "story", "solene"],
   },
   {
@@ -79,6 +85,7 @@ export const songs: Song[] = [
     dateCreated: "2026-06-19",
     audioSrc: "/assets/solene/solenes-painted-trail.mp3",
     coverSrc: "/assets/solene/solene-s-painted-trail.jpg",
+    lyrics: songLyrics["solene-s-painted-trail"],
     tags: ["art", "color", "solene"],
   },
   {
@@ -90,6 +97,7 @@ export const songs: Song[] = [
     audioSrc: "/assets/tio-chien/pixels-into-magic.mp3",
     coverSrc: "/assets/tio-chien/pixels-into-magic.jpg",
     story: "Tio Chien's tech-meets-magic song from family music day with the cousins.",
+    lyrics: songLyrics["pixels-into-magic"],
     tags: ["tech", "magic", "creative", "tio-chien"],
   },
   {
@@ -101,6 +109,7 @@ export const songs: Song[] = [
     audioSrc: "/assets/tio-chien/crayon-planets.mp3",
     coverSrc: "/assets/tio-chien/crayon-planets.jpg",
     story: "Tio Chien's crayon-and-cosmos song — art supplies meet outer space on family music day.",
+    lyrics: songLyrics["crayon-planets"],
     tags: ["art", "space", "creative", "tio-chien"],
   },
 ];

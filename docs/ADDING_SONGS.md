@@ -79,6 +79,17 @@ Only needed for a **new** family member:
 },
 ```
 
+## Optional: transcribe lyrics
+
+After adding audio, run (one-time setup: `python3 -m venv .venv-transcribe && pip install faster-whisper`):
+
+```bash
+. .venv-transcribe/bin/activate
+python3 scripts/transcribe-songs.py
+```
+
+Then wire lyrics in `data/songs.ts` via `songLyrics["your-song-slug"]`.
+
 ## Tips
 
 - **Search** — site searches by name, age (`6`, `age 6`), tags, and titles
