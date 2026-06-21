@@ -5,6 +5,7 @@ import { ArrowLeft, CalendarDays } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
 import { SongDetailActions } from "@/components/song-detail-actions";
+import { SongPlayCount } from "@/components/song-play-count";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
@@ -77,6 +78,7 @@ export default async function SongPage({ params }: SongPageProps) {
         </div>
 
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--jb-muted)]">
+          <SongPlayCount songSlug={song.slug} />
           <span className="inline-flex items-center gap-1">
             <CalendarDays className="size-3.5" />
             {song.dateCreated}

@@ -10,6 +10,7 @@ import {
   getRotatedFeaturedShelf,
   getSpotlightSongPerMember,
 } from "../lib/featured-rotation";
+import { parsePlayEventBody } from "../lib/security/api";
 
 describe("jukebox catalog", () => {
   it("has songs with playable assets", () => {
@@ -60,5 +61,22 @@ describe("featured rotation", () => {
   it("creates bounded refresh seeds", () => {
     const seed = createRefreshSeed();
     assert.ok(seed >= 0 && seed < 10_000, "refresh seed should stay in expected range");
+  });
+});
+
+describe("play tracking validation", () => {
+  it("accepts valid play payloads", () => {
+    const result = parsePlayEventBody({
+      songSlug: songs[0]?.slug,
+      event: "start",
+      source: "hero",
+    });
+    assert.equal(result.ok, true);
+  });
+
+  it("rejects unknown slugs and malformed events", () => {
+    assert.equal(parsePlayEventBody({ songSlug: "", event: "start" }).ok, false);
+    assert.equal(parsePlayEventBody({ songSlug: "nope", event: "start" }).ok, true);
+    assert.equal(parsePlayEventBody({ songSlug: songs[0]?.slug, event: "hack" }).ok, false);
   });
 });

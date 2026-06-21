@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { CoverImage } from "@/components/cover-image";
+import { JukeboxStatsCard } from "@/components/jukebox-stats-card";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -142,6 +143,7 @@ export function RecentQueue({ songs, familyQueue }: RecentQueueProps) {
             >
               Play family mix
             </button>
+            <JukeboxStatsCard />
             <Link
               href="/family"
               className="mt-3 inline-block text-sm font-bold text-family-glow hover:underline"
