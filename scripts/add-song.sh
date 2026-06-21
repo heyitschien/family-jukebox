@@ -49,7 +49,7 @@ echo "==> 3/3 Checklist — finish these, then push"
 echo ""
 cat <<EOF
 [ ] data/songs.ts — add song entry (include lyrics: songLyrics["$SLUG"])
-[ ] data/albums.ts — if part of a growing series, append "$SLUG" to SERIES_ALBUMS songSlugs
+[ ] data/albums.ts — if part of a growing series, append "$SLUG" to SERIES_ALBUM_DEFS songSlugs
 [ ] npm run ci
 [ ] git add public/assets/$AUTHOR/${SLUG}.* data/songs.ts data/lyrics.ts scripts/transcripts.json
 [ ] git commit && git push origin main  (CI + Vercel deploy automatically)

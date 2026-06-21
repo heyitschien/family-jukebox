@@ -1,6 +1,13 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
+import {
+  albums,
+  getAlbumForSong,
+  getPrimaryAlbums,
+  getSongAlbumAssignmentMap,
+  getUnassignedSongSlugs,
+} from "../data/albums";
 import { members } from "../data/members";
 import { songs } from "../data/songs";
 import {
@@ -10,6 +17,11 @@ import {
   getRotatedFeaturedShelf,
   getSpotlightSongPerMember,
 } from "../lib/featured-rotation";
+import {
+  getHeroFeaturedAlbum,
+  getRotatedAlbumCarousel,
+  getSpotlightAlbumPerMember,
+} from "../lib/album-rotation";
 import { parsePlayEventBody } from "../lib/security/api";
 
 describe("jukebox catalog", () => {
@@ -26,6 +38,67 @@ describe("jukebox catalog", () => {
         `${song.slug} authorSlug should match a family member`,
       );
     }
+  });
+});
+
+describe("album catalog", () => {
+  it("assigns each song to at most one album", () => {
+    const assignment = getSongAlbumAssignmentMap();
+    assert.equal(getUnassignedSongSlugs().length, 0, "every song should belong to an album");
+
+    for (const album of albums) {
+      for (const slug of album.songSlugs) {
+        assert.equal(
+          assignment.get(slug),
+          album.slug,
+          `${slug} should only map to ${album.slug}`,
+        );
+      }
+    }
+  });
+
+  it("exposes one primary album per active artist for the carousel", () => {
+    const primary = getPrimaryAlbums();
+    const membersWithSongs = members.filter((member) =>
+      songs.some((song) => song.authorSlug === member.slug),
+    );
+
+    assert.equal(
+      primary.length,
+      membersWithSongs.length,
+      "carousel should have one primary album per artist with songs",
+    );
+
+    const slugs = primary.map((album) => album.slug);
+    assert.equal(new Set(slugs).size, slugs.length, "carousel albums should not duplicate");
+  });
+
+  it("keeps carousel length stable and duplicate-free", () => {
+    const carousel = getRotatedAlbumCarousel(42);
+    const slugs = carousel.map((album) => album.slug);
+    assert.equal(new Set(slugs).size, slugs.length, "carousel should not repeat albums");
+    assert.equal(carousel.length, getPrimaryAlbums().length);
+  });
+
+  it("prefers series albums when resolving a song parent album", () => {
+    const miracle = songs.find((song) => song.slug === "miracle-in-the-sand");
+    assert.ok(miracle, "miracle-in-the-sand should exist");
+    assert.equal(getAlbumForSong(miracle).slug, "miracle-in-the-sand-album");
+  });
+});
+
+describe("album rotation", () => {
+  it("returns a hero album from the primary catalog", () => {
+    const hero = getHeroFeaturedAlbum(7);
+    const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
+    assert.ok(primarySlugs.has(hero.slug), "hero album should be a primary album");
+  });
+
+  it("aligns spotlight albums with primary carousel picks", () => {
+    assert.deepEqual(
+      getSpotlightAlbumPerMember().map((album) => album.slug),
+      getPrimaryAlbums().map((album) => album.slug),
+    );
   });
 });
 

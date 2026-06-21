@@ -1,10 +1,13 @@
-import { albums, type Album } from "@/data/albums";
+import {
+  getPrimaryAlbums,
+  type Album,
+} from "@/data/albums";
 import { members } from "@/data/members";
 import { songs } from "@/data/songs";
 import { createRefreshSeed, getDayIndex } from "@/lib/featured-rotation";
 
 function getFeaturedAlbums(): Album[] {
-  return albums.filter((album) => album.featured);
+  return getPrimaryAlbums().filter((album) => album.featured);
 }
 
 function rotateArray<T>(items: T[], offset: number): T[] {
@@ -13,20 +16,12 @@ function rotateArray<T>(items: T[], offset: number): T[] {
   return [...items.slice(normalized), ...items.slice(0, normalized)];
 }
 
-/** One spotlight album per family member — rotates daily through their catalog. */
+/** One primary album per family member — same set as the 3D carousel. */
 export function getSpotlightAlbumPerMember(): Album[] {
-  const day = getDayIndex();
-
-  return members
-    .map((member) => {
-      const memberAlbums = albums.filter((album) => album.authorSlug === member.slug);
-      if (memberAlbums.length === 0) return undefined;
-      return memberAlbums[day % memberAlbums.length];
-    })
-    .filter((album): album is Album => album !== undefined);
+  return getPrimaryAlbums();
 }
 
-/** Hero spotlight album — featured albums first, then daily rotation. */
+/** Hero spotlight album — featured releases first, then daily rotation across primary albums. */
 export function getHeroFeaturedAlbum(refreshSeed = 0): Album {
   const featured = getFeaturedAlbums();
   if (featured.length > 0) {
@@ -34,28 +29,33 @@ export function getHeroFeaturedAlbum(refreshSeed = 0): Album {
     return featured[index] ?? featured[0] ?? buildFallbackAlbum();
   }
 
-  const spotlight = getSpotlightAlbumPerMember();
-  if (spotlight.length === 0) return albums[0] ?? buildFallbackAlbum();
-  const index = (getDayIndex() + refreshSeed) % spotlight.length;
-  return spotlight[index] ?? albums[0] ?? buildFallbackAlbum();
+  const primary = getPrimaryAlbums();
+  if (primary.length === 0) return buildFallbackAlbum();
+  const index = (getDayIndex() + refreshSeed) % primary.length;
+  return primary[index] ?? primary[0] ?? buildFallbackAlbum();
 }
 
-/** Carousel order: featured albums pinned first, then spotlight, then the rest. */
+/** 3D carousel — one primary album per artist, no duplicates. */
 export function getRotatedAlbumCarousel(refreshSeed = 0): Album[] {
+  const primary = getPrimaryAlbums();
+  if (primary.length === 0) return [];
+
   const featured = getFeaturedAlbums();
   const featuredSlugs = new Set(featured.map((album) => album.slug));
+  const hero = getHeroFeaturedAlbum(refreshSeed);
 
-  const spotlight = getSpotlightAlbumPerMember().filter((album) => !featuredSlugs.has(album.slug));
-  const spotlightSlugs = new Set([...featuredSlugs, ...spotlight.map((album) => album.slug)]);
-  const rest = albums.filter((album) => !spotlightSlugs.has(album.slug));
+  const rest = primary.filter((album) => album.slug !== hero.slug);
+  const rotatedRest = rotateArray(rest, getDayIndex() + refreshSeed);
 
-  const rotatedSpotlight = rotateArray(spotlight, getDayIndex() + refreshSeed);
-  const rotatedRest = rotateArray(rest, refreshSeed);
-  return [...featured, ...rotatedSpotlight, ...rotatedRest];
+  if (featuredSlugs.has(hero.slug)) {
+    return [hero, ...rotatedRest];
+  }
+
+  return rotateArray(primary, getDayIndex() + refreshSeed);
 }
 
 export function getSpotlightAlbumAuthorNames(): string {
-  return getSpotlightAlbumPerMember()
+  return getPrimaryAlbums()
     .map((album) => members.find((m) => m.slug === album.authorSlug)?.name)
     .filter(Boolean)
     .join(", ");
@@ -65,6 +65,7 @@ function buildFallbackAlbum(): Album {
   const firstSong = songs[0];
   return {
     slug: "family-mix",
+    kind: "discography",
     title: "Family Mix",
     subtitle: "All our songs",
     authorSlug: firstSong?.authorSlug ?? "ocean",

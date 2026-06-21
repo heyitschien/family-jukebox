@@ -29,7 +29,7 @@ export default function HomePage() {
         featuredAlbum={featuredAlbum}
         refreshSeed={refreshSeed}
       />
-      <AlbumShelf albums={carouselAlbums} />
+      <AlbumShelf albums={carouselAlbums} subtitle="One album per family member — tap to explore or play" />
       <FeaturedShelf songs={shelfSongs} tags={getAllTags()} />
       <RecentQueue songs={shelfSongs} familyQueue={familyQueue} />
     </main>

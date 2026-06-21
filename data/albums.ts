@@ -1,8 +1,11 @@
 import { getMemberBySlug, members, type FamilyMember } from "@/data/members";
-import { getSongBySlug, getSongsByAuthor, type Song } from "@/data/songs";
+import { getSongBySlug, getSongsByAuthor, songs, type Song } from "@/data/songs";
+
+export type AlbumKind = "series" | "discography";
 
 export type Album = {
   slug: string;
+  kind: AlbumKind;
   title: string;
   subtitle?: string;
   authorSlug: string;
@@ -33,8 +36,10 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   evelyn: "Evelyn",
 };
 
-/** Ongoing / themed albums — add song slugs here as new singles drop. */
-const SERIES_ALBUMS: Album[] = [
+/** Manual config for growing / themed albums — assign song slugs here as singles drop. */
+type SeriesAlbumDef = Omit<Album, "kind"> & { kind?: never };
+
+const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   {
     slug: "gold-in-the-tile-album",
     title: "Evelyn",
@@ -62,21 +67,39 @@ const SERIES_ALBUMS: Album[] = [
   },
 ];
 
-const SERIES_ALBUM_SLUGS = new Set(SERIES_ALBUMS.map((album) => album.slug));
-
-function buildCreatorAlbum(member: FamilyMember, memberSongs: Song[]): Album | undefined {
-  if (memberSongs.length === 0) return undefined;
-
-  const ordered = [...memberSongs].sort((a, b) => {
+function sortSongsByTrackOrder(items: Song[]): Song[] {
+  return [...items].sort((a, b) => {
     const dateCmp = a.dateCreated.localeCompare(b.dateCreated);
     return dateCmp !== 0 ? dateCmp : a.title.localeCompare(b.title);
   });
+}
 
+function buildSeriesAlbums(): Album[] {
+  return SERIES_ALBUM_DEFS.map((def) => ({ ...def, kind: "series" as const }));
+}
+
+function getSeriesSongSlugs(): Set<string> {
+  const slugs = new Set<string>();
+  for (const def of SERIES_ALBUM_DEFS) {
+    for (const slug of def.songSlugs) {
+      slugs.add(slug);
+    }
+  }
+  return slugs;
+}
+
+function buildDiscographyAlbum(member: FamilyMember, memberSongs: Song[]): Album | undefined {
+  const seriesSlugs = getSeriesSongSlugs();
+  const discographySongs = memberSongs.filter((song) => !seriesSlugs.has(song.slug));
+  if (discographySongs.length === 0) return undefined;
+
+  const ordered = sortSongsByTrackOrder(discographySongs);
   const first = ordered[0];
   if (!first) return undefined;
 
   return {
     slug: `${member.slug}-album`,
+    kind: "discography",
     title: CREATOR_ALBUM_TITLES[member.slug] ?? `Made for ${member.name}`,
     subtitle: `Made for ${member.name} · ${ordered.length} ${ordered.length === 1 ? "song" : "songs"}`,
     authorSlug: member.slug,
@@ -89,11 +112,12 @@ function buildCreatorAlbum(member: FamilyMember, memberSongs: Song[]): Album | u
 }
 
 function buildAlbums(): Album[] {
-  const creatorAlbums = members
-    .map((member) => buildCreatorAlbum(member, getSongsByAuthor(member.slug)))
+  const seriesAlbums = buildSeriesAlbums();
+  const discographyAlbums = members
+    .map((member) => buildDiscographyAlbum(member, getSongsByAuthor(member.slug)))
     .filter((album): album is Album => album !== undefined);
 
-  return [...SERIES_ALBUMS, ...creatorAlbums];
+  return [...seriesAlbums, ...discographyAlbums];
 }
 
 export const albums: Album[] = buildAlbums();
@@ -116,9 +140,37 @@ export function getAllAlbums(): Album[] {
   return albums;
 }
 
+/** One carousel / hero slot per artist — series when featured or sole album, else discography when fuller. */
+export function getPrimaryAlbumForAuthor(authorSlug: string): Album | undefined {
+  const memberAlbums = getAlbumsByAuthor(authorSlug);
+  if (memberAlbums.length === 0) return undefined;
+  if (memberAlbums.length === 1) return memberAlbums[0];
+
+  const series = memberAlbums.filter((album) => album.kind === "series");
+  const discography = memberAlbums.filter((album) => album.kind === "discography");
+
+  const featuredSeries = series.find((album) => album.featured);
+  if (featuredSeries) return featuredSeries;
+
+  const bestDiscography = discography[0];
+  const bestSeries = series[0];
+  if (bestDiscography && bestSeries) {
+    return bestDiscography.songSlugs.length >= bestSeries.songSlugs.length ? bestDiscography : bestSeries;
+  }
+
+  return bestDiscography ?? bestSeries;
+}
+
+/** Exactly one primary album per member with songs — used by the 3D hero carousel. */
+export function getPrimaryAlbums(): Album[] {
+  return members
+    .map((member) => getPrimaryAlbumForAuthor(member.slug))
+    .filter((album): album is Album => album !== undefined);
+}
+
 export function getAlbumForSong(song: Song): Album | undefined {
   const matches = albums.filter((album) => album.songSlugs.includes(song.slug));
-  return matches.find((album) => SERIES_ALBUM_SLUGS.has(album.slug)) ?? matches[0];
+  return matches.find((album) => album.kind === "series") ?? matches[0];
 }
 
 export function getAlbumAuthor(album: Album): FamilyMember | undefined {
@@ -127,4 +179,22 @@ export function getAlbumAuthor(album: Album): FamilyMember | undefined {
 
 export function getAlbumTrackCount(album: Album): number {
   return album.songSlugs.length;
+}
+
+/** Every song belongs to at most one album. */
+export function getSongAlbumAssignmentMap(): Map<string, string> {
+  const map = new Map<string, string>();
+  for (const album of albums) {
+    for (const slug of album.songSlugs) {
+      if (!map.has(slug)) {
+        map.set(slug, album.slug);
+      }
+    }
+  }
+  return map;
+}
+
+export function getUnassignedSongSlugs(): string[] {
+  const assigned = getSongAlbumAssignmentMap();
+  return songs.map((song) => song.slug).filter((slug) => !assigned.has(slug));
 }

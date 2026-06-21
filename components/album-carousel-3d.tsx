@@ -87,7 +87,9 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   const count = albums.length;
   const angleStep = count > 0 ? 360 / count : 0;
-  const radius = count <= 3 ? 140 : count <= 5 ? 165 : 185;
+  const coverSize = count <= 5 ? 180 : 160;
+  const radius =
+    count <= 3 ? 140 : count <= 5 ? 168 : count <= 6 ? 175 : Math.min(200, Math.round(coverSize / Math.sin(Math.PI / count)));
 
   return (
     <section
@@ -136,14 +138,14 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                   onClick={() => rotateTo(i)}
                   className="absolute top-1/2 left-1/2 cursor-pointer border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent]"
                   style={{
-                    width: "180px",
-                    height: "180px",
-                    marginLeft: "-90px",
-                    marginTop: "-90px",
+                    width: `${coverSize}px`,
+                    height: `${coverSize}px`,
+                    marginLeft: `-${coverSize / 2}px`,
+                    marginTop: `-${coverSize / 2}px`,
                     transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
                     transformStyle: "preserve-3d",
                     transition: "transform 600ms cubic-bezier(0.34, 1.2, 0.64, 1), opacity 400ms",
-                    opacity: isFront ? 1 : 0.55,
+                    opacity: isFront ? 1 : 0.5,
                     zIndex: isFront ? 10 : 1,
                   }}
                   aria-label={`View ${album.title}`}
@@ -152,9 +154,9 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                     className={cn(
                       "relative size-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500",
                       isFront && isAlbumPlaying && "ring-2 ring-[var(--family-pink)] ring-offset-2 ring-offset-[#0b0f14]",
-                      isFront && "scale-105",
                     )}
                     style={{
+                      transform: isFront ? "scale(1.05)" : "scale(0.82)",
                       boxShadow: isFront
                         ? `0 24px 60px ${album.accentColor}44, 0 8px 24px rgba(0,0,0,0.4)`
                         : "0 12px 32px rgba(0,0,0,0.3)",
