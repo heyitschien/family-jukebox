@@ -85,21 +85,25 @@ export default async function SongPage({ params }: SongPageProps) {
           {isSpotlightSong(song) ? "Today’s spotlight · " : ""}Family song
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">{song.title}</h1>
-        {parentAlbum ? (
-          <Link
-            href={`/albums/${parentAlbum.slug}`}
-            className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--family-pink)] hover:underline"
-          >
-            From {parentAlbum.title}
-          </Link>
-        ) : null}
-        {author ? (
-          <Link
-            href={`/members/${author.slug}`}
-            className="mt-2 inline-block text-lg font-bold text-[var(--jb-muted)] hover:text-white hover:underline"
-          >
-            {author.name}
-          </Link>
+        {parentAlbum || author ? (
+          <div className="mt-2 flex flex-col items-center gap-1">
+            {parentAlbum ? (
+              <Link
+                href={`/albums/${parentAlbum.slug}`}
+                className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--family-pink)] hover:underline"
+              >
+                From {parentAlbum.title}
+              </Link>
+            ) : null}
+            {author ? (
+              <Link
+                href={`/members/${author.slug}`}
+                className="text-lg font-bold text-[var(--jb-muted)] hover:text-white hover:underline"
+              >
+                {author.name}
+              </Link>
+            ) : null}
+          </div>
         ) : null}
         {song.subtitle ? (
           <p className="mt-3 text-sm leading-relaxed text-[var(--jb-muted)]">{song.subtitle}</p>

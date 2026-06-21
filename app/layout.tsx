@@ -41,7 +41,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full">
+      <body className="min-h-full overflow-x-hidden">
         <AppShell>{children}</AppShell>
       </body>
     </html>

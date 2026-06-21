@@ -39,6 +39,7 @@ import {
   resolveQueueForPlayback,
   resolveTrackAdvance,
 } from "../lib/player-queue";
+import { buildCoverShareImage, buildShareMetadata, resolveSiteUrl } from "../lib/site-metadata";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
 
 describe("jukebox catalog", () => {
@@ -225,6 +226,33 @@ describe("celebration highlights", () => {
   it("computes US Father's Day as the third Sunday in June", () => {
     assert.deepEqual(getFathersDayDate(2026), { month: 6, day: 21 });
     assert.deepEqual(getFathersDayDate(2025), { month: 6, day: 15 });
+  });
+});
+
+describe("site metadata", () => {
+  it("prefers the active Vercel deployment URL for previews", () => {
+    assert.equal(
+      resolveSiteUrl({
+        VERCEL_URL: "family-jukebox-og3z.vercel.app",
+        VERCEL_PROJECT_PRODUCTION_URL: "family-jukebox.vercel.app",
+      }),
+      "https://family-jukebox-og3z.vercel.app",
+    );
+  });
+
+  it("keeps share paths relative so metadataBase can match the current deployment", () => {
+    const imagePath = "/assets/tio-chien/legacy-in-the-lane.png";
+    const metadata = buildShareMetadata({
+      title: "Legacy in the Lane · Family Jukebox",
+      description: "A Father's Day single · coaching, love, and real superheroes",
+      path: "/songs/legacy-in-the-lane",
+      image: buildCoverShareImage("Legacy in the Lane", imagePath),
+    });
+
+    assert.equal(metadata.alternates?.canonical, "/songs/legacy-in-the-lane");
+    assert.equal(metadata.openGraph?.url, "/songs/legacy-in-the-lane");
+    assert.equal(metadata.openGraph?.images?.[0]?.url, imagePath);
+    assert.equal(metadata.twitter?.images?.[0]?.url, imagePath);
   });
 });
 

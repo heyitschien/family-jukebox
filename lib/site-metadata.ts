@@ -1,6 +1,27 @@
 import type { Metadata } from "next";
 
-export const SITE_URL = "https://family-jukebox.vercel.app";
+const DEFAULT_SITE_URL = "https://family-jukebox.vercel.app";
+
+function normalizeSiteUrl(value: string): string {
+  const trimmed = value.trim();
+  if (!trimmed) return DEFAULT_SITE_URL;
+
+  const withProtocol = /^https?:\/\//.test(trimmed) ? trimmed : `https://${trimmed}`;
+  return withProtocol.replace(/\/+$/, "");
+}
+
+export function resolveSiteUrl(env: NodeJS.ProcessEnv = process.env): string {
+  const configuredUrl =
+    env.NEXT_PUBLIC_SITE_URL ??
+    env.VERCEL_URL ??
+    env.VERCEL_BRANCH_URL ??
+    env.VERCEL_PROJECT_PRODUCTION_URL ??
+    DEFAULT_SITE_URL;
+
+  return normalizeSiteUrl(configuredUrl);
+}
+
+export const SITE_URL = resolveSiteUrl();
 
 export const SITE_NAME = "Family Jukebox";
 
@@ -45,7 +66,7 @@ export function buildShareMetadata(overrides?: {
 }): Metadata {
   const title = overrides?.title ?? SITE_NAME;
   const description = overrides?.description ?? SITE_DESCRIPTION;
-  const pageUrl = overrides?.path ? `${SITE_URL}${overrides.path}` : SITE_URL;
+  const pageUrl = overrides?.path ?? "/";
   const image = overrides?.image ?? defaultShareImage;
 
   return {
@@ -64,7 +85,7 @@ export function buildShareMetadata(overrides?: {
       card: "summary_large_image",
       title,
       description,
-      images: [image.url],
+      images: [image],
     },
   };
 }

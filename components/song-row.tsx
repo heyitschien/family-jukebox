@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 
-import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -51,16 +50,8 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
             {song.title}
           </strong>
           <span className="block truncate text-xs text-[var(--jb-muted)]">
-            {author ? (
-              <>
-                <ArtistLink
-                  member={author}
-                  className="text-[var(--jb-muted)] hover:text-white"
-                  onClick={(event) => event.stopPropagation()}
-                />
-                {" · "}
-              </>
-            ) : null}
+            {author?.name ?? "Family"}
+            {" · "}
             {song.tags.slice(0, 3).join(" · ")}
           </span>
         </div>
