@@ -92,6 +92,17 @@ export const songs: Song[] = [
     story: "Tio Chien's tech-meets-magic song from family music day with the cousins.",
     tags: ["tech", "magic", "creative", "tio-chien"],
   },
+  {
+    slug: "crayon-planets",
+    title: "Crayon Planets",
+    subtitle: "Drawing whole worlds in color, one orbit at a time",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-19",
+    audioSrc: "/assets/tio-chien/crayon-planets.mp3",
+    coverSrc: "/assets/tio-chien/crayon-planets.jpg",
+    story: "Tio Chien's crayon-and-cosmos song — art supplies meet outer space on family music day.",
+    tags: ["art", "space", "creative", "tio-chien"],
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
