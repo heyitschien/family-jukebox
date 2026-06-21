@@ -189,7 +189,7 @@ export const songs: Song[] = [
     authorSlug: "tio-chien",
     dateCreated: "2026-06-21",
     audioSrc: "/assets/tio-chien/legacy-in-the-lane.mp3",
-    coverSrc: "/assets/tio-chien/legacy-in-the-lane.jpg",
+    coverSrc: "/assets/tio-chien/legacy-in-the-lane.png",
     story:
       "Tio Chien's Father's Day release — a hip-hop love letter to dads on the court, in the lane, and at home.",
     lyrics: songLyrics["legacy-in-the-lane"],

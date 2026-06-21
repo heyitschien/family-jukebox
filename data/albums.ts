@@ -58,7 +58,7 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     title: "Legacy in the Lane",
     subtitle: "Father's Day single out now — more tracks coming",
     authorSlug: "tio-chien",
-    coverSrc: "/assets/tio-chien/legacy-in-the-lane.jpg",
+    coverSrc: "/assets/tio-chien/legacy-in-the-lane.png",
     songSlugs: ["legacy-in-the-lane"],
     dateCreated: "2026-06-21",
     story:
