@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
+import { getAlbumForSong } from "@/data/albums";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ type SongRowProps = {
 export function SongRow({ song, index, showIndex = false, playlist }: SongRowProps) {
   const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
   const author = getMemberBySlug(song.authorSlug);
+  const album = getAlbumForSong(song.slug);
 
   return (
     <div
@@ -50,7 +52,9 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
             {song.title}
           </strong>
           <span className="block truncate text-xs text-[var(--jb-muted)]">
-            {author?.name} · {song.tags.slice(0, 3).join(" · ")}
+            {author?.name}
+            {album ? ` · ${album.title}` : ""}
+            {song.tags.length > 0 ? ` · ${song.tags.slice(0, 2).join(" · ")}` : ""}
           </span>
         </div>
       </Link>

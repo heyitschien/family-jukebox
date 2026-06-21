@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
+import { AlbumCard } from "@/components/album-card";
 import { MemberPlayHeader, MemberSongList } from "@/components/member-play-header";
 import { Topbar } from "@/components/topbar";
+import { getAlbumsByMember } from "@/data/albums";
 import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
 
@@ -34,6 +36,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
   if (!member) notFound();
 
   const memberSongs = getSongsByAuthor(member.slug);
+  const memberAlbums = getAlbumsByMember(member.slug);
   const heroCover = memberSongs[0]?.coverSrc;
 
   return (
@@ -72,6 +75,20 @@ export default async function MemberPage({ params }: MemberPageProps) {
           </div>
         </div>
       </section>
+
+      {memberAlbums[0] ? (
+        <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+          <div className="mb-4">
+            <h2 className="text-xl font-bold">Featured release</h2>
+            <p className="text-sm text-[var(--jb-muted)]">
+              {member.name}&apos;s songs now also live as an album collection.
+            </p>
+          </div>
+          <div className="max-w-sm">
+            <AlbumCard album={memberAlbums[0]} compact />
+          </div>
+        </section>
+      ) : null}
 
       <section className="mt-6 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
         <h2 className="mb-4 text-xl font-bold">Popular</h2>

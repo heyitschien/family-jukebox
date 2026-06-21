@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Heart, Home, Music, Users } from "lucide-react";
+import { Disc3, Home, Music, Users } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
 const tabs = [
   { href: "/", label: "Home", icon: Home },
+  { href: "/albums", label: "Albums", icon: Disc3 },
   { href: "/songs", label: "Songs", icon: Music },
-  { href: "/favorites", label: "Favs", icon: Heart },
   { href: "/family", label: "Family", icon: Users },
 ] as const;
 

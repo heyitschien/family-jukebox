@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { Search } from "lucide-react";
@@ -38,7 +37,7 @@ export function Topbar({ className }: TopbarProps) {
         <input
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search songs, kids, tags, memories..."
+          placeholder="Search songs, albums, kids, tags, memories..."
           className="w-full border-0 bg-transparent text-[15px] text-[var(--jb-text)] outline-none placeholder:text-[var(--jb-muted-2)]"
         />
       </form>

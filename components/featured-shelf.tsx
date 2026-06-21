@@ -14,6 +14,8 @@ import { cn } from "@/lib/utils";
 type FeaturedShelfProps = {
   songs: Song[];
   tags: string[];
+  title?: string;
+  description?: string;
 };
 
 function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] }) {
@@ -56,7 +58,12 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
   );
 }
 
-export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
+export function FeaturedShelf({
+  songs,
+  tags,
+  title = "Featured family songs",
+  description = "Tap play on any song to hear the whole shelf — one track flows into the next.",
+}: FeaturedShelfProps) {
   const { playQueue } = usePlayer();
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
@@ -71,10 +78,8 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Featured family songs</h2>
-          <p className="text-sm font-bold text-[var(--jb-muted)]">
-            Tap play on any song to hear the whole shelf — one track flows into the next.
-          </p>
+          <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">{title}</h2>
+          <p className="text-sm font-bold text-[var(--jb-muted)]">{description}</p>
         </div>
         {filtered.length > 1 ? (
           <button

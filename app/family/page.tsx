@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { MemberCircle } from "@/components/member-circle";
 import { Topbar } from "@/components/topbar";
+import { getAlbumsByMember } from "@/data/albums";
 import { getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
 
@@ -39,6 +40,7 @@ export default function FamilyPage() {
         <h2 className="px-2 pt-2 text-xl font-bold">Everyone</h2>
         {members.map((member) => {
           const count = getSongsByAuthor(member.slug).length;
+          const albumCount = getAlbumsByMember(member.slug).length;
           return (
             <Link
               key={member.slug}
@@ -52,7 +54,8 @@ export default function FamilyPage() {
                 <p className="font-bold">{member.name}</p>
                 <p className="text-sm text-[var(--jb-muted)]">
                   {getRoleLabel(member.role)} · age {member.age} · {count}{" "}
-                  {count === 1 ? "song" : "songs"}
+                  {count === 1 ? "song" : "songs"} · {albumCount}{" "}
+                  {albumCount === 1 ? "album" : "albums"}
                 </p>
               </div>
             </Link>

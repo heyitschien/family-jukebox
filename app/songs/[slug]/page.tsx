@@ -7,6 +7,7 @@ import { CoverImage } from "@/components/cover-image";
 import { SongDetailActions } from "@/components/song-detail-actions";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
+import { getAlbumForSong, getAlbumSongs, getAlbumTrackNumber } from "@/data/albums";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
 
@@ -36,7 +37,10 @@ export default async function SongPage({ params }: SongPageProps) {
   if (!song) notFound();
 
   const author = getSongAuthor(song);
-  const artistQueue = getSongsByAuthor(song.authorSlug);
+  const album = getAlbumForSong(song.slug);
+  const albumTracks = album ? getAlbumSongs(album) : [];
+  const trackNumber = getAlbumTrackNumber(song.slug);
+  const artistQueue = albumTracks.length > 0 ? albumTracks : getSongsByAuthor(song.authorSlug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -70,6 +74,23 @@ export default async function SongPage({ params }: SongPageProps) {
         ) : null}
         {song.subtitle ? (
           <p className="mt-3 text-sm leading-relaxed text-[var(--jb-muted)]">{song.subtitle}</p>
+        ) : null}
+
+        {album ? (
+          <div className="mt-5 rounded-[24px] border border-white/[0.08] bg-white/[0.05] p-4 text-left">
+            <p className="text-[11px] font-black uppercase tracking-[0.2em] text-[var(--jb-muted)]">
+              From the album
+            </p>
+            <Link
+              href={`/albums/${album.slug}`}
+              className="mt-2 inline-block text-lg font-bold text-white hover:text-[var(--family-pink)]"
+            >
+              {album.title}
+            </Link>
+            <p className="mt-1 text-sm text-[var(--jb-muted)]">
+              Track {trackNumber ?? 1} of {albumTracks.length}
+            </p>
+          </div>
         ) : null}
 
         <div className="mt-6 flex justify-center">
