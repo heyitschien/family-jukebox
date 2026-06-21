@@ -34,6 +34,10 @@ Extracts MP3 + cover, transcribes lyrics, then follow the printed checklist (`da
 
 See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for the full checklist and examples.
 
+## Project record
+
+Architecture, features, design principles, and work history (validated against code): [docs/PROJECT-RECORD.md](./docs/PROJECT-RECORD.md).
+
 ## Analytics (Neon)
 
 Play tracking uses Neon Postgres. Local setup:
