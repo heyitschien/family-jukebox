@@ -16,31 +16,48 @@ const sizeClasses = {
   xl: "size-[62px] min-h-[62px] min-w-[62px]",
 };
 
-const iconSizes = {
-  sm: "size-5",
-  md: "size-5",
-  lg: "size-7",
-  xl: "size-8",
+const iconPixels = {
+  sm: 20,
+  md: 20,
+  lg: 28,
+  xl: 32,
 };
 
 const variantClasses = {
-  accent: "bg-family-accent text-[#1a0812] shadow-family",
+  accent:
+    "bg-[var(--family-pink)] bg-family-accent text-[#1a0812] shadow-family [background-clip:padding-box]",
   light: "bg-[var(--jb-text)] text-[#050608] shadow-md",
   dark: "bg-[#282828] text-white shadow-md",
 };
 
-function PlayTriangle({ className }: { className?: string }) {
+function PlayTriangle({ size }: { size: number }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden>
-      <path d="M8 5.14v13.72c0 .79.87 1.27 1.54.84l11.14-6.86c.6-.37.6-1.25 0-1.62L9.54 4.3A1 1 0 0 0 8 5.14z" fill="currentColor" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      className="block shrink-0 pointer-events-none"
+    >
+      <path d="M8 5.14v13.72c0 .79.87 1.27 1.54.84l11.14-6.86c.6-.37.6-1.25 0-1.62L9.54 4.3A1 1 0 0 0 8 5.14z" />
     </svg>
   );
 }
 
-function PauseBars({ className }: { className?: string }) {
+function PauseBars({ size }: { size: number }) {
   return (
-    <svg viewBox="0 0 24 24" className={className} aria-hidden>
-      <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" fill="currentColor" />
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden
+      className="block shrink-0 pointer-events-none"
+    >
+      <path d="M6 5h4v14H6V5zm8 0h4v14h-4V5z" />
     </svg>
   );
 }
@@ -54,7 +71,7 @@ export function PlayIconButton({
   label = "Play",
   playing = false,
 }: PlayIconButtonProps) {
-  const iconClass = cn(iconSizes[size], playing ? "" : "translate-x-[1px]");
+  const iconSize = iconPixels[size];
 
   return (
     <button
@@ -63,15 +80,24 @@ export function PlayIconButton({
       aria-label={playing ? "Pause" : label}
       className={cn(
         "inline-flex shrink-0 items-center justify-center rounded-full",
-        "appearance-none border-0 p-0 outline-none",
-        "[-webkit-tap-highlight-color:transparent] [touch-action:manipulation]",
+        "appearance-none border-0 p-0 outline-none select-none",
+        "text-[0px] leading-none",
+        "[-webkit-tap-highlight-color:transparent] [-webkit-appearance:none] [touch-action:manipulation]",
         "transition-transform active:scale-95",
         sizeClasses[size],
         variantClasses[variant],
         className,
       )}
     >
-      {playing ? <PauseBars className={iconClass} /> : <PlayTriangle className={iconClass} />}
+      <span
+        className={cn(
+          "inline-flex items-center justify-center",
+          !playing && "translate-x-px",
+        )}
+        aria-hidden
+      >
+        {playing ? <PauseBars size={iconSize} /> : <PlayTriangle size={iconSize} />}
+      </span>
     </button>
   );
 }

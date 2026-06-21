@@ -1,6 +1,6 @@
 # Family Jukebox
 
-A warm, playful family music archive — songs by Marceline, Eliana, Solene, Ocean, and Tio Chien. No backend, no database, no auth. Just add files to the repo and push.
+A warm, playful family music archive — songs by Marceline, Eliana, Solene, Ocean, and Tio Chien. Static song catalog in the repo; optional Neon analytics for play counts. See `docs/SECURITY-AND-ANALYTICS.md`.
 
 ## Run locally
 

@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
+import { Topbar } from "@/components/topbar";
 import { usePlayer } from "@/contexts/player-context";
 import { getAlbumSongs, type Album } from "@/data/albums";
 import { getAlbumAuthor } from "@/data/albums";
@@ -96,6 +97,10 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
+      <div className="relative z-20 px-4 pt-[max(12px,env(safe-area-inset-top))] sm:px-[34px] sm:pt-[34px]">
+        <Topbar variant="embedded" />
+      </div>
+
       <div
         className="absolute inset-0"
         style={{

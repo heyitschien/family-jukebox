@@ -2,7 +2,6 @@ import { AlbumCarousel3D } from "@/components/album-carousel-3d";
 import { AlbumShelf } from "@/components/album-shelf";
 import { FeaturedShelf } from "@/components/featured-shelf";
 import { RecentQueue } from "@/components/recent-queue";
-import { Topbar } from "@/components/topbar";
 import { getAllTags } from "@/data/songs";
 import {
   createRefreshSeed,
@@ -25,7 +24,6 @@ export default function HomePage() {
 
   return (
     <main className="min-w-0 px-3 lg:px-0">
-      <Topbar />
       <AlbumCarousel3D
         albums={carouselAlbums}
         featuredAlbum={featuredAlbum}

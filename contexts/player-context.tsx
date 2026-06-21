@@ -11,6 +11,7 @@ import {
 } from "react";
 
 import type { Song } from "@/data/songs";
+import { trackPlayEvent } from "@/lib/analytics/track-play";
 
 type PlayerContextValue = {
   currentSong: Song | null;
@@ -57,6 +58,11 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const [queue, setQueue] = useState<Song[]>([]);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
+  const currentSongRef = useRef<Song | null>(null);
+
+  useEffect(() => {
+    currentSongRef.current = currentSong;
+  }, [currentSong]);
 
   // Mobile browsers require play() inside the tap handler — not in useEffect.
   const startPlayback = useCallback((song: Song, nextQueue: Song[]) => {
@@ -75,7 +81,10 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
     void audio
       .play()
-      .then(() => setIsPlaying(true))
+      .then(() => {
+        setIsPlaying(true);
+        trackPlayEvent({ songSlug: song.slug, event: "start", source: "unknown" });
+      })
       .catch(() => setIsPlaying(false));
   }, []);
 
@@ -172,6 +181,16 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     const onPlay = () => setIsPlaying(true);
     const onPause = () => setIsPlaying(false);
     const onEnded = () => {
+      const song = currentSongRef.current;
+      if (song) {
+        trackPlayEvent({
+          songSlug: song.slug,
+          event: "complete",
+          source: "auto-advance",
+          durationMs: Math.round(audio.currentTime * 1000),
+        });
+      }
+
       const q = queueRef.current;
       if (q.length <= 1) {
         setIsPlaying(false);

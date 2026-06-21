@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { CoverImage } from "@/components/cover-image";
+import { JukeboxStatsCard } from "@/components/jukebox-stats-card";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -93,7 +94,7 @@ export function RecentQueue({ songs, familyQueue }: RecentQueueProps) {
             <div>
               <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Recently added</h2>
               <p className="text-sm font-bold text-[var(--jb-muted)]">
-                Play one song and the rest of this list keeps going.
+                Fresh picks from the shelf — play any track to queue the rest.
               </p>
             </div>
             {recent.length > 1 ? (
@@ -116,13 +117,13 @@ export function RecentQueue({ songs, familyQueue }: RecentQueueProps) {
         <div>
           <div className="mb-4">
             <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Family mix</h2>
-            <p className="text-sm font-bold text-[var(--jb-muted)]">One-page summary for everyone.</p>
+            <p className="text-sm font-bold text-[var(--jb-muted)]">Every artist, one fair rotation.</p>
           </div>
           <div className="min-h-[188px] rounded-[22px] border border-white/[0.08] bg-gradient-to-br from-white/[0.11] to-white/[0.04] p-4">
             <h3 className="text-xl font-bold">This week&apos;s vibe</h3>
             <p className="mt-2 text-[15px] leading-relaxed text-[var(--jb-muted)]">
-              Playful, colorful, and memory-first. Songs grouped like Spotify shelves — who
-              inspired it, what game created it, and why it made us laugh.
+              Playful, colorful, memory-first — who made it, what inspired it, and why it still
+              makes us laugh.
             </p>
             <div className="mt-3.5 flex flex-wrap gap-2">
               <span className="rounded-full bg-family-accent px-3 py-2 text-[13px] font-extrabold text-[#1a0812]">
@@ -142,6 +143,7 @@ export function RecentQueue({ songs, familyQueue }: RecentQueueProps) {
             >
               Play family mix
             </button>
+            <JukeboxStatsCard />
             <Link
               href="/family"
               className="mt-3 inline-block text-sm font-bold text-family-glow hover:underline"
