@@ -364,6 +364,48 @@ Look at the picture, figured it out
 Cool stuff, yeah, we made it cool
 Solene and Eliana, Marceline, Ocean
 Digital family, just the beginning`,
+  "silver-pan-morning": `Smile
+Sunday Morning let the coffee steam
+Watching how you blow a quiet dream
+You're flipping shadows in a silver pan
+A golden circle for your biggest fan
+Chocolate chips melts in like the winter ice
+One look at you and the world is nice
+No diamonds needed, you're the rarest find
+A down to earth soul with a brilliant mind
+Every day is a lucky strike and you're the light
+Fighting fire just to hold you through the night
+Everland, you're a masterpiece in every frame
+Cooking up the future, nothing stays the same
+Catching like a hook, yeah, you're stuck in my head
+Best kind of lucky, yeah, just like I said
+Sharp as a razor when you hit the street
+You got the style that makes the city complete
+Evil in your climbing up that ladder fast
+Building a legacy that's gonna last
+Sometimes we clash, yeah, the lightning strikes
+But we find the peace in the things that we like
+From the kitchen table to the top floor of you
+Everything I do, yeah, I do it for you
+Every day is a lucky strike and you're the light
+Fighting fire just to hold you through the night
+Everland, you're a masterpiece in every frame
+Cooking up the future, nothing stays the same
+Catching like a hook, yeah, you're stuck in my head
+Best kind of lucky, yeah, just like I said
+Be on the noise, be on the heavy rain
+Your smile is the shelter, washing out the pain
+I don't need the world as long as you are there
+Everland, you're the breath in every breath
+Every day is a lucky strike and you're the light
+Fighting fire just to hold you through the night
+Everland, you're a masterpiece in every frame
+Cooking up the future, nothing stays the same
+Catching like a hook, yeah, you're stuck in my head
+Best kind of lucky, yeah, just like I said
+Yeah, so lucky, man
+Evil in, keep shining bright
+You're the light`,
   "solene-s-painted-trail": `Orange fur against the green, a clever fox is rarely seen.
 Through the hall and past the door, she tracks her paws across the floor.
 Eight years of sun inside her eyes, watching how the numbers rise.

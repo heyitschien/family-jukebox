@@ -143,7 +143,7 @@ export const songs: Song[] = [
   {
     slug: "orange-sweater-sun",
     title: "Orange Sweater Sun",
-    subtitle: "K-pop sunshine — Evelyn's latest single",
+    subtitle: "K-pop sunshine — Evelyn's second single",
     authorSlug: "evelyn",
     dateCreated: "2026-06-21",
     audioSrc: "/assets/evelyn/orange-sweater-sun.mp3",
@@ -152,6 +152,20 @@ export const songs: Song[] = [
       "Evelyn's K-pop styled single — bright hooks, orange-sweater warmth, and the second chapter of her growing album.",
     lyrics: songLyrics["orange-sweater-sun"],
     tags: ["single", "kpop", "pop", "evelyn", "featured"],
+    featured: true,
+  },
+  {
+    slug: "silver-pan-morning",
+    title: "Silver Pan Morning",
+    subtitle: "Sunday pancakes and coffee steam — Evelyn's latest",
+    authorSlug: "evelyn",
+    dateCreated: "2026-06-21",
+    audioSrc: "/assets/evelyn/silver-pan-morning.mp3",
+    coverSrc: "/assets/evelyn/silver-pan-morning.jpg",
+    story:
+      "A Sunday-morning love song — silver pan, chocolate chips, and the quiet magic of cooking up the future together.",
+    lyrics: songLyrics["silver-pan-morning"],
+    tags: ["single", "indie", "pop", "evelyn", "featured"],
     featured: true,
   },
 ];

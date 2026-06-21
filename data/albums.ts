@@ -38,10 +38,10 @@ const SERIES_ALBUMS: Album[] = [
   {
     slug: "gold-in-the-tile-album",
     title: "Evelyn",
-    subtitle: "Orange Sweater Sun · K-pop · Gold in the Tile · more tracks coming",
+    subtitle: "Silver Pan Morning · Orange Sweater Sun · Gold in the Tile · more coming",
     authorSlug: "evelyn",
-    coverSrc: "/assets/evelyn/orange-sweater-sun.jpg",
-    songSlugs: ["gold-in-the-tile", "orange-sweater-sun"],
+    coverSrc: "/assets/evelyn/silver-pan-morning.jpg",
+    songSlugs: ["gold-in-the-tile", "orange-sweater-sun", "silver-pan-morning"],
     dateCreated: "2026-06-21",
     story:
       "A growing album for Evelyn — indie warmth, K-pop sparkle, and new songs joining the collection as they release.",
