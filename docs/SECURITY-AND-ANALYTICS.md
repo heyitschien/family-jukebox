@@ -26,24 +26,40 @@ Play counts also appear on individual song pages once data exists.
 
 ## Neon + Drizzle setup
 
-1. Create a Neon project at [console.neon.tech](https://console.neon.tech)
-2. Copy the connection string
-3. Add to Vercel → Project → Settings → Environment Variables:
+**Production project (configured):**
 
-```bash
-DATABASE_URL=postgresql://...
-PLAY_TRACKING_ENABLED=true
-```
+| Item | Value |
+|------|--------|
+| Neon project | `family-jukebox` |
+| Project ID | `cold-snow-21143676` |
+| Branch | `main` |
+| Table | `play_events` (see `drizzle/0000_init.sql`) |
 
-4. Apply the schema (first time only):
+### First-time / new machine
 
 ```bash
 cp .env.example .env.local
-# paste DATABASE_URL into .env.local
-npm run db:push
+# Paste DATABASE_URL from Neon console or run: ./scripts/setup-neon.sh
+npm run db:push    # optional if schema already applied
+./scripts/setup-neon.sh   # sync .env.local → Vercel
 ```
 
-Or run the SQL in `drizzle/0000_init.sql` from the Neon SQL editor.
+### Vercel environment variables
+
+Set on **Production**, **Preview**, and **Development**:
+
+```bash
+DATABASE_URL=postgresql://...   # Neon pooled connection string
+PLAY_TRACKING_ENABLED=true
+```
+
+Automated sync from local:
+
+```bash
+./scripts/setup-neon.sh
+```
+
+Or apply manually in Vercel → Project → Settings → Environment Variables.
 
 ## Local development without Neon
 

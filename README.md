@@ -34,6 +34,17 @@ Extracts MP3 + cover, transcribes lyrics, then follow the printed checklist (`da
 
 See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for the full checklist and examples.
 
+## Analytics (Neon)
+
+Play tracking uses Neon Postgres. Local setup:
+
+```bash
+cp .env.example .env.local   # add DATABASE_URL from Neon
+./scripts/setup-neon.sh      # sync secrets to Vercel + verify schema
+```
+
+See [docs/SECURITY-AND-ANALYTICS.md](./docs/SECURITY-AND-ANALYTICS.md).
+
 ## Compress from a music video (MP4)
 
 ```bash
