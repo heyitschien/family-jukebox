@@ -1,0 +1,45 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: cd-production
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  verify-production:
+    name: Verify Vercel production deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      PRODUCTION_URL: https://family-jukebox.vercel.app
+
+    steps:
+      - name: Wait for Vercel deploy
+        run: sleep 75
+
+      - name: Check homepage is live
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl -fsSL "$PRODUCTION_URL" | grep -q "Family Jukebox"; then
+              echo "Production homepage OK (attempt $attempt)"
+              exit 0
+            fi
+            echo "Attempt $attempt failed — retrying in 30s..."
+            sleep 30
+          done
+          echo "Production verification failed after 5 attempts"
+          exit 1
+
+      - name: Check albums route
+        run: curl -fsSL "$PRODUCTION_URL/albums" | grep -q "Family albums"
+
+      - name: Check API stats route
+        run: |
+          code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL/api/stats")"
+          test "$code" = "200"

@@ -2,13 +2,12 @@
 
 <!-- Brief summary of the jukebox change -->
 
-## Safety checks
+## Automation
 
-- [ ] `npm run ci` passes locally (lint + smoke + build)
-- [ ] Landing hero still shows today's spotlight before playback
-- [ ] Playing a song updates the hero live (cover, title, progress)
-- [ ] Mini player play/pause/skip still works
+- CI runs **lint + smoke + build** on every PR
+- When CI is green, the PR **auto-merges** to `main` (add label `no-automerge` to skip)
+- Vercel **deploys `main` automatically**; CD verifies production after merge
 
 ## Notes
 
-<!-- Anything reviewers should watch for in player or featured rotation logic -->
+<!-- Anything to watch for in player, albums, or featured rotation logic -->
