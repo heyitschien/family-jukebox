@@ -112,6 +112,19 @@ export const songs: Song[] = [
     lyrics: songLyrics["crayon-planets"],
     tags: ["art", "space", "creative", "tio-chien"],
   },
+  {
+    slug: "miracle-in-the-sand",
+    title: "Miracle in the Sand",
+    subtitle: "모래 속의 기적 · the first single from an ongoing album",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-21",
+    audioSrc: "/assets/tio-chien/miracle-in-the-sand.mp3",
+    coverSrc: "/assets/tio-chien/miracle-in-the-sand.jpg",
+    story:
+      "The opening single from Tio Chien's growing Miracle in the Sand album — warm indie-pop, intimate vocals, more tracks on the way.",
+    tags: ["single", "indie", "sand", "miracle", "tio-chien"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

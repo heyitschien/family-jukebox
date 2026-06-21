@@ -29,6 +29,24 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   "tio-chien": "Tio Chien's Magic Studio",
 };
 
+/** Ongoing / themed albums — add song slugs here as new singles drop. */
+const SERIES_ALBUMS: Album[] = [
+  {
+    slug: "miracle-in-the-sand-album",
+    title: "Miracle in the Sand",
+    subtitle: "모래 속의 기적 · single out now — more tracks coming",
+    authorSlug: "tio-chien",
+    coverSrc: "/assets/tio-chien/miracle-in-the-sand.jpg",
+    songSlugs: ["miracle-in-the-sand"],
+    dateCreated: "2026-06-21",
+    story:
+      "A growing album series from Tio Chien — intimate indie-pop built for continuity. New songs join this tracklist as they release.",
+    accentColor: "#f4c784",
+  },
+];
+
+const SERIES_ALBUM_SLUGS = new Set(SERIES_ALBUMS.map((album) => album.slug));
+
 function buildCreatorAlbum(member: FamilyMember, memberSongs: Song[]): Album | undefined {
   if (memberSongs.length === 0) return undefined;
 
@@ -54,9 +72,11 @@ function buildCreatorAlbum(member: FamilyMember, memberSongs: Song[]): Album | u
 }
 
 function buildAlbums(): Album[] {
-  return members
+  const creatorAlbums = members
     .map((member) => buildCreatorAlbum(member, getSongsByAuthor(member.slug)))
     .filter((album): album is Album => album !== undefined);
+
+  return [...SERIES_ALBUMS, ...creatorAlbums];
 }
 
 export const albums: Album[] = buildAlbums();
@@ -80,7 +100,8 @@ export function getAllAlbums(): Album[] {
 }
 
 export function getAlbumForSong(song: Song): Album | undefined {
-  return albums.find((album) => album.songSlugs.includes(song.slug));
+  const matches = albums.filter((album) => album.songSlugs.includes(song.slug));
+  return matches.find((album) => SERIES_ALBUM_SLUGS.has(album.slug)) ?? matches[0];
 }
 
 export function getAlbumAuthor(album: Album): FamilyMember | undefined {
