@@ -1,10 +1,13 @@
 "use client";
 
 import Link from "next/link";
+import type { ReactNode } from "react";
 
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
+import type { RepeatMode, ShuffleMode } from "@/lib/player-queue";
+import { cn } from "@/lib/utils";
 import { getMemberBySlug } from "@/data/members";
 
 export function MiniPlayer() {
@@ -28,109 +31,96 @@ export function MiniPlayer() {
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   return (
-    <aside className="fixed inset-x-2.5 bottom-[calc(66px+env(safe-area-inset-bottom))] z-50 grid min-h-[66px] grid-cols-[1fr_auto] items-center gap-3 rounded-[22px] border border-white/10 bg-[rgba(10,14,18,0.92)] px-3 py-2.5 shadow-[0_18px_70px_rgba(0,0,0,0.45)] backdrop-blur-[22px] sm:inset-x-[18px] sm:bottom-[18px] sm:min-h-[74px] sm:grid-cols-[1fr_minmax(260px,560px)_1fr] sm:gap-4 sm:rounded-[24px] sm:px-4 sm:py-3 lg:bottom-[18px]">
-      <Link href={`/songs/${currentSong.slug}`} className="flex min-w-0 items-center gap-3">
-        <CoverImage src={currentSong.coverSrc} alt="" className="size-12 shrink-0 rounded-[14px] sm:size-[54px]" />
-        <div className="min-w-0">
-          <strong className="block truncate text-sm">{currentSong.title}</strong>
-          <span className="text-[13px] text-[var(--jb-muted)]">
-            {author?.name ?? "Family"} · Cousin Radio
-          </span>
-        </div>
-      </Link>
+    <aside
+      className={cn(
+        "fixed inset-x-2.5 z-50 overflow-hidden rounded-[20px] border border-white/10",
+        "bg-[rgba(10,14,18,0.94)] shadow-[0_18px_70px_rgba(0,0,0,0.45)] backdrop-blur-[22px]",
+        "bottom-[calc(66px+env(safe-area-inset-bottom))] sm:inset-x-[18px] sm:bottom-[18px] sm:rounded-[24px] lg:bottom-[18px]",
+      )}
+    >
+      <div
+        className="family-progress h-[3px] origin-left transition-[width] duration-150 ease-linear"
+        style={{ width: `${progress}%` }}
+        role="progressbar"
+        aria-valuenow={Math.round(progress)}
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-label="Playback progress"
+      />
 
-      <div className="hidden justify-center sm:grid sm:gap-2">
-        <div className="flex items-center justify-center gap-3 text-[var(--jb-muted)]">
-          <button
-            type="button"
-            onClick={toggleShuffle}
-            aria-label={shuffleMode === "on" ? "Shuffle on" : "Shuffle off"}
-            aria-pressed={shuffleMode === "on" ? "true" : "false"}
-            className={`inline-flex size-9 items-center justify-center transition-colors [-webkit-tap-highlight-color:transparent] ${
-              shuffleMode === "on" ? "text-family-glow" : "hover:text-white"
-            }`}
-          >
-            <ShuffleIcon active={shuffleMode === "on"} />
-          </button>
-          <button
-            type="button"
-            onClick={skipPrev}
-            aria-label="Previous"
-            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent]"
-          >
-            <SkipPrevIcon />
-          </button>
-          <PlayIconButton
-            size="md"
-            variant="light"
-            playing={isPlaying}
-            label="Toggle playback"
-            onClick={togglePlay}
+      {/* Mobile — stacked, full transport row */}
+      <div className="flex flex-col gap-3 px-3.5 pb-3.5 pt-3 sm:hidden">
+        <Link href={`/songs/${currentSong.slug}`} className="flex min-w-0 items-center gap-3">
+          <CoverImage
+            src={currentSong.coverSrc}
+            alt=""
+            className="size-11 shrink-0 rounded-[12px] shadow-[0_8px_24px_rgba(0,0,0,0.35)] ring-1 ring-white/10"
           />
-          <button
-            type="button"
-            onClick={skipNext}
-            aria-label="Next"
-            className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent]"
-          >
-            <SkipNextIcon />
-          </button>
-          <button
-            type="button"
-            onClick={cycleRepeat}
-            aria-label={
-              repeatMode === "one"
-                ? "Repeat one song"
-                : repeatMode === "all"
-                  ? "Repeat playlist"
-                  : "Repeat off"
-            }
-            aria-pressed={repeatMode !== "off" ? "true" : "false"}
-            className={`relative inline-flex size-9 items-center justify-center transition-colors [-webkit-tap-highlight-color:transparent] ${
-              repeatMode !== "off" ? "text-family-glow" : "hover:text-white"
-            }`}
-          >
-            <RepeatIcon />
-            {repeatMode === "one" ? (
-              <span className="absolute -right-0.5 -top-0.5 text-[9px] font-bold leading-none">1</span>
-            ) : null}
-          </button>
-        </div>
-        <div className="flex w-full items-center gap-2.5 text-[11px] text-[var(--jb-muted-2)]">
-          <span>{formatTime(currentTime)}</span>
-          <div className="h-[5px] flex-1 overflow-hidden rounded-full bg-white/15">
-            <div className="family-progress h-full transition-all" style={{ width: `${progress}%` }} />
+          <div className="min-w-0 flex-1">
+            <strong className="block truncate text-[15px] font-semibold leading-tight">
+              {currentSong.title}
+            </strong>
+            <span className="mt-0.5 block truncate text-[13px] text-[var(--jb-muted)]">
+              {author?.name ?? "Family"} · Cousin Radio
+            </span>
           </div>
-          <span>{formatTime(duration)}</span>
-        </div>
+          <div className="shrink-0 text-right text-[11px] tabular-nums text-[var(--jb-muted-2)]">
+            <span>{formatTime(currentTime)}</span>
+            <span className="mx-0.5 opacity-50">/</span>
+            <span>{formatTime(duration)}</span>
+          </div>
+        </Link>
+
+        <PlayerTransportControls
+          isPlaying={isPlaying}
+          shuffleMode={shuffleMode}
+          repeatMode={repeatMode}
+          playSize="md"
+          onTogglePlay={togglePlay}
+          onSkipPrev={skipPrev}
+          onSkipNext={skipNext}
+          onToggleShuffle={toggleShuffle}
+          onCycleRepeat={cycleRepeat}
+        />
       </div>
 
-      <div className="flex items-center justify-end gap-1 sm:gap-2">
-        <button
-          type="button"
-          onClick={skipPrev}
-          aria-label="Previous"
-          className="inline-flex size-10 items-center justify-center text-[var(--jb-muted)] [-webkit-tap-highlight-color:transparent] sm:hidden"
-        >
-          <SkipPrevIcon />
-        </button>
-        <PlayIconButton
-          size="sm"
-          variant="light"
-          playing={isPlaying}
-          label="Toggle playback"
-          onClick={togglePlay}
-          className="sm:hidden"
-        />
-        <button
-          type="button"
-          onClick={skipNext}
-          aria-label="Next"
-          className="inline-flex size-10 items-center justify-center text-[var(--jb-muted)] [-webkit-tap-highlight-color:transparent] sm:hidden"
-        >
-          <SkipNextIcon />
-        </button>
-        <div className="hidden items-center gap-2.5 text-[var(--jb-muted)] sm:flex">
+      {/* Desktop — three-column bar */}
+      <div className="hidden min-h-[74px] grid-cols-[1fr_minmax(260px,560px)_1fr] items-center gap-4 px-4 py-3 sm:grid">
+        <Link href={`/songs/${currentSong.slug}`} className="flex min-w-0 items-center gap-3">
+          <CoverImage src={currentSong.coverSrc} alt="" className="size-[54px] shrink-0 rounded-[14px]" />
+          <div className="min-w-0">
+            <strong className="block truncate text-sm">{currentSong.title}</strong>
+            <span className="text-[13px] text-[var(--jb-muted)]">
+              {author?.name ?? "Family"} · Cousin Radio
+            </span>
+          </div>
+        </Link>
+
+        <div className="grid gap-2">
+          <PlayerTransportControls
+            isPlaying={isPlaying}
+            shuffleMode={shuffleMode}
+            repeatMode={repeatMode}
+            playSize="md"
+            onTogglePlay={togglePlay}
+            onSkipPrev={skipPrev}
+            onSkipNext={skipNext}
+            onToggleShuffle={toggleShuffle}
+            onCycleRepeat={cycleRepeat}
+          />
+          <div className="flex w-full items-center gap-2.5 text-[11px] text-[var(--jb-muted-2)]">
+            <span>{formatTime(currentTime)}</span>
+            <div className="h-[5px] flex-1 overflow-hidden rounded-full bg-white/15">
+              <div
+                className="family-progress h-full transition-[width] duration-150 ease-linear"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
+            <span>{formatTime(duration)}</span>
+          </div>
+        </div>
+
+        <div className="hidden items-center justify-end gap-2.5 text-[var(--jb-muted)] sm:flex">
           <VolumeIcon />
           <div className="h-[5px] w-24 overflow-hidden rounded-full bg-white/15">
             <div className="family-progress h-full w-[70%]" />
@@ -138,6 +128,137 @@ export function MiniPlayer() {
         </div>
       </div>
     </aside>
+  );
+}
+
+type PlayerTransportControlsProps = {
+  isPlaying: boolean;
+  shuffleMode: ShuffleMode;
+  repeatMode: RepeatMode;
+  playSize: "sm" | "md";
+  onTogglePlay: () => void;
+  onSkipPrev: () => void;
+  onSkipNext: () => void;
+  onToggleShuffle: () => void;
+  onCycleRepeat: () => void;
+};
+
+function PlayerTransportControls({
+  isPlaying,
+  shuffleMode,
+  repeatMode,
+  playSize,
+  onTogglePlay,
+  onSkipPrev,
+  onSkipNext,
+  onToggleShuffle,
+  onCycleRepeat,
+}: PlayerTransportControlsProps) {
+  return (
+    <div className="flex items-center justify-center gap-1 text-[var(--jb-muted)] sm:gap-3">
+      <ModeButton
+        active={shuffleMode === "on"}
+        label={shuffleMode === "on" ? "Shuffle on" : "Shuffle off"}
+        onClick={onToggleShuffle}
+      >
+        <ShuffleIcon active={shuffleMode === "on"} />
+      </ModeButton>
+
+      <TransportButton label="Previous" onClick={onSkipPrev}>
+        <SkipPrevIcon />
+      </TransportButton>
+
+      <PlayIconButton
+        size={playSize}
+        variant="light"
+        playing={isPlaying}
+        label="Toggle playback"
+        onClick={onTogglePlay}
+        className="mx-0.5 shadow-[0_8px_24px_rgba(0,0,0,0.35)] sm:mx-0"
+      />
+
+      <TransportButton label="Next" onClick={onSkipNext}>
+        <SkipNextIcon />
+      </TransportButton>
+
+      <ModeButton
+        active={repeatMode !== "off"}
+        label={
+          repeatMode === "one"
+            ? "Repeat one song"
+            : repeatMode === "all"
+              ? "Repeat playlist"
+              : "Repeat off"
+        }
+        onClick={onCycleRepeat}
+        badge={repeatMode === "one" ? "1" : undefined}
+      >
+        <RepeatIcon />
+      </ModeButton>
+    </div>
+  );
+}
+
+function ModeButton({
+  active,
+  label,
+  onClick,
+  badge,
+  children,
+}: {
+  active: boolean;
+  label: string;
+  onClick: () => void;
+  badge?: string;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      aria-pressed={active ? "true" : "false"}
+      className={cn(
+        "relative inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-full transition-all duration-200",
+        "[-webkit-tap-highlight-color:transparent] [touch-action:manipulation] active:scale-95",
+        active
+          ? "bg-family-soft text-family-glow shadow-[0_0_18px_rgba(255,111,177,0.22)] ring-1 ring-[rgba(255,111,177,0.35)]"
+          : "text-[var(--jb-muted)] hover:bg-white/[0.06] hover:text-white",
+      )}
+    >
+      {children}
+      {badge ? (
+        <span className="absolute right-1.5 top-1.5 text-[9px] font-bold leading-none text-family-glow">
+          {badge}
+        </span>
+      ) : null}
+    </button>
+  );
+}
+
+function TransportButton({
+  label,
+  onClick,
+  children,
+}: {
+  label: string;
+  onClick: () => void;
+  children: ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className={cn(
+        "inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-full",
+        "text-[var(--jb-muted)] transition-all duration-200",
+        "[-webkit-tap-highlight-color:transparent] [touch-action:manipulation]",
+        "hover:bg-white/[0.06] hover:text-white active:scale-95",
+      )}
+    >
+      {children}
+    </button>
   );
 }
 
