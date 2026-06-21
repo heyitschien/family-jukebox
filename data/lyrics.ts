@@ -223,6 +223,71 @@ Ocean, Solene, and Eliana
 Eliana and Marceline
 Our stories just begun
 Under the summer sun`,
+  "orange-sweater-sun": `SANGYEON- They're in Sogye in the darkness
+CHEN- Avatar 2, in the darkness
+CHEN- In the darkness
+CHEN- An angel walked through the heavy door
+CHEN- Like the sun in the sky
+CHEN- Like wearing the sun
+CHEN- That orange stop code, focus on you
+CHEN- Somewhere close to the snow
+Somewhere between 20 and 40
+Fresh water glass, waking up slow
+Sweet girl, I'm proud of your heart of gold
+Orange sweater, sunlight
+Blasting my soul
+Burn my heart
+Burning away to my heart
+You're the number one in my world
+You're the one in my world
+You capture the world through a lens so bright
+But who takes a picture of your light?
+My beautiful girl
+My beautiful lady
+You're the magic in the middle of the night
+You're the magic in the middle of the night
+Don't hide behind the camera
+Don't hide behind the camera
+Dress yourself up
+So cute today
+Like a smirk, shining heart
+You're shining like 20
+You're also sleepy
+Drift away
+Hydration check, glass by the bed
+I'll take a picture for you every day
+No lens needed, it's all in my head
+The sweetest girl that I ever met
+Orange sweater, sunlight
+Blasting my soul
+Burn my heart
+Burning away to my heart
+You're the number one in my world
+You're the one in my world
+You capture the world through a lens so bright
+But who takes a picture of your light?
+My beautiful girl
+My beautiful lady
+You're the magic in the middle of the night
+What would I do without you?
+Movie theater magic
+You're the beautiful spark
+And every day is a gift
+When you're near
+My love, Evelyn
+Orange sweater, sunlight
+Blasting my soul
+Burn my heart
+Burning away to my heart
+You're the number one in my world
+You're the number one in my world
+You capture the world through a lens so bright
+But who takes a picture of your light?
+My beautiful girl
+My beautiful lady
+You're the magic in the middle of the night
+Evelyn, my sunlight
+Cutie`,
   "pink-glasses-everywhere": `🎵
 Selene is a flash of red in the ferns
 in the ferns

@@ -140,6 +140,20 @@ export const songs: Song[] = [
     tags: ["single", "gold", "evelyn", "featured"],
     featured: true,
   },
+  {
+    slug: "orange-sweater-sun",
+    title: "Orange Sweater Sun",
+    subtitle: "K-pop sunshine — Evelyn's latest single",
+    authorSlug: "evelyn",
+    dateCreated: "2026-06-21",
+    audioSrc: "/assets/evelyn/orange-sweater-sun.mp3",
+    coverSrc: "/assets/evelyn/orange-sweater-sun.jpg",
+    story:
+      "Evelyn's K-pop styled single — bright hooks, orange-sweater warmth, and the second chapter of her growing album.",
+    lyrics: songLyrics["orange-sweater-sun"],
+    tags: ["single", "kpop", "pop", "evelyn", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

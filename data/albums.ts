@@ -30,22 +30,22 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   solene: "Solene's Painted Garden",
   ocean: "Ocean's Adventures",
   "tio-chien": "Tio Chien's Magic Studio",
-  evelyn: "Gold in the Tile",
+  evelyn: "Evelyn",
 };
 
 /** Ongoing / themed albums — add song slugs here as new singles drop. */
 const SERIES_ALBUMS: Album[] = [
   {
     slug: "gold-in-the-tile-album",
-    title: "Gold in the Tile",
-    subtitle: "Evelyn · single out now — more tracks coming",
+    title: "Evelyn",
+    subtitle: "Orange Sweater Sun · K-pop · Gold in the Tile · more tracks coming",
     authorSlug: "evelyn",
-    coverSrc: "/assets/evelyn/gold-in-the-tile.jpg",
-    songSlugs: ["gold-in-the-tile"],
+    coverSrc: "/assets/evelyn/orange-sweater-sun.jpg",
+    songSlugs: ["gold-in-the-tile", "orange-sweater-sun"],
     dateCreated: "2026-06-21",
     story:
-      "A growing album for Evelyn — warm songs with room to grow. New tracks join this collection as they release.",
-    accentColor: "#d4af37",
+      "A growing album for Evelyn — indie warmth, K-pop sparkle, and new songs joining the collection as they release.",
+    accentColor: "#ff8c42",
     featured: true,
   },
   {
