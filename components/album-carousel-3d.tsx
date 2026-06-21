@@ -65,18 +65,18 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
     return () => clearInterval(timer);
   }, [isPaused, albums.length, rotateNext]);
 
-  const playActiveAlbum = useCallback(() => {
+  const playActiveAlbum = () => {
     if (activeSongs.length === 0) return;
     playQueue(activeSongs, 0);
-  }, [activeSongs, playQueue]);
+  };
 
-  const handlePlayToggle = useCallback(() => {
+  const handlePlayToggle = () => {
     if (isAlbumPlaying) {
       togglePlay();
       return;
     }
     playActiveAlbum();
-  }, [isAlbumPlaying, playActiveAlbum, togglePlay]);
+  };
 
   const handleAlbumFocus = useCallback(
     (albumSlug: string, index: number) => {
