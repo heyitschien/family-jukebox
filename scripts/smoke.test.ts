@@ -40,6 +40,7 @@ import {
   resolveTrackAdvance,
 } from "../lib/player-queue";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
+import { buildCoverShareImage, buildShareMetadata, normalizeSiteUrl, SITE_URL } from "../lib/site-metadata";
 
 describe("jukebox catalog", () => {
   it("has songs with playable assets", () => {
@@ -55,6 +56,46 @@ describe("jukebox catalog", () => {
         `${song.slug} authorSlug should match a family member`,
       );
     }
+  });
+});
+
+describe("share metadata", () => {
+  it("uses the live family jukebox host by default", () => {
+    assert.equal(normalizeSiteUrl(), "https://family-jukebox-og3z.vercel.app");
+    assert.match(SITE_URL, /^https?:\/\//);
+    assert.notEqual(SITE_URL, "https://family-jukebox.vercel.app");
+  });
+
+  it("normalizes configured hosts for crawler-safe absolute URLs", () => {
+    assert.equal(normalizeSiteUrl("family.example.com/"), "https://family.example.com");
+    assert.equal(normalizeSiteUrl("https://family.example.com/path/"), "https://family.example.com");
+    assert.equal(normalizeSiteUrl("https://family-jukebox.vercel.app"), "https://family-jukebox-og3z.vercel.app");
+  });
+
+  it("emits absolute per-song open graph image URLs", () => {
+    const song = songs.find((entry) => entry.slug === "legacy-in-the-lane");
+    assert.ok(song, "legacy-in-the-lane should exist");
+
+    const metadata = buildShareMetadata({
+      title: song.title,
+      description: song.subtitle,
+      path: `/songs/${song.slug}`,
+      image: buildCoverShareImage(song.title, song.coverSrc),
+    });
+
+    assert.equal(metadata.openGraph?.url, `${SITE_URL}/songs/legacy-in-the-lane`);
+    assert.deepEqual(metadata.openGraph?.images, [
+      {
+        url: `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+        width: 1024,
+        height: 1024,
+        alt: "Legacy in the Lane cover art",
+        type: "image/png",
+      },
+    ]);
+    assert.deepEqual(metadata.twitter?.images, [
+      `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+    ]);
   });
 });
 

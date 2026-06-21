@@ -60,7 +60,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   const discoverMembers = getDiscoverMembers(album.authorSlug);
 
   return (
-    <main className="min-w-0 px-3 pb-4 lg:px-0">
+    <main className="min-w-0 max-w-full overflow-x-hidden px-3 pb-4 lg:px-0">
       <Topbar />
 
       <Link
@@ -116,7 +116,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
         </div>
       </section>
 
-      <section className="mt-6 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="mt-6 max-w-full overflow-hidden rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
         <h2 className="mb-4 text-xl font-bold">Tracklist</h2>
         {albumSongs.length > 0 ? (
           <div className="grid gap-1">

@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
-import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -24,7 +24,7 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
+        "flex min-w-0 max-w-full items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
         isCurrent
           ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
           : "border-white/[0.045] bg-white/[0.045]",
@@ -39,7 +39,7 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
         label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
         onClick={toggle}
       />
-      <Link href={`/songs/${song.slug}`} className="flex min-w-0 flex-1 items-center gap-3">
+      <Link href={`/songs/${song.slug}`} className="flex min-w-0 flex-1 items-center gap-3 overflow-hidden">
         <CoverImage src={song.coverSrc} alt="" className="size-11 shrink-0 rounded-xl" />
         <div className="min-w-0 flex-1">
           <strong
@@ -51,26 +51,17 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
             {song.title}
           </strong>
           <span className="block truncate text-xs text-[var(--jb-muted)]">
-            {author ? (
-              <>
-                <ArtistLink
-                  member={author}
-                  className="text-[var(--jb-muted)] hover:text-white"
-                  onClick={(event) => event.stopPropagation()}
-                />
-                {" · "}
-              </>
-            ) : null}
+            {author ? `${author.name} · ` : ""}
             {song.tags.slice(0, 3).join(" · ")}
           </span>
         </div>
       </Link>
       <Link
         href={`/songs/${song.slug}`}
-        className="shrink-0 px-2 text-xs text-[var(--jb-muted)] hover:text-white"
+        className="inline-flex min-h-10 min-w-10 shrink-0 items-center justify-center rounded-full text-[var(--jb-muted)] transition hover:bg-white/[0.07] hover:text-white"
         aria-label={`Open ${song.title}`}
       >
-        ···
+        <ChevronRight className="size-4" aria-hidden />
       </Link>
     </div>
   );

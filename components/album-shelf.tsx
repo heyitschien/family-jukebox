@@ -22,11 +22,11 @@ export function AlbumShelf({
   if (albums.length === 0) return null;
 
   return (
-    <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
+    <section className="mt-4 max-w-full overflow-hidden rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">{title}</h2>
-          <p className="text-sm font-bold text-[var(--jb-muted)]">{subtitle}</p>
+        <div className="min-w-0 flex-1">
+          <h2 className="break-words text-[22px] font-bold tracking-tight sm:text-[26px]">{title}</h2>
+          <p className="break-words text-sm font-bold text-[var(--jb-muted)]">{subtitle}</p>
         </div>
         {showViewAll ? (
           <Link
@@ -38,7 +38,7 @@ export function AlbumShelf({
         ) : null}
       </div>
 
-      <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none">
+      <div className="flex max-w-full snap-x snap-mandatory gap-4 overflow-x-auto overscroll-x-contain pb-2 scrollbar-none">
         {albums.map((album) => (
           <AlbumCard key={album.slug} album={album} className="snap-start" />
         ))}

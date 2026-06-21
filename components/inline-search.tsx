@@ -148,11 +148,11 @@ export function InlineSearch({
   };
 
   return (
-    <div ref={rootRef} className={cn("relative w-full", className)}>
+    <div ref={rootRef} className={cn("relative min-w-0 w-full max-w-full", className)}>
       <form
         onSubmit={onSubmit}
         className={cn(
-          "flex w-full items-center gap-2.5 rounded-full px-4 py-3 text-[var(--jb-muted)] transition",
+          "flex min-w-0 w-full items-center gap-2.5 rounded-full px-4 py-3 text-[var(--jb-muted)] transition",
           embedded
             ? "border border-white/15 bg-black/35 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)] backdrop-blur-2xl"
             : "flex-1 border border-white/[0.07] bg-white/[0.08]",
@@ -177,7 +177,7 @@ export function InlineSearch({
           aria-controls={showPanel ? listboxId : undefined}
           aria-autocomplete="list"
           role="combobox"
-          className="w-full border-0 bg-transparent text-[15px] text-[var(--jb-text)] outline-none placeholder:text-white/55"
+          className="min-w-0 w-full border-0 bg-transparent text-[15px] text-[var(--jb-text)] outline-none placeholder:text-white/55"
         />
         {query ? (
           <button

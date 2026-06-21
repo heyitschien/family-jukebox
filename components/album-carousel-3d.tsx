@@ -97,7 +97,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   return (
     <section
-      className="relative -mx-3 overflow-hidden rounded-b-[34px] border border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:mx-0 sm:rounded-[32px]"
+      className="relative -mx-3 max-w-[100vw] overflow-hidden rounded-b-[34px] border border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.35)] [contain:paint] sm:mx-0 sm:max-w-full sm:rounded-[32px]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -119,7 +119,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
       <div className="relative z-10 grid gap-6 p-6 sm:grid-cols-[1fr_1.1fr] sm:items-center sm:gap-8 sm:p-[34px] lg:min-h-[400px]">
         {/* 3D Carousel */}
         <div
-          className="relative mx-auto flex h-[280px] w-full max-w-[340px] items-center justify-center sm:h-[320px] sm:max-w-none"
+          className="relative mx-auto flex h-[280px] w-full max-w-[340px] items-center justify-center overflow-hidden [contain:paint] sm:h-[320px] sm:max-w-none"
           style={{ perspective: "1200px" }}
         >
           <div

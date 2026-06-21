@@ -25,7 +25,7 @@ export default function HomePage() {
   const familyQueue = getFairRotationQueue(refreshSeed);
 
   return (
-    <main className="min-w-0 px-3 lg:px-0">
+    <main className="min-w-0 max-w-full overflow-x-hidden px-3 lg:px-0">
       <AlbumCarousel3D
         albums={carouselAlbums}
         featuredAlbum={featuredAlbum}

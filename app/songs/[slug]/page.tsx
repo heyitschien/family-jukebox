@@ -64,7 +64,7 @@ export default async function SongPage({ params }: SongPageProps) {
   const discoverMembers = getDiscoverMembers(song.authorSlug);
 
   return (
-    <main className="min-w-0 px-3 pb-4 lg:px-0">
+    <main className="min-w-0 max-w-full overflow-x-hidden px-3 pb-4 lg:px-0">
       <Topbar />
 
       <Link
