@@ -8,6 +8,7 @@ import { SongDetailActions } from "@/components/song-detail-actions";
 import { SongPlayCount } from "@/components/song-play-count";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
+import { getAlbumForSong, getAlbumSongs } from "@/data/albums";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
 
@@ -38,6 +39,8 @@ export default async function SongPage({ params }: SongPageProps) {
 
   const author = getSongAuthor(song);
   const artistQueue = getSongsByAuthor(song.authorSlug);
+  const parentAlbum = getAlbumForSong(song);
+  const albumQueue = parentAlbum ? getAlbumSongs(parentAlbum) : artistQueue;
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -61,6 +64,14 @@ export default async function SongPage({ params }: SongPageProps) {
           {isSpotlightSong(song) ? "Today’s spotlight · " : ""}Family song
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">{song.title}</h1>
+        {parentAlbum ? (
+          <Link
+            href={`/albums/${parentAlbum.slug}`}
+            className="mt-2 inline-flex items-center gap-1.5 text-sm font-bold text-[var(--family-pink)] hover:underline"
+          >
+            From {parentAlbum.title}
+          </Link>
+        ) : null}
         {author ? (
           <Link
             href={`/members/${author.slug}`}
@@ -74,7 +85,7 @@ export default async function SongPage({ params }: SongPageProps) {
         ) : null}
 
         <div className="mt-6 flex justify-center">
-          <SongDetailActions song={song} queue={artistQueue} />
+          <SongDetailActions song={song} queue={artistQueue} albumQueue={albumQueue} parentAlbum={parentAlbum} />
         </div>
 
         <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-[var(--jb-muted)]">

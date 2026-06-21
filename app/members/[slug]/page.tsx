@@ -3,8 +3,10 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
+import { AlbumShelf } from "@/components/album-shelf";
 import { MemberPlayHeader, MemberSongList } from "@/components/member-play-header";
 import { Topbar } from "@/components/topbar";
+import { getAlbumsByAuthor } from "@/data/albums";
 import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
 
@@ -34,6 +36,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
   if (!member) notFound();
 
   const memberSongs = getSongsByAuthor(member.slug);
+  const memberAlbums = getAlbumsByAuthor(member.slug);
   const heroCover = memberSongs[0]?.coverSrc;
 
   return (
@@ -72,6 +75,17 @@ export default async function MemberPage({ params }: MemberPageProps) {
           </div>
         </div>
       </section>
+
+      {memberAlbums.length > 0 ? (
+        <section className="mt-6">
+          <AlbumShelf
+            albums={memberAlbums}
+            title={`${member.name}'s albums`}
+            subtitle="Play the full collection or explore track by track"
+            showViewAll={false}
+          />
+        </section>
+      ) : null}
 
       <section className="mt-6 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
         <h2 className="mb-4 text-xl font-bold">Popular</h2>

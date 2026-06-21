@@ -4,9 +4,11 @@ import { useMemo, useState } from "react";
 import { Search as SearchIcon } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
+import { AlbumCard } from "@/components/album-card";
 import { EmptyState } from "@/components/empty-state";
 import { SongRow } from "@/components/song-row";
 import { Topbar } from "@/components/topbar";
+import { albums, getAlbumAuthor } from "@/data/albums";
 import type { FamilyMember } from "@/data/members";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
@@ -33,6 +35,14 @@ function matchesQuery(song: Song, query: string): boolean {
   return haystack.includes(query);
 }
 
+function matchesAlbumQuery(album: (typeof albums)[number], query: string): boolean {
+  const author = getAlbumAuthor(album);
+  const haystack = [album.title, album.subtitle ?? "", author?.name ?? "", ...album.songSlugs]
+    .join(" ")
+    .toLowerCase();
+  return haystack.includes(query);
+}
+
 export function SearchScreen({ songs, tags, members, ages }: SearchScreenProps) {
   const searchParams = useSearchParams();
   const initial = searchParams.get("q") ?? "";
@@ -40,6 +50,17 @@ export function SearchScreen({ songs, tags, members, ages }: SearchScreenProps) 
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeMember, setActiveMember] = useState<string | null>(null);
   const [activeAge, setActiveAge] = useState<number | null>(null);
+
+  const filteredAlbums = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return albums.filter((album) => {
+      const author = getAlbumAuthor(album);
+      if (activeMember && album.authorSlug !== activeMember) return false;
+      if (activeAge && author?.age !== activeAge) return false;
+      if (q && !matchesAlbumQuery(album, q)) return false;
+      return true;
+    });
+  }, [activeAge, activeMember, query]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -114,13 +135,27 @@ export function SearchScreen({ songs, tags, members, ages }: SearchScreenProps) 
       </div>
 
       <div className="pt-2">
+        {filteredAlbums.length > 0 ? (
+          <div className="mb-6">
+            <h2 className="mb-3 text-lg font-bold">Albums</h2>
+            <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+              {filteredAlbums.map((album) => (
+                <AlbumCard key={album.slug} album={album} />
+              ))}
+            </div>
+          </div>
+        ) : null}
+
         {filtered.length > 0 ? (
-          filtered.map((song, i) => (
-            <SongRow key={song.slug} song={song} index={i} showIndex playlist={filtered} />
-          ))
-        ) : (
+          <>
+            <h2 className="mb-3 text-lg font-bold">Songs</h2>
+            {filtered.map((song, i) => (
+              <SongRow key={song.slug} song={song} index={i} showIndex playlist={filtered} />
+            ))}
+          </>
+        ) : filteredAlbums.length === 0 ? (
           <EmptyState />
-        )}
+        ) : null}
       </div>
     </div>
   );
