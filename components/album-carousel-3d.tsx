@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { Topbar } from "@/components/topbar";
@@ -20,6 +22,7 @@ type AlbumCarousel3DProps = {
 };
 
 export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCarousel3DProps) {
+  const router = useRouter();
   const { playQueue, currentSong, isPlaying, queue, togglePlay } = usePlayer();
   const [activeIndex, setActiveIndex] = useState(() =>
     Math.max(
@@ -130,7 +133,106 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
             {albums.map((album, i) => {
               const angle = i * angleStep;
               const isFront = i === activeIndex;
-              const authorName = getAlbumAuthor(album)?.name ?? "Family";
+              const albumAuthor = getAlbumAuthor(album);
+              const albumSongs = getAlbumSongs(album);
+              const albumIsPlaying =
+                isPlaying &&
+                albumSongs.length > 0 &&
+                albumSongs.some((s) => s.slug === currentSong?.slug) &&
+                queue.length > 0 &&
+                queue.every((q, j) => albumSongs[j]?.slug === q.slug);
+
+              const coverStyle = {
+                width: `${coverSize}px`,
+                height: `${coverSize}px`,
+                marginLeft: `-${coverSize / 2}px`,
+                marginTop: `-${coverSize / 2}px`,
+                transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
+                transformStyle: "preserve-3d" as const,
+                transition: "transform 600ms cubic-bezier(0.34, 1.2, 0.64, 1), opacity 400ms",
+                opacity: isFront ? 1 : 0.5,
+                zIndex: isFront ? 10 : 1,
+              };
+
+              const coverInner = (
+                <div
+                  className={cn(
+                    "relative size-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500",
+                    isFront && albumIsPlaying && "ring-2 ring-[var(--family-pink)] ring-offset-2 ring-offset-[#0b0f14]",
+                  )}
+                  style={{
+                    transform: isFront ? "scale(1.05)" : "scale(0.82)",
+                    boxShadow: isFront
+                      ? `0 24px 60px ${album.accentColor}44, 0 8px 24px rgba(0,0,0,0.4)`
+                      : "0 12px 32px rgba(0,0,0,0.3)",
+                  }}
+                >
+                  <CoverImage src={album.coverSrc} alt="" className="size-full" />
+                  {isFront ? (
+                    <>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+                      <div
+                        className="absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2"
+                        onClick={(event) => event.stopPropagation()}
+                      >
+                        <PlayIconButton
+                          size="lg"
+                          playing={albumIsPlaying}
+                          label={albumIsPlaying ? "Pause album" : `Play ${album.title}`}
+                          onClick={() => {
+                            if (i === activeIndex) {
+                              handlePlayToggle();
+                            } else {
+                              rotateTo(i);
+                              playQueue(albumSongs, 0);
+                            }
+                          }}
+                          className="shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
+                        />
+                      </div>
+                      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8">
+                        {albumAuthor ? (
+                          <ArtistLink
+                            member={albumAuthor}
+                            className="truncate text-xs text-white"
+                            onClick={(event) => event.stopPropagation()}
+                          />
+                        ) : (
+                          <p className="truncate text-xs font-bold text-white">Family</p>
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                      className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8"
+                      style={{ opacity: 0 }}
+                    >
+                      <p className="truncate text-xs font-bold text-white">
+                        {albumAuthor?.name ?? "Family"}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+
+              if (isFront) {
+                return (
+                  <div
+                    key={album.slug}
+                    className="absolute top-1/2 left-1/2"
+                    style={coverStyle}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => router.push(`/albums/${album.slug}`)}
+                      className="block size-full cursor-pointer border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent]"
+                      aria-label={`Open ${album.title}`}
+                    >
+                      {coverInner}
+                    </button>
+                  </div>
+                );
+              }
 
               return (
                 <button
@@ -138,39 +240,10 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                   type="button"
                   onClick={() => rotateTo(i)}
                   className="absolute top-1/2 left-1/2 cursor-pointer border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent]"
-                  style={{
-                    width: `${coverSize}px`,
-                    height: `${coverSize}px`,
-                    marginLeft: `-${coverSize / 2}px`,
-                    marginTop: `-${coverSize / 2}px`,
-                    transform: `rotateY(${angle}deg) translateZ(${radius}px)`,
-                    transformStyle: "preserve-3d",
-                    transition: "transform 600ms cubic-bezier(0.34, 1.2, 0.64, 1), opacity 400ms",
-                    opacity: isFront ? 1 : 0.5,
-                    zIndex: isFront ? 10 : 1,
-                  }}
+                  style={coverStyle}
                   aria-label={`View ${album.title}`}
                 >
-                  <div
-                    className={cn(
-                      "relative size-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500",
-                      isFront && isAlbumPlaying && "ring-2 ring-[var(--family-pink)] ring-offset-2 ring-offset-[#0b0f14]",
-                    )}
-                    style={{
-                      transform: isFront ? "scale(1.05)" : "scale(0.82)",
-                      boxShadow: isFront
-                        ? `0 24px 60px ${album.accentColor}44, 0 8px 24px rgba(0,0,0,0.4)`
-                        : "0 12px 32px rgba(0,0,0,0.3)",
-                    }}
-                  >
-                    <CoverImage src={album.coverSrc} alt="" className="size-full" />
-                    <div
-                      className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8"
-                      style={{ opacity: isFront ? 1 : 0 }}
-                    >
-                      <p className="truncate text-xs font-bold text-white">{authorName}</p>
-                    </div>
-                  </div>
+                  {coverInner}
                 </button>
               );
             })}
@@ -195,18 +268,32 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
         {/* Hero copy + actions */}
         <div className="relative z-10 min-w-0">
-        <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
-          {heroBadge.emoji} {heroBadge.prefix}
-          {author?.name ?? "Family"}
-        </span>
+          <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
+            {heroBadge.emoji} {heroBadge.prefix}
+            {author ? (
+              <ArtistLink member={author} className="text-family-glow" />
+            ) : (
+              "Family"
+            )}
+          </span>
           <h1 className="text-[clamp(40px,10vw,72px)] leading-[0.9] font-extrabold tracking-[-0.06em]">
             Family Jukebox
           </h1>
-          <p className="mt-3 text-lg font-bold" style={{ color: activeAlbum.accentColor }}>
+          <Link
+            href={`/albums/${activeAlbum.slug}`}
+            className="mt-3 block text-lg font-bold transition hover:underline"
+            style={{ color: activeAlbum.accentColor }}
+          >
             {activeAlbum.title}
-          </p>
+          </Link>
           <p className="mt-1 text-sm text-[var(--jb-muted)]">
             {activeAlbum.subtitle ?? `${activeSongs.length} songs`}
+            {author ? (
+              <>
+                {" · "}
+                <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
+              </>
+            ) : null}
           </p>
           <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
             Spin through cousin albums — silly fox trails, gravity shifts, pink glasses, and every

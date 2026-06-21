@@ -4,11 +4,14 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { AlbumShelf } from "@/components/album-shelf";
+import { DiscoverMembersShelf } from "@/components/discover-members-shelf";
 import { MemberPlayHeader, MemberSongList } from "@/components/member-play-header";
+import { SongShelf } from "@/components/song-shelf";
 import { Topbar } from "@/components/topbar";
 import { getAlbumsByAuthor, groupAlbumsByKind } from "@/data/albums";
 import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
+import { getDiscoverAlbums, getDiscoverMembers, getDiscoverSongs } from "@/lib/music-discovery";
 
 import { buildShareMetadata } from "@/lib/site-metadata";
 
@@ -38,6 +41,10 @@ export default async function MemberPage({ params }: MemberPageProps) {
   const memberSongs = getSongsByAuthor(member.slug);
   const { series, discography } = groupAlbumsByKind(getAlbumsByAuthor(member.slug));
   const heroCover = memberSongs[0]?.coverSrc;
+  const memberAlbumSlugs = [...series, ...discography].map((album) => album.slug);
+  const discoverAlbums = getDiscoverAlbums(memberAlbumSlugs);
+  const discoverSongs = getDiscoverSongs(memberSongs.map((song) => song.slug));
+  const discoverMembers = getDiscoverMembers(member.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -120,6 +127,32 @@ export default async function MemberPage({ params }: MemberPageProps) {
         <h2 className="text-lg font-bold">About {member.name}</h2>
         <p className="mt-3 leading-relaxed text-[var(--jb-muted)]">{member.description}</p>
       </section>
+
+      {discoverAlbums.length > 0 ? (
+        <AlbumShelf
+          albums={discoverAlbums}
+          title="More family albums"
+          subtitle="Explore another cousin's collection — tap to play or dive in"
+          showViewAll
+        />
+      ) : null}
+
+      {discoverSongs.length > 0 ? (
+        <SongShelf
+          songs={discoverSongs}
+          title="Discover more songs"
+          subtitle="Fresh picks from across the jukebox"
+          viewAllHref="/songs"
+          viewAllLabel="Browse songs"
+          compact
+        />
+      ) : null}
+
+      <DiscoverMembersShelf
+        members={discoverMembers}
+        title="Other family artists"
+        subtitle="Hop to another profile — albums, songs, and stories waiting"
+      />
     </main>
   );
 }
