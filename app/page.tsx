@@ -1,7 +1,6 @@
 import { FeaturedShelf } from "@/components/featured-shelf";
 import { HeroSection } from "@/components/hero-section";
 import { RecentQueue } from "@/components/recent-queue";
-import { Topbar } from "@/components/topbar";
 import { getAllTags } from "@/data/songs";
 import {
   createRefreshSeed,
@@ -20,7 +19,6 @@ export default function HomePage() {
 
   return (
     <main className="min-w-0 px-3 lg:px-0">
-      <Topbar />
       <HeroSection featured={featured} playlist={shelfSongs} familyQueue={familyQueue} />
       <FeaturedShelf songs={shelfSongs} tags={getAllTags()} />
       <RecentQueue songs={shelfSongs} familyQueue={familyQueue} />
