@@ -139,7 +139,7 @@ Run `npx tsx -e "..."` or inspect `data/songs.ts` / `data/albums.ts` to refresh 
 | `/members/[slug]` | SSG | Artist page — hero, **series shelf** + **studio shelf**, song list | `groupAlbumsByKind(getAlbumsByAuthor)` |
 | `/family` | static | Cousin Radio directory | `members` grouped by role |
 | `/favorites` | dynamic | Today’s spotlight — one song per member | `getRotatedSpotlightSongs` |
-| `/search` | static | Search + filters (tags, members, ages) | `SearchScreen` — reached via Topbar, not bottom nav |
+| `/search` | static | Advanced search + filters (tags, members, ages) | `SearchScreen` + shared `lib/search.ts` |
 | `/api/plays` | API | POST play events | `recordPlayEvent` |
 | `/api/stats` | API | GET aggregate stats | `getSitePlayStats` |
 
@@ -147,9 +147,8 @@ Run `npx tsx -e "..."` or inspect `data/songs.ts` / `data/albums.ts` to refresh 
 
 | Surface | Links |
 |---------|-------|
+| **Topbar** | Embedded **inline search combobox** on all pages — results dropdown under the field; `/` focuses search |
 | **Bottom nav (mobile)** | Home, Songs, Favs, Family |
-| **Sidebar (desktop lg+)** | Same four + “Cousin Radio” label for Family |
-| **Topbar** | Embedded search → `/search?q=` (on home hero + other pages) |
 
 > **Note:** Original `DESIGN-SPOTIFY.md` listed Search as a bottom tab. **Current code** uses search in the Topbar instead; bottom nav has Songs + Favorites.
 
@@ -366,7 +365,7 @@ Smoke tests cover: catalog integrity, album assignment rules, carousel dedup, ro
 | Spec said | Code does | Why |
 |-----------|-----------|-----|
 | Spotify `#121212` + 4px radius | Warm dark gradients + 28px panels | Family mock aesthetic |
-| Search in bottom nav | Search in Topbar | Hero-embedded search on home |
+| Search in bottom nav | **Inline combobox in Topbar** — live grouped results (Artists / Albums / Songs), keyboard nav, pink highlight | No page navigation while typing |
 | Green `#1ed760` play | Pink/ocean gradient accent | Family brand colors |
 | 5 albums in carousel | 6 (one per member) | Evelyn added to family |
 | Auto `{slug}-album` for everyone | Series + discography split | Avoid duplicate albums/tracks |

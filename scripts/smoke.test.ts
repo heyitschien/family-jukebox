@@ -27,6 +27,7 @@ import {
   isTodayHeroAlbum,
 } from "../lib/album-rotation";
 import { parsePlayEventBody } from "../lib/security/api";
+import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
 
 describe("jukebox catalog", () => {
   it("has songs with playable assets", () => {
@@ -160,6 +161,34 @@ describe("featured rotation", () => {
   it("creates bounded refresh seeds", () => {
     const seed = createRefreshSeed();
     assert.ok(seed >= 0 && seed < 10_000, "refresh seed should stay in expected range");
+  });
+});
+
+describe("search catalog", () => {
+  it("ranks exact song title matches highly", () => {
+    const results = searchCatalog("chien");
+    assert.ok(results.length > 0);
+    assert.ok(
+      results.some(
+        (result) =>
+          result.kind === "member" &&
+          result.member.slug === "tio-chien",
+      ),
+      "member name search should surface Tio Chien",
+    );
+  });
+
+  it("filters songs by member slug", () => {
+    const evelynSongs = filterSongs("", { memberSlug: "evelyn" });
+    assert.ok(evelynSongs.every((song) => song.authorSlug === "evelyn"));
+    assert.equal(evelynSongs.length, 3);
+  });
+
+  it("limits inline groups for dropdown UX", () => {
+    const grouped = getInlineSearchResults("e");
+    assert.ok(grouped.songs.length <= 6);
+    assert.ok(grouped.albums.length <= 3);
+    assert.ok(grouped.members.length <= 3);
   });
 });
 
