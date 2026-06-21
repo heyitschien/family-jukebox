@@ -18,7 +18,7 @@ Simple workflow — files + two data entries (member + song).
 | `eliana` | Eliana | 6 | our girls |
 | `solene` | Solene | 8 | our girls |
 | `ocean` | Ocean | 10 | our guy |
-| `tio-chien` | Tio Chien | 11 | Tio |
+| `tio-chien` | Tio Chien | 35 | Tio |
 
 Edit bios in `data/members.ts` anytime.
 

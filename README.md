@@ -20,7 +20,7 @@ Open [http://localhost:3000](http://localhost:3000).
 | Eliana | 6 | our girls |
 | Solene | 8 | our girls |
 | Ocean | 10 | our guy |
-| Tio Chien | 11 | Tio |
+| Tio Chien | 35 | Tio |
 
 Bios and ages live in `data/members.ts`. Each person has a page at `/members/[slug]`.
 

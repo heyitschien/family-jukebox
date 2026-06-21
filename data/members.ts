@@ -49,7 +49,7 @@ export const members: FamilyMember[] = [
   {
     slug: "tio-chien",
     name: "Tio Chien",
-    age: 11,
+    age: 35,
     role: "tio",
     emoji: "✨",
     description:
