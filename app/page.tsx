@@ -13,8 +13,11 @@ import {
   getFairRotationQueue,
   getRotatedFeaturedShelf,
 } from "@/lib/featured-rotation";
+import { buildShareMetadata } from "@/lib/site-metadata";
 
 export const dynamic = "force-dynamic";
+
+export const metadata = buildShareMetadata();
 
 export default function HomePage() {
   const refreshSeed = createRefreshSeed();

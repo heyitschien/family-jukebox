@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
-import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -17,6 +17,11 @@ type SongRowProps = {
   playlist?: Song[];
 };
 
+function buildRowSubtitle(song: Song, authorName?: string): string {
+  const tags = song.tags.slice(0, 2);
+  return [authorName, ...tags].filter(Boolean).join(" · ");
+}
+
 export function SongRow({ song, index, showIndex = false, playlist }: SongRowProps) {
   const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
   const author = getMemberBySlug(song.authorSlug);
@@ -24,7 +29,7 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
   return (
     <div
       className={cn(
-        "flex items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
+        "flex min-w-0 items-center gap-2 overflow-hidden rounded-2xl border p-2 transition hover:bg-white/[0.08] sm:gap-3",
         isCurrent
           ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
           : "border-white/[0.045] bg-white/[0.045]",
@@ -39,9 +44,12 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
         label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
         onClick={toggle}
       />
-      <Link href={`/songs/${song.slug}`} className="flex min-w-0 flex-1 items-center gap-3">
+      <Link
+        href={`/songs/${song.slug}`}
+        className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden sm:gap-3"
+      >
         <CoverImage src={song.coverSrc} alt="" className="size-11 shrink-0 rounded-xl" />
-        <div className="min-w-0 flex-1">
+        <div className="min-w-0 flex-1 overflow-hidden">
           <strong
             className={cn(
               "block truncate text-sm",
@@ -51,26 +59,13 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
             {song.title}
           </strong>
           <span className="block truncate text-xs text-[var(--jb-muted)]">
-            {author ? (
-              <>
-                <ArtistLink
-                  member={author}
-                  className="text-[var(--jb-muted)] hover:text-white"
-                  onClick={(event) => event.stopPropagation()}
-                />
-                {" · "}
-              </>
-            ) : null}
-            {song.tags.slice(0, 3).join(" · ")}
+            {buildRowSubtitle(song, author?.name)}
           </span>
         </div>
-      </Link>
-      <Link
-        href={`/songs/${song.slug}`}
-        className="shrink-0 px-2 text-xs text-[var(--jb-muted)] hover:text-white"
-        aria-label={`Open ${song.title}`}
-      >
-        ···
+        <ChevronRight
+          className="size-4 shrink-0 text-[var(--jb-muted)]"
+          aria-hidden
+        />
       </Link>
     </div>
   );
