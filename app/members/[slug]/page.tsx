@@ -5,9 +5,11 @@ import { ArrowLeft } from "lucide-react";
 
 import { AlbumShelf } from "@/components/album-shelf";
 import { MemberPlayHeader, MemberSongList } from "@/components/member-play-header";
+import { ArtistCircleLinks } from "@/components/music-discovery-rails";
 import { Topbar } from "@/components/topbar";
 import { getAlbumsByAuthor, groupAlbumsByKind } from "@/data/albums";
 import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
+import { getNeighborMembers } from "@/data/music-discovery";
 import { getSongsByAuthor } from "@/data/songs";
 
 import { buildShareMetadata } from "@/lib/site-metadata";
@@ -38,6 +40,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
   const memberSongs = getSongsByAuthor(member.slug);
   const { series, discography } = groupAlbumsByKind(getAlbumsByAuthor(member.slug));
   const heroCover = memberSongs[0]?.coverSrc;
+  const neighborArtists = getNeighborMembers(member.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -120,6 +123,12 @@ export default async function MemberPage({ params }: MemberPageProps) {
         <h2 className="text-lg font-bold">About {member.name}</h2>
         <p className="mt-3 leading-relaxed text-[var(--jb-muted)]">{member.description}</p>
       </section>
+
+      <ArtistCircleLinks
+        artists={neighborArtists}
+        title="Explore another artist"
+        subtitle="Move from this catalog into the next family sound."
+      />
     </main>
   );
 }

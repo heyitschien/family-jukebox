@@ -4,11 +4,22 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import {
+  ArtistCircleLinks,
+  RelatedAlbumsRail,
+  RelatedSongsRail,
+} from "@/components/music-discovery-rails";
 import { SongDetailActions } from "@/components/song-detail-actions";
 import { SongPlayCount } from "@/components/song-play-count";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
 import { getAlbumForSong, getAlbumSongs } from "@/data/albums";
+import {
+  getMoreSongsByAuthor,
+  getNeighborMembers,
+  getRelatedAlbumsForSong,
+  getSimilarSongsForSong,
+} from "@/data/music-discovery";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
 
@@ -41,6 +52,10 @@ export default async function SongPage({ params }: SongPageProps) {
   const artistQueue = getSongsByAuthor(song.authorSlug);
   const parentAlbum = getAlbumForSong(song);
   const albumQueue = parentAlbum ? getAlbumSongs(parentAlbum) : artistQueue;
+  const moreFromArtist = getMoreSongsByAuthor(song.authorSlug, [song.slug], 4);
+  const similarSongs = getSimilarSongsForSong(song);
+  const relatedAlbums = getRelatedAlbumsForSong(song);
+  const neighborArtists = getNeighborMembers(song.authorSlug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -111,6 +126,33 @@ export default async function SongPage({ params }: SongPageProps) {
           <SongVideo videoSrc={song.videoSrc} title={song.title} />
         </section>
       ) : null}
+
+      <div className="mx-auto mt-6 max-w-lg space-y-4">
+        <RelatedSongsRail
+          title={`More from ${author?.name ?? "this artist"}`}
+          subtitle="Stay with the artist, then keep the queue moving."
+          songs={moreFromArtist}
+          playlist={artistQueue}
+        />
+
+        <RelatedSongsRail
+          title="Similar family songs"
+          subtitle="Shared tags, nearby moods, and other artists to discover."
+          songs={similarSongs}
+          playlist={[song, ...similarSongs]}
+        />
+
+        <RelatedAlbumsRail
+          title="Albums connected to this song"
+          subtitle="Open the album or jump into another collection."
+          albums={relatedAlbums}
+        />
+
+        <ArtistCircleLinks
+          artists={neighborArtists}
+          subtitle="Tap another artist and keep exploring the family catalog."
+        />
+      </div>
 
       <div className="mx-auto mt-6 max-w-lg space-y-4">
         {song.story ? (

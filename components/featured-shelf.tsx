@@ -52,6 +52,14 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
           {song.subtitle ?? `${author?.name ?? "Family"} · family song`}
         </p>
       </Link>
+      {author ? (
+        <Link
+          href={`/members/${author.slug}`}
+          className="mt-2 inline-block max-w-full truncate text-xs font-bold text-[var(--family-pink)] hover:underline"
+        >
+          {author.name}
+        </Link>
+      ) : null}
     </article>
   );
 }

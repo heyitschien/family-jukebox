@@ -5,6 +5,11 @@ import { ArrowLeft } from "lucide-react";
 
 import { AlbumPlayHeader } from "@/components/album-play-header";
 import { CoverImage } from "@/components/cover-image";
+import {
+  ArtistCircleLinks,
+  RelatedAlbumsRail,
+  RelatedSongsRail,
+} from "@/components/music-discovery-rails";
 import { SongRow } from "@/components/song-row";
 import { Topbar } from "@/components/topbar";
 import {
@@ -12,10 +17,14 @@ import {
   getAlbumAuthor,
   getAlbumBySlug,
   getAlbumKindLabel,
-  getAlbumsByAuthor,
   getAlbumSongs,
   getAlbumTrackCount,
 } from "@/data/albums";
+import {
+  getNeighborMembers,
+  getRelatedAlbumsForAlbum,
+  getRelatedSongsForAlbum,
+} from "@/data/music-discovery";
 import { buildShareMetadata } from "@/lib/site-metadata";
 
 type AlbumPageProps = {
@@ -44,7 +53,9 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   const author = getAlbumAuthor(album);
   const albumSongs = getAlbumSongs(album);
   const trackCount = getAlbumTrackCount(album);
-  const relatedAlbums = getAlbumsByAuthor(album.authorSlug).filter((entry) => entry.slug !== album.slug);
+  const relatedSongs = getRelatedSongsForAlbum(album);
+  const relatedAlbums = getRelatedAlbumsForAlbum(album);
+  const neighborArtists = getNeighborMembers(album.authorSlug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -116,26 +127,23 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
         )}
       </section>
 
-      {relatedAlbums.length > 0 ? (
-        <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
-          <h2 className="text-lg font-bold">More from {author?.name ?? "this artist"}</h2>
-          <ul className="mt-3 space-y-2">
-            {relatedAlbums.map((related) => (
-              <li key={related.slug}>
-                <Link
-                  href={`/albums/${related.slug}`}
-                  className="flex items-center justify-between gap-3 rounded-xl border border-white/[0.06] bg-white/[0.04] px-4 py-3 text-sm font-bold hover:bg-white/[0.08]"
-                >
-                  <span>{related.title}</span>
-                  <span className="shrink-0 text-xs font-extrabold uppercase tracking-wide text-[var(--jb-muted)]">
-                    {getAlbumKindLabel(related)}
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ) : null}
+      <RelatedSongsRail
+        title={`More music after ${album.title}`}
+        subtitle="Same artist first, then similar family songs by tag and mood."
+        songs={relatedSongs}
+        playlist={[...albumSongs, ...relatedSongs]}
+      />
+
+      <RelatedAlbumsRail
+        title="Keep exploring albums"
+        subtitle="Move into another collection without backing out."
+        albums={relatedAlbums}
+      />
+
+      <ArtistCircleLinks
+        artists={neighborArtists}
+        subtitle="Jump sideways to another artist page and keep the loop going."
+      />
 
       {album.story ? (
         <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">

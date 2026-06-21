@@ -60,20 +60,31 @@ function QueueRow({ song, playlist }: { song: Song; playlist: Song[] }) {
         label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
         onClick={toggle}
       />
-      <CoverImage src={song.coverSrc} alt="" className="size-11 rounded-xl" />
-      <Link href={`/songs/${song.slug}`} className="min-w-0 text-left">
-        <strong
-          className={cn(
-            "block truncate text-sm",
-            isCurrent && "text-[var(--family-pink)]",
-          )}
-        >
-          {song.title}
-        </strong>
-        <span className="block truncate text-xs text-[var(--jb-muted)]">
-          {author?.name} · {song.tags.slice(0, 3).join(" · ")}
-        </span>
+      <Link href={`/songs/${song.slug}`} className="shrink-0">
+        <CoverImage src={song.coverSrc} alt="" className="size-11 rounded-xl" />
       </Link>
+      <div className="min-w-0 text-left">
+        <Link href={`/songs/${song.slug}`} className="block min-w-0">
+          <strong
+            className={cn(
+              "block truncate text-sm hover:underline",
+              isCurrent && "text-[var(--family-pink)]",
+            )}
+          >
+            {song.title}
+          </strong>
+        </Link>
+        <span className="block truncate text-xs text-[var(--jb-muted)]">
+          {author ? (
+            <Link href={`/members/${author.slug}`} className="hover:text-white hover:underline">
+              {author.name}
+            </Link>
+          ) : (
+            "Family"
+          )}{" "}
+          · {song.tags.slice(0, 3).join(" · ")}
+        </span>
+      </div>
       <div className="hidden sm:block">
         <QueueBadge song={song} />
       </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { CoverImage } from "@/components/cover-image";
@@ -21,6 +22,7 @@ type AlbumCarousel3DProps = {
 
 export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCarousel3DProps) {
   const { playQueue, currentSong, isPlaying, queue, togglePlay } = usePlayer();
+  const router = useRouter();
   const [activeIndex, setActiveIndex] = useState(() =>
     Math.max(
       0,
@@ -55,6 +57,12 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   const rotateNext = useCallback(() => rotateTo(activeIndex + 1), [activeIndex, rotateTo]);
   const rotatePrev = useCallback(() => rotateTo(activeIndex - 1), [activeIndex, rotateTo]);
+  const openAlbum = useCallback(
+    (album: Album) => {
+      router.push(`/albums/${album.slug}`);
+    },
+    [router],
+  );
 
   useEffect(() => {
     if (isPaused || albums.length <= 1) return;
@@ -133,11 +141,9 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               const authorName = getAlbumAuthor(album)?.name ?? "Family";
 
               return (
-                <button
+                <div
                   key={album.slug}
-                  type="button"
-                  onClick={() => rotateTo(i)}
-                  className="absolute top-1/2 left-1/2 cursor-pointer border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent]"
+                  className="absolute top-1/2 left-1/2"
                   style={{
                     width: `${coverSize}px`,
                     height: `${coverSize}px`,
@@ -149,29 +155,45 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                     opacity: isFront ? 1 : 0.5,
                     zIndex: isFront ? 10 : 1,
                   }}
-                  aria-label={`View ${album.title}`}
                 >
-                  <div
-                    className={cn(
-                      "relative size-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500",
-                      isFront && isAlbumPlaying && "ring-2 ring-[var(--family-pink)] ring-offset-2 ring-offset-[#0b0f14]",
-                    )}
-                    style={{
-                      transform: isFront ? "scale(1.05)" : "scale(0.82)",
-                      boxShadow: isFront
-                        ? `0 24px 60px ${album.accentColor}44, 0 8px 24px rgba(0,0,0,0.4)`
-                        : "0 12px 32px rgba(0,0,0,0.3)",
-                    }}
+                  <button
+                    type="button"
+                    onClick={() => (isFront ? openAlbum(album) : rotateTo(i))}
+                    className="size-full cursor-pointer border-0 bg-transparent p-0 text-left [-webkit-tap-highlight-color:transparent]"
+                    aria-label={isFront ? `Open ${album.title}` : `Bring ${album.title} forward`}
                   >
-                    <CoverImage src={album.coverSrc} alt="" className="size-full" />
                     <div
-                      className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8"
-                      style={{ opacity: isFront ? 1 : 0 }}
+                      className={cn(
+                        "relative size-full overflow-hidden rounded-2xl shadow-2xl transition-all duration-500",
+                        isFront && isAlbumPlaying && "ring-2 ring-[var(--family-pink)] ring-offset-2 ring-offset-[#0b0f14]",
+                      )}
+                      style={{
+                        transform: isFront ? "scale(1.05)" : "scale(0.82)",
+                        boxShadow: isFront
+                          ? `0 24px 60px ${album.accentColor}44, 0 8px 24px rgba(0,0,0,0.4)`
+                          : "0 12px 32px rgba(0,0,0,0.3)",
+                      }}
                     >
-                      <p className="truncate text-xs font-bold text-white">{authorName}</p>
+                      <CoverImage src={album.coverSrc} alt="" className="size-full" />
+                      <div
+                        className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8"
+                        style={{ opacity: isFront ? 1 : 0 }}
+                      >
+                        <p className="truncate text-xs font-bold text-white">{authorName}</p>
+                      </div>
                     </div>
-                  </div>
-                </button>
+                  </button>
+
+                  {isFront && activeSongs.length > 0 ? (
+                    <PlayIconButton
+                      size="lg"
+                      playing={isAlbumPlaying}
+                      label={isAlbumPlaying ? "Pause album" : `Play ${album.title}`}
+                      onClick={handlePlayToggle}
+                      className="absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 shadow-[0_14px_35px_rgba(0,0,0,0.38)]"
+                    />
+                  ) : null}
+                </div>
               );
             })}
           </div>
@@ -195,10 +217,20 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
         {/* Hero copy + actions */}
         <div className="relative z-10 min-w-0">
-        <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
-          {heroBadge.emoji} {heroBadge.prefix}
-          {author?.name ?? "Family"}
-        </span>
+          {author ? (
+            <Link
+              href={`/members/${author.slug}`}
+              className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow hover:border-[rgba(255,111,177,0.35)] hover:text-white"
+            >
+              {heroBadge.emoji} {heroBadge.prefix}
+              {author.name}
+            </Link>
+          ) : (
+            <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
+              {heroBadge.emoji} {heroBadge.prefix}
+              Family
+            </span>
+          )}
           <h1 className="text-[clamp(40px,10vw,72px)] leading-[0.9] font-extrabold tracking-[-0.06em]">
             Family Jukebox
           </h1>

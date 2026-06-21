@@ -38,22 +38,31 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
         label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
         onClick={toggle}
       />
-      <Link href={`/songs/${song.slug}`} className="flex min-w-0 flex-1 items-center gap-3">
+      <Link href={`/songs/${song.slug}`} className="shrink-0">
         <CoverImage src={song.coverSrc} alt="" className="size-11 shrink-0 rounded-xl" />
-        <div className="min-w-0 flex-1">
+      </Link>
+      <div className="min-w-0 flex-1">
+        <Link href={`/songs/${song.slug}`} className="block min-w-0">
           <strong
             className={cn(
-              "block truncate text-sm",
+              "block truncate text-sm hover:underline",
               isCurrent && "text-[var(--family-pink)]",
             )}
           >
             {song.title}
           </strong>
-          <span className="block truncate text-xs text-[var(--jb-muted)]">
-            {author?.name} · {song.tags.slice(0, 3).join(" · ")}
-          </span>
-        </div>
-      </Link>
+        </Link>
+        <span className="block truncate text-xs text-[var(--jb-muted)]">
+          {author ? (
+            <Link href={`/members/${author.slug}`} className="hover:text-white hover:underline">
+              {author.name}
+            </Link>
+          ) : (
+            "Family"
+          )}{" "}
+          · {song.tags.slice(0, 3).join(" · ")}
+        </span>
+      </div>
       <Link
         href={`/songs/${song.slug}`}
         className="shrink-0 px-2 text-xs text-[var(--jb-muted)] hover:text-white"
