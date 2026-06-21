@@ -87,6 +87,7 @@ export function buildShareMetadata(overrides?: {
   image?: ShareImageMeta;
 }): Metadata {
   const title = overrides?.title ?? SITE_NAME;
+  const shareTitle = title === SITE_NAME || title.includes(SITE_NAME) ? title : `${title} · ${SITE_NAME}`;
   const description = overrides?.description ?? SITE_DESCRIPTION;
   const pageUrl = overrides?.path ? `${SITE_URL}${overrides.path}` : SITE_URL;
   const image = overrides?.image ?? defaultShareImage;
@@ -96,7 +97,7 @@ export function buildShareMetadata(overrides?: {
     description,
     alternates: overrides?.path ? { canonical: pageUrl } : undefined,
     openGraph: {
-      title,
+      title: shareTitle,
       description,
       type: "website",
       siteName: SITE_NAME,
@@ -105,7 +106,7 @@ export function buildShareMetadata(overrides?: {
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: shareTitle,
       description,
       images: [image.url],
     },

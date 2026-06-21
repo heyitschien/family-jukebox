@@ -6,7 +6,7 @@ import { getBrowseAlbumSections } from "@/data/albums";
 import { buildShareMetadata } from "@/lib/site-metadata";
 
 export const metadata = buildShareMetadata({
-  title: "Family Albums · Family Jukebox",
+  title: "Family Albums",
   description: "Growing series and full collections from every family member.",
 });
 
@@ -14,7 +14,7 @@ export default function AlbumsPage() {
   const sections = getBrowseAlbumSections();
 
   return (
-    <main className="min-w-0 px-3 pb-4 lg:px-0">
+    <main className="min-w-0 max-w-full overflow-x-hidden px-3 pb-4 lg:px-0">
       <Topbar />
 
       <header className="mb-8">

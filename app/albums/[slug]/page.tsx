@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: AlbumPageProps): Promise<Meta
   const album = getAlbumBySlug(slug);
   if (!album) return { title: "Album not found · Family Jukebox" };
   return buildShareMetadata({
-    title: `${album.title} · Family Jukebox`,
+    title: album.title,
     description: album.subtitle ?? "A family album worth replaying.",
     path: `/albums/${album.slug}`,
     image: buildCoverShareImage(album.title, album.coverSrc),

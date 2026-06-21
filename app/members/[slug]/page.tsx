@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
   if (!member) return { title: "Member not found · Family Jukebox" };
   const heroCover = getSongsByAuthor(member.slug)[0]?.coverSrc;
   return buildShareMetadata({
-    title: `${member.name} · Family Jukebox`,
+    title: member.name,
     description: member.description,
     path: `/members/${member.slug}`,
     image: heroCover ? buildCoverShareImage(`${member.name} on Family Jukebox`, heroCover) : undefined,
@@ -50,7 +50,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
   const discoverMembers = getDiscoverMembers(member.slug);
 
   return (
-    <main className="min-w-0 px-3 pb-4 lg:px-0">
+    <main className="min-w-0 max-w-full overflow-x-hidden px-3 pb-4 lg:px-0">
       <Topbar />
 
       <Link

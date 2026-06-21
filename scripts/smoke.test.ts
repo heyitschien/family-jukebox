@@ -83,6 +83,8 @@ describe("share metadata", () => {
       image: buildCoverShareImage(song.title, song.coverSrc),
     });
 
+    assert.equal(metadata.title, "Legacy in the Lane");
+    assert.equal(metadata.openGraph?.title, "Legacy in the Lane · Family Jukebox");
     assert.equal(metadata.openGraph?.url, `${SITE_URL}/songs/legacy-in-the-lane`);
     assert.deepEqual(metadata.openGraph?.images, [
       {

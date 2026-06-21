@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: SongPageProps): Promise<Metad
   if (!song) return { title: "Song not found · Family Jukebox" };
   const author = getSongAuthor(song);
   return buildShareMetadata({
-    title: `${song.title} · Family Jukebox`,
+    title: song.title,
     description:
       song.subtitle ??
       (author ? `A family song by ${author.name} — tap to listen on Family Jukebox.` : "A family song worth replaying."),
