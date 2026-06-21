@@ -27,6 +27,12 @@ import {
   isTodayHeroAlbum,
 } from "../lib/album-rotation";
 import { parsePlayEventBody } from "../lib/security/api";
+import {
+  buildShuffledQueue,
+  cycleRepeatMode,
+  resolveQueueForPlayback,
+  resolveTrackAdvance,
+} from "../lib/player-queue";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
 
 describe("jukebox catalog", () => {
@@ -206,5 +212,107 @@ describe("play tracking validation", () => {
     assert.equal(parsePlayEventBody({ songSlug: "", event: "start" }).ok, false);
     assert.equal(parsePlayEventBody({ songSlug: "nope", event: "start" }).ok, true);
     assert.equal(parsePlayEventBody({ songSlug: songs[0]?.slug, event: "hack" }).ok, false);
+  });
+});
+
+describe("player queue logic", () => {
+  const mockQueue = [
+    { slug: "a" },
+    { slug: "b" },
+    { slug: "c" },
+  ] as typeof songs;
+
+  it("cycles repeat modes off -> all -> one -> off", () => {
+    assert.equal(cycleRepeatMode("off"), "all");
+    assert.equal(cycleRepeatMode("all"), "one");
+    assert.equal(cycleRepeatMode("one"), "off");
+  });
+
+  it("auto-advances through multi-song queues", () => {
+    assert.deepEqual(
+      resolveTrackAdvance({
+        queue: mockQueue,
+        currentIndex: 0,
+        repeatMode: "off",
+        direction: "next",
+        manual: false,
+      }),
+      { action: "play", index: 1 },
+    );
+    assert.deepEqual(
+      resolveTrackAdvance({
+        queue: mockQueue,
+        currentIndex: 1,
+        repeatMode: "off",
+        direction: "next",
+        manual: false,
+      }),
+      { action: "play", index: 2 },
+    );
+  });
+
+  it("stops at end when repeat is off", () => {
+    assert.deepEqual(
+      resolveTrackAdvance({
+        queue: mockQueue,
+        currentIndex: 2,
+        repeatMode: "off",
+        direction: "next",
+        manual: false,
+      }),
+      { action: "stop" },
+    );
+  });
+
+  it("wraps playlist when repeat all is on", () => {
+    assert.deepEqual(
+      resolveTrackAdvance({
+        queue: mockQueue,
+        currentIndex: 2,
+        repeatMode: "all",
+        direction: "next",
+        manual: false,
+      }),
+      { action: "play", index: 0 },
+    );
+  });
+
+  it("loops current track when repeat one is on", () => {
+    assert.deepEqual(
+      resolveTrackAdvance({
+        queue: mockQueue,
+        currentIndex: 1,
+        repeatMode: "one",
+        direction: "next",
+        manual: false,
+      }),
+      { action: "repeat", index: 1 },
+    );
+  });
+
+  it("manual skip still advances when repeat one is on", () => {
+    assert.deepEqual(
+      resolveTrackAdvance({
+        queue: mockQueue,
+        currentIndex: 1,
+        repeatMode: "one",
+        direction: "next",
+        manual: true,
+      }),
+      { action: "play", index: 2 },
+    );
+  });
+
+  it("keeps start song first when shuffle is enabled", () => {
+    const shuffled = buildShuffledQueue(mockQueue, 1);
+    assert.equal(shuffled[0]?.slug, "b");
+    assert.equal(new Set(shuffled.map((s) => s.slug)).size, 3);
+  });
+
+  it("starts shuffled playback at index zero", () => {
+    const result = resolveQueueForPlayback(mockQueue, 2, "on");
+    assert.equal(result.index, 0);
+    assert.equal(result.queue[0]?.slug, "c");
+    assert.equal(result.queue.length, 3);
   });
 });

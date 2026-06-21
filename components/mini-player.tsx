@@ -14,6 +14,10 @@ export function MiniPlayer() {
     togglePlay,
     skipNext,
     skipPrev,
+    cycleRepeat,
+    toggleShuffle,
+    repeatMode,
+    shuffleMode,
     currentTime,
     duration,
   } = usePlayer();
@@ -36,7 +40,18 @@ export function MiniPlayer() {
       </Link>
 
       <div className="hidden justify-center sm:grid sm:gap-2">
-        <div className="flex items-center justify-center gap-4 text-[var(--jb-muted)]">
+        <div className="flex items-center justify-center gap-3 text-[var(--jb-muted)]">
+          <button
+            type="button"
+            onClick={toggleShuffle}
+            aria-label={shuffleMode === "on" ? "Shuffle on" : "Shuffle off"}
+            aria-pressed={shuffleMode === "on" ? "true" : "false"}
+            className={`inline-flex size-9 items-center justify-center transition-colors [-webkit-tap-highlight-color:transparent] ${
+              shuffleMode === "on" ? "text-family-glow" : "hover:text-white"
+            }`}
+          >
+            <ShuffleIcon active={shuffleMode === "on"} />
+          </button>
           <button
             type="button"
             onClick={skipPrev}
@@ -59,6 +74,26 @@ export function MiniPlayer() {
             className="inline-flex size-10 items-center justify-center [-webkit-tap-highlight-color:transparent]"
           >
             <SkipNextIcon />
+          </button>
+          <button
+            type="button"
+            onClick={cycleRepeat}
+            aria-label={
+              repeatMode === "one"
+                ? "Repeat one song"
+                : repeatMode === "all"
+                  ? "Repeat playlist"
+                  : "Repeat off"
+            }
+            aria-pressed={repeatMode !== "off" ? "true" : "false"}
+            className={`relative inline-flex size-9 items-center justify-center transition-colors [-webkit-tap-highlight-color:transparent] ${
+              repeatMode !== "off" ? "text-family-glow" : "hover:text-white"
+            }`}
+          >
+            <RepeatIcon />
+            {repeatMode === "one" ? (
+              <span className="absolute -right-0.5 -top-0.5 text-[9px] font-bold leading-none">1</span>
+            ) : null}
           </button>
         </div>
         <div className="flex w-full items-center gap-2.5 text-[11px] text-[var(--jb-muted-2)]">
@@ -103,6 +138,25 @@ export function MiniPlayer() {
         </div>
       </div>
     </aside>
+  );
+}
+
+function ShuffleIcon({ active }: { active: boolean }) {
+  return (
+    <svg viewBox="0 0 24 24" className="size-[18px] fill-current" aria-hidden>
+      <path
+        d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"
+        opacity={active ? 1 : 0.85}
+      />
+    </svg>
+  );
+}
+
+function RepeatIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="size-[18px] fill-current" aria-hidden>
+      <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+    </svg>
   );
 }
 
