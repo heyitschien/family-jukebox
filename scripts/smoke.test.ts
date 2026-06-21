@@ -40,6 +40,16 @@ import {
   resolveTrackAdvance,
 } from "../lib/player-queue";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
+import {
+  buildAlbumShareDescription,
+  buildCoverShareImage,
+  buildShareMetadata,
+  buildSongShareDescription,
+  resolveShareImageUrl,
+  SITE_URL,
+} from "../lib/site-metadata";
+import { getSongAuthor, getSongBySlug } from "../data/songs";
+import { getAlbumAuthor, getAlbumBySlug } from "../data/albums";
 
 describe("jukebox catalog", () => {
   it("has songs with playable assets", () => {
@@ -344,5 +354,59 @@ describe("player queue logic", () => {
     assert.equal(result.index, 0);
     assert.equal(result.queue[0]?.slug, "c");
     assert.equal(result.queue.length, 3);
+  });
+});
+
+describe("link preview metadata", () => {
+  it("resolves cover art to absolute URLs for iMessage crawlers", () => {
+    assert.equal(
+      resolveShareImageUrl("/assets/ocean/gravity-shift.jpg"),
+      `${SITE_URL}/assets/ocean/gravity-shift.jpg`,
+    );
+  });
+
+  it("sets per-song og:image and description for legacy in the lane", () => {
+    const song = getSongBySlug("legacy-in-the-lane");
+    assert.ok(song, "legacy song should exist in catalog");
+
+    const author = getSongAuthor(song);
+    const metadata = buildShareMetadata({
+      title: `${song.title} · Family Jukebox`,
+      description: buildSongShareDescription(song, author),
+      path: `/songs/${song.slug}`,
+      image: buildCoverShareImage(song.title, song.coverSrc),
+    });
+
+    assert.equal(metadata.openGraph?.title, "Legacy in the Lane · Family Jukebox");
+    assert.match(String(metadata.description), /Father's Day/i);
+    assert.equal(
+      metadata.openGraph?.images?.[0]?.url,
+      `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+    );
+    assert.equal(metadata.openGraph?.url, `${SITE_URL}/songs/legacy-in-the-lane`);
+    assert.equal(
+      metadata.twitter?.images?.[0]?.url,
+      `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+    );
+  });
+
+  it("sets per-album og:image and description", () => {
+    const album = getAlbumBySlug("legacy-in-the-lane-album");
+    assert.ok(album, "legacy album should exist in catalog");
+
+    const author = getAlbumAuthor(album);
+    const metadata = buildShareMetadata({
+      title: `${album.title} · Family Jukebox`,
+      description: buildAlbumShareDescription(album, author),
+      path: `/albums/${album.slug}`,
+      image: buildCoverShareImage(album.title, album.coverSrc),
+    });
+
+    assert.match(String(metadata.description), /Father's Day/i);
+    assert.equal(
+      metadata.openGraph?.images?.[0]?.url,
+      `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+    );
+    assert.equal(metadata.openGraph?.url, `${SITE_URL}/albums/legacy-in-the-lane-album`);
   });
 });

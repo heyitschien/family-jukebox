@@ -18,7 +18,11 @@ import {
   getAlbumSongs,
   getAlbumTrackCount,
 } from "@/data/albums";
-import { buildCoverShareImage, buildShareMetadata } from "@/lib/site-metadata";
+import {
+  buildAlbumShareDescription,
+  buildCoverShareImage,
+  buildShareMetadata,
+} from "@/lib/site-metadata";
 import {
   getDiscoverAlbums,
   getDiscoverMembers,
@@ -38,9 +42,10 @@ export async function generateMetadata({ params }: AlbumPageProps): Promise<Meta
   const { slug } = await params;
   const album = getAlbumBySlug(slug);
   if (!album) return { title: "Album not found · Family Jukebox" };
+  const author = getAlbumAuthor(album);
   return buildShareMetadata({
     title: `${album.title} · Family Jukebox`,
-    description: album.subtitle ?? "A family album worth replaying.",
+    description: buildAlbumShareDescription(album, author),
     path: `/albums/${album.slug}`,
     image: buildCoverShareImage(album.title, album.coverSrc),
   });
@@ -91,7 +96,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
               {getAlbumKindLabel(album)}
               {album.featured ? " · Featured" : ""}
             </p>
-            <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-6xl">{album.title}</h1>
+            <h1 className="mt-2 break-words text-4xl font-extrabold tracking-tight sm:text-6xl">{album.title}</h1>
             {author ? (
               <Link
                 href={`/members/${author.slug}`}
@@ -116,10 +121,10 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
         </div>
       </section>
 
-      <section className="mt-6 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="mt-6 overflow-hidden rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
         <h2 className="mb-4 text-xl font-bold">Tracklist</h2>
         {albumSongs.length > 0 ? (
-          <div className="grid gap-1">
+          <div className="grid min-w-0 gap-1">
             {albumSongs.map((song, i) => (
               <SongRow key={song.slug} song={song} index={i} showIndex playlist={albumSongs} />
             ))}

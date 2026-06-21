@@ -2,6 +2,13 @@ import { FeaturedShelf } from "@/components/featured-shelf";
 import { Topbar } from "@/components/topbar";
 import { getAllTags } from "@/data/songs";
 import { getRotatedFeaturedShelf } from "@/lib/featured-rotation";
+import { buildShareMetadata } from "@/lib/site-metadata";
+
+export const metadata = buildShareMetadata({
+  title: "All songs · Family Jukebox",
+  description: "Browse every family song — spotlight picks from each cousin, rotating daily.",
+  path: "/songs",
+});
 
 export default function SongsPage() {
   return (
