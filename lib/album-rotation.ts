@@ -61,6 +61,26 @@ export function getSpotlightAlbumAuthorNames(): string {
     .join(", ");
 }
 
+export type AlbumHeroBadge = {
+  emoji: string;
+  prefix: string;
+};
+
+/** Unified hero badge — featured release, today's front pick, or collection browse. */
+export function getAlbumHeroBadge(album: Album, heroAlbum: Album): AlbumHeroBadge {
+  if (album.featured) {
+    return { emoji: "💛", prefix: "Featured release · " };
+  }
+  if (album.slug === heroAlbum.slug) {
+    return { emoji: "✨", prefix: "Today's spotlight · " };
+  }
+  return { emoji: "🎵", prefix: "From the collection · " };
+}
+
+export function isTodayHeroAlbum(album: Album, refreshSeed = 0): boolean {
+  return getHeroFeaturedAlbum(refreshSeed).slug === album.slug;
+}
+
 function buildFallbackAlbum(): Album {
   const firstSong = songs[0];
   return {

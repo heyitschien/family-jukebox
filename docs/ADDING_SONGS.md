@@ -27,7 +27,7 @@ The script automatically:
 Then you:
 
 1. Add the song block in **`data/songs.ts`** (include `lyrics: songLyrics["<song-slug>"]`)
-2. If it's part of a **growing album series**, append the slug in **`data/albums.ts`** → `SERIES_ALBUMS`
+2. If it's part of a **growing album series**, append the slug in **`data/albums.ts`** → `SERIES_ALBUM_DEFS`
 3. Run **`npm run ci`**, commit, push → GitHub CI + Vercel deploy run automatically
 
 ---
@@ -39,7 +39,7 @@ Then you:
 | ✅ Assets | `./scripts/add-song.sh` (or `./scripts/process-video.sh` + transcribe) |
 | ✅ Lyrics | Auto → `data/lyrics.ts` |
 | ☐ Catalog | `data/songs.ts` — song entry with `lyrics: songLyrics["slug"]` |
-| ☐ Series album | `data/albums.ts` — add slug to `SERIES_ALBUMS[].songSlugs` (if applicable) |
+| ☐ Series album | `data/albums.ts` — add slug to `SERIES_ALBUM_DEFS[].songSlugs` (if applicable) |
 | ☐ New person | `data/members.ts` (only for a new family member) |
 | ☐ Ship | `npm run ci` → commit → `git push origin main` |
 
@@ -129,7 +129,7 @@ import { songLyrics } from "@/data/lyrics";
 
 ### 4. Growing album series (optional)
 
-For albums that gain tracks over time (singles rollout), edit **`SERIES_ALBUMS`** in `data/albums.ts`:
+For albums that gain tracks over time (singles rollout), edit **`SERIES_ALBUM_DEFS`** in `data/albums.ts`:
 
 ```ts
 songSlugs: ["miracle-in-the-sand", "next-single-slug"],

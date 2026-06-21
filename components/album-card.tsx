@@ -6,7 +6,7 @@ import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
-import { getAlbumAuthor, getAlbumSongs, type Album } from "@/data/albums";
+import { getAlbumAuthor, getAlbumKindLabel, getAlbumSongs, type Album } from "@/data/albums";
 import { songs } from "@/data/songs";
 import { cn } from "@/lib/utils";
 
@@ -14,9 +14,10 @@ type AlbumCardProps = {
   album: Album;
   className?: string;
   size?: "sm" | "md";
+  showKind?: boolean;
 };
 
-export function AlbumCard({ album, className, size = "md" }: AlbumCardProps) {
+export function AlbumCard({ album, className, size = "md", showKind = false }: AlbumCardProps) {
   const { playQueue, currentSong, isPlaying, queue } = usePlayer();
   const albumSongs = getAlbumSongs(album);
   const author = getAlbumAuthor(album);
@@ -50,9 +51,19 @@ export function AlbumCard({ album, className, size = "md" }: AlbumCardProps) {
       <div className="group relative">
         <Link href={`/albums/${album.slug}`} className="block">
           <div
-            className="overflow-hidden rounded-xl"
+            className="relative overflow-hidden rounded-xl"
             style={{ boxShadow: `0 12px 32px ${album.accentColor}33` }}
           >
+            {showKind ? (
+              <span className="absolute top-2 left-2 z-10 rounded-full bg-black/55 px-2 py-0.5 text-[10px] font-extrabold uppercase tracking-wide text-white backdrop-blur-sm">
+                {album.kind === "series" ? "Series" : "Collection"}
+              </span>
+            ) : null}
+            {album.featured ? (
+              <span className="absolute top-2 right-2 z-10 rounded-full bg-[var(--family-pink)] px-2 py-0.5 text-[10px] font-black text-[#1a0812]">
+                Featured
+              </span>
+            ) : null}
             <CoverImage
               src={album.coverSrc}
               alt=""
@@ -83,6 +94,7 @@ export function AlbumCard({ album, className, size = "md" }: AlbumCardProps) {
         <p className="mt-0.5 truncate text-xs text-[var(--jb-muted)]">
           {author?.name ?? "Family"} · {albumSongs.length}{" "}
           {albumSongs.length === 1 ? "track" : "tracks"}
+          {showKind ? ` · ${getAlbumKindLabel(album)}` : ""}
         </p>
       </Link>
     </div>

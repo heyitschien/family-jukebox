@@ -198,3 +198,59 @@ export function getUnassignedSongSlugs(): string[] {
   const assigned = getSongAlbumAssignmentMap();
   return songs.map((song) => song.slug).filter((slug) => !assigned.has(slug));
 }
+
+export function getSeriesAlbums(): Album[] {
+  return albums.filter((album) => album.kind === "series");
+}
+
+export function getDiscographyAlbums(): Album[] {
+  return albums.filter((album) => album.kind === "discography");
+}
+
+export function getAlbumKindLabel(album: Album): string {
+  return album.kind === "series" ? "Growing series" : "Full collection";
+}
+
+export type BrowseAlbumSection = {
+  id: "series" | "discography";
+  title: string;
+  subtitle: string;
+  albums: Album[];
+};
+
+/** Browse page sections — series first, then discography compilations. */
+export function getBrowseAlbumSections(): BrowseAlbumSection[] {
+  const series = getSeriesAlbums();
+  const discography = getDiscographyAlbums();
+
+  return [
+    {
+      id: "series" as const,
+      title: "Growing series",
+      subtitle: "Themed albums that gain new singles over time",
+      albums: series,
+    },
+    {
+      id: "discography" as const,
+      title: "Full collections",
+      subtitle: "Every song from each family member in one place",
+      albums: discography,
+    },
+  ].filter((section) => section.albums.length > 0);
+}
+
+/** Series albums not shown in the hero carousel (e.g. Miracle in the Sand while studio is primary). */
+export function getSupplementarySeriesAlbums(): Album[] {
+  const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
+  return getSeriesAlbums().filter((album) => !primarySlugs.has(album.slug));
+}
+
+export function groupAlbumsByKind(authorAlbums: Album[]): {
+  series: Album[];
+  discography: Album[];
+} {
+  return {
+    series: authorAlbums.filter((album) => album.kind === "series"),
+    discography: authorAlbums.filter((album) => album.kind === "discography"),
+  };
+}

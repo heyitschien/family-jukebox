@@ -4,8 +4,10 @@ import { describe, it } from "node:test";
 import {
   albums,
   getAlbumForSong,
+  getBrowseAlbumSections,
   getPrimaryAlbums,
   getSongAlbumAssignmentMap,
+  getSupplementarySeriesAlbums,
   getUnassignedSongSlugs,
 } from "../data/albums";
 import { members } from "../data/members";
@@ -18,9 +20,11 @@ import {
   getSpotlightSongPerMember,
 } from "../lib/featured-rotation";
 import {
+  getAlbumHeroBadge,
   getHeroFeaturedAlbum,
   getRotatedAlbumCarousel,
   getSpotlightAlbumPerMember,
+  isTodayHeroAlbum,
 } from "../lib/album-rotation";
 import { parsePlayEventBody } from "../lib/security/api";
 
@@ -85,6 +89,21 @@ describe("album catalog", () => {
     assert.ok(miracle, "miracle-in-the-sand should exist");
     assert.equal(getAlbumForSong(miracle).slug, "miracle-in-the-sand-album");
   });
+
+  it("groups browse sections with series before discography", () => {
+    const sections = getBrowseAlbumSections();
+    assert.ok(sections.length >= 2, "browse should split series and discography");
+    assert.equal(sections[0]?.id, "series");
+    assert.equal(sections[1]?.id, "discography");
+  });
+
+  it("surfaces non-carousel series albums for home shelf", () => {
+    const supplementary = getSupplementarySeriesAlbums();
+    assert.ok(
+      supplementary.some((album) => album.slug === "miracle-in-the-sand-album"),
+      "Miracle in the Sand should appear when studio album is carousel primary",
+    );
+  });
 });
 
 describe("album rotation", () => {
@@ -99,6 +118,13 @@ describe("album rotation", () => {
       getSpotlightAlbumPerMember().map((album) => album.slug),
       getPrimaryAlbums().map((album) => album.slug),
     );
+  });
+
+  it("returns consistent hero badges", () => {
+    const hero = getHeroFeaturedAlbum(3);
+    const badge = getAlbumHeroBadge(hero, hero);
+    assert.equal(badge.emoji, hero.featured ? "💛" : "✨");
+    assert.ok(isTodayHeroAlbum(hero, 3));
   });
 });
 

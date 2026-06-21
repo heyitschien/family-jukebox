@@ -11,6 +11,8 @@ import {
   albums,
   getAlbumAuthor,
   getAlbumBySlug,
+  getAlbumKindLabel,
+  getAlbumsByAuthor,
   getAlbumSongs,
   getAlbumTrackCount,
 } from "@/data/albums";
@@ -42,6 +44,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   const author = getAlbumAuthor(album);
   const albumSongs = getAlbumSongs(album);
   const trackCount = getAlbumTrackCount(album);
+  const relatedAlbums = getAlbumsByAuthor(album.authorSlug).filter((entry) => entry.slug !== album.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -72,7 +75,8 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
           />
           <div className="min-w-0 flex-1 sm:pb-2">
             <p className="text-xs font-extrabold uppercase tracking-wider text-[var(--jb-muted)]">
-              Album
+              {getAlbumKindLabel(album)}
+              {album.featured ? " · Featured" : ""}
             </p>
             <h1 className="mt-2 text-4xl font-extrabold tracking-tight sm:text-6xl">{album.title}</h1>
             {author ? (
@@ -85,7 +89,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
             ) : null}
             <p className="mt-2 text-sm font-bold text-[var(--jb-muted)]">
               {trackCount} {trackCount === 1 ? "song" : "songs"}
-              {author ? ` · age ${author.age}` : ""}
+              {author && (author.role === "girl" || author.role === "boy") ? ` · age ${author.age}` : ""}
             </p>
             {album.subtitle ? (
               <p className="mt-3 max-w-lg text-sm leading-relaxed text-[var(--jb-muted)]">
@@ -111,6 +115,27 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
           <p className="text-[var(--jb-muted)]">No tracks yet.</p>
         )}
       </section>
+
+      {relatedAlbums.length > 0 ? (
+        <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+          <h2 className="text-lg font-bold">More from {author?.name ?? "this artist"}</h2>
+          <ul className="mt-3 space-y-2">
+            {relatedAlbums.map((related) => (
+              <li key={related.slug}>
+                <Link
+                  href={`/albums/${related.slug}`}
+                  className="flex items-center justify-between gap-3 rounded-xl border border-white/[0.06] bg-white/[0.04] px-4 py-3 text-sm font-bold hover:bg-white/[0.08]"
+                >
+                  <span>{related.title}</span>
+                  <span className="shrink-0 text-xs font-extrabold uppercase tracking-wide text-[var(--jb-muted)]">
+                    {getAlbumKindLabel(related)}
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {album.story ? (
         <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">

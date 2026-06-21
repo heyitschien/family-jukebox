@@ -10,7 +10,7 @@ import { usePlayer } from "@/contexts/player-context";
 import { getAlbumSongs, type Album } from "@/data/albums";
 import { getAlbumAuthor } from "@/data/albums";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
-import { getSpotlightAlbumAuthorNames } from "@/lib/album-rotation";
+import { getAlbumHeroBadge, getSpotlightAlbumAuthorNames } from "@/lib/album-rotation";
 import { cn } from "@/lib/utils";
 
 type AlbumCarousel3DProps = {
@@ -35,6 +35,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   const activeSongs = getAlbumSongs(activeAlbum);
   const author = getAlbumAuthor(activeAlbum);
   const spotlightNames = getSpotlightAlbumAuthorNames();
+  const heroBadge = getAlbumHeroBadge(activeAlbum, featuredAlbum);
 
   const isAlbumPlaying =
     isPlaying &&
@@ -195,7 +196,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
         {/* Hero copy + actions */}
         <div className="relative z-10 min-w-0">
         <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
-          {activeAlbum.featured ? "💛 Featured release · " : "✨ Today's spotlight · "}
+          {heroBadge.emoji} {heroBadge.prefix}
           {author?.name ?? "Family"}
         </span>
           <h1 className="text-[clamp(40px,10vw,72px)] leading-[0.9] font-extrabold tracking-[-0.06em]">
