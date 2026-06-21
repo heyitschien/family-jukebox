@@ -71,9 +71,9 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Featured family songs</h2>
+          <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Featured tracks</h2>
           <p className="text-sm font-bold text-[var(--jb-muted)]">
-            Tap play on any song to hear the whole shelf — one track flows into the next.
+            Tap any song to start here, then let the shelf play through.
           </p>
         </div>
         {filtered.length > 1 ? (
@@ -82,7 +82,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
             onClick={() => playQueue(filtered, 0)}
             className="inline-flex min-h-11 shrink-0 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
           >
-            Play all
+            Play this shelf
           </button>
         ) : null}
       </div>
