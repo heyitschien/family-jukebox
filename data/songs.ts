@@ -122,6 +122,7 @@ export const songs: Song[] = [
     coverSrc: "/assets/tio-chien/miracle-in-the-sand.jpg",
     story:
       "The opening single from Tio Chien's growing Miracle in the Sand album — warm indie-pop, intimate vocals, more tracks on the way.",
+    lyrics: songLyrics["miracle-in-the-sand"],
     tags: ["single", "indie", "sand", "miracle", "tio-chien"],
     featured: true,
   },

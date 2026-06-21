@@ -26,24 +26,13 @@ Bios and ages live in `data/members.ts`. Each person has a page at `/members/[sl
 
 ## How to add a new song
 
-1. Put source MP4 in `family-music-asset-june-19/<Name-Age>/` (local, not committed)
-2. Run `./scripts/process-video.sh <author> <video.mp4> <song-slug>`
-3. Add song to `data/songs.ts` with `authorSlug`
-4. Push to GitHub → Vercel redeploys
-
-### Asset folders (by author)
-
-```txt
-public/assets/marceline/
-public/assets/eliana/
-public/assets/solene/
-public/assets/ocean/
-public/assets/tio-chien/
-data/members.ts    -> family bios, ages, roles
-data/songs.ts      -> song metadata + authorSlug
+```bash
+./scripts/add-song.sh <author-slug> <video.mp4> <song-slug>
 ```
 
-See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for copy-paste examples.
+Extracts MP3 + cover, transcribes lyrics, then follow the printed checklist (`data/songs.ts`, optional series album). Push to `main` → CI + Vercel deploy automatically.
+
+See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for the full checklist and examples.
 
 ## Compress from a music video (MP4)
 

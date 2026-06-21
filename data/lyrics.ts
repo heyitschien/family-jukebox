@@ -1,6 +1,63 @@
 // Auto-generated from scripts/transcripts.json — re-run scripts/transcribe-songs.py to refresh.
 
 export const songLyrics = {
+  "crayon-planets": `The table is a planet made of crayon light, tiny hands are drafting blueprints for the night
+I'm just the witness holding shadows by the door Counting all the wonders scattered on the floor
+It isn't just the drawing or the rhythmic beat It's seeing how the world can be so incomplete
+Until they touch the surface making something new
+A joy I didn't know until I looked at you
+Oh to see the spark inside their eyes A world of color, no disguise
+It's my delight, it's my release To see them beautiful together in the golden glow
+Watching how the scenes of imagination grow Imagination grow
+I teach them how the mountain meets the heavy sky But they show me a way to let the mountain fly
+My friends are waiting for us on the other side Ready for a journey hands open and wide
+I'm 35 and learning how to look again Through every brush stroke, through every wooden pen
+I'm grateful for the bloodline, for the way we meet Making every day a little more complete
+Oh to see the spark inside their eyes A world of color, no disguise
+It's my delight, it's my release To see them beautiful together in the golden glow
+Watching how the scenes of imagination grow Imagination grow
+And when the morning comes to find us here We'll trade our stories casting out the fear
+One generation to the next, the line is drawn A beautiful adventure in the light of dawn
+Oh to see the spark inside their eyes A world of color, no disguise
+It's my delight, it's my release To see them beautiful together in the golden glow
+Watching how the scenes of imagination grow Imagination grow
+So much more to come I love you`,
+  "dash-and-go": `Marceline is magic, Marceline With the sparkling horn, shiny and key
+Running through the meadows, sunshine in her hair
+Unicorn beauty found every hair Unicorn beauty found everywhere
+Sparkle, sparkle, Marceline Marceline, Marceline dash and go
+Cheetah spots from head to toe Fastest little cheetah ever seen
+Marceline, Marceline dash and go
+Solene and Eliana hand in hand
+Best of sisters in all the land Laughing together, happy and free
+Three little sisters, happy as can be
+Marceline, Marceline dash and go Fastest little cheetah ever seen
+Marceline, Marceline dash and go
+Dash and go, dash and go
+Yay Marceline, one more time, giggles`,
+  "foxes-of-the-garden": `The morning light is filtering through the pines. I'm an eight-year-old fox tracing
+geometry lines. Solene is the name that the forest knows with paint on my paws
+and dirt on my nose. I calculate the angle of a squirrel's leap while my two
+little sisters are still fast asleep. I listen to the rhythm of the lessons they
+teach. The cleverest red fox that the valley could reach. Oh, we're the foxes of the
+garden running fast and free from the map in the dirt to the tallest trees.
+Solene is leading and the pups follow through. There's so much to learn and
+there's so much to do. Every little fox has a long way to grow, a way to grow.
+I pick up a brush, a streak of midnight and blue. Painting every dream that I'm
+making come true. Eliana's here with her pink rim sight, teaching artificial
+magic digital light. Marceline is watching and Ocean is near with Tochi and
+making the pathway clear. I count all my cousins a circle of kin wherever we
+gather the magic begins. Oh, we're the foxes of the garden running fast and free
+from the map in the dirt to the tallest trees. Solene is leading and the pups
+follow through. There's so much to the rhythm watch the colors bloom. Every
+little fox has a long way to grow, a way to grow. Sometimes the mountain looks
+a little too tall but my sisters are waiting so I won't ever fall. We share the
+same glass is the same curious mind leaving all the fears of the forest
+behind. One step, two step, three for the crew. Solene and the pups are coming for you.
+Oh, we're the foxes of the garden running fast and free from the map in the dirt to the
+tallest trees. Solene is leading and the pups follow through. There's so much to the
+rhythm watch the colors bloom. Every little fox has a long way to grow, a way to grow.
+Just a fox in the garden, Solene is growing.`,
   "gravity-shift": `Yeah I'm never feeling B Ocean on the court watch to grab a feeling B
 Ocean on the court watch to gravity shift Hard work is a power and it's feeling like a gift
 Ocean, ocean becoming a star Taking every shot, yeah I'm going real far
@@ -20,6 +77,75 @@ I'm trying hard every single day Clearing all the obstacles out of my way
 Ocean is a star, yeah it's finally my turn Watching all the bridges that I used to have to burn
 Yeah I made it to the peak Ocean, ocean star power Best in the world, yeah
 Ocean, ocean becoming a star`,
+  "miracle-in-the-sand": `The color of the sand in the beginning, the color of the moon
+Dinosaur ghost in the silicon yard
+Before waking up from a dream
+Cold Earth turning into a star
+We print the light on the brain, just like you're meeting the brain
+We are printing in intelligence on sense
+The hidden star above the high ground
+Dance on the high ground
+Chachipapap, the young me
+Feel the flow
+Cloudy morning sun
+The human waterfall
+In the silicon heart
+We're never alone
+In the silicon heart
+We're never alone
+In the semiconductor
+Like the light
+Binary blood
+In the industrial type
+Korean dreams
+In the English lines
+Data stacking up
+Watch the wonder eyes
+From a grain to a soul
+Look at the transition
+Logic gates opening
+Perfect precision
+We are printing in intelligence on sense
+The hidden star above the high ground
+Dance on the high ground
+Chachipapap, the young me
+Feel the flow
+Cloudy morning sun
+The human waterfall
+In the silicon heart
+We're never alone
+In the silicon heart
+We're never alone
+In the silicon heart
+We're never alone
+We are printing in intelligence on sense
+The hidden star above the high ground
+Dance on the high ground
+Chachipap, the young me
+Feel the flow
+Cloudy morning sun
+The human waterfall
+In the silicon heart
+Dance on the high ground
+Chachipap, the young me
+Feel the flow
+Colors of gold
+We are printing in intelligence on sense
+The hidden star above the high ground
+Dance on the high ground
+Chachipapap, the young me
+Feel the flow
+Cloudy morning sun
+The human waterfall
+In the silicon heart
+We're never alone
+In the silicon heart
+We're printing in intelligence on sense
+Chachipap, the young me
+Feel the flow
+Our endless story
+Keep the circuit alive
+Stay alive`,
   "mountains-to-the-shore": `Oceans on the move today
 Marceline leads the way
 We're walking through a forest of tall green trees
@@ -56,19 +182,6 @@ Ocean, Solene, and Eliana
 Eliana and Marceline
 Our stories just begun
 Under the summer sun`,
-  "dash-and-go": `Marceline is magic, Marceline With the sparkling horn, shiny and key
-Running through the meadows, sunshine in her hair
-Unicorn beauty found every hair Unicorn beauty found everywhere
-Sparkle, sparkle, Marceline Marceline, Marceline dash and go
-Cheetah spots from head to toe Fastest little cheetah ever seen
-Marceline, Marceline dash and go
-Solene and Eliana hand in hand
-Best of sisters in all the land Laughing together, happy and free
-Three little sisters, happy as can be
-Marceline, Marceline dash and go Fastest little cheetah ever seen
-Marceline, Marceline dash and go
-Dash and go, dash and go
-Yay Marceline, one more time, giggles`,
   "pink-glasses-everywhere": `🎵
 Selene is a flash of red in the ferns
 in the ferns
@@ -108,46 +221,6 @@ Pink glasses every week go
 Pink glasses, pink the foxes and me
 Yeah it's a pink tin forest you see
 Giggle`,
-  "foxes-of-the-garden": `The morning light is filtering through the pines. I'm an eight-year-old fox tracing
-geometry lines. Solene is the name that the forest knows with paint on my paws
-and dirt on my nose. I calculate the angle of a squirrel's leap while my two
-little sisters are still fast asleep. I listen to the rhythm of the lessons they
-teach. The cleverest red fox that the valley could reach. Oh, we're the foxes of the
-garden running fast and free from the map in the dirt to the tallest trees.
-Solene is leading and the pups follow through. There's so much to learn and
-there's so much to do. Every little fox has a long way to grow, a way to grow.
-I pick up a brush, a streak of midnight and blue. Painting every dream that I'm
-making come true. Eliana's here with her pink rim sight, teaching artificial
-magic digital light. Marceline is watching and Ocean is near with Tochi and
-making the pathway clear. I count all my cousins a circle of kin wherever we
-gather the magic begins. Oh, we're the foxes of the garden running fast and free
-from the map in the dirt to the tallest trees. Solene is leading and the pups
-follow through. There's so much to the rhythm watch the colors bloom. Every
-little fox has a long way to grow, a way to grow. Sometimes the mountain looks
-a little too tall but my sisters are waiting so I won't ever fall. We share the
-same glass is the same curious mind leaving all the fears of the forest
-behind. One step, two step, three for the crew. Solene and the pups are coming for you.
-Oh, we're the foxes of the garden running fast and free from the map in the dirt to the
-tallest trees. Solene is leading and the pups follow through. There's so much to the
-rhythm watch the colors bloom. Every little fox has a long way to grow, a way to grow.
-Just a fox in the garden, Solene is growing.`,
-  "solene-s-painted-trail": `Orange fur against the green, a clever fox is rarely seen.
-Through the hall and past the door, she tracks her paws across the floor.
-Eight years of sun inside her eyes, watching how the numbers rise.
-One plus two, a perfect count, the hills of knowledge that she'll mount.
-Oh, Solene our golden fox, opening all the heavy locks.
-Heavy learning, fast and growing tall, hearing wisdom when they call.
-A clever mind and a tale that sweeps while the rest of the forest sleeps.
-Two small kids follow where she goes, dusty ears and wet noses.
-Learning trails and forest ways, guided through the childhood maze.
-They listen well to the mother's word, the kindest voice they've ever heard.
-And with the cousins, the pack is wide, playing games from side to side.
-But when the sun begins to dip, she holds a brush with steady grip.
-Blue for river, yellow for grain, she paints the world in Solene.
-Oh, Solene our golden fox, opening all the heavy locks.
-Heavy learning, fast and growing tall, hearing wisdom when they call.
-A clever mind and a tale that sweeps while the rest of the forest sleeps.
-Grow and learn, little fox.`,
   "pixels-into-magic": `Ocean's at the screen, sketchin' lines in the air
 Sillane's got the spark, Ileana's right there
 Marceline's thinkin' in colors we haven't seen
@@ -185,25 +258,21 @@ Look at the picture, figured it out
 Cool stuff, yeah, we made it cool
 Solene and Eliana, Marceline, Ocean
 Digital family, just the beginning`,
-  "crayon-planets": `The table is a planet made of crayon light, tiny hands are drafting blueprints for the night
-I'm just the witness holding shadows by the door Counting all the wonders scattered on the floor
-It isn't just the drawing or the rhythmic beat It's seeing how the world can be so incomplete
-Until they touch the surface making something new
-A joy I didn't know until I looked at you
-Oh to see the spark inside their eyes A world of color, no disguise
-It's my delight, it's my release To see them beautiful together in the golden glow
-Watching how the scenes of imagination grow Imagination grow
-I teach them how the mountain meets the heavy sky But they show me a way to let the mountain fly
-My friends are waiting for us on the other side Ready for a journey hands open and wide
-I'm 35 and learning how to look again Through every brush stroke, through every wooden pen
-I'm grateful for the bloodline, for the way we meet Making every day a little more complete
-Oh to see the spark inside their eyes A world of color, no disguise
-It's my delight, it's my release To see them beautiful together in the golden glow
-Watching how the scenes of imagination grow Imagination grow
-And when the morning comes to find us here We'll trade our stories casting out the fear
-One generation to the next, the line is drawn A beautiful adventure in the light of dawn
-Oh to see the spark inside their eyes A world of color, no disguise
-It's my delight, it's my release To see them beautiful together in the golden glow
-Watching how the scenes of imagination grow Imagination grow
-So much more to come I love you`,
+  "solene-s-painted-trail": `Orange fur against the green, a clever fox is rarely seen.
+Through the hall and past the door, she tracks her paws across the floor.
+Eight years of sun inside her eyes, watching how the numbers rise.
+One plus two, a perfect count, the hills of knowledge that she'll mount.
+Oh, Solene our golden fox, opening all the heavy locks.
+Heavy learning, fast and growing tall, hearing wisdom when they call.
+A clever mind and a tale that sweeps while the rest of the forest sleeps.
+Two small kids follow where she goes, dusty ears and wet noses.
+Learning trails and forest ways, guided through the childhood maze.
+They listen well to the mother's word, the kindest voice they've ever heard.
+And with the cousins, the pack is wide, playing games from side to side.
+But when the sun begins to dip, she holds a brush with steady grip.
+Blue for river, yellow for grain, she paints the world in Solene.
+Oh, Solene our golden fox, opening all the heavy locks.
+Heavy learning, fast and growing tall, hearing wisdom when they call.
+A clever mind and a tale that sweeps while the rest of the forest sleeps.
+Grow and learn, little fox.`,
 } as const satisfies Record<string, string>;
