@@ -27,6 +27,18 @@ export default function FamilyPage() {
       </section>
 
       <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+        <h2 className="text-xl font-bold">Evelyn</h2>
+        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Gold in the Tile — new album, more songs coming</p>
+        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+          {members
+            .filter((m) => m.slug === "evelyn")
+            .map((member) => (
+              <MemberCircle key={member.slug} member={member} />
+            ))}
+        </div>
+      </section>
+
+      <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
         <h2 className="text-xl font-bold">Ocean & Tio Chien</h2>
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
           {others.map((member) => (

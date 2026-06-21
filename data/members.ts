@@ -1,4 +1,4 @@
-export type MemberRole = "girl" | "boy" | "tio";
+export type MemberRole = "girl" | "boy" | "tio" | "family";
 
 export type FamilyMember = {
   slug: string;
@@ -55,6 +55,15 @@ export const members: FamilyMember[] = [
     description:
       "Tio Chien is uncle, co-pilot, and family music-day ringleader. Helps turn pixels, prompts, and cousin chaos into songs everyone replays.",
   },
+  {
+    slug: "evelyn",
+    name: "Evelyn",
+    age: 35,
+    role: "family",
+    emoji: "💛",
+    description:
+      "Evelyn — heart of the home. Her album Gold in the Tile is a growing collection of songs made with love, one release at a time.",
+  },
 ];
 
 export function getMemberBySlug(slug: string): FamilyMember | undefined {
@@ -62,7 +71,7 @@ export function getMemberBySlug(slug: string): FamilyMember | undefined {
 }
 
 export function getMemberLabel(member: FamilyMember): string {
-  if (member.role === "tio") {
+  if (member.role === "tio" || member.role === "family") {
     return member.name;
   }
   return `${member.name}, ${member.age}`;
@@ -80,6 +89,8 @@ export function getRoleLabel(role: MemberRole): string {
       return "Our guy";
     case "tio":
       return "Tio";
+    case "family":
+      return "Family";
     default: {
       const _exhaustive: never = role;
       return _exhaustive;

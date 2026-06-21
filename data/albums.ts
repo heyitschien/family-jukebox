@@ -11,6 +11,8 @@ export type Album = {
   dateCreated: string;
   story?: string;
   accentColor: string;
+  /** Pinned to hero + front of landing carousel */
+  featured?: boolean;
 };
 
 const CREATOR_ACCENTS: Record<string, string> = {
@@ -19,6 +21,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
   solene: "#c4b5fd",
   ocean: "#6cb7ff",
   "tio-chien": "#7dd3fc",
+  evelyn: "#d4af37",
 };
 
 const CREATOR_ALBUM_TITLES: Record<string, string> = {
@@ -27,10 +30,24 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   solene: "Solene's Painted Garden",
   ocean: "Ocean's Adventures",
   "tio-chien": "Tio Chien's Magic Studio",
+  evelyn: "Gold in the Tile",
 };
 
 /** Ongoing / themed albums — add song slugs here as new singles drop. */
 const SERIES_ALBUMS: Album[] = [
+  {
+    slug: "gold-in-the-tile-album",
+    title: "Gold in the Tile",
+    subtitle: "Evelyn · single out now — more tracks coming",
+    authorSlug: "evelyn",
+    coverSrc: "/assets/evelyn/gold-in-the-tile.jpg",
+    songSlugs: ["gold-in-the-tile"],
+    dateCreated: "2026-06-21",
+    story:
+      "A growing album for Evelyn — warm songs with room to grow. New tracks join this collection as they release.",
+    accentColor: "#d4af37",
+    featured: true,
+  },
   {
     slug: "miracle-in-the-sand-album",
     title: "Miracle in the Sand",

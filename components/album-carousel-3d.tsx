@@ -192,9 +192,10 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
         {/* Hero copy + actions */}
         <div className="relative z-10 min-w-0">
-          <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
-            ✨ Today&apos;s spotlight · {author?.name ?? "Family"}
-          </span>
+        <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
+          {activeAlbum.featured ? "💛 Featured release · " : "✨ Today's spotlight · "}
+          {author?.name ?? "Family"}
+        </span>
           <h1 className="text-[clamp(40px,10vw,72px)] leading-[0.9] font-extrabold tracking-[-0.06em]">
             Family Jukebox
           </h1>

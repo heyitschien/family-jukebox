@@ -58,6 +58,47 @@ Oh, we're the foxes of the garden running fast and free from the map in the dirt
 tallest trees. Solene is leading and the pups follow through. There's so much to the
 rhythm watch the colors bloom. Every little fox has a long way to grow, a way to grow.
 Just a fox in the garden, Solene is growing.`,
+  "gold-in-the-tile": `Sunday afternoon, 158 on the dial
+In the city of angels, you're the gold in the tile
+40 years of wisdom, but the calendar's lying
+You look like 20, and the mirror isn't trying
+A sweet, sweet girl with a spirit so deep
+Master of the shutter, unless you're trying to sleep
+You need those hours, non-negotiable grace
+While I just stare at the sun on your face
+Oh, Evelyn, my life, my number one heart
+You're the masterpiece while you're making me art
+You capture the world through a beautiful lens
+But who is behind it when the clicking ends
+You're the subject of my soul, the fire in my view
+My sweet, sweet girl, I'm so proud of you
+I remember the movies, avatar on the screen
+But I was watching the glow of the most beautiful thing I'd seen
+You walked in like sunlight, an angel in the row
+An orange sweater blasting, putting the projectors to shame with your glow
+You're a cutie or dressed up, so elegant, so fine
+Drinking down your water like a vintage wine
+I love how you dress, I love how you shine
+Glad that little lady gets to be mine
+Oh, Evelyn, my life, my number one heart
+You're the masterpiece while you're making me art
+You capture the world through a beautiful lens
+But who is behind it when the clicking ends
+You're the subject of my soul, the fire in my view
+My sweet, sweet girl, I'm so proud of you
+You're taking the picture, you're holding the pose
+The prettiest cutie that everyone knows
+But pause for a second, let me take a shot of the beautiful lady
+I love that I've got sleepy and sweet with that glow on your face
+You fill up the world with your orange sweater grace
+Oh, Evelyn, my life, my number one heart
+You're the masterpiece while you're making me art
+You capture the world through a beautiful lens
+But who is behind it when the clicking ends
+You're the subject of my soul, the fire in my view
+My sweet, sweet girl, I'm so proud of you
+My sweet, Evelyn
+Forever in focus, you're my sunlight`,
   "gravity-shift": `Yeah I'm never feeling B Ocean on the court watch to grab a feeling B
 Ocean on the court watch to gravity shift Hard work is a power and it's feeling like a gift
 Ocean, ocean becoming a star Taking every shot, yeah I'm going real far

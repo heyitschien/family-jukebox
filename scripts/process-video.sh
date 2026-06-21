@@ -9,7 +9,7 @@ if [ "$#" -lt 3 ]; then
   echo "Usage: $0 <author-slug> <input.mp4> <song-slug>"
   echo "Example: $0 ocean ../family-music-asset-june-19/Ocean-10/Gravity_Shift.mp4 gravity-shift"
   echo ""
-  echo "Author slugs: marceline, eliana, solene, ocean, tio-chien"
+  echo "Author slugs: marceline, eliana, solene, ocean, tio-chien, evelyn"
   exit 1
 fi
 

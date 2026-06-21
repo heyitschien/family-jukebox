@@ -68,7 +68,8 @@ export default async function MemberPage({ params }: MemberPageProps) {
           </p>
           <h1 className="mt-2 text-5xl font-extrabold tracking-tight sm:text-7xl">{member.name}</h1>
           <p className="mt-2 text-sm font-bold text-[var(--jb-muted)]">
-            {memberSongs.length} {memberSongs.length === 1 ? "song" : "songs"} · age {member.age}
+            {memberSongs.length} {memberSongs.length === 1 ? "song" : "songs"}
+            {member.role === "girl" || member.role === "boy" ? ` · age ${member.age}` : ""}
           </p>
           <div className="mt-6">
             <MemberPlayHeader songs={memberSongs} memberName={member.name} />

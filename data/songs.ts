@@ -126,6 +126,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "sand", "miracle", "tio-chien"],
     featured: true,
   },
+  {
+    slug: "gold-in-the-tile",
+    title: "Gold in the Tile",
+    subtitle: "The first single from Evelyn's growing album",
+    authorSlug: "evelyn",
+    dateCreated: "2026-06-21",
+    audioSrc: "/assets/evelyn/gold-in-the-tile.mp3",
+    coverSrc: "/assets/evelyn/gold-in-the-tile.jpg",
+    story:
+      "The opening single from Evelyn's Gold in the Tile album — warm, golden, and built to grow track by track.",
+    lyrics: songLyrics["gold-in-the-tile"],
+    tags: ["single", "gold", "evelyn", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

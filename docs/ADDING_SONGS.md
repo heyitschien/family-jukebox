@@ -56,6 +56,7 @@ Lyrics appear on the song detail page under **Lyrics** (auto-transcribed, may no
 | `solene` | Solene | 8 | our girls |
 | `ocean` | Ocean | 10 | our guy |
 | `tio-chien` | Tio Chien | 35 | Tio |
+| `evelyn` | Evelyn | — | Family (wife) |
 
 Edit bios in `data/members.ts` anytime.
 
@@ -146,6 +147,7 @@ public/assets/eliana/
 public/assets/solene/
 public/assets/ocean/
 public/assets/tio-chien/
+public/assets/evelyn/
 ```
 
 Keep **MP3 + JPG only** in git — source MP4s stay in `family-music-asset-june-19/`.
