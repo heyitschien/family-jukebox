@@ -82,7 +82,8 @@ export function AlbumCard({ album, className, size = "md", showKind = false }: A
           className="absolute right-2 bottom-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
         />
       </div>
-      <Link href={`/albums/${album.slug}`} className="mt-3 block min-w-0">
+      <div className="mt-3 min-w-0">
+        <Link href={`/albums/${album.slug}`} className="block">
         <p
           className={cn(
             "truncate text-sm font-bold hover:underline",
@@ -91,12 +92,20 @@ export function AlbumCard({ album, className, size = "md", showKind = false }: A
         >
           {album.title}
         </p>
+        </Link>
         <p className="mt-0.5 truncate text-xs text-[var(--jb-muted)]">
-          {author?.name ?? "Family"} · {albumSongs.length}{" "}
+          {author ? (
+            <Link href={`/members/${author.slug}`} className="hover:text-white hover:underline">
+              {author.name}
+            </Link>
+          ) : (
+            "Family"
+          )}{" "}
+          · {albumSongs.length}{" "}
           {albumSongs.length === 1 ? "track" : "tracks"}
           {showKind ? ` · ${getAlbumKindLabel(album)}` : ""}
         </p>
-      </Link>
+      </div>
     </div>
   );
 }

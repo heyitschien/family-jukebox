@@ -50,10 +50,18 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
             {song.title}
           </strong>
           <span className="block truncate text-xs text-[var(--jb-muted)]">
-            {author?.name} · {song.tags.slice(0, 3).join(" · ")}
+            {song.tags.slice(0, 3).join(" · ")}
           </span>
         </div>
       </Link>
+      {author ? (
+        <Link
+          href={`/members/${author.slug}`}
+          className="shrink-0 rounded-full border border-white/[0.08] bg-white/[0.06] px-2.5 py-1 text-[11px] font-bold text-[var(--jb-muted)] hover:text-white hover:underline"
+        >
+          {author.name}
+        </Link>
+      ) : null}
       <Link
         href={`/songs/${song.slug}`}
         className="shrink-0 px-2 text-xs text-[var(--jb-muted)] hover:text-white"

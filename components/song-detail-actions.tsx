@@ -70,6 +70,14 @@ export function SongDetailActions({
           View artist
         </Link>
       )}
+      {parentAlbum ? (
+        <Link
+          href={`/members/${song.authorSlug}`}
+          className="inline-flex min-h-11 items-center rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-black"
+        >
+          View artist
+        </Link>
+      ) : null}
     </div>
   );
 }

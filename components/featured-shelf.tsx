@@ -6,6 +6,7 @@ import { useMemo, useState } from "react";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
+import { getAlbumForSong } from "@/data/albums";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
@@ -19,6 +20,7 @@ type FeaturedShelfProps = {
 function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] }) {
   const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
   const author = getMemberBySlug(song.authorSlug);
+  const album = getAlbumForSong(song);
 
   return (
     <article
@@ -39,7 +41,8 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
           className="absolute right-2 bottom-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 sm:group-focus-within:opacity-100"
         />
       </div>
-      <Link href={`/songs/${song.slug}`} className="mt-3 block min-w-0">
+      <div className="mt-3 min-w-0">
+        <Link href={`/songs/${song.slug}`} className="block min-w-0">
         <h3
           className={cn(
             "truncate text-sm font-bold tracking-tight sm:text-[15px]",
@@ -49,9 +52,22 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
           {song.title}
         </h3>
         <p className="mt-1 line-clamp-2 min-h-[35px] text-xs leading-snug text-[var(--jb-muted)] sm:text-[13px]">
-          {song.subtitle ?? `${author?.name ?? "Family"} · family song`}
+          {song.subtitle ?? "Family song"}
         </p>
-      </Link>
+        </Link>
+        <div className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] font-bold text-[var(--jb-muted)]">
+          {author ? (
+            <Link href={`/members/${author.slug}`} className="hover:text-white hover:underline">
+              {author.name}
+            </Link>
+          ) : null}
+          {album ? (
+            <Link href={`/albums/${album.slug}`} className="hover:text-white hover:underline">
+              {album.title}
+            </Link>
+          ) : null}
+        </div>
+      </div>
     </article>
   );
 }

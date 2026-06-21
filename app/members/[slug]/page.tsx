@@ -4,11 +4,14 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 import { AlbumShelf } from "@/components/album-shelf";
+import { MemberRail } from "@/components/member-rail";
 import { MemberPlayHeader, MemberSongList } from "@/components/member-play-header";
+import { SongRail } from "@/components/song-rail";
 import { Topbar } from "@/components/topbar";
 import { getAlbumsByAuthor, groupAlbumsByKind } from "@/data/albums";
 import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
+import { getRelatedMembersForAuthor, getSimilarSongsForAuthor } from "@/lib/music-discovery";
 
 import { buildShareMetadata } from "@/lib/site-metadata";
 
@@ -38,6 +41,8 @@ export default async function MemberPage({ params }: MemberPageProps) {
   const memberSongs = getSongsByAuthor(member.slug);
   const { series, discography } = groupAlbumsByKind(getAlbumsByAuthor(member.slug));
   const heroCover = memberSongs[0]?.coverSrc;
+  const similarSongs = getSimilarSongsForAuthor(member.slug);
+  const relatedArtists = getRelatedMembersForAuthor(member.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -120,6 +125,25 @@ export default async function MemberPage({ params }: MemberPageProps) {
         <h2 className="text-lg font-bold">About {member.name}</h2>
         <p className="mt-3 leading-relaxed text-[var(--jb-muted)]">{member.description}</p>
       </section>
+
+      {similarSongs.length > 0 ? (
+        <SongRail
+          songs={similarSongs}
+          title={`If you like ${member.name}, try these next`}
+          subtitle="Similar energy from the rest of the family library."
+          playAllLabel="Play related songs"
+          className="mt-4"
+        />
+      ) : null}
+
+      {relatedArtists.length > 0 ? (
+        <MemberRail
+          members={relatedArtists}
+          title="Keep exploring artists"
+          subtitle="Hop to another artist and stay inside the music world."
+          className="mt-4"
+        />
+      ) : null}
     </main>
   );
 }

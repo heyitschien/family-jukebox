@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
@@ -20,6 +21,7 @@ type AlbumCarousel3DProps = {
 };
 
 export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCarousel3DProps) {
+  const router = useRouter();
   const { playQueue, currentSong, isPlaying, queue, togglePlay } = usePlayer();
   const [activeIndex, setActiveIndex] = useState(() =>
     Math.max(
@@ -36,6 +38,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   const author = getAlbumAuthor(activeAlbum);
   const spotlightNames = getSpotlightAlbumAuthorNames();
   const heroBadge = getAlbumHeroBadge(activeAlbum, featuredAlbum);
+  const spotlightTracks = activeSongs.slice(0, 3);
 
   const isAlbumPlaying =
     isPlaying &&
@@ -74,6 +77,18 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
     }
     playActiveAlbum();
   }, [isAlbumPlaying, playActiveAlbum, togglePlay]);
+
+  const handleAlbumFocus = useCallback(
+    (albumSlug: string, index: number) => {
+      if (index === activeIndex) {
+        router.push(`/albums/${albumSlug}`);
+        return;
+      }
+
+      rotateTo(index);
+    },
+    [activeIndex, rotateTo, router],
+  );
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0]?.clientX ?? 0;
@@ -133,10 +148,17 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               const authorName = getAlbumAuthor(album)?.name ?? "Family";
 
               return (
-                <button
+                <div
                   key={album.slug}
-                  type="button"
-                  onClick={() => rotateTo(i)}
+                  role="button"
+                  tabIndex={0}
+                  onClick={() => handleAlbumFocus(album.slug, i)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      handleAlbumFocus(album.slug, i);
+                    }
+                  }}
                   className="absolute top-1/2 left-1/2 cursor-pointer border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent]"
                   style={{
                     width: `${coverSize}px`,
@@ -164,14 +186,33 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                     }}
                   >
                     <CoverImage src={album.coverSrc} alt="" className="size-full" />
+                        {isFront && activeSongs.length > 0 ? (
+                          <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
+                            <div
+                              className="pointer-events-auto"
+                              onClickCapture={(event) => event.stopPropagation()}
+                            >
+                              <PlayIconButton
+                                size="xl"
+                                playing={isAlbumPlaying}
+                                label={isAlbumPlaying ? "Pause album" : `Play ${album.title}`}
+                                onClick={handlePlayToggle}
+                                className="shadow-[0_18px_45px_rgba(0,0,0,0.35)]"
+                              />
+                            </div>
+                          </div>
+                        ) : null}
                     <div
                       className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-3 pt-8"
                       style={{ opacity: isFront ? 1 : 0 }}
                     >
                       <p className="truncate text-xs font-bold text-white">{authorName}</p>
+                          <p className="truncate text-[11px] font-bold text-white/70">
+                            {isFront ? "Tap cover to open album" : "Tap to focus"}
+                          </p>
                     </div>
                   </div>
-                </button>
+                </div>
               );
             })}
           </div>
@@ -195,19 +236,31 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
         {/* Hero copy + actions */}
         <div className="relative z-10 min-w-0">
-        <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
-          {heroBadge.emoji} {heroBadge.prefix}
-          {author?.name ?? "Family"}
-        </span>
+          <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
+            {heroBadge.emoji} {heroBadge.prefix}
+            {author?.name ?? "Family"}
+          </span>
           <h1 className="text-[clamp(40px,10vw,72px)] leading-[0.9] font-extrabold tracking-[-0.06em]">
             Family Jukebox
           </h1>
-          <p className="mt-3 text-lg font-bold" style={{ color: activeAlbum.accentColor }}>
+          <Link
+            href={`/albums/${activeAlbum.slug}`}
+            className="mt-3 inline-block text-lg font-bold hover:underline"
+            style={{ color: activeAlbum.accentColor }}
+          >
             {activeAlbum.title}
-          </p>
+          </Link>
           <p className="mt-1 text-sm text-[var(--jb-muted)]">
             {activeAlbum.subtitle ?? `${activeSongs.length} songs`}
           </p>
+          {author ? (
+            <Link
+              href={`/members/${author.slug}`}
+              className="mt-2 inline-block text-sm font-bold text-[var(--jb-muted)] hover:text-white hover:underline"
+            >
+              Explore {author.name}
+            </Link>
+          ) : null}
           <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
             Spin through cousin albums — silly fox trails, gravity shifts, pink glasses, and every
             family anthem in one place.
@@ -236,7 +289,34 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
             >
               View album
             </Link>
+            {author ? (
+              <Link
+                href={`/members/${author.slug}`}
+                className="inline-flex min-h-11 items-center rounded-full border border-white/15 bg-transparent px-5 py-3 text-sm font-bold text-[var(--jb-muted)] hover:text-white"
+              >
+                View artist
+              </Link>
+            ) : null}
           </div>
+
+          {spotlightTracks.length > 0 ? (
+            <div className="mt-5 rounded-[24px] border border-white/[0.08] bg-white/[0.05] p-4">
+              <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-[var(--jb-muted)]">
+                Jump straight in
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {spotlightTracks.map((song) => (
+                  <Link
+                    key={song.slug}
+                    href={`/songs/${song.slug}`}
+                    className="rounded-full border border-white/[0.08] bg-white/[0.07] px-3 py-2 text-sm font-bold hover:bg-white/[0.12]"
+                  >
+                    {song.title}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <Link
             href="/albums"

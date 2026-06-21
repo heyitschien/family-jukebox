@@ -61,19 +61,26 @@ function QueueRow({ song, playlist }: { song: Song; playlist: Song[] }) {
         onClick={toggle}
       />
       <CoverImage src={song.coverSrc} alt="" className="size-11 rounded-xl" />
-      <Link href={`/songs/${song.slug}`} className="min-w-0 text-left">
-        <strong
-          className={cn(
-            "block truncate text-sm",
-            isCurrent && "text-[var(--family-pink)]",
-          )}
-        >
-          {song.title}
-        </strong>
-        <span className="block truncate text-xs text-[var(--jb-muted)]">
-          {author?.name} · {song.tags.slice(0, 3).join(" · ")}
-        </span>
-      </Link>
+      <div className="min-w-0">
+        <Link href={`/songs/${song.slug}`} className="min-w-0 text-left">
+          <strong
+            className={cn(
+              "block truncate text-sm",
+              isCurrent && "text-[var(--family-pink)]",
+            )}
+          >
+            {song.title}
+          </strong>
+        </Link>
+        <div className="mt-0.5 flex flex-wrap items-center gap-1 text-xs text-[var(--jb-muted)]">
+          {author ? (
+            <Link href={`/members/${author.slug}`} className="hover:text-white hover:underline">
+              {author.name}
+            </Link>
+          ) : null}
+          <span className="truncate">{song.tags.slice(0, 3).join(" · ")}</span>
+        </div>
+      </div>
       <div className="hidden sm:block">
         <QueueBadge song={song} />
       </div>

@@ -5,6 +5,8 @@ import { ArrowLeft } from "lucide-react";
 
 import { AlbumPlayHeader } from "@/components/album-play-header";
 import { CoverImage } from "@/components/cover-image";
+import { MemberRail } from "@/components/member-rail";
+import { SongRail } from "@/components/song-rail";
 import { SongRow } from "@/components/song-row";
 import { Topbar } from "@/components/topbar";
 import {
@@ -16,6 +18,7 @@ import {
   getAlbumSongs,
   getAlbumTrackCount,
 } from "@/data/albums";
+import { getMoreSongsFromArtist, getRelatedMembersForAlbum, getSimilarSongsForAlbum } from "@/lib/music-discovery";
 import { buildShareMetadata } from "@/lib/site-metadata";
 
 type AlbumPageProps = {
@@ -45,6 +48,9 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
   const albumSongs = getAlbumSongs(album);
   const trackCount = getAlbumTrackCount(album);
   const relatedAlbums = getAlbumsByAuthor(album.authorSlug).filter((entry) => entry.slug !== album.slug);
+  const moreSongsByArtist = getMoreSongsFromArtist(album.authorSlug, album.songSlugs);
+  const similarSongs = getSimilarSongsForAlbum(album);
+  const relatedArtists = getRelatedMembersForAlbum(album);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -116,6 +122,16 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
         )}
       </section>
 
+      {moreSongsByArtist.length > 0 ? (
+        <SongRail
+          songs={moreSongsByArtist}
+          title={`More songs from ${author?.name ?? "this artist"}`}
+          subtitle="Keep the same voice playing while you branch into singles and side tracks."
+          playAllLabel="Play artist songs"
+          className="mt-4"
+        />
+      ) : null}
+
       {relatedAlbums.length > 0 ? (
         <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
           <h2 className="text-lg font-bold">More from {author?.name ?? "this artist"}</h2>
@@ -137,6 +153,16 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
         </section>
       ) : null}
 
+      {similarSongs.length > 0 ? (
+        <SongRail
+          songs={similarSongs}
+          title="More like this"
+          subtitle="Similar moods, themes, and family energy from across the jukebox."
+          playAllLabel="Play similar songs"
+          className="mt-4"
+        />
+      ) : null}
+
       {album.story ? (
         <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
           <h2 className="text-lg font-bold">About this album</h2>
@@ -150,6 +176,15 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
             </Link>
           ) : null}
         </section>
+      ) : null}
+
+      {relatedArtists.length > 0 ? (
+        <MemberRail
+          members={relatedArtists}
+          title="Explore more artists"
+          subtitle="Move from this album into nearby voices and family stories."
+          className="mt-4"
+        />
       ) : null}
     </main>
   );

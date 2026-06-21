@@ -4,13 +4,16 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, CalendarDays } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { MemberRail } from "@/components/member-rail";
 import { SongDetailActions } from "@/components/song-detail-actions";
 import { SongPlayCount } from "@/components/song-play-count";
+import { SongRail } from "@/components/song-rail";
 import { SongVideo } from "@/components/song-video";
 import { Topbar } from "@/components/topbar";
 import { getAlbumForSong, getAlbumSongs } from "@/data/albums";
 import { getSongAuthor, getSongBySlug, getSongsByAuthor, songs } from "@/data/songs";
 import { isSpotlightSong } from "@/lib/featured-rotation";
+import { getMoreSongsFromArtist, getRelatedMembersForSong, getSimilarSongsForSong } from "@/lib/music-discovery";
 
 import { buildShareMetadata } from "@/lib/site-metadata";
 
@@ -41,6 +44,13 @@ export default async function SongPage({ params }: SongPageProps) {
   const artistQueue = getSongsByAuthor(song.authorSlug);
   const parentAlbum = getAlbumForSong(song);
   const albumQueue = parentAlbum ? getAlbumSongs(parentAlbum) : artistQueue;
+  const moreFromAlbum = parentAlbum ? albumQueue.filter((entry) => entry.slug !== song.slug) : [];
+  const moreFromArtist = getMoreSongsFromArtist(
+    song.authorSlug,
+    parentAlbum ? [song.slug, ...parentAlbum.songSlugs] : [song.slug],
+  );
+  const similarSongs = getSimilarSongsForSong(song);
+  const relatedArtists = getRelatedMembersForSong(song);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -137,6 +147,45 @@ export default async function SongPage({ params }: SongPageProps) {
           </section>
         ) : null}
       </div>
+
+      {moreFromAlbum.length > 0 ? (
+        <SongRail
+          songs={moreFromAlbum}
+          title={`More from ${parentAlbum?.title ?? "this album"}`}
+          subtitle="Stay inside the album and keep listening track by track."
+          playAllLabel="Play album tracks"
+          className="mx-auto mt-6 max-w-5xl"
+        />
+      ) : null}
+
+      {moreFromArtist.length > 0 ? (
+        <SongRail
+          songs={moreFromArtist}
+          title={`More from ${author?.name ?? "this artist"}`}
+          subtitle="Branch from this song into more of their music without losing the vibe."
+          playAllLabel="Play artist songs"
+          className="mx-auto mt-4 max-w-5xl"
+        />
+      ) : null}
+
+      {similarSongs.length > 0 ? (
+        <SongRail
+          songs={similarSongs}
+          title="Similar songs from the family"
+          subtitle="When you finish one song, the next lane should already be open."
+          playAllLabel="Play similar songs"
+          className="mx-auto mt-4 max-w-5xl"
+        />
+      ) : null}
+
+      {relatedArtists.length > 0 ? (
+        <MemberRail
+          members={relatedArtists}
+          title="Explore more artists"
+          subtitle="Jump from this song into nearby artists and albums."
+          className="mx-auto mt-4 max-w-5xl"
+        />
+      ) : null}
     </main>
   );
 }
