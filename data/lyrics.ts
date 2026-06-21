@@ -118,6 +118,12 @@ I'm trying hard every single day Clearing all the obstacles out of my way
 Ocean is a star, yeah it's finally my turn Watching all the bridges that I used to have to burn
 Yeah I made it to the peak Ocean, ocean star power Best in the world, yeah
 Ocean, ocean becoming a star`,
+  "legacy-in-the-lane": `Yo, Sam on the perimeter, coach with the vision, three queens on the court, making every decision, open-minded, connected, the hip threats stay fresh, teaching them the game, put the legacy to the test,
+it's a father's day miracle, no cap in the message, he's a superman standing, counting all of his blessings, from the baseline to the bleachers, the wisdom he drops, a king in the sight for where the realness never stops,
+Superman flying, Sam and Josh in the booth, father's day cipher, we just telling the truth, three girls, five girls, the strength of the father's reflected in their eyes, we appreciate the moves, we appreciate the love,
+watching over the house, like a blessing from above, Josh at the helm, five daughters in the lane, guiding, guiding the ship through the sun and the rain, no playbook needed, just hard on the sleeve, a bomb so strong, they gotta see it to believe, hit with the flow, but grounded in the roots,
+lace them up tight, yeah he's calling all the shoots, open-minded king, building greatness from the floor, Superman energy, five and some more, Superman flying, Sam and Josh in the booth, father's day cipher, we just telling the truth, three girls, five girls, the strength of the father's reflected in their eyes, we appreciate the moves,
+we appreciate the love, watching over the house, like a blessing from above, happy father's day, Sam, Josh, real superheroes don't wear capes, they lace up sneakers, three girls, five girls, the family tree is looking ill, peace.`,
   "miracle-in-the-sand": `The color of the sand in the beginning, the color of the moon
 Dinosaur ghost in the silicon yard
 Before waking up from a dream
@@ -423,4 +429,27 @@ Oh, Solene our golden fox, opening all the heavy locks.
 Heavy learning, fast and growing tall, hearing wisdom when they call.
 A clever mind and a tale that sweeps while the rest of the forest sleeps.
 Grow and learn, little fox.`,
+  "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
+Ico is your very best friend Happy times that never end
+One and two and now you're three Happy birthday Marceline
+Marceline, Marceline, Marceline, Lillie, Lillie Turning three, turning three
+Turn three, three, three Look how she grows
+Look how she grows Beautiful joy that the family knows
+One, two, three Marceline is turning three
+Games and playing all day Ico joins you in the play
+Smart and cute as you can be A wonderful joy for our family
+We love to watch you learn and grow Watch our beautiful girls' heart glow
+Marceline, Marceline, Marceline, Lillie, Lillie Turning three, turning three
+Turning three, three, three Look how she grows
+Look how she grows Beautiful joy that the family knows
+One, two, three Marceline is turning three
+What a special day for you Welcome to this world so new
+Grow up healthy, grow up tall The loveliest girl of them all
+Marceline, Marceline, Marceline, Lillie, Lillie Turning three, turning three
+Turning three, three, three Look how she grows
+Look how she grows Beautiful joy that the family knows
+One, two, three Marceline is turning three
+Happy birthday Marceline Our beautiful clever queen
+We love you so much
+Happy birthday`,
 } as const satisfies Record<string, string>;

@@ -28,6 +28,12 @@ import {
 } from "../lib/album-rotation";
 import { parsePlayEventBody } from "../lib/security/api";
 import {
+  getActiveCelebrations,
+  getCelebrationAlbumSlugs,
+  getCelebrationSongSlugs,
+  getFathersDayDate,
+} from "../lib/celebrations";
+import {
   buildShuffledQueue,
   cycleRepeatMode,
   resolveQueueForPlayback,
@@ -130,7 +136,12 @@ describe("album rotation", () => {
   it("returns consistent hero badges", () => {
     const hero = getHeroFeaturedAlbum(3);
     const badge = getAlbumHeroBadge(hero, hero);
-    assert.equal(badge.emoji, hero.featured ? "💛" : "✨");
+    const celebrationSlugs = getCelebrationAlbumSlugs();
+    if (celebrationSlugs.includes(hero.slug)) {
+      assert.ok(["🎂", "👔"].includes(badge.emoji));
+    } else {
+      assert.equal(badge.emoji, hero.featured ? "💛" : "✨");
+    }
     assert.ok(isTodayHeroAlbum(hero, 3));
   });
 });
@@ -195,6 +206,25 @@ describe("search catalog", () => {
     assert.ok(grouped.songs.length <= 6);
     assert.ok(grouped.albums.length <= 3);
     assert.ok(grouped.members.length <= 3);
+  });
+});
+
+describe("celebration highlights", () => {
+  it("features Marceline birthday and Father's Day on June 21, 2026", () => {
+    const date = new Date(2026, 5, 21);
+    const active = getActiveCelebrations(date);
+    assert.equal(active.length, 2);
+    assert.deepEqual(getCelebrationSongSlugs(date), [
+      "three-candles-for-marceline",
+      "legacy-in-the-lane",
+    ]);
+    assert.ok(getCelebrationAlbumSlugs(date).includes("three-candles-for-marceline-album"));
+    assert.ok(getCelebrationAlbumSlugs(date).includes("legacy-in-the-lane-album"));
+  });
+
+  it("computes US Father's Day as the third Sunday in June", () => {
+    assert.deepEqual(getFathersDayDate(2026), { month: 6, day: 21 });
+    assert.deepEqual(getFathersDayDate(2025), { month: 6, day: 15 });
   });
 });
 

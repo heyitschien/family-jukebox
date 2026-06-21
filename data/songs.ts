@@ -168,6 +168,34 @@ export const songs: Song[] = [
     tags: ["single", "indie", "pop", "evelyn", "featured"],
     featured: true,
   },
+  {
+    slug: "three-candles-for-marceline",
+    title: "Three Candles for Marceline",
+    subtitle: "Happy 3rd birthday · June 21",
+    authorSlug: "marceline",
+    dateCreated: "2026-06-21",
+    audioSrc: "/assets/marceline/three-candles-for-marceline.mp3",
+    coverSrc: "/assets/marceline/three-candles-for-marceline.jpg",
+    story:
+      "Marceline turns three today — candles, sunshine, and a birthday song for the littlest cousin with Ico by her side.",
+    lyrics: songLyrics["three-candles-for-marceline"],
+    tags: ["birthday", "celebration", "marceline", "featured"],
+    featured: true,
+  },
+  {
+    slug: "legacy-in-the-lane",
+    title: "Legacy in the Lane",
+    subtitle: "A Father's Day single · coaching, love, and real superheroes",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-21",
+    audioSrc: "/assets/tio-chien/legacy-in-the-lane.mp3",
+    coverSrc: "/assets/tio-chien/legacy-in-the-lane.jpg",
+    story:
+      "Tio Chien's Father's Day release — a hip-hop love letter to dads on the court, in the lane, and at home.",
+    lyrics: songLyrics["legacy-in-the-lane"],
+    tags: ["fathers-day", "single", "hip-hop", "celebration", "tio-chien", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

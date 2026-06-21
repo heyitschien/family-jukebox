@@ -1,5 +1,6 @@
 import { members } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
+import { getCelebrationSongSlugs } from "@/lib/celebrations";
 
 /** Day index for fair daily rotation across the family. */
 export function getDayIndex(): number {
@@ -39,18 +40,34 @@ export function getHeroFeaturedSong(refreshSeed = 0): Song {
   return spotlight[index] ?? songs[0];
 }
 
-/** Shelf order: each member's spotlight first, then the rest. */
+/** Shelf order: today's celebrations first, then each member's spotlight, then the rest. */
 export function getRotatedFeaturedShelf(refreshSeed = 0): Song[] {
-  const spotlight = getSpotlightSongPerMember();
-  const spotlightSlugs = new Set(spotlight.map((song) => song.slug));
+  const celebrationSlugs = new Set(getCelebrationSongSlugs());
+  const celebrationSongs = songs.filter((song) => celebrationSlugs.has(song.slug));
+
+  const spotlight = getSpotlightSongPerMember().filter((song) => !celebrationSlugs.has(song.slug));
+  const spotlightSlugs = new Set([...celebrationSlugs, ...spotlight.map((song) => song.slug)]);
   const rest = songs.filter((song) => !spotlightSlugs.has(song.slug));
   const rotatedSpotlight = rotateArray(spotlight, getDayIndex() + refreshSeed);
   const rotatedRest = rotateArray(rest, refreshSeed);
-  return [...rotatedSpotlight, ...rotatedRest];
+  return [...celebrationSongs, ...rotatedSpotlight, ...rotatedRest];
 }
 
-/** Play queue interleaves by author so everyone appears in the mix. */
+/** Play queue interleaves by author — celebration songs lead on special days. */
 export function getFairRotationQueue(refreshSeed = 0): Song[] {
+  const celebrationSlugs = getCelebrationSongSlugs();
+  const celebrationSongs = songs.filter((song) => celebrationSlugs.includes(song.slug));
+  if (celebrationSongs.length > 0) {
+    const celebrationQueue = [...celebrationSongs];
+    const remaining = getFairRotationQueueInternal(refreshSeed).filter(
+      (song) => !celebrationSlugs.includes(song.slug),
+    );
+    return [...celebrationQueue, ...remaining];
+  }
+  return getFairRotationQueueInternal(refreshSeed);
+}
+
+function getFairRotationQueueInternal(refreshSeed = 0): Song[] {
   const day = getDayIndex() + refreshSeed;
   const byMember = new Map<string, Song[]>();
 

@@ -41,6 +41,32 @@ type SeriesAlbumDef = Omit<Album, "kind"> & { kind?: never };
 
 const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   {
+    slug: "three-candles-for-marceline-album",
+    title: "Three Candles for Marceline",
+    subtitle: "Marceline's 3rd birthday · June 21",
+    authorSlug: "marceline",
+    coverSrc: "/assets/marceline/three-candles-for-marceline.jpg",
+    songSlugs: ["three-candles-for-marceline"],
+    dateCreated: "2026-06-21",
+    story:
+      "A birthday release for Marceline — candles, games, and family joy as the littlest cousin turns three.",
+    accentColor: "#ff9ec8",
+    featured: true,
+  },
+  {
+    slug: "legacy-in-the-lane-album",
+    title: "Legacy in the Lane",
+    subtitle: "Father's Day single out now — more tracks coming",
+    authorSlug: "tio-chien",
+    coverSrc: "/assets/tio-chien/legacy-in-the-lane.jpg",
+    songSlugs: ["legacy-in-the-lane"],
+    dateCreated: "2026-06-21",
+    story:
+      "Tio Chien's Father's Day series — hip-hop tributes to real superheroes who lace up sneakers, not capes.",
+    accentColor: "#5eead4",
+    featured: true,
+  },
+  {
     slug: "gold-in-the-tile-album",
     title: "Evelyn",
     subtitle: "Silver Pan Morning · Orange Sweater Sun · Gold in the Tile · more coming",

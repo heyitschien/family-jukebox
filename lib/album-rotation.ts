@@ -1,9 +1,14 @@
 import {
+  getAllAlbums,
   getPrimaryAlbums,
   type Album,
 } from "@/data/albums";
 import { members } from "@/data/members";
 import { songs } from "@/data/songs";
+import {
+  getCelebrationAlbumSlugs,
+  getCelebrationHeroBadge,
+} from "@/lib/celebrations";
 import { createRefreshSeed, getDayIndex } from "@/lib/featured-rotation";
 
 function getFeaturedAlbums(): Album[] {
@@ -21,8 +26,20 @@ export function getSpotlightAlbumPerMember(): Album[] {
   return getPrimaryAlbums();
 }
 
-/** Hero spotlight album — featured releases first, then daily rotation across primary albums. */
+function getCelebrationAlbums(): Album[] {
+  const slugs = new Set(getCelebrationAlbumSlugs());
+  if (slugs.size === 0) return [];
+  return getAllAlbums().filter((album) => slugs.has(album.slug));
+}
+
+/** Hero spotlight album — today's celebrations first, then featured releases, then daily rotation. */
 export function getHeroFeaturedAlbum(refreshSeed = 0): Album {
+  const celebrations = getCelebrationAlbums();
+  if (celebrations.length > 0) {
+    const index = refreshSeed % celebrations.length;
+    return celebrations[index] ?? celebrations[0] ?? buildFallbackAlbum();
+  }
+
   const featured = getFeaturedAlbums();
   if (featured.length > 0) {
     const index = refreshSeed % featured.length;
@@ -35,14 +52,26 @@ export function getHeroFeaturedAlbum(refreshSeed = 0): Album {
   return primary[index] ?? primary[0] ?? buildFallbackAlbum();
 }
 
-/** 3D carousel — one primary album per artist, no duplicates. */
+/** 3D carousel — celebration albums first, then one primary album per artist. */
 export function getRotatedAlbumCarousel(refreshSeed = 0): Album[] {
   const primary = getPrimaryAlbums();
   if (primary.length === 0) return [];
 
+  const celebrationSlugs = new Set(getCelebrationAlbumSlugs());
+  const hero = getHeroFeaturedAlbum(refreshSeed);
+
+  if (celebrationSlugs.size > 0) {
+    const celebrationPrimary = primary.filter((album) => celebrationSlugs.has(album.slug));
+    const rest = primary.filter(
+      (album) => album.slug !== hero.slug && !celebrationSlugs.has(album.slug),
+    );
+    const rotatedRest = rotateArray(rest, getDayIndex() + refreshSeed);
+    const otherCelebrations = celebrationPrimary.filter((album) => album.slug !== hero.slug);
+    return [hero, ...otherCelebrations, ...rotatedRest];
+  }
+
   const featured = getFeaturedAlbums();
   const featuredSlugs = new Set(featured.map((album) => album.slug));
-  const hero = getHeroFeaturedAlbum(refreshSeed);
 
   const rest = primary.filter((album) => album.slug !== hero.slug);
   const rotatedRest = rotateArray(rest, getDayIndex() + refreshSeed);
@@ -66,8 +95,12 @@ export type AlbumHeroBadge = {
   prefix: string;
 };
 
-/** Unified hero badge — featured release, today's front pick, or collection browse. */
+/** Unified hero badge — celebration, featured release, today's front pick, or collection browse. */
 export function getAlbumHeroBadge(album: Album, heroAlbum: Album): AlbumHeroBadge {
+  const celebrationBadge = getCelebrationHeroBadge(album);
+  if (celebrationBadge) {
+    return celebrationBadge;
+  }
   if (album.featured) {
     return { emoji: "💛", prefix: "Featured release · " };
   }
