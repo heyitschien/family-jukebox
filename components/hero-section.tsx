@@ -1,21 +1,39 @@
 "use client";
 
+import { useCallback } from "react";
+
 import { usePlayer } from "@/contexts/player-context";
 import type { Song } from "@/data/songs";
 import { getMemberBySlug } from "@/data/members";
-import { getFairRotationQueue, getSpotlightAuthorNames } from "@/lib/featured-rotation";
+import { getSpotlightAuthorNames } from "@/lib/featured-rotation";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 
 type HeroSectionProps = {
   featured: Song;
+  playlist: Song[];
+  familyQueue: Song[];
 };
 
-export function HeroSection({ featured }: HeroSectionProps) {
+export function HeroSection({ featured, playlist, familyQueue }: HeroSectionProps) {
   const { playQueue } = usePlayer();
-  const { playing, toggle } = useSongPlayback(featured);
+  const { playing, toggle } = useSongPlayback(featured, { playlist });
+  const { playInContext: playSingle } = useSongPlayback(featured, { singleOnly: true });
   const author = getMemberBySlug(featured.authorSlug);
   const spotlightNames = getSpotlightAuthorNames();
+
+  const playFeaturedPlaylist = useCallback(() => {
+    const idx = playlist.findIndex((song) => song.slug === featured.slug);
+    playQueue(playlist, idx >= 0 ? idx : 0);
+  }, [featured.slug, playQueue, playlist]);
+
+  const handleHeroPlay = useCallback(() => {
+    if (playing) {
+      toggle();
+      return;
+    }
+    playFeaturedPlaylist();
+  }, [playing, toggle, playFeaturedPlaylist]);
 
   return (
     <section
@@ -40,19 +58,27 @@ export function HeroSection({ featured }: HeroSectionProps) {
         <p className="mt-2 text-sm font-bold text-[var(--family-ocean)]">
           Rotating spotlight: {spotlightNames}
         </p>
+        <p className="mt-1 text-sm font-bold text-[var(--family-pink)]">{featured.title}</p>
         <div className="mt-6 flex flex-wrap items-center gap-3">
           <PlayIconButton
             size="xl"
             playing={playing}
-            label="Play spotlight song"
-            onClick={toggle}
+            label="Play featured playlist"
+            onClick={handleHeroPlay}
           />
           <button
             type="button"
-            onClick={() => playQueue(getFairRotationQueue(), 0)}
+            onClick={() => playQueue(familyQueue, 0)}
             className="inline-flex min-h-11 items-center rounded-full bg-[var(--jb-text)] px-5 py-3 text-sm font-black text-[#050608] [-webkit-tap-highlight-color:transparent]"
           >
             Play family mix
+          </button>
+          <button
+            type="button"
+            onClick={playSingle}
+            className="inline-flex min-h-11 items-center rounded-full border border-white/15 bg-white/10 px-5 py-3 text-sm font-bold text-[var(--jb-muted)] [-webkit-tap-highlight-color:transparent] hover:text-white"
+          >
+            Play this song only
           </button>
         </div>
       </div>

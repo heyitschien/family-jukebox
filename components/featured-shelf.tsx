@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
+import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
@@ -15,8 +16,8 @@ type FeaturedShelfProps = {
   tags: string[];
 };
 
-function FeaturedAlbumCard({ song }: { song: Song }) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song);
+function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] }) {
+  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
   const author = getMemberBySlug(song.authorSlug);
 
   return (
@@ -56,6 +57,7 @@ function FeaturedAlbumCard({ song }: { song: Song }) {
 }
 
 export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
+  const { playQueue } = usePlayer();
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
   const filtered = useMemo(() => {
@@ -71,9 +73,18 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
         <div>
           <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Featured family songs</h2>
           <p className="text-sm font-bold text-[var(--jb-muted)]">
-            Compressed Spotify-style shelf instead of a long scroll.
+            Tap play on any song to hear the whole shelf — one track flows into the next.
           </p>
         </div>
+        {filtered.length > 1 ? (
+          <button
+            type="button"
+            onClick={() => playQueue(filtered, 0)}
+            className="inline-flex min-h-11 shrink-0 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
+          >
+            Play all
+          </button>
+        ) : null}
       </div>
 
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-none">
@@ -100,7 +111,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
 
       <div className="mt-4 grid grid-cols-2 gap-2.5 sm:gap-3.5 md:grid-cols-4 xl:grid-cols-6">
         {filtered.map((song) => (
-          <FeaturedAlbumCard key={song.slug} song={song} />
+          <FeaturedAlbumCard key={song.slug} song={song} playlist={filtered} />
         ))}
       </div>
     </section>
