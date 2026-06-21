@@ -18,7 +18,7 @@ import {
   getAlbumSongs,
   getAlbumTrackCount,
 } from "@/data/albums";
-import { buildShareMetadata } from "@/lib/site-metadata";
+import { buildCoverShareImage, buildShareMetadata } from "@/lib/site-metadata";
 import {
   getDiscoverAlbums,
   getDiscoverMembers,
@@ -41,6 +41,8 @@ export async function generateMetadata({ params }: AlbumPageProps): Promise<Meta
   return buildShareMetadata({
     title: `${album.title} · Family Jukebox`,
     description: album.subtitle ?? "A family album worth replaying.",
+    path: `/albums/${album.slug}`,
+    image: buildCoverShareImage(album.title, album.coverSrc),
   });
 }
 

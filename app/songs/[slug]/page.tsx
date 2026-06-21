@@ -21,7 +21,7 @@ import {
   getSimilarSongs,
 } from "@/lib/music-discovery";
 
-import { buildShareMetadata } from "@/lib/site-metadata";
+import { buildCoverShareImage, buildShareMetadata } from "@/lib/site-metadata";
 
 type SongPageProps = {
   params: Promise<{ slug: string }>;
@@ -35,9 +35,14 @@ export async function generateMetadata({ params }: SongPageProps): Promise<Metad
   const { slug } = await params;
   const song = getSongBySlug(slug);
   if (!song) return { title: "Song not found · Family Jukebox" };
+  const author = getSongAuthor(song);
   return buildShareMetadata({
     title: `${song.title} · Family Jukebox`,
-    description: song.subtitle ?? "A family song worth replaying.",
+    description:
+      song.subtitle ??
+      (author ? `A family song by ${author.name} — tap to listen on Family Jukebox.` : "A family song worth replaying."),
+    path: `/songs/${song.slug}`,
+    image: buildCoverShareImage(song.title, song.coverSrc),
   });
 }
 

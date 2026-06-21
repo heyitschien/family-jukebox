@@ -13,7 +13,7 @@ import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
 import { getDiscoverAlbums, getDiscoverMembers, getDiscoverSongs } from "@/lib/music-discovery";
 
-import { buildShareMetadata } from "@/lib/site-metadata";
+import { buildCoverShareImage, buildShareMetadata } from "@/lib/site-metadata";
 
 type MemberPageProps = {
   params: Promise<{ slug: string }>;
@@ -27,9 +27,12 @@ export async function generateMetadata({ params }: MemberPageProps): Promise<Met
   const { slug } = await params;
   const member = getMemberBySlug(slug);
   if (!member) return { title: "Member not found · Family Jukebox" };
+  const heroCover = getSongsByAuthor(member.slug)[0]?.coverSrc;
   return buildShareMetadata({
     title: `${member.name} · Family Jukebox`,
     description: member.description,
+    path: `/members/${member.slug}`,
+    image: heroCover ? buildCoverShareImage(`${member.name} on Family Jukebox`, heroCover) : undefined,
   });
 }
 

@@ -7,39 +7,64 @@ export const SITE_NAME = "Family Jukebox";
 export const SITE_DESCRIPTION =
   "Songs we made together — silly fox trails, pink glasses, gravity shifts, and little family anthems.";
 
-/** Link preview image for iMessage, texts, social shares */
+/** Default link preview when no page-specific art is set */
 export const SHARE_IMAGE_PATH = "/og-share.jpg";
 
-export const shareImageMeta = {
+export type ShareImageMeta = {
+  url: string;
+  width?: number;
+  height?: number;
+  alt?: string;
+};
+
+export const defaultShareImage: ShareImageMeta = {
   url: SHARE_IMAGE_PATH,
   width: 474,
   height: 1024,
   alt: "Family Jukebox — cousin songs, pink glasses, and family anthems on your phone",
 };
 
+/** Square album art — typical cover size from video extraction */
+export const SONG_COVER_SIZE = 1024;
+
+export function buildCoverShareImage(title: string, coverSrc: string): ShareImageMeta {
+  return {
+    url: coverSrc,
+    width: SONG_COVER_SIZE,
+    height: SONG_COVER_SIZE,
+    alt: `${title} cover art`,
+  };
+}
+
 export function buildShareMetadata(overrides?: {
   title?: string;
   description?: string;
+  /** Path only, e.g. /songs/gravity-shift */
+  path?: string;
+  image?: ShareImageMeta;
 }): Metadata {
   const title = overrides?.title ?? SITE_NAME;
   const description = overrides?.description ?? SITE_DESCRIPTION;
+  const pageUrl = overrides?.path ? `${SITE_URL}${overrides.path}` : SITE_URL;
+  const image = overrides?.image ?? defaultShareImage;
 
   return {
     title,
     description,
+    alternates: overrides?.path ? { canonical: pageUrl } : undefined,
     openGraph: {
       title,
       description,
       type: "website",
       siteName: SITE_NAME,
-      url: SITE_URL,
-      images: [shareImageMeta],
+      url: pageUrl,
+      images: [image],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [SHARE_IMAGE_PATH],
+      images: [image.url],
     },
   };
 }
