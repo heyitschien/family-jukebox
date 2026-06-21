@@ -5,7 +5,7 @@ export const SITE_URL = "https://family-jukebox.vercel.app";
 export const SITE_NAME = "Family Jukebox";
 
 export const SITE_DESCRIPTION =
-  "Songs we made together — silly fox trails, pink glasses, gravity shifts, and little family anthems.";
+  "A clean home for the songs we make together - colorful covers, easy playback, and a live family listening room.";
 
 /** Link preview image for iMessage, texts, social shares */
 export const SHARE_IMAGE_PATH = "/og-share.jpg";

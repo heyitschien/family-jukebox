@@ -73,7 +73,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
         <div>
           <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">Featured family songs</h2>
           <p className="text-sm font-bold text-[var(--jb-muted)]">
-            Tap play on any song to hear the whole shelf — one track flows into the next.
+            Start anywhere in this shelf and the queue keeps the music moving for you.
           </p>
         </div>
         {filtered.length > 1 ? (
