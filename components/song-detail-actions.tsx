@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { PlayIconButton } from "@/components/play-icon-button";
+import { ShareLinkButton } from "@/components/share-link-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -35,6 +36,11 @@ export function SongDetailActions({
         onClick={toggle}
       />
       <SongFavoriteButton songSlug={song.slug} songTitle={song.title} size="lg" />
+      <ShareLinkButton
+        title={song.title}
+        path={`/songs/${song.slug}`}
+        text={song.subtitle ?? song.story}
+      />
       {parentAlbum ? (
         <button
           type="button"

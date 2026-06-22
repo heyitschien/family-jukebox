@@ -3,16 +3,27 @@ import type { Metadata } from "next";
 import type { Album } from "@/data/albums";
 import type { FamilyMember } from "@/data/members";
 import type { Song } from "@/data/songs";
+import {
+  getRuntimeSiteUrl,
+  getSiteDescription,
+  getSiteName,
+  PRODUCTION_SITE_URL,
+} from "@/lib/site-env";
 
-export const SITE_URL = "https://family-jukebox.vercel.app";
+/** Canonical production URL — used in smoke tests and share fallbacks. */
+export const SITE_URL = PRODUCTION_SITE_URL;
 
-export const SITE_NAME = "Family Jukebox";
+export const SITE_NAME = getSiteName();
 
-export const SITE_DESCRIPTION =
-  "Songs we made together — silly fox trails, pink glasses, gravity shifts, and little family anthems.";
+export const SITE_DESCRIPTION = getSiteDescription();
 
-/** Default link preview when no page-specific art is set */
-export const SHARE_IMAGE_PATH = "/og-share.jpg";
+/** Default link preview when no page-specific art is set (Next.js file route). */
+export const SHARE_IMAGE_PATH = "/opengraph-image";
+
+export const SHARE_IMAGE_SIZE = {
+  width: 1200,
+  height: 630,
+} as const;
 
 export type ShareImageMeta = {
   url: string;
@@ -23,9 +34,9 @@ export type ShareImageMeta = {
 
 export const defaultShareImage: ShareImageMeta = {
   url: resolveShareImageUrl(SHARE_IMAGE_PATH),
-  width: 474,
-  height: 1024,
-  alt: "Family Jukebox — cousin songs, pink glasses, and family anthems on your phone",
+  width: SHARE_IMAGE_SIZE.width,
+  height: SHARE_IMAGE_SIZE.height,
+  alt: "Cousin Radio — family songs, pink glasses, and little anthems",
 };
 
 /** Square album art — typical cover size from video extraction */
@@ -33,13 +44,17 @@ export const SONG_COVER_SIZE = 1024;
 
 const SHARE_DESCRIPTION_MAX_LENGTH = 200;
 
+export function formatPageTitle(pageTitle: string): string {
+  return `${pageTitle} · ${SITE_NAME}`;
+}
+
 export function resolveShareImageUrl(pathOrUrl: string): string {
   if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) {
     return pathOrUrl;
   }
 
   const path = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
-  return `${SITE_URL}${path}`;
+  return `${getRuntimeSiteUrl()}${path}`;
 }
 
 function trimShareDescription(text: string): string {
@@ -55,18 +70,18 @@ export function buildSongShareDescription(song: Song, author?: FamilyMember | nu
   if (song.subtitle) return trimShareDescription(song.subtitle);
   if (song.story) return trimShareDescription(song.story);
   if (author) {
-    return `A family song by ${author.name} — tap to listen on Family Jukebox.`;
+    return `A family song by ${author.name} — tap to listen on Cousin Radio.`;
   }
-  return "A family song worth replaying on Family Jukebox.";
+  return "A family song worth replaying on Cousin Radio.";
 }
 
 export function buildAlbumShareDescription(album: Album, author?: FamilyMember | null): string {
   if (album.subtitle) return trimShareDescription(album.subtitle);
   if (album.story) return trimShareDescription(album.story);
   if (author) {
-    return `A family album by ${author.name} — tap to listen on Family Jukebox.`;
+    return `A family album by ${author.name} — tap to listen on Cousin Radio.`;
   }
-  return "A family album worth replaying on Family Jukebox.";
+  return "A family album worth replaying on Cousin Radio.";
 }
 
 export function buildCoverShareImage(title: string, coverSrc: string): ShareImageMeta {
@@ -87,7 +102,7 @@ export function buildShareMetadata(overrides?: {
 }): Metadata {
   const title = overrides?.title ?? SITE_NAME;
   const description = overrides?.description ?? SITE_DESCRIPTION;
-  const pageUrl = overrides?.path ? `${SITE_URL}${overrides.path}` : SITE_URL;
+  const pageUrl = overrides?.path ? `${getRuntimeSiteUrl()}${overrides.path}` : getRuntimeSiteUrl();
   const image = overrides?.image ?? defaultShareImage;
 
   return {
@@ -100,6 +115,7 @@ export function buildShareMetadata(overrides?: {
       type: "website",
       siteName: SITE_NAME,
       url: pageUrl,
+      locale: "en_US",
       images: [image],
     },
     twitter: {

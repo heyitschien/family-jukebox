@@ -61,9 +61,12 @@ Creates `public/assets/ocean/gravity-shift.mp3` and `.jpg`. Cover is extracted f
 
 Keep files small. GitHub max is **100 MB** per file. Audio + cover only in the repo — skip big videos.
 
-## Deploy to Vercel
+## Deploy
 
-Live at [family-jukebox.vercel.app](https://family-jukebox.vercel.app). Push to `main` on GitHub to redeploy.
+**Production:** [cousinradio.com](https://cousinradio.com) (`main` branch)  
+**Staging:** [staging.cousinradio.com](https://staging.cousinradio.com) (`staging` branch)
+
+Domains, branches, and agent rules: [docs/DOMAINS-AND-ENVIRONMENTS.md](./docs/DOMAINS-AND-ENVIRONMENTS.md).
 
 ## Tech stack
 

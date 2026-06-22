@@ -45,13 +45,17 @@ else
 fi
 
 echo ""
-echo "==> 3/3 Checklist — finish these, then push"
+echo "==> 3/4 Copyright registry (after you add data/songs.ts entry)"
+echo "    npm run copyright:register -- --slug $SLUG"
+echo ""
+echo "==> 4/4 Checklist — finish these, then push"
 echo ""
 cat <<EOF
 [ ] data/songs.ts — add song entry (include lyrics: songLyrics["$SLUG"])
 [ ] data/albums.ts — if part of a growing series, append "$SLUG" to SERIES_ALBUM_DEFS songSlugs
+[ ] npm run copyright:register -- --slug $SLUG
 [ ] npm run ci
-[ ] git add public/assets/$AUTHOR/${SLUG}.* data/songs.ts data/lyrics.ts scripts/transcripts.json
+[ ] git add public/assets/$AUTHOR/${SLUG}.* data/songs.ts data/lyrics.ts data/copyright-registry.ts scripts/transcripts.json
 [ ] git commit && git push origin main  (CI + Vercel deploy automatically)
 
 Copy-paste starter for data/songs.ts:
@@ -74,5 +78,6 @@ Assets ready:
   public/assets/$AUTHOR/${SLUG}.jpg
 
 Lyrics: data/lyrics.ts → songLyrics["$SLUG"]
-Full guide: docs/ADDING_SONGS.md
+Copyright: npm run copyright:register -- --slug $SLUG → data/copyright-registry.ts
+Full guides: docs/ADDING_SONGS.md · docs/COPYRIGHT-AND-OWNERSHIP.md
 EOF

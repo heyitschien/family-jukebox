@@ -7,6 +7,7 @@ import { AlbumPlayHeader } from "@/components/album-play-header";
 import { AlbumShelf } from "@/components/album-shelf";
 import { CoverImage } from "@/components/cover-image";
 import { DiscoverMembersShelf } from "@/components/discover-members-shelf";
+import { ShareLinkButton } from "@/components/share-link-button";
 import { SongShelf } from "@/components/song-shelf";
 import { SongRow } from "@/components/song-row";
 import { Topbar } from "@/components/topbar";
@@ -22,6 +23,7 @@ import {
   buildAlbumShareDescription,
   buildCoverShareImage,
   buildShareMetadata,
+  formatPageTitle,
 } from "@/lib/site-metadata";
 import {
   getDiscoverAlbums,
@@ -41,10 +43,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: AlbumPageProps): Promise<Metadata> {
   const { slug } = await params;
   const album = getAlbumBySlug(slug);
-  if (!album) return { title: "Album not found · Family Jukebox" };
+  if (!album) return { title: formatPageTitle("Album not found") };
   const author = getAlbumAuthor(album);
   return buildShareMetadata({
-    title: `${album.title} · Family Jukebox`,
+    title: formatPageTitle(album.title),
     description: buildAlbumShareDescription(album, author),
     path: `/albums/${album.slug}`,
     image: buildCoverShareImage(album.title, album.coverSrc),
@@ -114,8 +116,13 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
                 {album.subtitle}
               </p>
             ) : null}
-            <div className="mt-6">
+            <div className="mt-6 flex flex-wrap items-center gap-3">
               <AlbumPlayHeader album={album} />
+              <ShareLinkButton
+                title={album.title}
+                path={`/albums/${album.slug}`}
+                text={album.subtitle ?? album.story}
+              />
             </div>
           </div>
         </div>

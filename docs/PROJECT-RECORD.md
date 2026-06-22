@@ -1,7 +1,8 @@
 # Family Jukebox — Project Record
 
 **Last validated:** 2026-06-21 (against `main` @ `6c95669`)  
-**Live:** [family-jukebox.vercel.app](https://family-jukebox.vercel.app)  
+**Live:** [cousinradio.com](https://cousinradio.com) · **Staging:** [staging.cousinradio.com](https://staging.cousinradio.com)  
+**Domains doc:** [docs/DOMAINS-AND-ENVIRONMENTS.md](./DOMAINS-AND-ENVIRONMENTS.md)  
 **Repo:** `heyitschien/family-jukebox`
 
 This document is the **source-of-truth snapshot** for architecture, features, design principles, and work history — cross-checked against the codebase, not aspirational specs alone.
@@ -389,7 +390,7 @@ console.log({ songs: songs.length, albums: albums.length, carousel: getPrimaryAl
 npm run ci
 
 # Production stats (when Neon has data)
-curl -s https://family-jukebox.vercel.app/api/stats | jq
+curl -s https://cousinradio.com/api/stats | jq
 ```
 
 ---

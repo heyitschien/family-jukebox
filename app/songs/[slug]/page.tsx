@@ -25,7 +25,10 @@ import {
   buildCoverShareImage,
   buildShareMetadata,
   buildSongShareDescription,
+  formatPageTitle,
 } from "@/lib/site-metadata";
+import { getCopyrightRecordBySlug } from "@/lib/copyright-registry";
+import { SongCopyrightNotice } from "@/components/song-copyright-notice";
 
 type SongPageProps = {
   params: Promise<{ slug: string }>;
@@ -38,10 +41,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: SongPageProps): Promise<Metadata> {
   const { slug } = await params;
   const song = getSongBySlug(slug);
-  if (!song) return { title: "Song not found · Family Jukebox" };
+  if (!song) return { title: formatPageTitle("Song not found") };
   const author = getSongAuthor(song);
   return buildShareMetadata({
-    title: `${song.title} · Family Jukebox`,
+    title: formatPageTitle(song.title),
     description: buildSongShareDescription(song, author),
     path: `/songs/${song.slug}`,
     image: buildCoverShareImage(song.title, song.coverSrc),
@@ -64,6 +67,7 @@ export default async function SongPage({ params }: SongPageProps) {
       ? getSimilarSongs(song)
       : getDiscoverSongs([song.slug, ...moreFromArtist.map((entry) => entry.slug)], 6);
   const discoverMembers = getDiscoverMembers(song.authorSlug);
+  const copyrightRecord = getCopyrightRecordBySlug(song.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -159,6 +163,7 @@ export default async function SongPage({ params }: SongPageProps) {
             </pre>
           </section>
         ) : null}
+        {copyrightRecord ? <SongCopyrightNotice record={copyrightRecord} /> : null}
       </div>
 
       {moreFromAlbum.length > 0 && parentAlbum ? (
