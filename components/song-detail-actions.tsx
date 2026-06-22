@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { PlayIconButton } from "@/components/play-icon-button";
+import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import type { Album } from "@/data/albums";
@@ -33,6 +34,7 @@ export function SongDetailActions({
         label={playing ? "Pause" : `Play ${song.title}`}
         onClick={toggle}
       />
+      <SongFavoriteButton songSlug={song.slug} songTitle={song.title} size="lg" />
       {parentAlbum ? (
         <button
           type="button"
