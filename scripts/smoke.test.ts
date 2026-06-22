@@ -65,6 +65,10 @@ import {
   readFavoriteSlugsFromRaw,
   serializeFavoriteSlugs,
 } from "../lib/favorites-storage";
+import {
+  buildCousinRadioArtwork,
+  COUSIN_RADIO_MEDIA_ARTWORK_SIZES,
+} from "../lib/brand";
 import { verifyCopyrightRegistry } from "../lib/copyright-registry";
 import {
   buildAlbumShareDescription,
@@ -685,6 +689,24 @@ describe("link preview metadata", () => {
     assert.equal(metadata.openGraph?.url, SITE_URL);
     assert.equal(metadata.openGraph?.siteName, "Cousin Radio");
     assert.equal(metadata.openGraph?.locale, "en_US");
+  });
+
+  it("builds branded square artwork URLs for lock screen controls", () => {
+    const artwork = buildCousinRadioArtwork(SITE_URL);
+
+    assert.equal(artwork.length, COUSIN_RADIO_MEDIA_ARTWORK_SIZES.length);
+    assert.deepEqual(
+      artwork.map((image) => image.sizes),
+      COUSIN_RADIO_MEDIA_ARTWORK_SIZES.map((size) => `${size}x${size}`),
+    );
+    assert.ok(
+      artwork.every((image) => image.src.startsWith(`${SITE_URL}/media-artwork?size=`)),
+      "all media artwork should use the Cousin Radio artwork route",
+    );
+    assert.ok(
+      artwork.every((image) => image.type === "image/png"),
+      "all media artwork should be PNG for iOS compatibility",
+    );
   });
 
   it("sets per-song og:image and description for legacy in the lane", () => {

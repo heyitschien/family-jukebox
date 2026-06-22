@@ -98,7 +98,7 @@ export function HeroSection({ featured, playlist, familyQueue }: HeroSectionProp
                   {isPlaying ? "Now playing" : "Paused"} · {displayAuthor?.name ?? "Family"}
                 </span>
                 <p className="text-sm font-bold uppercase tracking-[0.12em] text-[var(--jb-muted)]">
-                  Family Jukebox
+                  Cousin Radio
                 </p>
                 <h1 className="mt-2 text-[clamp(32px,8vw,64px)] leading-[0.92] font-extrabold tracking-[-0.06em]">
                   {displaySong.title}
@@ -127,7 +127,7 @@ export function HeroSection({ featured, playlist, familyQueue }: HeroSectionProp
                   ✨ Today&apos;s spotlight · {displayAuthor?.name ?? "Family"}
                 </span>
                 <h1 className="text-[clamp(48px,12vw,92px)] leading-[0.88] font-extrabold tracking-[-0.075em]">
-                  Family Jukebox
+                  Cousin Radio
                 </h1>
                 <p className="mt-4 max-w-[540px] text-base leading-relaxed text-[var(--jb-muted)] sm:text-lg">
                   Cousin songs, silly anthems, and the tracks we made together — tap play and the

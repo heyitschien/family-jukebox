@@ -10,9 +10,10 @@ import {
   type ReactNode,
 } from "react";
 
-import type { Song } from "@/data/songs";
+import { getSongAuthor, type Song } from "@/data/songs";
 import type { PlaySource } from "@/lib/analytics/constants";
 import { trackPlayEvent } from "@/lib/analytics/track-play";
+import { buildCousinRadioArtwork, COUSIN_RADIO_BRAND } from "@/lib/brand";
 import { buildRadioContinuation, shouldContinueRadio } from "@/lib/cousin-radio";
 import { recordSessionPlay } from "@/lib/session-listening";
 import {
@@ -291,6 +292,16 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     }
   }, [currentSong]);
 
+  const resumeCurrentSong = useCallback(() => {
+    const audio = audioRef.current;
+    if (!audio || !currentSongRef.current || !audio.paused) return;
+
+    void audio
+      .play()
+      .then(() => setIsPlaying(true))
+      .catch(() => setIsPlaying(false));
+  }, []);
+
   const pause = useCallback(() => {
     const audio = audioRef.current;
     audio?.pause();
@@ -339,6 +350,62 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const toggleRadio = useCallback(() => {
     setRadioMode((mode) => toggleRadioMode(mode));
   }, []);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator) || !("MediaMetadata" in window)) return;
+
+    if (!currentSong) {
+      navigator.mediaSession.metadata = null;
+      return;
+    }
+
+    const author = getSongAuthor(currentSong);
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: currentSong.title,
+      artist: author?.name ?? COUSIN_RADIO_BRAND.name,
+      album: COUSIN_RADIO_BRAND.name,
+      artwork: buildCousinRadioArtwork(window.location.origin),
+    });
+  }, [currentSong]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return;
+
+    navigator.mediaSession.playbackState = currentSong
+      ? isPlaying
+        ? "playing"
+        : "paused"
+      : "none";
+  }, [currentSong, isPlaying]);
+
+  useEffect(() => {
+    if (!("mediaSession" in navigator)) return;
+
+    const actions: Array<[MediaSessionAction, MediaSessionActionHandler | null]> = [
+      ["play", resumeCurrentSong],
+      ["pause", pause],
+      ["previoustrack", skipPrev],
+      ["nexttrack", skipNext],
+    ];
+
+    for (const [action, handler] of actions) {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch {
+        // Some browsers expose Media Session but do not support every action.
+      }
+    }
+
+    return () => {
+      for (const [action] of actions) {
+        try {
+          navigator.mediaSession.setActionHandler(action, null);
+        } catch {
+          // Ignore unsupported action cleanup for the same reason as setup.
+        }
+      }
+    };
+  }, [pause, resumeCurrentSong, skipNext, skipPrev]);
 
   useEffect(() => {
     const audio = audioRef.current;

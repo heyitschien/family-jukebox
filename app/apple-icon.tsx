@@ -1,9 +1,13 @@
 import { ImageResponse } from "next/og";
 
+import { COUSIN_RADIO_BRAND } from "@/lib/brand";
+
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
 
 export default function AppleIcon() {
+  const colors = COUSIN_RADIO_BRAND.colors;
+
   return new ImageResponse(
     (
       <div
@@ -14,13 +18,13 @@ export default function AppleIcon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 36,
-          background: "linear-gradient(145deg, #ff6fb1 0%, #ff9ec8 100%)",
-          color: "#1a0812",
+          background: `linear-gradient(145deg, ${colors.pink} 0%, ${colors.pinkLight} 100%)`,
+          color: colors.ink,
           fontSize: 96,
           fontWeight: 900,
         }}
       >
-        ♪
+        {COUSIN_RADIO_BRAND.mark}
       </div>
     ),
     { ...size },

@@ -1,6 +1,6 @@
 # CI/CD automation
 
-Family Jukebox uses GitHub Actions for CI and relies on Vercel for production deploys.
+Cousin Radio uses GitHub Actions for CI and relies on Vercel for production deploys.
 
 ## Flow
 

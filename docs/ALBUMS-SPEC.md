@@ -83,7 +83,7 @@ Replace the static song hero with an interactive **CSS 3D carousel** of creator 
 
 **Hero copy:**
 - Badge: "Today's spotlight · {creator name}"
-- Title: "Family Jukebox"
+- Title: "Cousin Radio"
 - Subtitle: front album title + track count
 - CTAs: Play album · Play family mix · View album
 

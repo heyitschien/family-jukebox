@@ -1,9 +1,13 @@
 import { ImageResponse } from "next/og";
 
+import { COUSIN_RADIO_BRAND } from "@/lib/brand";
+
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
 export default function Icon() {
+  const colors = COUSIN_RADIO_BRAND.colors;
+
   return new ImageResponse(
     (
       <div
@@ -14,13 +18,13 @@ export default function Icon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 8,
-          background: "#ff6fb1",
-          color: "#1a0812",
+          background: colors.pink,
+          color: colors.ink,
           fontSize: 20,
           fontWeight: 900,
         }}
       >
-        ♪
+        {COUSIN_RADIO_BRAND.mark}
       </div>
     ),
     { ...size },

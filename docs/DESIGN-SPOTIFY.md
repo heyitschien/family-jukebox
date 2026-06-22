@@ -1,4 +1,4 @@
-# Family Jukebox → Spotify-style UX Spec
+# Cousin Radio → Spotify-style UX Spec
 
 ## Current problems (v1)
 
@@ -28,7 +28,7 @@ Family (/family)   → all members (artist library)
 
 ### Home (Spotify Home tab)
 
-1. **Greeting** — one line ("Good evening" / "Family Jukebox")
+1. **Greeting** — one line ("Good evening" / "Cousin Radio")
 2. **Jump back in** — 2×2 gradient tiles, tap = instant play
 3. **Family artists** — horizontal circles → member page
 4. **Popular** — compact song rows, tap = play

@@ -73,7 +73,7 @@ export function HomeGreeting() {
     <header className="px-4 pt-4 pb-2">
       <h1 className="text-2xl font-bold tracking-tight text-white">{greeting}</h1>
       <Link href="/family" className="text-sm text-[#b3b3b3] hover:text-white hover:underline">
-        Family Jukebox · tap Family to meet everyone
+        Cousin Radio · tap Family to meet everyone
       </Link>
     </header>
   );

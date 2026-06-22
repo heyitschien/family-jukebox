@@ -11,7 +11,7 @@ Log of production failures, root causes, fixes, and guardrails so the same class
 | | |
 |---|---|
 | **Symptoms** | Vercel deploy status **Ready**, but browser showed Next.js global error: *“This page couldn’t load”*. Homepage, `/songs`, and `/favorites` affected. `/family` often still worked. |
-| **What fooled us** | `curl` returned HTTP 200 and HTML containing “Family Jukebox”. The server rendered fine; **JavaScript crashed during hydration / first client render**. |
+| **What fooled us** | `curl` returned HTTP 200 and HTML containing “Cousin Radio”. The server rendered fine; **JavaScript crashed during hydration / first client render**. |
 | **React errors** | **#185** — maximum update depth exceeded (infinite re-render loop). Also saw **#418** during investigation (hydration HTML mismatch on homepage-only widgets). |
 | **Root cause** | New **favorites** feature (`useFavoriteSongs` + heart buttons on song cards). `useSyncExternalStore` snapshot function `getStoredFavoriteSlugs()` called `parseFavoriteSlugs()` on every read and **returned a new array instance every time**, even when localStorage had not changed. React treats a new reference as “store changed” → re-render → read again → infinite loop → full app crash. |
 | **Why dev felt fine** | `next dev` is more forgiving; production minifies errors and the global error boundary replaces the whole page. Bug appeared only after merging favorites + deploying production build. |

@@ -1,6 +1,6 @@
 # Security & analytics
 
-Lightweight protections and play tracking for the public Family Jukebox link. Designed for daily development: nothing blocks local work when Neon is not configured yet.
+Lightweight protections and play tracking for the public Cousin Radio link. Designed for daily development: nothing blocks local work when Neon is not configured yet.
 
 ## What is protected today
 

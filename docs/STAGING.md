@@ -11,7 +11,7 @@ Use **staging** to preview songs, catalog changes, and UI before they go live on
 | **Production** | `main` | https://cousinradio.com |
 | **Staging** | `staging` | https://staging.cousinradio.com |
 
-Staging shows an amber **STAGING** banner, gold accent colors, and `Family Jukebox · Staging` in the browser title.
+Staging shows an amber **STAGING** banner, gold accent colors, and `Cousin Radio · Staging` in the browser title.
 
 The Vercel project is still named `family-jukebox` — that is hosting only. The **public** URLs are cousinradio.com domains above.
 

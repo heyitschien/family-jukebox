@@ -17,7 +17,7 @@ export default function NotFound() {
         className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-family-accent px-5 py-3 text-sm font-black text-[#1a0812]"
       >
         <ArrowLeft className="size-4" aria-hidden />
-        Back to Family Jukebox
+        Back to Cousin Radio
       </Link>
     </main>
   );

@@ -21,7 +21,6 @@ Do **not** hardcode domains elsewhere — import from `site-env` or use env vars
 | **cousinradio.com** | Public **domain** — production site |
 | **staging.cousinradio.com** | Public **domain** — staging preview |
 | **Cousin Radio** | Public brand — production domain, OG metadata, and `/family` artists |
-| **Family Jukebox** | In-app product title in sidebar and player UI |
 | **family-jukebox** | GitHub repo + Vercel **project** name (hosting only, not the public URL) |
 
 Legacy Vercel URLs (`family-jukebox.vercel.app`, etc.) may still redirect; **cousinradio.com** is what we ship and document.

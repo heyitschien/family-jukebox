@@ -2,14 +2,14 @@
 
 **Branch:** `cursor/music-intelligence-orchestration-b9c4`  
 **Status:** Implemented (Phase 1)  
-**App:** Cousin Radio / Family Jukebox  
+**App:** Cousin Radio  
 **Date:** 2026-06-22
 
 ---
 
 ## Executive summary
 
-Family Jukebox already has strong **deterministic** rotation (fair family mix, daily spotlight, celebration boosts) and basic tag-based discovery. The highest-leverage gap is that playback **stops** when a queue ends, personalization is **browser-local only**, shuffle is **pure random**, and analytics are **recorded but not consumed** for ranking.
+Cousin Radio already has strong **deterministic** rotation (fair family mix, daily spotlight, celebration boosts) and basic tag-based discovery. The highest-leverage gap is that playback **stops** when a queue ends, personalization is **browser-local only**, shuffle is **pure random**, and analytics are **recorded but not consumed** for ranking.
 
 This spec recommends and implements a **Music Intelligence Layer** — a set of composable, testable, deterministic algorithms that make listening feel more alive without ML infrastructure, external APIs, or catalog changes.
 

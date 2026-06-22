@@ -1,4 +1,4 @@
-# Family Jukebox — Project Record
+# Cousin Radio — Project Record
 
 **Last validated:** 2026-06-21 (against `main` @ `6c95669`)  
 **Live:** [cousinradio.com](https://cousinradio.com) · **Staging:** [staging.cousinradio.com](https://staging.cousinradio.com)  
