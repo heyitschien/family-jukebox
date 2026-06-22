@@ -4,12 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:staging": "NEXT_PUBLIC_APP_ENV=staging NEXT_PUBLIC_SITE_URL=http://localhost:3000 next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
     "smoke": "tsx --test scripts/smoke.test.ts",
     "smoke:production": "node scripts/production-smoke.mjs",
-    "ci": "npm run lint && npm run smoke && npm run build && npm run smoke:production",
+    "copyright:register": "tsx scripts/register-copyright.ts",
+    "copyright:verify": "tsx scripts/verify-copyright-registry.ts",
+    "ci": "npm run lint && npm run smoke && npm run copyright:verify && npm run build && npm run smoke:production",
     "db:generate": "drizzle-kit generate",
     "db:push": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs push",
     "db:studio": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs studio"

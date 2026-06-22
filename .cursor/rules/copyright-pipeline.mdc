@@ -1,0 +1,25 @@
+---
+description: Copyright registry required for every song — read before adding catalog entries
+alwaysApply: true
+---
+
+# Cousin Radio — copyright pipeline
+
+Every song in `data/songs.ts` **must** have a matching entry in `data/copyright-registry.ts`.
+
+## New song checklist (copyright)
+
+1. `./scripts/add-song.sh` + `data/songs.ts`
+2. `npm run copyright:register -- --slug <song-slug>`
+3. Commit `data/copyright-registry.ts` with the song
+4. `npm run copyright:verify` (also runs in `npm run ci`)
+
+## Ownership model
+
+- **Catalog:** Cousin Radio Family Collection
+- **Producer:** Chien Family Production · Tio Chien (curator)
+- **AI tool:** Google Gemini (disclosed in registry)
+- **Subjects:** `subjectMemberSlugs` — family members the song is about
+
+Full doc: `docs/COPYRIGHT-AND-OWNERSHIP.md`  
+Do not edit SHA-256 hashes manually.

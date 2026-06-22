@@ -3,26 +3,19 @@ import type { Metadata } from "next";
 import type { Album } from "@/data/albums";
 import type { FamilyMember } from "@/data/members";
 import type { Song } from "@/data/songs";
+import {
+  getRuntimeSiteUrl,
+  getSiteDescription,
+  getSiteName,
+  PRODUCTION_SITE_URL,
+} from "@/lib/site-env";
 
-const DEFAULT_SITE_URL = "https://cousinradio.com";
+/** Canonical production URL — used in smoke tests and share fallbacks. */
+export const SITE_URL = PRODUCTION_SITE_URL;
 
-/** Canonical public origin for OG tags, canonical URLs, and sitemap. */
-export function resolveSiteUrl(): string {
-  const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.trim().replace(/\/$/, "");
-  if (fromEnv) return fromEnv;
+export const SITE_NAME = getSiteName();
 
-  const vercel = process.env.VERCEL_URL?.trim();
-  if (vercel) return `https://${vercel}`;
-
-  return DEFAULT_SITE_URL;
-}
-
-export const SITE_URL = resolveSiteUrl();
-
-export const SITE_NAME = "Cousin Radio";
-
-export const SITE_DESCRIPTION =
-  "Family songs we made together — silly fox trails, pink glasses, gravity shifts, and little anthems worth replaying.";
+export const SITE_DESCRIPTION = getSiteDescription();
 
 /** Default link preview when no page-specific art is set (Next.js file route). */
 export const SHARE_IMAGE_PATH = "/opengraph-image";
@@ -61,7 +54,7 @@ export function resolveShareImageUrl(pathOrUrl: string): string {
   }
 
   const path = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
-  return `${SITE_URL}${path}`;
+  return `${getRuntimeSiteUrl()}${path}`;
 }
 
 function trimShareDescription(text: string): string {
@@ -109,7 +102,7 @@ export function buildShareMetadata(overrides?: {
 }): Metadata {
   const title = overrides?.title ?? SITE_NAME;
   const description = overrides?.description ?? SITE_DESCRIPTION;
-  const pageUrl = overrides?.path ? `${SITE_URL}${overrides.path}` : SITE_URL;
+  const pageUrl = overrides?.path ? `${getRuntimeSiteUrl()}${overrides.path}` : getRuntimeSiteUrl();
   const image = overrides?.image ?? defaultShareImage;
 
   return {

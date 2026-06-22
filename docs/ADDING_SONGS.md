@@ -40,8 +40,11 @@ Then you:
 | ✅ Lyrics | Auto → `data/lyrics.ts` |
 | ☐ Catalog | `data/songs.ts` — song entry with `lyrics: songLyrics["slug"]` |
 | ☐ Series album | `data/albums.ts` — add slug to `SERIES_ALBUM_DEFS[].songSlugs` (if applicable) |
+| ☐ **Copyright** | `npm run copyright:register -- --slug <slug>` → `data/copyright-registry.ts` |
 | ☐ New person | `data/members.ts` (only for a new family member) |
 | ☐ Ship | `npm run ci` → commit → `git push origin main` |
+
+**Copyright & family rights:** [docs/COPYRIGHT-AND-OWNERSHIP.md](./COPYRIGHT-AND-OWNERSHIP.md) — every song gets a registry ID + SHA-256 fingerprint. CI fails if missing.
 
 Lyrics appear on the song detail page under **Lyrics** (auto-transcribed, may not be word-perfect).
 
@@ -174,7 +177,7 @@ Keep **MP3 + JPG only** in git — source MP4s stay in `family-music-asset-june-
 After push to `main`:
 
 - **CI** — lint, smoke, build
-- **CD** — verifies [family-jukebox.vercel.app](https://family-jukebox.vercel.app)
+- **CD** — verifies [cousinradio.com](https://cousinradio.com)
 
 See `docs/CI-CD.md`.
 
