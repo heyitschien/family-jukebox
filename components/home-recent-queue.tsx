@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 
 import type { Song } from "@/data/songs";
+import type { FamilyAudienceId } from "@/lib/family-audience";
 
 const RecentQueue = dynamic(
   () => import("@/components/recent-queue").then((mod) => mod.RecentQueue),
@@ -19,8 +20,9 @@ type HomeRecentQueueProps = {
   familyQueue: Song[];
   spotlightSlugs: string[];
   listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
-export function HomeRecentQueue({ listenerAge, ...props }: HomeRecentQueueProps) {
-  return <RecentQueue {...props} listenerAge={listenerAge} />;
+export function HomeRecentQueue({ listenerAge, audienceId, ...props }: HomeRecentQueueProps) {
+  return <RecentQueue {...props} listenerAge={listenerAge} audienceId={audienceId} />;
 }

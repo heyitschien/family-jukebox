@@ -2,6 +2,12 @@ import { albums, getAlbumAuthor, type Album } from "@/data/albums";
 import { members, type FamilyMember } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
 import { scoreAlbumForListener, scoreSongForListener } from "@/lib/audience";
+import {
+  isAlbumVisibleForAudience,
+  isMemberVisibleForAudience,
+  isSongVisibleForAudience,
+  type FamilyAudienceId,
+} from "@/lib/family-audience";
 
 export type SearchResultKind = "member" | "album" | "song";
 
@@ -22,6 +28,8 @@ export type SearchFilters = {
   tag?: string | null;
   /** Boost results suited to this listener age without hiding the full catalog. */
   listenerAge?: number | null;
+  /** Hard family audience gate for profile-based filtering. */
+  familyAudience?: FamilyAudienceId | null;
 };
 
 function scoreText(text: string, query: string): number {
@@ -98,6 +106,9 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
   const results: SearchResult[] = [];
 
   for (const member of members) {
+    if (filters.familyAudience && !isMemberVisibleForAudience(member, filters.familyAudience)) {
+      continue;
+    }
     if (!passesFilters(member.slug, undefined, member.age, filters)) continue;
     const score = trimmed ? bestScore(memberFields(member), trimmed) : 40;
     if (score > 0 || !trimmed) {
@@ -112,6 +123,9 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
 
   for (const album of albums) {
     const author = getAlbumAuthor(album);
+    if (filters.familyAudience && !isAlbumVisibleForAudience(album, filters.familyAudience)) {
+      continue;
+    }
     if (!passesFilters(album.authorSlug, undefined, author?.age, filters)) continue;
     const score = trimmed ? bestScore(albumFields(album), trimmed) : 35;
     if (score > 0 || !trimmed) {
@@ -126,6 +140,9 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
 
   for (const song of songs) {
     const author = members.find((member) => member.slug === song.authorSlug);
+    if (filters.familyAudience && !isSongVisibleForAudience(song, filters.familyAudience)) {
+      continue;
+    }
     if (!passesFilters(song.authorSlug, song.tags, author?.age, filters)) continue;
     const score = trimmed ? bestScore(songFields(song), trimmed) : 30;
     if (score > 0 || !trimmed) {

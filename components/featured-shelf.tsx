@@ -12,12 +12,14 @@ import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { getListenerCurationSubtitle } from "@/lib/audience";
+import { getAudienceCurationSubtitle, type FamilyAudienceId } from "@/lib/family-audience";
 import { cn } from "@/lib/utils";
 
 type FeaturedShelfProps = {
   songs: Song[];
   tags: string[];
   listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
 function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] }) {
@@ -75,7 +77,12 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
   );
 }
 
-export function FeaturedShelf({ songs, tags, listenerAge = null }: FeaturedShelfProps) {
+export function FeaturedShelf({
+  songs,
+  tags,
+  listenerAge = null,
+  audienceId = null,
+}: FeaturedShelfProps) {
   const { playQueue } = usePlayer();
   const [activeTag, setActiveTag] = useState<string | null>(null);
 
@@ -91,12 +98,18 @@ export function FeaturedShelf({ songs, tags, listenerAge = null }: FeaturedShelf
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-            {listenerAge !== null ? `Picked for age ${listenerAge}` : "Featured family songs"}
+            {audienceId
+              ? `Picked for ${audienceId === "grownups" ? "grown-ups" : audienceId.replace("-", " ")}`
+              : listenerAge !== null
+                ? `Picked for age ${listenerAge}`
+                : "Featured family songs"}
           </h2>
           <p className="text-sm font-bold text-[var(--jb-muted)]">
-            {listenerAge !== null
-              ? getListenerCurationSubtitle(listenerAge)
-              : "Pick a song — the hero updates live while you listen."}
+            {audienceId
+              ? getAudienceCurationSubtitle(audienceId)
+              : listenerAge !== null
+                ? getListenerCurationSubtitle(listenerAge)
+                : "Pick a song — the hero updates live while you listen."}
           </p>
         </div>
         {filtered.length > 1 ? (

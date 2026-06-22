@@ -12,6 +12,7 @@ import { members } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { songs as allSongs } from "@/data/songs";
 import { getListenerCurationSubtitle } from "@/lib/audience";
+import { getAudienceCurationSubtitle, type FamilyAudienceId } from "@/lib/family-audience";
 import { cn } from "@/lib/utils";
 
 type RecentQueueProps = {
@@ -19,6 +20,7 @@ type RecentQueueProps = {
   familyQueue: Song[];
   spotlightSlugs: string[];
   listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
 function QueueBadge({
@@ -102,6 +104,7 @@ export function RecentQueue({
   familyQueue,
   spotlightSlugs,
   listenerAge = null,
+  audienceId = null,
 }: RecentQueueProps) {
   const { playQueue } = usePlayer();
   const recent = [...songs].slice(0, 5);
@@ -115,12 +118,18 @@ export function RecentQueue({
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-                {listenerAge !== null ? `Suggested for age ${listenerAge}` : "Recently added"}
+                {audienceId
+                  ? `Suggested for ${audienceId === "grownups" ? "grown-ups" : audienceId.replace("-", " ")}`
+                  : listenerAge !== null
+                    ? `Suggested for age ${listenerAge}`
+                    : "Recently added"}
               </h2>
               <p className="text-sm font-bold text-[var(--jb-muted)]">
-                {listenerAge !== null
-                  ? getListenerCurationSubtitle(listenerAge)
-                  : "Fresh picks from the shelf — play any track to queue the rest."}
+                {audienceId
+                  ? getAudienceCurationSubtitle(audienceId)
+                  : listenerAge !== null
+                    ? getListenerCurationSubtitle(listenerAge)
+                    : "Fresh picks from the shelf — play any track to queue the rest."}
               </p>
             </div>
             {recent.length > 1 ? (
@@ -148,12 +157,14 @@ export function RecentQueue({
         <div>
           <div className="mb-4">
             <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-              {listenerAge !== null ? "Your family mix" : "Family mix"}
+              {audienceId ? "Your family mix" : listenerAge !== null ? "Your family mix" : "Family mix"}
             </h2>
             <p className="text-sm font-bold text-[var(--jb-muted)]">
-              {listenerAge !== null
-                ? "Age-aware rotation — every artist still in the queue."
-                : "Every artist, one fair rotation."}
+              {audienceId
+                ? "Audience-aware rotation — safe picks for your profile."
+                : listenerAge !== null
+                  ? "Age-aware rotation — every artist still in the queue."
+                  : "Every artist, one fair rotation."}
             </p>
           </div>
           <div className="min-h-[188px] rounded-[22px] border border-white/[0.08] bg-gradient-to-br from-white/[0.11] to-white/[0.04] p-4">

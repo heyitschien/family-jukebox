@@ -71,6 +71,18 @@ import {
   serializeListenerAge,
 } from "../lib/audience-storage";
 import {
+  FAMILY_AUDIENCES,
+  filterSongsForAudience,
+  getListenerAgeForAudience,
+  isSongVisibleForAudience,
+  isValidFamilyAudienceId,
+} from "../lib/family-audience";
+import {
+  FAMILY_AUDIENCE_STORAGE_KEY,
+  parseFamilyAudienceId,
+  readFamilyAudienceFromRaw,
+} from "../lib/family-audience-storage";
+import {
   parseFavoriteSlugs,
   readFavoriteSlugsFromRaw,
   serializeFavoriteSlugs,
@@ -627,6 +639,67 @@ describe("age-based audience curation", () => {
     const first = readListenerAgeFromRaw(serialized, cache);
     const second = readListenerAgeFromRaw(serialized, cache);
     assert.equal(first, second, "listener age snapshot must stay referentially stable");
+  });
+});
+
+describe("family audience profiles", () => {
+  it("defines four audience cards with stable ids", () => {
+    assert.equal(FAMILY_AUDIENCES.length, 4);
+    assert.deepEqual(
+      FAMILY_AUDIENCES.map((audience) => audience.id),
+      ["kids", "big-kids", "teens", "grownups"],
+    );
+  });
+
+  it("persists audience ids in localStorage format", () => {
+    assert.equal(FAMILY_AUDIENCE_STORAGE_KEY, "familyAudience");
+    assert.equal(isValidFamilyAudienceId("kids"), true);
+    assert.equal(isValidFamilyAudienceId("grownups"), true);
+    assert.equal(isValidFamilyAudienceId("adults"), false);
+    assert.equal(parseFamilyAudienceId("teens"), "teens");
+    assert.equal(parseFamilyAudienceId("invalid"), null);
+
+    const cache = { current: null as import("../lib/family-audience-storage").FamilyAudienceSnapshotCache };
+    const first = readFamilyAudienceFromRaw("big-kids", cache);
+    const second = readFamilyAudienceFromRaw("big-kids", cache);
+    assert.equal(first, second, "family audience snapshot must stay referentially stable");
+  });
+
+  it("maps audiences to representative listener ages", () => {
+    assert.equal(getListenerAgeForAudience("kids"), 3);
+    assert.equal(getListenerAgeForAudience("big-kids"), 10);
+    assert.equal(getListenerAgeForAudience("teens"), 15);
+    assert.equal(getListenerAgeForAudience("grownups"), 35);
+  });
+
+  it("hides mature songs for kids but keeps them for grown-ups", () => {
+    const legacy = songs.find((song) => song.slug === "legacy-in-the-lane");
+    const dash = songs.find((song) => song.slug === "dash-and-go");
+    assert.ok(legacy && dash);
+
+    assert.equal(isSongVisibleForAudience(legacy, "kids"), false);
+    assert.equal(isSongVisibleForAudience(dash, "kids"), true);
+    assert.equal(isSongVisibleForAudience(legacy, "grownups"), true);
+  });
+
+  it("filters search results for kids audience", () => {
+    const kidResults = searchCatalog("", { familyAudience: "kids", listenerAge: 3 }).filter(
+      (result) => result.kind === "song",
+    );
+    assert.ok(kidResults.length > 0);
+    assert.ok(
+      kidResults.every(
+        (result) => result.kind === "song" && isSongVisibleForAudience(result.song, "kids"),
+      ),
+    );
+    assert.ok(!kidResults.some((result) => result.kind === "song" && result.song.slug === "legacy-in-the-lane"));
+  });
+
+  it("filters playlists without dropping grown-up catalog access", () => {
+    const kidSongs = filterSongsForAudience(songs, "kids");
+    const grownupSongs = filterSongsForAudience(songs, "grownups");
+    assert.ok(kidSongs.length < songs.length);
+    assert.equal(grownupSongs.length, songs.length);
   });
 });
 

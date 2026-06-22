@@ -2,21 +2,35 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 
-import { useListenerAge } from "@/hooks/use-listener-age";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 
-type ListenerAgeContextValue = ReturnType<typeof useListenerAge>;
+type ListenerAgeContextValue = {
+  listenerAge: number | null;
+  hydrated: boolean;
+  hasPrompted: boolean;
+  setListenerAge: (age: number) => void;
+  clearAge: () => void;
+  markPrompted: () => void;
+};
 
 const ListenerAgeContext = createContext<ListenerAgeContextValue | null>(null);
 
 export function ListenerAgeProvider({ children }: { children: ReactNode }) {
-  const value = useListenerAge();
-  return <ListenerAgeContext.Provider value={value}>{children}</ListenerAgeContext.Provider>;
+  return <>{children}</>;
 }
 
 export function useListenerAgeContext(): ListenerAgeContextValue {
+  const familyAudience = useFamilyAudienceContext();
+
   const context = useContext(ListenerAgeContext);
-  if (!context) {
-    throw new Error("useListenerAgeContext must be used within ListenerAgeProvider");
-  }
-  return context;
+  if (context) return context;
+
+  return {
+    listenerAge: familyAudience.listenerAge,
+    hydrated: familyAudience.hydrated,
+    hasPrompted: familyAudience.hasPrompted,
+    setListenerAge: familyAudience.setListenerAge,
+    clearAge: familyAudience.clearAudience,
+    markPrompted: familyAudience.markPrompted,
+  };
 }

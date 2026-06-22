@@ -2,6 +2,10 @@ import type { Song } from "@/data/songs";
 import { buildIntelligentQueue, scoreSongsForSeed } from "@/lib/music-intelligence";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
 import {
+  filterSongsForAudience,
+  type FamilyAudienceId,
+} from "@/lib/family-audience";
+import {
   getRecentlyPlayedSlugs,
   readSessionListening,
   type SessionListeningSnapshot,
@@ -15,6 +19,7 @@ export type RadioContext = {
   refreshSeed?: number;
   batchSize?: number;
   listenerAge?: number | null;
+  familyAudience?: FamilyAudienceId | null;
 };
 
 /**
@@ -39,8 +44,15 @@ export function buildRadioContinuation(
 
   const picks: Song[] = [];
   const seen = new Set<string>([seed.slug]);
+  const audiencePool = filterSongsForAudience(
+    scored.map((entry) => entry.song),
+    context.familyAudience ?? null,
+  );
+  const audienceScored = scored.filter((entry) =>
+    audiencePool.some((song) => song.slug === entry.song.slug),
+  );
 
-  for (const entry of scored) {
+  for (const entry of audienceScored) {
     if (picks.length >= batchSize) break;
     if (seen.has(entry.song.slug)) continue;
     seen.add(entry.song.slug);
@@ -49,7 +61,10 @@ export function buildRadioContinuation(
 
   // Fair family interleave for remaining slots.
   if (picks.length < batchSize) {
-    const fair = getFairRotationQueue(context.refreshSeed ?? 0);
+    const fair = filterSongsForAudience(
+      getFairRotationQueue(context.refreshSeed ?? 0),
+      context.familyAudience ?? null,
+    );
     for (const song of fair) {
       if (picks.length >= batchSize) break;
       if (seen.has(song.slug) || recentSlugs.has(song.slug)) continue;
@@ -69,8 +84,12 @@ export function buildRadioContinuation(
         listenerAge: context.listenerAge,
       },
     }).filter((song) => !seen.has(song.slug) && !recentSlugs.has(song.slug));
+    const audienceIntelligent = filterSongsForAudience(
+      intelligent,
+      context.familyAudience ?? null,
+    );
 
-    for (const song of intelligent) {
+    for (const song of audienceIntelligent) {
       if (picks.length >= batchSize) break;
       seen.add(song.slug);
       picks.push(song);
