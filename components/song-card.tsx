@@ -2,6 +2,7 @@ import Link from "next/link";
 import { CalendarDays, Play, UserRound } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { FavoriteButton } from "@/components/favorite-button";
 import { Badge } from "@/components/ui/badge";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
@@ -14,20 +15,26 @@ export function SongCard({ song }: SongCardProps) {
   const author = getMemberBySlug(song.authorSlug);
 
   return (
-    <Link
-      href={`/songs/${song.slug}`}
-      className="group flex flex-col overflow-hidden rounded-3xl border border-amber-200/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-    >
+    <article className="group flex flex-col overflow-hidden rounded-3xl border border-amber-200/70 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
       <div className="relative aspect-square overflow-hidden">
-        <CoverImage
-          src={song.coverSrc}
-          alt={`${song.title} cover`}
-          className="size-full transition duration-300 group-hover:scale-105"
+        <Link href={`/songs/${song.slug}`} className="block size-full">
+          <CoverImage
+            src={song.coverSrc}
+            alt={`${song.title} cover`}
+            className="size-full transition duration-300 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-amber-950/50 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
+          <span className="absolute bottom-3 right-3 flex size-10 items-center justify-center rounded-full bg-white/95 text-amber-900 shadow opacity-0 transition group-hover:opacity-100">
+            <Play className="size-4 fill-current" />
+          </span>
+        </Link>
+        <FavoriteButton
+          songSlug={song.slug}
+          songTitle={song.title}
+          variant="overlay"
+          size="sm"
+          className="absolute top-3 right-3 z-10"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-amber-950/50 via-transparent to-transparent opacity-0 transition group-hover:opacity-100" />
-        <span className="absolute bottom-3 right-3 flex size-10 items-center justify-center rounded-full bg-white/95 text-amber-900 shadow opacity-0 transition group-hover:opacity-100">
-          <Play className="size-4 fill-current" />
-        </span>
         {song.featured ? (
           <Badge className="absolute left-3 top-3 border-0 bg-amber-400 text-amber-950 hover:bg-amber-400">
             Featured
@@ -35,7 +42,7 @@ export function SongCard({ song }: SongCardProps) {
         ) : null}
       </div>
 
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <Link href={`/songs/${song.slug}`} className="flex flex-1 flex-col gap-3 p-4">
         <div>
           <h3 className="text-lg font-bold leading-tight text-amber-950">{song.title}</h3>
           {song.subtitle ? (
@@ -67,7 +74,7 @@ export function SongCard({ song }: SongCardProps) {
             </Badge>
           ))}
         </div>
-      </div>
-    </Link>
+      </Link>
+    </article>
   );
 }

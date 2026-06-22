@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { FavoriteButton } from "@/components/favorite-button";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
@@ -43,6 +44,13 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
         playing={playing}
         label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
         onClick={toggle}
+      />
+      <FavoriteButton
+        songSlug={song.slug}
+        songTitle={song.title}
+        variant="ghost"
+        size="sm"
+        className="shrink-0"
       />
       <Link
         href={`/songs/${song.slug}`}
