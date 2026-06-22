@@ -3,6 +3,7 @@ import { existsSync } from "node:fs";
 import path from "node:path";
 import { describe, it } from "node:test";
 
+import manifest from "../app/manifest";
 import {
   albums,
   getAlbumBySlug,
@@ -685,6 +686,18 @@ describe("link preview metadata", () => {
     assert.equal(metadata.openGraph?.url, SITE_URL);
     assert.equal(metadata.openGraph?.siteName, "Cousin Radio");
     assert.equal(metadata.openGraph?.locale, "en_US");
+  });
+
+  it("publishes square install icons in the web app manifest", () => {
+    const webManifest = manifest();
+
+    assert.equal(webManifest.name, "Cousin Radio");
+    assert.equal(webManifest.display, "standalone");
+    assert.equal(webManifest.icons?.[0]?.src, "/icon");
+    assert.equal(webManifest.icons?.[0]?.sizes, "512x512");
+    assert.equal(webManifest.icons?.[0]?.purpose, "any maskable");
+    assert.equal(webManifest.icons?.[1]?.src, "/apple-icon");
+    assert.equal(webManifest.icons?.[1]?.sizes, "180x180");
   });
 
   it("sets per-song og:image and description for legacy in the lane", () => {
