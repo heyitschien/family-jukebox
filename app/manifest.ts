@@ -25,7 +25,7 @@ export default function manifest(): MetadataRoute.Manifest {
       },
       ...buildCousinRadioArtwork().map((icon) => ({
         ...icon,
-        purpose: "any maskable",
+        purpose: "any" as const,
       })),
     ],
   };
