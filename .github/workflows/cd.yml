@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      PRODUCTION_URL: https://family-jukebox.vercel.app
+      PRODUCTION_URL: https://cousinradio.com
 
     steps:
       - name: Wait for production alias

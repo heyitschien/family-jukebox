@@ -1,8 +1,11 @@
 export type AppEnvironment = "production" | "staging" | "development";
 
-export const PRODUCTION_SITE_URL = "https://family-jukebox.vercel.app";
+export const PRODUCTION_SITE_URL = "https://cousinradio.com";
 
-export const STAGING_SITE_URL = "https://family-jukebox-staging.vercel.app";
+export const STAGING_SITE_URL = "https://staging.cousinradio.com";
+
+/** Legacy Vercel hostname — may redirect; do not use in new code or docs. */
+export const LEGACY_VERCEL_SITE_URL = "https://family-jukebox.vercel.app";
 
 function readConfiguredEnvironment(): AppEnvironment | undefined {
   const configured = process.env.NEXT_PUBLIC_APP_ENV;
@@ -50,11 +53,11 @@ export function getSiteDescription(): string {
   if (!isStagingEnvironment()) {
     return "Songs we made together — silly fox trails, pink glasses, gravity shifts, and little family anthems.";
   }
-  return "Staging preview — test new songs and layout changes before they go live on Family Jukebox.";
+  return "Staging preview — test new songs and layout changes before they go live on cousinradio.com.";
 }
 
 export const STAGING_BRAND = {
   label: "Staging preview",
-  tagline: "Not production — safe place to try new songs and UI",
+  tagline: "Not production — preview for staging.cousinradio.com",
   badge: "STAGING",
 } as const;

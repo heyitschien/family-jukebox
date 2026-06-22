@@ -1,15 +1,19 @@
 # Staging environment
 
-Use **staging** to preview songs, catalog changes, and UI before they hit production.
+Use **staging** to preview songs, catalog changes, and UI before they go live on **cousinradio.com**.
+
+**Canonical domain reference:** [`docs/DOMAINS-AND-ENVIRONMENTS.md`](./DOMAINS-AND-ENVIRONMENTS.md) — read this first if you are an agent changing deploys or URLs.
 
 ## URLs
 
-| Environment | Branch | URL |
-|-------------|--------|-----|
-| **Production** | `main` | https://family-jukebox.vercel.app |
-| **Staging** | `staging` | https://family-jukebox-staging.vercel.app |
+| Environment | Branch | Domain |
+|-------------|--------|--------|
+| **Production** | `main` | https://cousinradio.com |
+| **Staging** | `staging` | https://staging.cousinradio.com |
 
 Staging shows an amber **STAGING** banner, gold accent colors, and `Family Jukebox · Staging` in the browser title.
+
+The Vercel project is still named `family-jukebox` — that is hosting only. The **public** URLs are cousinradio.com domains above.
 
 ## Workflow
 
@@ -18,9 +22,9 @@ feature branch → PR → staging (optional integration)
                   ↓
             push to staging → Deploy Staging workflow
                   ↓
-            verify on family-jukebox-staging.vercel.app
+            verify on staging.cousinradio.com
                   ↓
-            merge staging → main → production deploy
+            merge staging → main → cousinradio.com
 ```
 
 For small changes you can still go **feature → main** directly. Use staging when you want a shared preview link before production.
@@ -33,22 +37,22 @@ git merge main   # or merge your feature branch
 git push origin staging
 ```
 
-GitHub Actions **Deploy Staging** runs on every push to `staging` (same Vercel secrets as production).
+GitHub Actions **Deploy Staging** runs on every push to `staging`.
 
 ## Local staging brand
 
-Run with staging env vars to see the banner and gold theme locally:
-
 ```bash
-NEXT_PUBLIC_APP_ENV=staging NEXT_PUBLIC_SITE_URL=http://localhost:3000 npm run dev
+npm run dev:staging
 ```
 
-## Vercel setup (one time)
+## Vercel setup (verify once)
 
-1. In Vercel → **family-jukebox** → **Settings → Domains**, add `family-jukebox-staging.vercel.app` if it is not already listed.
-2. Ensure **Preview** deployments are enabled for the `staging` branch.
-3. Optional: add `NEXT_PUBLIC_APP_ENV=staging` under **Settings → Environment Variables** for the **Preview** environment only.
+1. **Domains** on project `family-jukebox`:
+   - `cousinradio.com` → Production
+   - `staging.cousinradio.com` → Preview / staging branch
+2. DNS at your registrar pointed to Vercel.
+3. GitHub secrets: `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`.
 
 ## CI
 
-Pushes to `staging` run the same **Build, lint & smoke** checks as `main`.
+Pushes to `staging` run the same **Build, lint & smoke** checks as `main`. Auto-merge only applies to PRs into `main`.

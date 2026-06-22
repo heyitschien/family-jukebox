@@ -174,7 +174,7 @@ Keep **MP3 + JPG only** in git — source MP4s stay in `family-music-asset-june-
 After push to `main`:
 
 - **CI** — lint, smoke, build
-- **CD** — verifies [family-jukebox.vercel.app](https://family-jukebox.vercel.app)
+- **CD** — verifies [cousinradio.com](https://cousinradio.com)
 
 See `docs/CI-CD.md`.
 

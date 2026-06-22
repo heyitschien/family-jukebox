@@ -1,0 +1,19 @@
+---
+description: Canonical Cousin Radio domains, branches, and deploy rules — read before changing URLs or CI/CD
+alwaysApply: true
+---
+
+# Cousin Radio — domains & deploys
+
+**Production domain:** https://cousinradio.com (`main` branch)  
+**Staging domain:** https://staging.cousinradio.com (`staging` branch)
+
+Full handoff doc: `docs/DOMAINS-AND-ENVIRONMENTS.md`
+
+## Rules for agents
+
+1. Domain constants live in `lib/site-env.ts` only — do not hardcode URLs elsewhere.
+2. `family-jukebox` is the Vercel/GitHub project name, not the public domain.
+3. Production deploys come from `main` → cousinradio.com; staging from `staging` → staging.cousinradio.com.
+4. Do not add competing deploy workflows or change branch→domain mapping without updating `docs/DOMAINS-AND-ENVIRONMENTS.md`.
+5. PR auto-merge applies only to PRs targeting `main`.

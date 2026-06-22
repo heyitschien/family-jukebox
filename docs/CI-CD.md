@@ -10,8 +10,10 @@ Open PR → CI runs (lint, smoke, build)
        → Deploy workflow pushes to Vercel production
        → CD workflow verifies production is live
 
-Push to staging → Deploy Staging → family-jukebox-staging.vercel.app
+Push to staging → Deploy Staging → staging.cousinradio.com
 ```
+
+**Domains:** production = **cousinradio.com**, staging = **staging.cousinradio.com**. See [`docs/DOMAINS-AND-ENVIRONMENTS.md`](./DOMAINS-AND-ENVIRONMENTS.md).
 
 See [`docs/STAGING.md`](./STAGING.md) for the staging branch workflow.
 
@@ -51,8 +53,8 @@ npm run ci
 
 | Environment | URL |
 |-------------|-----|
-| **Production** | [https://family-jukebox.vercel.app](https://family-jukebox.vercel.app) |
-| **Staging** | [https://family-jukebox-staging.vercel.app](https://family-jukebox-staging.vercel.app) |
+| **Production** | [https://cousinradio.com](https://cousinradio.com) |
+| **Staging** | [https://staging.cousinradio.com](https://staging.cousinradio.com) |
 
 GitHub Actions deploys `main` to Vercel production and `staging` to the staging preview. Add these repository secrets once:
 
