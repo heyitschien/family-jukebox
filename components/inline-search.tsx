@@ -177,7 +177,7 @@ export function InlineSearch({
           onFocus={() => setOpen(true)}
           onKeyDown={onInputKeyDown}
           placeholder={placeholder}
-          aria-label="Search family jukebox"
+          aria-label="Search Cousin Radio"
           aria-expanded={showPanel}
           aria-controls={showPanel ? listboxId : undefined}
           aria-autocomplete="list"

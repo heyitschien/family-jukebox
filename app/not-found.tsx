@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, Music2 } from "lucide-react";
 
+import { BRAND_NAME } from "@/lib/brand";
+
 export default function NotFound() {
   return (
     <main className="mx-auto flex min-h-[50vh] max-w-md flex-col items-center justify-center px-3 py-16 text-center">
@@ -17,7 +19,7 @@ export default function NotFound() {
         className="mt-8 inline-flex min-h-11 items-center gap-2 rounded-full bg-family-accent px-5 py-3 text-sm font-black text-[#1a0812]"
       >
         <ArrowLeft className="size-4" aria-hidden />
-        Back to Family Jukebox
+        Back to {BRAND_NAME}
       </Link>
     </main>
   );
