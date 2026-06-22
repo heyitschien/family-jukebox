@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
-      PRODUCTION_URL: https://family-jukebox.vercel.app
+      PRODUCTION_URL: https://cousinradio.com
 
     steps:
       - name: Wait for production alias
@@ -52,6 +52,29 @@ jobs:
 
       - name: Check albums route
         run: curl -fsSL "$PRODUCTION_URL/albums" | grep -q "Family albums"
+
+      - name: Check link preview metadata on homepage
+        run: |
+          set -euo pipefail
+          html="$(curl -fsSL "$PRODUCTION_URL")"
+          echo "$html" | grep -q 'property="og:site_name" content="Cousin Radio"'
+          echo "$html" | grep -q "property=\"og:url\" content=\"$PRODUCTION_URL\""
+          echo "$html" | grep -q "property=\"og:image\" content=\"$PRODUCTION_URL/opengraph-image"
+          echo "$html" | grep -q 'name="twitter:card" content="summary_large_image"'
+
+      - name: Check link preview metadata on song page
+        run: |
+          set -euo pipefail
+          html="$(curl -fsSL "$PRODUCTION_URL/songs/legacy-in-the-lane")"
+          echo "$html" | grep -q "property=\"og:url\" content=\"$PRODUCTION_URL/songs/legacy-in-the-lane\""
+          echo "$html" | grep -q "property=\"og:image\" content=\"$PRODUCTION_URL/assets/sam-and-josh/legacy-in-the-lane.png\""
+          echo "$html" | grep -q 'property="og:title" content="Legacy in the Lane · Cousin Radio"'
+
+      - name: Check sitemap and robots
+        run: |
+          set -euo pipefail
+          curl -fsSL "$PRODUCTION_URL/robots.txt" | grep -q "Sitemap: $PRODUCTION_URL/sitemap.xml"
+          curl -fsSL "$PRODUCTION_URL/sitemap.xml" | grep -q "$PRODUCTION_URL/songs/legacy-in-the-lane"
 
       - name: Check API stats route
         run: |

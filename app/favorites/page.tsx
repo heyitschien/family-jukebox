@@ -1,9 +1,9 @@
 import { FavoritesBrowser } from "@/components/favorites-browser";
 import { Topbar } from "@/components/topbar";
-import { buildShareMetadata } from "@/lib/site-metadata";
+import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
 
 export const metadata = buildShareMetadata({
-  title: "Favorites · Family Jukebox",
+  title: formatPageTitle("Favorites"),
   description: "Your locally saved favorite songs on this browser.",
   path: "/favorites",
 });

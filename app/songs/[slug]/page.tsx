@@ -25,6 +25,7 @@ import {
   buildCoverShareImage,
   buildShareMetadata,
   buildSongShareDescription,
+  formatPageTitle,
 } from "@/lib/site-metadata";
 
 type SongPageProps = {
@@ -38,10 +39,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: SongPageProps): Promise<Metadata> {
   const { slug } = await params;
   const song = getSongBySlug(slug);
-  if (!song) return { title: "Song not found · Family Jukebox" };
+  if (!song) return { title: formatPageTitle("Song not found") };
   const author = getSongAuthor(song);
   return buildShareMetadata({
-    title: `${song.title} · Family Jukebox`,
+    title: formatPageTitle(song.title),
     description: buildSongShareDescription(song, author),
     path: `/songs/${song.slug}`,
     image: buildCoverShareImage(song.title, song.coverSrc),
