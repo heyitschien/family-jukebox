@@ -27,9 +27,15 @@ type AlbumCarousel3DProps = {
   albums: Album[];
   featuredAlbum: Album;
   refreshSeed: number;
+  showTopbar?: boolean;
 };
 
-export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCarousel3DProps) {
+export function AlbumCarousel3D({
+  albums,
+  featuredAlbum,
+  refreshSeed,
+  showTopbar = true,
+}: AlbumCarousel3DProps) {
   const router = useRouter();
   const { playQueue, currentSong, isPlaying, queue, togglePlay } = usePlayer();
   const [activeIndex, setActiveIndex] = useState(() =>
@@ -127,9 +133,11 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative z-20 px-4 pt-[max(12px,env(safe-area-inset-top))] sm:px-[34px] sm:pt-[34px]">
-        <Topbar variant="embedded" />
-      </div>
+      {showTopbar ? (
+        <div className="relative z-20 px-4 pt-[max(12px,env(safe-area-inset-top))] sm:px-[34px] sm:pt-[34px]">
+          <Topbar variant="embedded" />
+        </div>
+      ) : null}
 
       <div
         className="absolute inset-0"

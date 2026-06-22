@@ -1,7 +1,7 @@
 "use client";
 
 import { BottomNav } from "@/components/bottom-nav";
-import { ListenerAgeWelcome } from "@/components/listener-age-welcome";
+import { AudienceModal } from "@/components/AudienceModal";
 import { MiniPlayer } from "@/components/mini-player";
 import { Sidebar } from "@/components/sidebar";
 import { StagingBrandBanner } from "@/components/staging-brand-banner";
@@ -21,7 +21,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <MiniPlayer />
           <BottomNav />
         </div>
-        <ListenerAgeWelcome />
+        <AudienceModal />
       </PlayerProvider>
     </ListenerAgeProvider>
   );

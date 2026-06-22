@@ -2,52 +2,90 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 
-import { isValidListenerAge } from "@/lib/audience";
 import {
+  getAudienceIdForListenerAge,
+  getAudienceListenerAge,
+  isValidListenerAge,
+  type FamilyAudienceId,
+} from "@/lib/audience";
+import {
+  FAMILY_AUDIENCE_CHANGED_EVENT,
+  FAMILY_AUDIENCE_STORAGE_KEY,
   LISTENER_AGE_CHANGED_EVENT,
   LISTENER_AGE_STORAGE_KEY,
-  readHasPromptedForAge,
+  readFamilyAudienceFromRaw,
+  readHasPromptedForAudience,
   readListenerAgeFromRaw,
-  serializeListenerAge,
-  writeHasPromptedForAge,
+  serializeFamilyAudience,
+  type FamilyAudienceSnapshotCache,
   type ListenerAgeSnapshotCache,
+  writeHasPromptedForAudience,
 } from "@/lib/audience-storage";
 
-const listenerAgeCache: { current: ListenerAgeSnapshotCache } = { current: null };
+const familyAudienceCache: { current: FamilyAudienceSnapshotCache } = { current: null };
+const legacyAgeCache: { current: ListenerAgeSnapshotCache } = { current: null };
 
-function getStoredListenerAge(): ReturnType<typeof readListenerAgeFromRaw> {
+function getStoredFamilyAudience(): ReturnType<typeof readFamilyAudienceFromRaw> {
   if (typeof window === "undefined") return null;
-  const raw = window.localStorage.getItem(LISTENER_AGE_STORAGE_KEY);
-  return readListenerAgeFromRaw(raw, listenerAgeCache);
+
+  const raw = window.localStorage.getItem(FAMILY_AUDIENCE_STORAGE_KEY);
+  const snapshot = readFamilyAudienceFromRaw(raw, familyAudienceCache);
+  if (snapshot) return snapshot;
+
+  // Backward compatibility: migrate legacy listener age snapshots to audience ids.
+  const legacyRaw = window.localStorage.getItem(LISTENER_AGE_STORAGE_KEY);
+  const legacyAge = readListenerAgeFromRaw(legacyRaw, legacyAgeCache);
+  if (!legacyAge) return null;
+
+  const audienceId = getAudienceIdForListenerAge(legacyAge.age);
+  const migrated = serializeFamilyAudience(audienceId);
+  window.localStorage.setItem(FAMILY_AUDIENCE_STORAGE_KEY, migrated.serialized);
+  familyAudienceCache.current = {
+    raw: migrated.serialized,
+    snapshot: migrated.snapshot,
+  };
+  return migrated.snapshot;
 }
 
-function writeListenerAge(age: number): void {
+function writeFamilyAudience(audienceId: FamilyAudienceId): void {
   if (typeof window === "undefined") return;
-  if (!isValidListenerAge(age)) return;
-
-  const { serialized, snapshot } = serializeListenerAge(age);
-  window.localStorage.setItem(LISTENER_AGE_STORAGE_KEY, serialized);
-  listenerAgeCache.current = { raw: serialized, snapshot };
+  const { serialized, snapshot } = serializeFamilyAudience(audienceId);
+  window.localStorage.setItem(FAMILY_AUDIENCE_STORAGE_KEY, serialized);
+  familyAudienceCache.current = { raw: serialized, snapshot };
+  // Compatibility event for existing listeners that still key off listener age.
   window.dispatchEvent(new Event(LISTENER_AGE_CHANGED_EVENT));
+  window.dispatchEvent(new Event(FAMILY_AUDIENCE_CHANGED_EVENT));
 }
 
-function clearListenerAge(): void {
+function clearFamilyAudience(): void {
   if (typeof window === "undefined") return;
-  window.localStorage.removeItem(LISTENER_AGE_STORAGE_KEY);
-  listenerAgeCache.current = { raw: null, snapshot: null };
+  window.localStorage.removeItem(FAMILY_AUDIENCE_STORAGE_KEY);
+  familyAudienceCache.current = { raw: null, snapshot: null };
   window.dispatchEvent(new Event(LISTENER_AGE_CHANGED_EVENT));
+  window.dispatchEvent(new Event(FAMILY_AUDIENCE_CHANGED_EVENT));
 }
 
-function subscribeToListenerAge(onStoreChange: () => void): () => void {
+function subscribeToFamilyAudience(onStoreChange: () => void): () => void {
   if (typeof window === "undefined") return () => {};
 
-  const handleChange = () => onStoreChange();
+  const handleChange = (event: Event) => {
+    if (
+      event instanceof StorageEvent &&
+      event.key &&
+      ![FAMILY_AUDIENCE_STORAGE_KEY, LISTENER_AGE_STORAGE_KEY].includes(event.key)
+    ) {
+      return;
+    }
+    onStoreChange();
+  };
   window.addEventListener("storage", handleChange);
   window.addEventListener(LISTENER_AGE_CHANGED_EVENT, handleChange);
+  window.addEventListener(FAMILY_AUDIENCE_CHANGED_EVENT, handleChange);
 
   return () => {
     window.removeEventListener("storage", handleChange);
     window.removeEventListener(LISTENER_AGE_CHANGED_EVENT, handleChange);
+    window.removeEventListener(FAMILY_AUDIENCE_CHANGED_EVENT, handleChange);
   };
 }
 
@@ -61,32 +99,46 @@ function useHydrated(): boolean {
 
 export function useListenerAge() {
   const snapshot = useSyncExternalStore(
-    subscribeToListenerAge,
-    getStoredListenerAge,
+    subscribeToFamilyAudience,
+    getStoredFamilyAudience,
     () => null,
   );
   const hydrated = useHydrated();
-  const hasPrompted = hydrated ? readHasPromptedForAge() : false;
+  const hasPrompted = hydrated ? readHasPromptedForAudience() : false;
+
+  const setFamilyAudience = useCallback((audienceId: FamilyAudienceId) => {
+    writeFamilyAudience(audienceId);
+    writeHasPromptedForAudience();
+  }, []);
 
   const setListenerAge = useCallback((age: number) => {
-    writeListenerAge(age);
-    writeHasPromptedForAge();
+    if (!isValidListenerAge(age)) return;
+    setFamilyAudience(getAudienceIdForListenerAge(age));
+  }, [setFamilyAudience]);
+
+  const clearAudience = useCallback(() => {
+    clearFamilyAudience();
+    writeHasPromptedForAudience();
   }, []);
 
   const clearAge = useCallback(() => {
-    clearListenerAge();
-    writeHasPromptedForAge();
-  }, []);
+    clearAudience();
+  }, [clearAudience]);
 
   const markPrompted = useCallback(() => {
-    writeHasPromptedForAge();
+    writeHasPromptedForAudience();
   }, []);
 
+  const familyAudience = hydrated ? snapshot?.audienceId ?? null : null;
+
   return {
-    listenerAge: hydrated ? snapshot?.age ?? null : null,
+    listenerAge: hydrated && familyAudience ? getAudienceListenerAge(familyAudience) : null,
+    familyAudience,
     hydrated,
     hasPrompted,
+    setFamilyAudience,
     setListenerAge,
+    clearAudience,
     clearAge,
     markPrompted,
   };

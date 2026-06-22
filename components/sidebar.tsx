@@ -4,8 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heart, Home, Music, Users } from "lucide-react";
 
+import { AudienceSelector } from "@/components/AudienceSelector";
 import { BrandBadge } from "@/components/brand-badge";
-import { ListenerAgeSelector } from "@/components/listener-age-selector";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -51,7 +51,7 @@ export function Sidebar() {
         })}
       </nav>
 
-      <ListenerAgeSelector className="mt-auto" />
+      <AudienceSelector className="mt-auto" showHeading columns={2} />
 
       <div className="rounded-[22px] border border-white/[0.08] bg-gradient-to-br from-white/[0.11] to-white/[0.04] p-4">
         <h3 className="text-[15px] font-bold">Made together</h3>

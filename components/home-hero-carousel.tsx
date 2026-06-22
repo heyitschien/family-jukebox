@@ -18,6 +18,7 @@ type HomeHeroCarouselProps = {
   albums: Album[];
   featuredAlbum: Album;
   refreshSeed: number;
+  showTopbar?: boolean;
 };
 
 export function HomeHeroCarousel(props: HomeHeroCarouselProps) {

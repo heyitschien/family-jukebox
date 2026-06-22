@@ -2,7 +2,11 @@ import { songs, type Song } from "@/data/songs";
 import { getCelebrationSongSlugs } from "@/lib/celebrations";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
 import { getMoreFromArtist, getSimilarSongs } from "@/lib/music-discovery";
-import { scoreSongForListener } from "@/lib/audience";
+import {
+  isSongVisibleForAudience,
+  scoreSongForListener,
+  type FamilyAudienceId,
+} from "@/lib/audience";
 import type { SessionListeningSnapshot } from "@/lib/session-listening";
 import { EMPTY_SESSION_SNAPSHOT } from "@/lib/session-listening";
 
@@ -15,6 +19,8 @@ export type IntelligenceContext = {
   excludeSlugs?: ReadonlySet<string>;
   /** Listener age — boosts age-appropriate tracks in recommendations. */
   listenerAge?: number | null;
+  /** Family audience visibility gate. */
+  audienceId?: FamilyAudienceId | null;
 };
 
 export type ScoredSong = {
@@ -31,6 +37,11 @@ function tagOverlap(a: Song, b: Song): number {
   return meaningfulTags(b).filter((tag) => aTags.has(tag)).length;
 }
 
+function isSongVisibleInContext(song: Song, context: IntelligenceContext): boolean {
+  if (context.audienceId == null || context.audienceId === "grownups") return true;
+  return isSongVisibleForAudience(song, context.audienceId);
+}
+
 /** Unified affinity score — higher means better next-track candidate. */
 export function scoreSongAffinity(
   seed: Song,
@@ -38,6 +49,7 @@ export function scoreSongAffinity(
   context: IntelligenceContext = {},
 ): number {
   if (seed.slug === candidate.slug) return -1;
+  if (!isSongVisibleInContext(candidate, context)) return -1;
 
   const session = context.session ?? EMPTY_SESSION_SNAPSHOT;
   let score = 0;
@@ -90,7 +102,12 @@ export function rankSimilarSongs(
   const exclude = context.excludeSlugs ?? new Set<string>();
 
   return songs
-    .filter((song) => song.slug !== seed.slug && !exclude.has(song.slug))
+    .filter(
+      (song) =>
+        song.slug !== seed.slug &&
+        !exclude.has(song.slug) &&
+        isSongVisibleInContext(song, context),
+    )
     .map((song) => ({ song, score: scoreSongAffinity(seed, song, context) }))
     .filter((entry) => entry.score > 0)
     .sort(
@@ -142,12 +159,12 @@ export function buildIntelligentQueue(
   // Fair rotation fill for variety across the family.
   if (results.length < limit) {
     const fair = getFairRotationQueue(context.refreshSeed ?? 0);
-    addCandidates(fair);
+    addCandidates(fair.filter((song) => isSongVisibleInContext(song, context)));
   }
 
   // Last resort — any remaining catalog songs.
   if (results.length < limit) {
-    addCandidates(songs.filter((song) => !seen.has(song.slug)));
+    addCandidates(songs.filter((song) => !seen.has(song.slug) && isSongVisibleInContext(song, context)));
   }
 
   return results.slice(0, limit);
@@ -173,7 +190,7 @@ export function scoreSongsForSeed(
   context: IntelligenceContext = {},
 ): ScoredSong[] {
   return songs
-    .filter((song) => song.slug !== seed.slug)
+    .filter((song) => song.slug !== seed.slug && isSongVisibleInContext(song, context))
     .map((song) => ({ song, score: scoreSongAffinity(seed, song, context) }))
     .sort((a, b) => b.score - a.score || a.song.title.localeCompare(b.song.title));
 }

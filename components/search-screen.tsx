@@ -22,7 +22,7 @@ type SearchScreenProps = {
 };
 
 export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
-  const { listenerAge } = useListenerAgeContext();
+  const { listenerAge, familyAudience } = useListenerAgeContext();
   const searchParams = useSearchParams();
   const initial = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initial);
@@ -36,8 +36,9 @@ export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
       age: activeAge,
       tag: activeTag,
       listenerAge,
+      audienceId: familyAudience,
     }),
-    [activeAge, activeMember, activeTag, listenerAge],
+    [activeAge, activeMember, activeTag, familyAudience, listenerAge],
   );
 
   const filteredAlbums = useMemo(() => filterAlbums(query, filters), [filters, query]);

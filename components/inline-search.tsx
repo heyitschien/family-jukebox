@@ -66,10 +66,14 @@ export function InlineSearch({
 
   const embedded = variant === "embedded";
   const trimmed = query.trim();
-  const { listenerAge } = useListenerAgeContext();
+  const { listenerAge, familyAudience } = useListenerAgeContext();
   const grouped = useMemo(
-    () => getInlineSearchResults(query, { listenerAge }),
-    [listenerAge, query],
+    () =>
+      getInlineSearchResults(query, {
+        listenerAge,
+        audienceId: familyAudience,
+      }),
+    [familyAudience, listenerAge, query],
   );
   const flatResults = useMemo(() => flattenGroupedResults(grouped), [grouped]);
   const indexedSections = useMemo(() => {

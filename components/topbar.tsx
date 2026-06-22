@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 
 import { CopyPublicLinkButton } from "@/components/copy-public-link-button";
 import { InlineSearch } from "@/components/inline-search";
-import { ListenerAgeSelector } from "@/components/listener-age-selector";
+import { ProfileAvatar } from "@/components/ProfileAvatar";
 import { cn } from "@/lib/utils";
 
 type TopbarProps = {
@@ -26,7 +26,7 @@ export function Topbar({ className, variant = "default" }: TopbarProps) {
       )}
     >
       <InlineSearch variant={variant} />
-      <ListenerAgeSelector variant="compact" className="lg:hidden" />
+      <ProfileAvatar />
       {!embedded && pathname === "/" ? <CopyPublicLinkButton /> : null}
     </header>
   );

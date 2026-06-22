@@ -1,6 +1,7 @@
 import type { Song } from "@/data/songs";
 import { buildIntelligentQueue, scoreSongsForSeed } from "@/lib/music-intelligence";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
+import { isSongVisibleForAudience, type FamilyAudienceId } from "@/lib/audience";
 import {
   getRecentlyPlayedSlugs,
   readSessionListening,
@@ -15,6 +16,7 @@ export type RadioContext = {
   refreshSeed?: number;
   batchSize?: number;
   listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
 /**
@@ -35,6 +37,7 @@ export function buildRadioContinuation(
     session,
     excludeSlugs,
     listenerAge: context.listenerAge,
+    audienceId: context.audienceId,
   });
 
   const picks: Song[] = [];
@@ -53,6 +56,13 @@ export function buildRadioContinuation(
     for (const song of fair) {
       if (picks.length >= batchSize) break;
       if (seen.has(song.slug) || recentSlugs.has(song.slug)) continue;
+      if (
+        context.audienceId != null &&
+        context.audienceId !== "grownups" &&
+        !isSongVisibleForAudience(song, context.audienceId)
+      ) {
+        continue;
+      }
       seen.add(song.slug);
       picks.push(song);
     }
@@ -67,6 +77,7 @@ export function buildRadioContinuation(
         excludeSlugs: seen,
         refreshSeed: context.refreshSeed,
         listenerAge: context.listenerAge,
+        audienceId: context.audienceId,
       },
     }).filter((song) => !seen.has(song.slug) && !recentSlugs.has(song.slug));
 

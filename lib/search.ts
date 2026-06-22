@@ -1,7 +1,12 @@
-import { albums, getAlbumAuthor, type Album } from "@/data/albums";
+import { albums, getAlbumAuthor, getAlbumSongs, type Album } from "@/data/albums";
 import { members, type FamilyMember } from "@/data/members";
-import { songs, type Song } from "@/data/songs";
-import { scoreAlbumForListener, scoreSongForListener } from "@/lib/audience";
+import { getSongsByAuthor, songs, type Song } from "@/data/songs";
+import {
+  isSongVisibleForAudience,
+  scoreAlbumForListener,
+  scoreSongForListener,
+  type FamilyAudienceId,
+} from "@/lib/audience";
 
 export type SearchResultKind = "member" | "album" | "song";
 
@@ -22,6 +27,8 @@ export type SearchFilters = {
   tag?: string | null;
   /** Boost results suited to this listener age without hiding the full catalog. */
   listenerAge?: number | null;
+  /** Hard visibility gate for family audience profiles. */
+  audienceId?: FamilyAudienceId | null;
 };
 
 function scoreText(text: string, query: string): number {
@@ -70,6 +77,11 @@ function passesFilters(
   return true;
 }
 
+function isSongAllowedForAudience(song: Song, audienceId: FamilyAudienceId | null | undefined): boolean {
+  if (audienceId == null || audienceId === "grownups") return true;
+  return isSongVisibleForAudience(song, audienceId);
+}
+
 function listenerAgeBoost(
   kind: SearchResultKind,
   item: FamilyMember | Album | Song,
@@ -99,6 +111,13 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
 
   for (const member of members) {
     if (!passesFilters(member.slug, undefined, member.age, filters)) continue;
+    if (filters.audienceId != null && filters.audienceId !== "grownups") {
+      const hasVisibleSongs = getSongsByAuthor(member.slug).some((song) =>
+        isSongAllowedForAudience(song, filters.audienceId),
+      );
+      if (!hasVisibleSongs) continue;
+    }
+
     const score = trimmed ? bestScore(memberFields(member), trimmed) : 40;
     if (score > 0 || !trimmed) {
       results.push({
@@ -113,6 +132,13 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
   for (const album of albums) {
     const author = getAlbumAuthor(album);
     if (!passesFilters(album.authorSlug, undefined, author?.age, filters)) continue;
+    if (filters.audienceId != null && filters.audienceId !== "grownups") {
+      const hasVisibleSongs = getAlbumSongs(album).some((song) =>
+        isSongAllowedForAudience(song, filters.audienceId),
+      );
+      if (!hasVisibleSongs) continue;
+    }
+
     const score = trimmed ? bestScore(albumFields(album), trimmed) : 35;
     if (score > 0 || !trimmed) {
       results.push({
@@ -127,6 +153,8 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
   for (const song of songs) {
     const author = members.find((member) => member.slug === song.authorSlug);
     if (!passesFilters(song.authorSlug, song.tags, author?.age, filters)) continue;
+    if (!isSongAllowedForAudience(song, filters.audienceId)) continue;
+
     const score = trimmed ? bestScore(songFields(song), trimmed) : 30;
     if (score > 0 || !trimmed) {
       results.push({

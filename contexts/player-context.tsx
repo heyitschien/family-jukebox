@@ -74,7 +74,7 @@ function songSrcMatches(audio: HTMLAudioElement, audioSrc: string): boolean {
 export { formatTime };
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
-  const { listenerAge } = useListenerAgeContext();
+  const { listenerAge, familyAudience } = useListenerAgeContext();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const queueRef = useRef<Song[]>([]);
   const originalQueueRef = useRef<Song[]>([]);
@@ -159,7 +159,10 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
   const continueRadioFrom = useCallback(
     (seed: Song) => {
-      const continuation = buildRadioContinuation(seed, { listenerAge });
+      const continuation = buildRadioContinuation(seed, {
+        listenerAge,
+        audienceId: familyAudience,
+      });
       if (continuation.length === 0) {
         setIsPlaying(false);
         return;
@@ -174,7 +177,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       const track = nextQueue[index];
       if (track) startPlayback(track, nextQueue, index, "auto-advance");
     },
-    [listenerAge, startPlayback],
+    [familyAudience, listenerAge, startPlayback],
   );
 
   const advanceTrack = useCallback(

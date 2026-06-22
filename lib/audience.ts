@@ -1,4 +1,4 @@
-import { getAlbumAuthor, type Album } from "@/data/albums";
+import { getAlbumAuthor, getAlbumSongs, type Album } from "@/data/albums";
 import { getMemberBySlug, members, type FamilyMember } from "@/data/members";
 import { getSongAuthor, type Song } from "@/data/songs";
 import { defaultSubjectMemberSlugs } from "@/lib/copyright-constants";
@@ -13,6 +13,96 @@ export type ListenerAgePreset = {
   memberSlug?: string;
 };
 
+export type FamilyAudienceId = "kids" | "big-kids" | "teens" | "grownups";
+
+export type FamilyAudience = {
+  id: FamilyAudienceId;
+  label: string;
+  age: string;
+  emoji: string;
+  representativeAge: number;
+};
+
+export const FAMILY_AUDIENCES: FamilyAudience[] = [
+  {
+    id: "kids",
+    label: "Kids",
+    age: "0–6",
+    emoji: "👶",
+    representativeAge: 4,
+  },
+  {
+    id: "big-kids",
+    label: "Big Kids",
+    age: "7–12",
+    emoji: "🧒",
+    representativeAge: 10,
+  },
+  {
+    id: "teens",
+    label: "Teens",
+    age: "13–17",
+    emoji: "🧑",
+    representativeAge: 15,
+  },
+  {
+    id: "grownups",
+    label: "Grown-ups",
+    age: "18+",
+    emoji: "✨",
+    representativeAge: 35,
+  },
+];
+
+export const DEFAULT_FAMILY_AUDIENCE_ID: FamilyAudienceId = "grownups";
+
+const FAMILY_AUDIENCE_BY_ID = new Map(FAMILY_AUDIENCES.map((audience) => [audience.id, audience]));
+const DEFAULT_FAMILY_AUDIENCE: FamilyAudience = FAMILY_AUDIENCES.find(
+  (audience) => audience.id === DEFAULT_FAMILY_AUDIENCE_ID,
+) ?? {
+  id: "grownups",
+  label: "Grown-ups",
+  age: "18+",
+  emoji: "✨",
+  representativeAge: 35,
+};
+
+const KIDS_FRIENDLY_TAGS = new Set([
+  "adventure",
+  "animals",
+  "art",
+  "birthday",
+  "celebration",
+  "colorful",
+  "creative",
+  "dance",
+  "education",
+  "educational",
+  "energy",
+  "family",
+  "garden",
+  "journey",
+  "magic",
+  "nature",
+  "nursery",
+  "school",
+  "silly",
+  "space",
+  "story",
+]);
+
+const BIG_KIDS_TAGS = new Set([
+  ...KIDS_FRIENDLY_TAGS,
+  "adventure",
+  "creative",
+  "featured",
+  "school",
+  "sports",
+  "tech",
+]);
+
+const ADULT_LEANING_TAGS = new Set(["hip-hop", "indie", "kpop", "pop"]);
+
 /** Quick-pick ages anchored to real family members plus a custom option. */
 export const LISTENER_AGE_PRESETS: ListenerAgePreset[] = [
   { age: 3, label: "Marceline", emoji: "🌸", memberSlug: "marceline" },
@@ -22,6 +112,90 @@ export const LISTENER_AGE_PRESETS: ListenerAgePreset[] = [
   { age: 35, label: "Grown-up", emoji: "✨", memberSlug: "tio-chien" },
   { age: 40, label: "Sam & Josh", emoji: "🏀", memberSlug: "sam-and-josh" },
 ];
+
+export function isFamilyAudienceId(value: string): value is FamilyAudienceId {
+  return FAMILY_AUDIENCE_BY_ID.has(value as FamilyAudienceId);
+}
+
+export function getFamilyAudience(audienceId: FamilyAudienceId): FamilyAudience {
+  return FAMILY_AUDIENCE_BY_ID.get(audienceId) ?? DEFAULT_FAMILY_AUDIENCE;
+}
+
+export function getAudienceListenerAge(audienceId: FamilyAudienceId): number {
+  return getFamilyAudience(audienceId).representativeAge;
+}
+
+export function getAudienceIdForListenerAge(listenerAge: number): FamilyAudienceId {
+  if (listenerAge <= 6) return "kids";
+  if (listenerAge <= 12) return "big-kids";
+  if (listenerAge <= 17) return "teens";
+  return "grownups";
+}
+
+function hasAnyTag(song: Song, tags: ReadonlySet<string>): boolean {
+  return song.tags.some((tag) => tags.has(tag));
+}
+
+function isAdultAuthoredSong(song: Song): boolean {
+  const author = getSongAuthor(song);
+  return (author?.age ?? 0) >= 18;
+}
+
+export function isSongVisibleForAudience(song: Song, audienceId: FamilyAudienceId): boolean {
+  switch (audienceId) {
+    case "kids": {
+      if (hasAnyTag(song, ADULT_LEANING_TAGS)) {
+        return false;
+      }
+      if (!isAdultAuthoredSong(song)) {
+        return true;
+      }
+      return hasAnyTag(song, KIDS_FRIENDLY_TAGS);
+    }
+    case "big-kids": {
+      if (isAdultAuthoredSong(song) && hasAnyTag(song, ADULT_LEANING_TAGS)) {
+        return false;
+      }
+      if (!isAdultAuthoredSong(song)) {
+        return true;
+      }
+      return hasAnyTag(song, BIG_KIDS_TAGS);
+    }
+    case "teens":
+      return true;
+    case "grownups":
+      return true;
+    default: {
+      const _exhaustive: never = audienceId;
+      return _exhaustive;
+    }
+  }
+}
+
+export function filterSongsForAudience<T extends Song>(
+  items: T[],
+  audienceId: FamilyAudienceId | null,
+): T[] {
+  if (audienceId === null) return items;
+  if (audienceId === "grownups") return items;
+  return items.filter((song) => isSongVisibleForAudience(song, audienceId));
+}
+
+export function isAlbumVisibleForAudience(
+  album: Album,
+  audienceId: FamilyAudienceId | null,
+): boolean {
+  if (audienceId === null || audienceId === "grownups") return true;
+  return getAlbumSongs(album).some((song) => isSongVisibleForAudience(song, audienceId));
+}
+
+export function filterAlbumsForAudience<T extends Album>(
+  items: T[],
+  audienceId: FamilyAudienceId | null,
+): T[] {
+  if (audienceId === null || audienceId === "grownups") return items;
+  return items.filter((album) => isAlbumVisibleForAudience(album, audienceId));
+}
 
 export function getSubjectMembers(song: Song): FamilyMember[] {
   const slugs = defaultSubjectMemberSlugs(song.authorSlug, song.slug);
