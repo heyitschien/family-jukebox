@@ -18,7 +18,7 @@ export function AlbumPlayHeader({ album }: AlbumPlayHeaderProps) {
     <PlayButton
       size="lg"
       label={`Play album`}
-      onClick={() => playQueue(songs, 0)}
+      onClick={() => playQueue(songs, 0, "shelf")}
     />
   );
 }

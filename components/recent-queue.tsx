@@ -56,7 +56,7 @@ function QueueRow({
   playlist: Song[];
   spotlightSlugs: ReadonlySet<string>;
 }) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
+  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist, source: "queue" });
   const author = getMemberBySlug(song.authorSlug);
 
   return (
@@ -115,7 +115,7 @@ export function RecentQueue({ songs, familyQueue, spotlightSlugs }: RecentQueueP
             {recent.length > 1 ? (
               <button
                 type="button"
-                onClick={() => playQueue(recent, 0)}
+                onClick={() => playQueue(recent, 0, "queue")}
                 className="inline-flex min-h-11 shrink-0 items-center rounded-full border border-white/10 bg-white/10 px-4 py-2.5 text-sm font-bold [-webkit-tap-highlight-color:transparent]"
               >
                 Play list
@@ -158,7 +158,7 @@ export function RecentQueue({ songs, familyQueue, spotlightSlugs }: RecentQueueP
             </div>
             <button
               type="button"
-              onClick={() => playQueue(familyQueue, 0)}
+              onClick={() => playQueue(familyQueue, 0, "queue")}
               className="mt-4 inline-flex min-h-11 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
             >
               Play family mix

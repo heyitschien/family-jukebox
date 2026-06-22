@@ -40,7 +40,7 @@ export function SongShelf({
           {songs.length > 1 ? (
             <button
               type="button"
-              onClick={() => playQueue(songs, 0)}
+              onClick={() => playQueue(songs, 0, "shelf")}
               className="inline-flex min-h-11 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
             >
               Play all

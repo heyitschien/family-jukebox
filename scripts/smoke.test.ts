@@ -45,7 +45,20 @@ import {
   cycleRepeatMode,
   resolveQueueForPlayback,
   resolveTrackAdvance,
+  toggleRadioMode,
 } from "../lib/player-queue";
+import {
+  buildIntelligentQueue,
+  rankSimilarSongs,
+  scoreSongAffinity,
+} from "../lib/music-intelligence";
+import { buildRadioContinuation, shouldContinueRadio } from "../lib/cousin-radio";
+import { buildSmartShuffledQueue } from "../lib/smart-shuffle";
+import {
+  EMPTY_SESSION_SNAPSHOT,
+  recordSessionPlay,
+  wasRecentlyPlayed,
+} from "../lib/session-listening";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
 import {
   parseFavoriteSlugs,
@@ -474,6 +487,132 @@ describe("player queue logic", () => {
     assert.equal(result.index, 0);
     assert.equal(result.queue[0]?.slug, "c");
     assert.equal(result.queue.length, 3);
+  });
+
+  it("toggles radio mode", () => {
+    assert.equal(toggleRadioMode("off"), "on");
+    assert.equal(toggleRadioMode("on"), "off");
+  });
+});
+
+describe("music intelligence", () => {
+  it("scores recently played songs lower than fresh tracks", () => {
+    const seed = songs[0];
+    const other = songs.find((song) => song.slug !== seed.slug);
+    assert.ok(other, "catalog needs at least two songs");
+
+    const freshScore = scoreSongAffinity(seed, other, { session: EMPTY_SESSION_SNAPSHOT });
+    const tiredScore = scoreSongAffinity(seed, other, {
+      session: {
+        recentSlugs: [other.slug, seed.slug],
+        playCounts: { [other.slug]: 3 },
+      },
+    });
+
+    assert.ok(freshScore > tiredScore, "fresh tracks should outrank recently played");
+  });
+
+  it("builds intelligent queues with the seed first", () => {
+    const seed = songs[0];
+    const queue = buildIntelligentQueue(seed, { limit: 5 });
+    assert.equal(queue[0]?.slug, seed.slug);
+    assert.ok(queue.length >= 2);
+    assert.equal(new Set(queue.map((song) => song.slug)).size, queue.length);
+  });
+
+  it("ranks similar songs by tag overlap", () => {
+    const seed = songs[0];
+    const ranked = rankSimilarSongs(seed, 4);
+    for (const song of ranked) {
+      assert.notEqual(song.slug, seed.slug);
+    }
+  });
+});
+
+describe("smart shuffle", () => {
+  it("avoids back-to-back same artist when alternatives exist", () => {
+    const byAuthor = new Map<string, typeof songs>();
+    for (const song of songs) {
+      const list = byAuthor.get(song.authorSlug) ?? [];
+      list.push(song);
+      byAuthor.set(song.authorSlug, list);
+    }
+
+    if (byAuthor.size < 2 || songs.length < 4) return;
+
+    const shuffled = buildSmartShuffledQueue(songs, 0);
+    for (let i = 1; i < shuffled.length; i += 1) {
+      const prev = shuffled[i - 1];
+      const current = shuffled[i];
+      if (!prev || !current) continue;
+
+      const remainingAuthors = new Set(
+        shuffled.slice(i).map((song) => song.authorSlug),
+      );
+      remainingAuthors.add(prev.authorSlug);
+
+      if (remainingAuthors.size > 1) {
+        assert.notEqual(
+          prev.authorSlug,
+          current.authorSlug,
+          `adjacent same-artist at index ${i} when alternatives existed`,
+        );
+      }
+    }
+  });
+
+  it("pins the start song first", () => {
+    const shuffled = buildSmartShuffledQueue(songs, 2);
+    assert.equal(shuffled[0]?.slug, songs[2]?.slug);
+  });
+});
+
+describe("cousin radio", () => {
+  it("builds a non-empty continuation from a seed song", () => {
+    const seed = songs[0];
+    const continuation = buildRadioContinuation(seed, { session: EMPTY_SESSION_SNAPSHOT });
+    assert.ok(continuation.length > 0, "radio should always suggest next tracks");
+    assert.ok(
+      continuation.every((song) => song.slug !== seed.slug),
+      "continuation should not repeat the seed",
+    );
+  });
+
+  it("excludes recently played songs from radio batches", () => {
+    const seed = songs[0];
+    const recent = songs[1];
+    assert.ok(recent, "need second song");
+
+    const continuation = buildRadioContinuation(seed, {
+      session: {
+        recentSlugs: [recent.slug],
+        playCounts: { [recent.slug]: 1 },
+      },
+    });
+
+    assert.ok(!continuation.some((song) => song.slug === recent.slug));
+  });
+
+  it("continues radio only when mode is on and repeat is off", () => {
+    assert.equal(shouldContinueRadio("on", "off", false), true);
+    assert.equal(shouldContinueRadio("off", "off", false), false);
+    assert.equal(shouldContinueRadio("on", "all", false), false);
+    assert.equal(shouldContinueRadio("on", "off", true), false);
+  });
+});
+
+describe("session listening", () => {
+  it("tracks recency in memory helpers", () => {
+    const session = {
+      recentSlugs: ["a", "b", "c"],
+      playCounts: { a: 2 },
+    };
+    assert.equal(wasRecentlyPlayed("a", 3, session), true);
+    assert.equal(wasRecentlyPlayed("c", 2, session), false);
+
+    const updated = recordSessionPlay("d");
+    assert.equal(updated.recentSlugs[0], "d");
+    assert.equal(updated.playCounts.d, 1);
   });
 });
 

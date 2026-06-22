@@ -33,6 +33,7 @@ export function AlbumCard({ album, className, size = "md", showKind = false }: A
 
   const { toggle } = useSongPlayback(firstSong ?? songs[0], {
     playlist: albumSongs.length > 0 ? albumSongs : undefined,
+    source: "shelf",
   });
 
   if (!firstSong) return null;
@@ -42,7 +43,7 @@ export function AlbumCard({ album, className, size = "md", showKind = false }: A
       toggle();
       return;
     }
-    playQueue(albumSongs, 0);
+    playQueue(albumSongs, 0, "shelf");
   };
 
   const widthClass = size === "sm" ? "w-32" : "w-40 sm:w-44";

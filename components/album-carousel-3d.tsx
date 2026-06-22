@@ -79,7 +79,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
       const albumSongs = getAlbumSongs(album);
       if (albumSongs.length === 0) return;
       const startIndex = getPlayStartIndex(albumSongs, displaySong);
-      playQueue(albumSongs, startIndex);
+      playQueue(albumSongs, startIndex, "hero");
     },
     [playQueue, refreshSeed],
   );
@@ -376,7 +376,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
             />
             <button
               type="button"
-              onClick={() => playQueue(familyQueue, 0)}
+              onClick={() => playQueue(familyQueue, 0, "hero")}
               className="inline-flex min-h-11 items-center rounded-full bg-[var(--jb-text)] px-5 py-3 text-sm font-black text-[#050608] [-webkit-tap-highlight-color:transparent]"
             >
               Play family mix

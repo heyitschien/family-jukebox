@@ -11,13 +11,18 @@ import {
 } from "react";
 
 import type { Song } from "@/data/songs";
+import type { PlaySource } from "@/lib/analytics/constants";
 import { trackPlayEvent } from "@/lib/analytics/track-play";
+import { buildRadioContinuation, shouldContinueRadio } from "@/lib/cousin-radio";
+import { recordSessionPlay } from "@/lib/session-listening";
 import {
   cycleRepeatMode,
   reshuffleFromCurrent,
   resolveQueueForPlayback,
   resolveTrackAdvance,
+  toggleRadioMode,
   toggleShuffleMode,
+  type RadioMode,
   type RepeatMode,
   type ShuffleMode,
 } from "@/lib/player-queue";
@@ -29,16 +34,18 @@ type PlayerContextValue = {
   duration: number;
   repeatMode: RepeatMode;
   shuffleMode: ShuffleMode;
-  playSong: (song: Song) => void;
-  toggleSong: (song: Song) => void;
+  radioMode: RadioMode;
+  playSong: (song: Song, source?: PlaySource) => void;
+  toggleSong: (song: Song, source?: PlaySource) => void;
   isSongPlaying: (song: Song) => boolean;
-  playQueue: (songs: Song[], startIndex?: number) => void;
+  playQueue: (songs: Song[], startIndex?: number, source?: PlaySource) => void;
   togglePlay: () => void;
   pause: () => void;
   skipNext: () => void;
   skipPrev: () => void;
   cycleRepeat: () => void;
   toggleShuffle: () => void;
+  toggleRadio: () => void;
   queue: Song[];
 };
 
@@ -70,6 +77,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const currentIndexRef = useRef(0);
   const repeatModeRef = useRef<RepeatMode>("off");
   const shuffleModeRef = useRef<ShuffleMode>("off");
+  const radioModeRef = useRef<RadioMode>("off");
+  const playSourceRef = useRef<PlaySource>("unknown");
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [queue, setQueue] = useState<Song[]>([]);
@@ -77,6 +86,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const [duration, setDuration] = useState(0);
   const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
   const [shuffleMode, setShuffleMode] = useState<ShuffleMode>("off");
+  const [radioMode, setRadioMode] = useState<RadioMode>("off");
   const currentSongRef = useRef<Song | null>(null);
 
   useEffect(() => {
@@ -91,6 +101,10 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     shuffleModeRef.current = shuffleMode;
   }, [shuffleMode]);
 
+  useEffect(() => {
+    radioModeRef.current = radioMode;
+  }, [radioMode]);
+
   const restartCurrentTrack = useCallback((audio: HTMLAudioElement) => {
     audio.currentTime = 0;
     void audio
@@ -101,9 +115,11 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
   // Mobile browsers require play() inside the tap handler — not in useEffect.
   const startPlayback = useCallback(
-    (song: Song, nextQueue: Song[], index: number) => {
+    (song: Song, nextQueue: Song[], index: number, source: PlaySource = "unknown") => {
       const audio = audioRef.current;
       if (!audio) return;
+
+      playSourceRef.current = source;
 
       const safeIndex =
         index >= 0 && index < nextQueue.length
@@ -117,6 +133,8 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       setCurrentTime(0);
       setDuration(0);
 
+      recordSessionPlay(song.slug);
+
       const sameSource = songSrcMatches(audio, song.audioSrc);
       if (!sameSource) {
         audio.src = song.audioSrc;
@@ -128,11 +146,31 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         .play()
         .then(() => {
           setIsPlaying(true);
-          trackPlayEvent({ songSlug: song.slug, event: "start", source: "unknown" });
+          trackPlayEvent({ songSlug: song.slug, event: "start", source });
         })
         .catch(() => setIsPlaying(false));
     },
     [],
+  );
+
+  const continueRadioFrom = useCallback(
+    (seed: Song) => {
+      const continuation = buildRadioContinuation(seed);
+      if (continuation.length === 0) {
+        setIsPlaying(false);
+        return;
+      }
+
+      originalQueueRef.current = continuation;
+      const { queue: nextQueue, index } = resolveQueueForPlayback(
+        continuation,
+        0,
+        shuffleModeRef.current,
+      );
+      const track = nextQueue[index];
+      if (track) startPlayback(track, nextQueue, index, "auto-advance");
+    },
+    [startPlayback],
   );
 
   const advanceTrack = useCallback(
@@ -149,6 +187,14 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       });
 
       if (result.action === "stop") {
+        const seed = q[currentIndexRef.current] ?? currentSongRef.current;
+        if (
+          seed &&
+          shouldContinueRadio(radioModeRef.current, repeatModeRef.current, manual)
+        ) {
+          continueRadioFrom(seed);
+          return;
+        }
         setIsPlaying(false);
         return;
       }
@@ -166,13 +212,13 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      startPlayback(song, q, result.index);
+      startPlayback(song, q, result.index, manual ? playSourceRef.current : "auto-advance");
     },
-    [restartCurrentTrack, startPlayback],
+    [restartCurrentTrack, startPlayback, continueRadioFrom],
   );
 
   const playSong = useCallback(
-    (song: Song) => {
+    (song: Song, source: PlaySource = "unknown") => {
       originalQueueRef.current = [song];
       const { queue: nextQueue, index } = resolveQueueForPlayback(
         [song],
@@ -180,7 +226,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         shuffleModeRef.current,
       );
       const track = nextQueue[index];
-      if (track) startPlayback(track, nextQueue, index);
+      if (track) startPlayback(track, nextQueue, index, source);
     },
     [startPlayback],
   );
@@ -191,7 +237,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const toggleSong = useCallback(
-    (song: Song) => {
+    (song: Song, source: PlaySource = "unknown") => {
       const audio = audioRef.current;
       if (!audio) return;
 
@@ -210,13 +256,13 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      playSong(song);
+      playSong(song, source);
     },
     [currentSong, playSong],
   );
 
   const playQueue = useCallback(
-    (songs: Song[], startIndex = 0) => {
+    (songs: Song[], startIndex = 0, source: PlaySource = "unknown") => {
       if (songs.length === 0) return;
       originalQueueRef.current = [...songs];
       const { queue: nextQueue, index } = resolveQueueForPlayback(
@@ -225,7 +271,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         shuffleModeRef.current,
       );
       const track = nextQueue[index];
-      if (track) startPlayback(track, nextQueue, index);
+      if (track) startPlayback(track, nextQueue, index, source);
     },
     [startPlayback],
   );
@@ -290,6 +336,10 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
+  const toggleRadio = useCallback(() => {
+    setRadioMode((mode) => toggleRadioMode(mode));
+  }, []);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -335,6 +385,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         duration,
         repeatMode,
         shuffleMode,
+        radioMode,
         playSong,
         toggleSong,
         isSongPlaying,
@@ -345,6 +396,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         skipPrev,
         cycleRepeat,
         toggleShuffle,
+        toggleRadio,
         queue,
       }}
     >
