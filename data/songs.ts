@@ -202,6 +202,14 @@ export function getSongBySlug(slug: string): Song | undefined {
   return songs.find((song) => song.slug === slug);
 }
 
+export function getSongsBySlugs(slugs: string[]): Song[] {
+  const bySlug = new Map(songs.map((song) => [song.slug, song]));
+
+  return slugs
+    .map((slug) => bySlug.get(slug))
+    .filter((song): song is Song => song !== undefined);
+}
+
 export function getSongsByAuthor(authorSlug: string): Song[] {
   return songs.filter((song) => song.authorSlug === authorSlug);
 }

@@ -12,6 +12,7 @@ import {
 import {
   getFairRotationQueue,
   getRotatedFeaturedShelf,
+  getRotatedSpotlightSongs,
 } from "@/lib/featured-rotation";
 import { buildShareMetadata } from "@/lib/site-metadata";
 
@@ -26,6 +27,7 @@ export default function HomePage() {
   const supplementarySeries = getSupplementarySeriesAlbums();
   const shelfSongs = getRotatedFeaturedShelf(refreshSeed);
   const familyQueue = getFairRotationQueue(refreshSeed);
+  const spotlightSongs = getRotatedSpotlightSongs(refreshSeed);
 
   return (
     <main className="min-w-0 px-3 lg:px-0">
@@ -44,6 +46,12 @@ export default function HomePage() {
         />
       ) : null}
       <FeaturedShelf songs={shelfSongs} tags={getAllTags()} />
+      <FeaturedShelf
+        songs={spotlightSongs}
+        tags={getAllTags()}
+        title="Today's spotlight"
+        subtitle="One rotating pick from each family member — fresh every day."
+      />
       <RecentQueue songs={shelfSongs} familyQueue={familyQueue} />
     </main>
   );

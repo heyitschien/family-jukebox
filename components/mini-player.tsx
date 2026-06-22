@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
+import { FavoriteButton } from "@/components/favorite-button";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
 import type { RepeatMode, ShuffleMode } from "@/lib/player-queue";
@@ -72,6 +73,7 @@ export function MiniPlayer() {
               {" · Cousin Radio"}
             </span>
           </div>
+          <FavoriteButton slug={currentSong.slug} size="sm" />
           <div className="shrink-0 text-right text-[11px] tabular-nums text-[var(--jb-muted-2)]">
             <span>{formatTime(currentTime)}</span>
             <span className="mx-0.5 opacity-50">/</span>
@@ -111,6 +113,7 @@ export function MiniPlayer() {
               {" · Cousin Radio"}
             </span>
           </div>
+          <FavoriteButton slug={currentSong.slug} size="sm" />
         </div>
 
         <div className="grid gap-2">
