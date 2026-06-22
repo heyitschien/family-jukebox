@@ -60,8 +60,8 @@ jobs:
           for asset in \
             /assets/marceline/three-candles-for-marceline.jpg \
             /assets/marceline/three-candles-for-marceline.mp3 \
-            /assets/tio-chien/legacy-in-the-lane.png \
-            /assets/tio-chien/legacy-in-the-lane.mp3; do
+            /assets/sam-and-josh/legacy-in-the-lane.png \
+            /assets/sam-and-josh/legacy-in-the-lane.mp3; do
             code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL$asset")"
             echo "asset $asset -> $code"
             test "$code" = "200"

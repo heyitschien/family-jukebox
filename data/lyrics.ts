@@ -429,6 +429,40 @@ Oh, Solene our golden fox, opening all the heavy locks.
 Heavy learning, fast and growing tall, hearing wisdom when they call.
 A clever mind and a tale that sweeps while the rest of the forest sleeps.
 Grow and learn, little fox.`,
+  "tap-on-the-glass": `Dinosaur bones in the red desert sun Long way to the race that we finally won
+Printing intelligence on sands, feel the shift Semin' ton of kits, a divine kind of gift
+Our fingertips say I think it tips the neuroglow
+Where did it all start? Every star we don't even know
+Compound scientific's the material dream Merging the mind with the silicon stream
+Miracles normal now, yeah, it's just how we live
+All the man dancers are all that we give No blink, no wonder, it's background and bright
+Ooty and matey, base in the light We don't blink twice when we call for the power
+Intelligence blooming in every hour It's normal, it's normal, this miracle scene
+Living our lives in the digital scene
+Check your gut, tag, tell me what I should say
+Gem and I knows the shortcuts today
+Claude is the agent on speed out tonight
+Zero latency, everything's right
+APA calls and the prompts in the air
+We don't even notice the magic is there
+Just a utility, electricity's twin
+Tap on the glass and the work can begin
+The miracles normal now, yeah, it's just how we live
+All the man dancers are all that we give
+No blink, no wonder, it's background and bright
+Ooty and matey, base in the light
+Don't blink twice when we call for the power
+Intelligence blooming in every hour
+It's normal, it's normal, this miracle scene
+Living our lives in the digital scene
+Do you remember the art?
+Or is it just part of the law
+Of sand and of silicon
+The intelligence carries on
+We're just breathing it in
+Where do we end, where does it begin
+No, no, no, no, no, no, it's all domain
+My love is Papords`,
   "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
 Ico is your very best friend Happy times that never end
 One and two and now you're three Happy birthday Marceline

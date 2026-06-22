@@ -132,6 +132,10 @@ describe("album catalog", () => {
     const miracle = songs.find((song) => song.slug === "miracle-in-the-sand");
     assert.ok(miracle, "miracle-in-the-sand should exist");
     assert.equal(getAlbumForSong(miracle).slug, "miracle-in-the-sand-album");
+
+    const tap = songs.find((song) => song.slug === "tap-on-the-glass");
+    assert.ok(tap, "tap-on-the-glass should exist");
+    assert.equal(getAlbumForSong(tap).slug, "miracle-in-the-sand-album");
   });
 
   it("groups browse sections with series before discography", () => {
@@ -410,12 +414,12 @@ describe("link preview metadata", () => {
     assert.match(String(metadata.description), /Father's Day/i);
     assert.equal(
       metadata.openGraph?.images?.[0]?.url,
-      `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+      `${SITE_URL}/assets/sam-and-josh/legacy-in-the-lane.png`,
     );
     assert.equal(metadata.openGraph?.url, `${SITE_URL}/songs/legacy-in-the-lane`);
     assert.equal(
       metadata.twitter?.images?.[0]?.url,
-      `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+      `${SITE_URL}/assets/sam-and-josh/legacy-in-the-lane.png`,
     );
   });
 
@@ -434,7 +438,7 @@ describe("link preview metadata", () => {
     assert.match(String(metadata.description), /Father's Day/i);
     assert.equal(
       metadata.openGraph?.images?.[0]?.url,
-      `${SITE_URL}/assets/tio-chien/legacy-in-the-lane.png`,
+      `${SITE_URL}/assets/sam-and-josh/legacy-in-the-lane.png`,
     );
     assert.equal(metadata.openGraph?.url, `${SITE_URL}/albums/legacy-in-the-lane-album`);
   });

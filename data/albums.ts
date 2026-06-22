@@ -25,6 +25,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
   ocean: "#6cb7ff",
   "tio-chien": "#7dd3fc",
   evelyn: "#d4af37",
+  "sam-and-josh": "#f59e0b",
 };
 
 const CREATOR_ALBUM_TITLES: Record<string, string> = {
@@ -34,6 +35,7 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   ocean: "Ocean's Adventures",
   "tio-chien": "Tio Chien's Magic Studio",
   evelyn: "Evelyn",
+  "sam-and-josh": "Sam & Josh",
 };
 
 /** Manual config for growing / themed albums — assign song slugs here as singles drop. */
@@ -57,12 +59,12 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     slug: "legacy-in-the-lane-album",
     title: "Legacy in the Lane",
     subtitle: "Father's Day single out now — more tracks coming",
-    authorSlug: "tio-chien",
-    coverSrc: "/assets/tio-chien/legacy-in-the-lane.png",
+    authorSlug: "sam-and-josh",
+    coverSrc: "/assets/sam-and-josh/legacy-in-the-lane.png",
     songSlugs: ["legacy-in-the-lane"],
     dateCreated: "2026-06-21",
     story:
-      "Tio Chien's Father's Day series — hip-hop tributes to real superheroes who lace up sneakers, not capes.",
+      "Sam & Josh's Father's Day series — hip-hop tributes to real superheroes who lace up sneakers, not capes.",
     accentColor: "#5eead4",
     featured: true,
   },
@@ -81,14 +83,14 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   },
   {
     slug: "miracle-in-the-sand-album",
-    title: "Miracle in the Sand",
-    subtitle: "모래 속의 기적 · single out now — more tracks coming",
+    title: "Printing Intelligence on Sand",
+    subtitle: "Miracle in the Sand · Tap on the Glass · more tracks coming",
     authorSlug: "tio-chien",
     coverSrc: "/assets/tio-chien/miracle-in-the-sand.jpg",
-    songSlugs: ["miracle-in-the-sand"],
+    songSlugs: ["miracle-in-the-sand", "tap-on-the-glass"],
     dateCreated: "2026-06-21",
     story:
-      "A growing album series from Tio Chien — intimate indie-pop built for continuity. New songs join this tracklist as they release.",
+      "A growing album series from Tio Chien — semiconductor dreams, silicon hearts, and indie-pop built one single at a time.",
     accentColor: "#f4c784",
   },
 ];

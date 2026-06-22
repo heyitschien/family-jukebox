@@ -14,7 +14,7 @@ set -euo pipefail
 if [ "$#" -lt 3 ]; then
   echo "Usage: $0 <author-slug> <input.mp4> <song-slug>"
   echo ""
-  echo "Author slugs: marceline, eliana, solene, ocean, tio-chien, evelyn"
+  echo "Author slugs: marceline, eliana, solene, ocean, tio-chien, evelyn, sam-and-josh"
   exit 1
 fi
 

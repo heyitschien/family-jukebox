@@ -64,6 +64,15 @@ export const members: FamilyMember[] = [
     description:
       "Evelyn — heart of the home. Her album Gold in the Tile is a growing collection of songs made with love, one release at a time.",
   },
+  {
+    slug: "sam-and-josh",
+    name: "Sam & Josh",
+    age: 40,
+    role: "family",
+    emoji: "🏀",
+    description:
+      "Real superheroes who lace up sneakers, not capes — coaches on the court, dads in the lane, and the heart behind Legacy in the Lane.",
+  },
 ];
 
 export function getMemberBySlug(slug: string): FamilyMember | undefined {
