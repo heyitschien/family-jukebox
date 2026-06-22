@@ -5,6 +5,7 @@ import { describe, it } from "node:test";
 
 import {
   albums,
+  getAlbumBySlug,
   getAlbumForSong,
   getBrowseAlbumSections,
   getPrimaryAlbums,
@@ -23,11 +24,15 @@ import {
 } from "../lib/featured-rotation";
 import {
   getAlbumHeroBadge,
+  getAlbumSongsByRecency,
+  getAlbumSpotlightSong,
+  getAlbumSpotlightSongIndex,
   getHeroFeaturedAlbum,
   getRotatedAlbumCarousel,
   getSpotlightAlbumPerMember,
   isTodayHeroAlbum,
 } from "../lib/album-rotation";
+import { getCarouselRingLayout } from "../lib/carousel-layout";
 import { parsePlayEventBody } from "../lib/security/api";
 import {
   getActiveCelebrations,
@@ -232,6 +237,47 @@ describe("album rotation", () => {
       assert.equal(badge.emoji, hero.featured ? "💛" : "✨");
     }
     assert.ok(isTodayHeroAlbum(hero, 3));
+  });
+
+  it("sorts album tracks newest-first for cover rotation", () => {
+    const evelyn = getAlbumBySlug("gold-in-the-tile-album");
+    assert.ok(evelyn, "evelyn album should exist");
+    const recency = getAlbumSongsByRecency(evelyn);
+    assert.equal(recency.length, 3);
+    assert.equal(recency[0]?.slug, "silver-pan-morning", "latest single should lead rotation");
+  });
+
+  it("rotates spotlight tracks within multi-song albums", () => {
+    const evelyn = getAlbumBySlug("gold-in-the-tile-album");
+    assert.ok(evelyn);
+    const indexA = getAlbumSpotlightSongIndex(evelyn, 0);
+    const indexB = getAlbumSpotlightSongIndex(evelyn, 1);
+    const recency = getAlbumSongsByRecency(evelyn);
+    assert.ok(indexA >= 0 && indexA < recency.length);
+    assert.ok(indexB >= 0 && indexB < recency.length);
+    assert.ok(getAlbumSpotlightSong(evelyn, 0));
+  });
+
+  it("includes every artist with songs in the carousel without a hard cap", () => {
+    const carousel = getRotatedAlbumCarousel(99);
+    const membersWithSongs = members.filter((member) =>
+      songs.some((song) => song.authorSlug === member.slug),
+    );
+    assert.equal(carousel.length, membersWithSongs.length);
+    assert.ok(carousel.length >= 7, "family carousel should scale with roster size");
+  });
+});
+
+describe("carousel layout", () => {
+  it("keeps cover size readable as artist count grows", () => {
+    const small = getCarouselRingLayout(5);
+    const medium = getCarouselRingLayout(7);
+    const large = getCarouselRingLayout(12);
+
+    assert.ok(small.coverSize >= medium.coverSize);
+    assert.ok(medium.coverSize >= large.coverSize);
+    assert.ok(large.coverSize >= 128, "large family rings should not shrink below legibility");
+    assert.ok(large.radius >= medium.radius);
   });
 });
 
