@@ -262,8 +262,6 @@ export function isMemberVisibleForAudience(
       return member.age >= 7 && member.age <= 12;
     case "teens":
       return CREATOR_AUDIENCE_ROLES.has(member.role) && member.age >= 7;
-    case "grownups":
-      return true;
     default: {
       const _exhaustive: never = audienceId;
       return _exhaustive;
@@ -295,8 +293,6 @@ export function isSongVisibleForAudience(
         tagSet.has("featured") ||
         tagSet.has("celebration")
       );
-    case "grownups":
-      return true;
     default: {
       const _exhaustive: never = audienceId;
       return _exhaustive;
