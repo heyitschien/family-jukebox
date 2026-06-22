@@ -57,6 +57,7 @@ import {
 } from "../lib/site-metadata";
 import { getSongAuthor, getSongBySlug } from "../data/songs";
 import { getAlbumAuthor, getAlbumBySlug } from "../data/albums";
+import { getMemberBySlug } from "../data/members";
 
 const PUBLIC_ROOT = path.join(process.cwd(), "public");
 
@@ -141,6 +142,38 @@ describe("album catalog", () => {
     const tap = songs.find((song) => song.slug === "tap-on-the-glass");
     assert.ok(tap, "tap-on-the-glass should exist");
     assert.equal(getAlbumForSong(tap).slug, "miracle-in-the-sand-album");
+  });
+
+  it("keeps Sam & Josh as the artists for Legacy in the Lane", () => {
+    const legacy = songs.find((song) => song.slug === "legacy-in-the-lane");
+    assert.ok(legacy, "legacy-in-the-lane should exist");
+    assert.equal(legacy.authorSlug, "sam-and-josh");
+    assert.match(legacy.coverSrc, /^\/assets\/sam-and-josh\//);
+    assert.match(legacy.audioSrc, /^\/assets\/sam-and-josh\//);
+    assert.notEqual(legacy.authorSlug, "tio-chien");
+
+    const samAndJosh = getMemberBySlug("sam-and-josh");
+    assert.ok(samAndJosh, "sam-and-josh member should exist");
+    assert.equal(samAndJosh.name, "Sam & Josh");
+
+    const album = getAlbumBySlug("legacy-in-the-lane-album");
+    assert.ok(album, "legacy album should exist");
+    assert.equal(album.authorSlug, "sam-and-josh");
+    assert.deepEqual(album.songSlugs, ["legacy-in-the-lane"]);
+    assert.equal(getAlbumAuthor(album)?.slug, "sam-and-josh");
+  });
+
+  it("keeps Tap on the Glass under Tio Chien's Printing Intelligence on Sand series", () => {
+    const tap = songs.find((song) => song.slug === "tap-on-the-glass");
+    assert.ok(tap, "tap-on-the-glass should exist");
+    assert.equal(tap.authorSlug, "tio-chien");
+    assertPublicAssetExists(tap.coverSrc, "tap-on-the-glass cover");
+    assertPublicAssetExists(tap.audioSrc, "tap-on-the-glass audio");
+
+    const series = getAlbumBySlug("miracle-in-the-sand-album");
+    assert.ok(series, "Printing Intelligence on Sand album should exist");
+    assert.equal(series.title, "Printing Intelligence on Sand");
+    assert.deepEqual(series.songSlugs, ["miracle-in-the-sand", "tap-on-the-glass"]);
   });
 
   it("groups browse sections with series before discography", () => {

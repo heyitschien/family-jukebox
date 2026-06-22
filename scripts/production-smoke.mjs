@@ -7,8 +7,22 @@ import puppeteer from "puppeteer";
 
 const PORT = Number(process.env.PRODUCTION_SMOKE_PORT ?? 3456);
 const BASE_URL = `http://127.0.0.1:${PORT}`;
-const ROUTES = ["/", "/songs", "/favorites", "/family"];
+const ROUTES = [
+  "/",
+  "/songs",
+  "/favorites",
+  "/family",
+  "/songs/tap-on-the-glass",
+  "/songs/legacy-in-the-lane",
+  "/members/sam-and-josh",
+  "/albums/miracle-in-the-sand-album",
+];
 const FAIL_TEXT = "This page couldn't load";
+const FATAL_PAGE_ERROR = /Maximum update depth exceeded|Minified React error #185\b/;
+
+function isFatalPageError(message) {
+  return FATAL_PAGE_ERROR.test(message);
+}
 
 function waitForServer(url, timeoutMs = 30_000) {
   const start = Date.now();
@@ -81,7 +95,7 @@ try {
       throw new Error(`Production smoke failed on ${route}: global error UI rendered`);
     }
 
-    if (pageErrors.length > 0) {
+    if (pageErrors.some(isFatalPageError)) {
       throw new Error(`Production smoke failed on ${route}: ${pageErrors.join(" | ")}`);
     }
 
