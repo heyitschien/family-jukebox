@@ -19,6 +19,7 @@ export const metadata: Metadata = {
     template: `%s · ${getSiteName()}`,
   },
   description: getSiteDescription(),
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({
