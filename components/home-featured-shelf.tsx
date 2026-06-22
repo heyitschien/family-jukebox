@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 
 import type { Song } from "@/data/songs";
+import type { FamilyAudienceId } from "@/lib/audience";
 
 const FeaturedShelf = dynamic(
   () => import("@/components/featured-shelf").then((mod) => mod.FeaturedShelf),
@@ -17,9 +18,9 @@ const FeaturedShelf = dynamic(
 type HomeFeaturedShelfProps = {
   songs: Song[];
   tags: string[];
-  listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
-export function HomeFeaturedShelf({ listenerAge, ...props }: HomeFeaturedShelfProps) {
-  return <FeaturedShelf {...props} listenerAge={listenerAge} />;
+export function HomeFeaturedShelf({ audienceId, ...props }: HomeFeaturedShelfProps) {
+  return <FeaturedShelf {...props} audienceId={audienceId} />;
 }

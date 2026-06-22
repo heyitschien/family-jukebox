@@ -4,31 +4,33 @@ import { useMemo } from "react";
 
 import { EmptyState } from "@/components/empty-state";
 import { SongGrid } from "@/components/song-grid";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import { members } from "@/data/members";
 import { songs } from "@/data/songs";
 import { useFavoriteSongs } from "@/hooks/use-favorite-songs";
+import { curateSongsForAudience } from "@/lib/audience";
 import { buildSmartShuffledQueue } from "@/lib/smart-shuffle";
 
 function getFavoriteFilters(favoriteSongs: typeof songs) {
   const memberSlugs = new Set(favoriteSongs.map((song) => song.authorSlug));
   const favoriteMembers = members.filter((member) => memberSlugs.has(member.slug));
-  const favoriteAges = [...new Set(favoriteMembers.map((member) => member.age))].sort((a, b) => a - b);
 
   const favoriteTags = Array.from(
     new Set(favoriteSongs.flatMap((song) => song.tags)),
   ).sort((a, b) => a.localeCompare(b));
 
-  return { favoriteMembers, favoriteAges, favoriteTags };
+  return { favoriteMembers, favoriteTags };
 }
 
 export function FavoritesBrowser() {
   const { favoriteSet } = useFavoriteSongs();
+  const { audienceId } = useFamilyAudienceContext();
   const { playQueue } = usePlayer();
 
   const favoriteSongs = useMemo(
-    () => songs.filter((song) => favoriteSet.has(song.slug)),
-    [favoriteSet],
+    () => curateSongsForAudience(songs.filter((song) => favoriteSet.has(song.slug)), audienceId),
+    [audienceId, favoriteSet],
   );
 
   if (favoriteSongs.length === 0) {
@@ -40,7 +42,7 @@ export function FavoritesBrowser() {
     );
   }
 
-  const { favoriteMembers, favoriteAges, favoriteTags } = getFavoriteFilters(favoriteSongs);
+  const { favoriteMembers, favoriteTags } = getFavoriteFilters(favoriteSongs);
   const canPlayAll = favoriteSongs.length >= 2;
 
   const playFavoritesShuffled = () => {
@@ -77,7 +79,6 @@ export function FavoritesBrowser() {
         songs={favoriteSongs}
         tags={favoriteTags}
         members={favoriteMembers}
-        ages={favoriteAges}
         groupByAuthor={false}
       />
     </section>

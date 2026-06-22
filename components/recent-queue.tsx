@@ -11,14 +11,14 @@ import { getMemberBySlug } from "@/data/members";
 import { members } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { songs as allSongs } from "@/data/songs";
-import { getListenerCurationSubtitle } from "@/lib/audience";
+import { getAudienceCurationSubtitle, getFamilyAudience, type FamilyAudienceId } from "@/lib/audience";
 import { cn } from "@/lib/utils";
 
 type RecentQueueProps = {
   songs: Song[];
   familyQueue: Song[];
   spotlightSlugs: string[];
-  listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
 function QueueBadge({
@@ -101,12 +101,13 @@ export function RecentQueue({
   songs,
   familyQueue,
   spotlightSlugs,
-  listenerAge = null,
+  audienceId = null,
 }: RecentQueueProps) {
   const { playQueue } = usePlayer();
   const recent = [...songs].slice(0, 5);
   const videoCount = allSongs.filter((s) => s.videoSrc).length;
   const spotlightSet = new Set(spotlightSlugs);
+  const audience = getFamilyAudience(audienceId);
 
   return (
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
@@ -115,11 +116,11 @@ export function RecentQueue({
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-                {listenerAge !== null ? `Suggested for age ${listenerAge}` : "Recently added"}
+                {audience ? `Suggested for ${audience.label}` : "Recently added"}
               </h2>
               <p className="text-sm font-bold text-[var(--jb-muted)]">
-                {listenerAge !== null
-                  ? getListenerCurationSubtitle(listenerAge)
+                {audience
+                  ? getAudienceCurationSubtitle(audience.id)
                   : "Fresh picks from the shelf — play any track to queue the rest."}
               </p>
             </div>
@@ -148,11 +149,11 @@ export function RecentQueue({
         <div>
           <div className="mb-4">
             <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-              {listenerAge !== null ? "Your family mix" : "Family mix"}
+              {audience ? `${audience.label} family mix` : "Family mix"}
             </h2>
             <p className="text-sm font-bold text-[var(--jb-muted)]">
-              {listenerAge !== null
-                ? "Age-aware rotation — every artist still in the queue."
+              {audience
+                ? "Audience-aware rotation from visible Cousin Radio songs."
                 : "Every artist, one fair rotation."}
             </p>
           </div>

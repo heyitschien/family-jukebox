@@ -1,16 +1,16 @@
 "use client";
 
+import { AudienceModal } from "@/components/AudienceModal";
 import { BottomNav } from "@/components/bottom-nav";
-import { ListenerAgeWelcome } from "@/components/listener-age-welcome";
 import { MiniPlayer } from "@/components/mini-player";
 import { Sidebar } from "@/components/sidebar";
 import { StagingBrandBanner } from "@/components/staging-brand-banner";
-import { ListenerAgeProvider } from "@/contexts/listener-age-context";
+import { FamilyAudienceProvider } from "@/contexts/family-audience-context";
 import { PlayerProvider } from "@/contexts/player-context";
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   return (
-    <ListenerAgeProvider>
+    <FamilyAudienceProvider>
       <PlayerProvider>
         <StagingBrandBanner />
         <div className="grid min-h-dvh lg:grid-cols-[260px_1fr] lg:gap-[18px] lg:p-[18px] lg:pb-[108px]">
@@ -21,8 +21,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <MiniPlayer />
           <BottomNav />
         </div>
-        <ListenerAgeWelcome />
+        <AudienceModal />
       </PlayerProvider>
-    </ListenerAgeProvider>
+    </FamilyAudienceProvider>
   );
 }

@@ -61,14 +61,21 @@ import {
 } from "../lib/session-listening";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
 import {
+  audiences,
+  curateSongsForAudience,
   curateSongsForListener,
+  isSongVisibleForAudience,
   scoreSongForListener,
   isValidListenerAge,
 } from "../lib/audience";
 import {
+  parseFamilyAudienceSnapshot,
   parseListenerAgeSnapshot,
+  readFamilyAudienceFromRaw,
   readListenerAgeFromRaw,
+  serializeFamilyAudience,
   serializeListenerAge,
+  type FamilyAudienceSnapshotCache,
 } from "../lib/audience-storage";
 import {
   parseFavoriteSlugs,
@@ -612,6 +619,52 @@ describe("age-based audience curation", () => {
     assert.ok(first && first.kind === "song");
     const author = getSongAuthor(first.song);
     assert.ok(author && author.age >= 10, "top search pick for adults should lean mature");
+  });
+
+  it("defines the four family audience profiles", () => {
+    assert.deepEqual(
+      audiences.map((audience) => audience.id),
+      ["kids", "big-kids", "teens", "grownups"],
+    );
+  });
+
+  it("filters kids recommendations and search results", () => {
+    const dash = songs.find((song) => song.slug === "dash-and-go");
+    const legacy = songs.find((song) => song.slug === "legacy-in-the-lane");
+    assert.ok(dash && legacy);
+
+    assert.equal(isSongVisibleForAudience(dash, "kids"), true);
+    assert.equal(isSongVisibleForAudience(legacy, "kids"), false);
+
+    const kidSongs = curateSongsForAudience(songs, "kids");
+    assert.ok(kidSongs.some((song) => song.slug === dash.slug), "kids should see toddler-friendly songs");
+    assert.equal(kidSongs.some((song) => song.slug === legacy.slug), false);
+
+    const kidResults = searchCatalog("", { audienceId: "kids" }).filter((result) => result.kind === "song");
+    assert.equal(
+      kidResults.some((result) => result.kind === "song" && result.song.slug === legacy.slug),
+      false,
+    );
+
+    const grownupResults = searchCatalog("", { audienceId: "grownups" }).filter((result) => result.kind === "song");
+    assert.ok(
+      grownupResults.some((result) => result.kind === "song" && result.song.slug === legacy.slug),
+      "grown-ups should see the full catalog",
+    );
+  });
+
+  it("persists family audience ids using the familyAudience storage format", () => {
+    const { serialized, snapshot } = serializeFamilyAudience("big-kids");
+    assert.equal(serialized, "big-kids");
+    assert.equal(snapshot.audienceId, "big-kids");
+    const parsed = parseFamilyAudienceSnapshot(serialized);
+    assert.equal(parsed?.audienceId, "big-kids");
+    assert.equal(typeof parsed?.updatedAt, "string");
+
+    const cache = { current: null as FamilyAudienceSnapshotCache };
+    const first = readFamilyAudienceFromRaw(serialized, cache);
+    const second = readFamilyAudienceFromRaw(serialized, cache);
+    assert.equal(first, second, "family audience snapshot must stay referentially stable");
   });
 
   it("validates listener ages and persists snapshots", () => {

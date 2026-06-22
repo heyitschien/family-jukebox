@@ -8,7 +8,7 @@ import { EmptyState } from "@/components/empty-state";
 import { InlineSearch } from "@/components/inline-search";
 import { SongRow } from "@/components/song-row";
 import { Topbar } from "@/components/topbar";
-import { useListenerAgeContext } from "@/contexts/listener-age-context";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import type { FamilyMember } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { filterAlbums, filterSongs } from "@/lib/search";
@@ -18,26 +18,23 @@ type SearchScreenProps = {
   songs: Song[];
   tags: string[];
   members: FamilyMember[];
-  ages: number[];
 };
 
-export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
-  const { listenerAge } = useListenerAgeContext();
+export function SearchScreen({ tags, members }: SearchScreenProps) {
+  const { audienceId, audience } = useFamilyAudienceContext();
   const searchParams = useSearchParams();
   const initial = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initial);
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeMember, setActiveMember] = useState<string | null>(null);
-  const [activeAge, setActiveAge] = useState<number | null>(null);
 
   const filters = useMemo(
     () => ({
       memberSlug: activeMember,
-      age: activeAge,
       tag: activeTag,
-      listenerAge,
+      audienceId,
     }),
-    [activeAge, activeMember, activeTag, listenerAge],
+    [activeMember, activeTag, audienceId],
   );
 
   const filteredAlbums = useMemo(() => filterAlbums(query, filters), [filters, query]);
@@ -47,6 +44,11 @@ export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
     <div className="min-w-0 space-y-5 px-3 lg:px-0">
       <Topbar />
       <h1 className="text-2xl font-extrabold">Search</h1>
+      <p className="-mt-3 text-sm font-bold text-[var(--jb-muted)]">
+        {audience
+          ? `Showing songs, playlists, and artists for ${audience.label} (${audience.age}).`
+          : "Choose a family audience to shape search results."}
+      </p>
 
       <InlineSearch
         value={query}
@@ -65,21 +67,6 @@ export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
               active={activeMember === m.slug}
               onClick={() => setActiveMember(activeMember === m.slug ? null : m.slug)}
               label={`${m.emoji} ${m.name}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-sm font-bold text-[var(--jb-muted)]">Age</p>
-        <div className="flex flex-wrap gap-2">
-          <FilterChip active={!activeAge} onClick={() => setActiveAge(null)} label="All ages" />
-          {ages.map((age) => (
-            <FilterChip
-              key={age}
-              active={activeAge === age}
-              onClick={() => setActiveAge(activeAge === age ? null : age)}
-              label={String(age)}
             />
           ))}
         </div>

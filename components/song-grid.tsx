@@ -3,22 +3,22 @@
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 
-import { AgeFilter } from "@/components/age-filter";
 import { EmptyState } from "@/components/empty-state";
 import { MemberFilter } from "@/components/member-filter";
 import { SongCard } from "@/components/song-card";
 import { SongsByAuthor } from "@/components/songs-by-author";
 import { TagFilter } from "@/components/tag-filter";
 import { Input } from "@/components/ui/input";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import type { FamilyMember } from "@/data/members";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
+import { isMemberVisibleForAudience, isSongVisibleForAudience } from "@/lib/audience";
 
 type SongGridProps = {
   songs: Song[];
   tags: string[];
   members: FamilyMember[];
-  ages: number[];
   groupByAuthor?: boolean;
 };
 
@@ -43,28 +43,35 @@ export function SongGrid({
   songs,
   tags,
   members,
-  ages,
   groupByAuthor = true,
 }: SongGridProps) {
+  const { audienceId } = useFamilyAudienceContext();
   const [query, setQuery] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeMember, setActiveMember] = useState<string | null>(null);
-  const [activeAge, setActiveAge] = useState<number | null>(null);
 
   const filteredSongs = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase();
 
     return songs.filter((song) => {
       const author = getMemberBySlug(song.authorSlug);
+      const matchesAudience = isSongVisibleForAudience(song, audienceId);
       const matchesTag = activeTag ? song.tags.includes(activeTag) : true;
       const matchesMember = activeMember ? song.authorSlug === activeMember : true;
-      const matchesAge = activeAge ? author?.age === activeAge : true;
       const matchesSearch = normalizedQuery ? matchesQuery(song, normalizedQuery) : true;
-      return matchesTag && matchesMember && matchesAge && matchesSearch;
+      return matchesAudience && matchesTag && matchesMember && matchesSearch;
     });
-  }, [activeAge, activeMember, activeTag, query, songs]);
+  }, [activeMember, activeTag, audienceId, query, songs]);
 
-  const hasFilters = Boolean(query || activeTag || activeMember || activeAge);
+  const visibleMembers = useMemo(
+    () => members.filter((member) => isMemberVisibleForAudience(member, audienceId)),
+    [audienceId, members],
+  );
+  const visibleTags = useMemo(
+    () => tags.filter((tag) => filteredSongs.some((song) => song.tags.includes(tag))),
+    [filteredSongs, tags],
+  );
+  const hasFilters = Boolean(query || activeTag || activeMember);
 
   return (
     <section className="space-y-6">
@@ -79,12 +86,11 @@ export function SongGrid({
           />
         </div>
         <MemberFilter
-          members={members}
+          members={visibleMembers}
           activeMember={activeMember}
           onMemberChange={setActiveMember}
         />
-        <AgeFilter ages={ages} activeAge={activeAge} onAgeChange={setActiveAge} />
-        <TagFilter tags={tags} activeTag={activeTag} onTagChange={setActiveTag} />
+        <TagFilter tags={visibleTags} activeTag={activeTag} onTagChange={setActiveTag} />
       </div>
 
       {filteredSongs.length > 0 ? (

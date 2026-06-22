@@ -1,7 +1,18 @@
 import { albums, getAlbumAuthor, type Album } from "@/data/albums";
 import { members, type FamilyMember } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
-import { scoreAlbumForListener, scoreSongForListener } from "@/lib/audience";
+import {
+  filterAlbumForAudience,
+  getAudienceListenerAge,
+  isFamilyAudienceId,
+  isMemberVisibleForAudience,
+  isSongVisibleForAudience,
+  scoreAlbumForAudience,
+  scoreAlbumForListener,
+  scoreSongForAudience,
+  scoreSongForListener,
+  type FamilyAudienceId,
+} from "@/lib/audience";
 
 export type SearchResultKind = "member" | "album" | "song";
 
@@ -22,6 +33,8 @@ export type SearchFilters = {
   tag?: string | null;
   /** Boost results suited to this listener age without hiding the full catalog. */
   listenerAge?: number | null;
+  /** The selected family profile; non-grown-up audiences hide unsafe/unmatched content. */
+  audienceId?: FamilyAudienceId | null;
 };
 
 function scoreText(text: string, query: string): number {
@@ -93,38 +106,72 @@ function listenerAgeBoost(
   }
 }
 
+function audienceBoost(
+  kind: SearchResultKind,
+  item: FamilyMember | Album | Song,
+  audienceId: FamilyAudienceId | null | undefined,
+): number {
+  if (!audienceId) return 0;
+
+  switch (kind) {
+    case "member": {
+      const member = item as FamilyMember;
+      return Math.max(0, 30 - Math.abs(member.age - getAudienceListenerAge(audienceId)) * 2);
+    }
+    case "album":
+      return scoreAlbumForAudience(item as Album, audienceId) * 0.2;
+    case "song":
+      return scoreSongForAudience(item as Song, audienceId) * 0.2;
+    default: {
+      const _exhaustive: never = kind;
+      return _exhaustive;
+    }
+  }
+}
+
 export function searchCatalog(query: string, filters: SearchFilters = {}): SearchResult[] {
   const trimmed = query.trim();
   const results: SearchResult[] = [];
+  const audienceId = isFamilyAudienceId(filters.audienceId) ? filters.audienceId : null;
 
   for (const member of members) {
+    if (!isMemberVisibleForAudience(member, audienceId)) continue;
     if (!passesFilters(member.slug, undefined, member.age, filters)) continue;
     const score = trimmed ? bestScore(memberFields(member), trimmed) : 40;
     if (score > 0 || !trimmed) {
       results.push({
         kind: "member",
         member,
-        score: (trimmed ? score : 40 - members.indexOf(member)) + listenerAgeBoost("member", member, filters.listenerAge),
+        score:
+          (trimmed ? score : 40 - members.indexOf(member)) +
+          listenerAgeBoost("member", member, filters.listenerAge) +
+          audienceBoost("member", member, audienceId),
         href: `/members/${member.slug}`,
       });
     }
   }
 
   for (const album of albums) {
+    const visibleAlbum = filterAlbumForAudience(album, audienceId);
+    if (!visibleAlbum) continue;
     const author = getAlbumAuthor(album);
     if (!passesFilters(album.authorSlug, undefined, author?.age, filters)) continue;
-    const score = trimmed ? bestScore(albumFields(album), trimmed) : 35;
+    const score = trimmed ? bestScore(albumFields(visibleAlbum), trimmed) : 35;
     if (score > 0 || !trimmed) {
       results.push({
         kind: "album",
-        album,
-        score: (trimmed ? score : 35 - albums.indexOf(album)) + listenerAgeBoost("album", album, filters.listenerAge),
-        href: `/albums/${album.slug}`,
+        album: visibleAlbum,
+        score:
+          (trimmed ? score : 35 - albums.indexOf(album)) +
+          listenerAgeBoost("album", visibleAlbum, filters.listenerAge) +
+          audienceBoost("album", visibleAlbum, audienceId),
+        href: `/albums/${visibleAlbum.slug}`,
       });
     }
   }
 
   for (const song of songs) {
+    if (!isSongVisibleForAudience(song, audienceId)) continue;
     const author = members.find((member) => member.slug === song.authorSlug);
     if (!passesFilters(song.authorSlug, song.tags, author?.age, filters)) continue;
     const score = trimmed ? bestScore(songFields(song), trimmed) : 30;
@@ -132,7 +179,10 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
       results.push({
         kind: "song",
         song,
-        score: (trimmed ? score : 30 - songs.indexOf(song)) + listenerAgeBoost("song", song, filters.listenerAge),
+        score:
+          (trimmed ? score : 30 - songs.indexOf(song)) +
+          listenerAgeBoost("song", song, filters.listenerAge) +
+          audienceBoost("song", song, audienceId),
         href: `/songs/${song.slug}`,
       });
     }

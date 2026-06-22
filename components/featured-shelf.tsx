@@ -7,17 +7,23 @@ import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
-import { getListenerCurationSubtitle } from "@/lib/audience";
+import {
+  curateSongsForAudience,
+  getAudienceCurationSubtitle,
+  getFamilyAudience,
+  type FamilyAudienceId,
+} from "@/lib/audience";
 import { cn } from "@/lib/utils";
 
 type FeaturedShelfProps = {
   songs: Song[];
   tags: string[];
-  listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
 function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] }) {
@@ -75,27 +81,35 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
   );
 }
 
-export function FeaturedShelf({ songs, tags, listenerAge = null }: FeaturedShelfProps) {
+export function FeaturedShelf({ songs, tags, audienceId = null }: FeaturedShelfProps) {
+  const familyAudience = useFamilyAudienceContext();
+  const effectiveAudienceId = audienceId ?? familyAudience.audienceId;
   const { playQueue } = usePlayer();
   const [activeTag, setActiveTag] = useState<string | null>(null);
+  const audience = getFamilyAudience(effectiveAudienceId);
 
   const filtered = useMemo(() => {
-    if (!activeTag) return songs;
-    return songs.filter((s) => s.tags.includes(activeTag));
-  }, [activeTag, songs]);
+    const audienceSongs = curateSongsForAudience(songs, effectiveAudienceId);
+    if (!activeTag) return audienceSongs;
+    return audienceSongs.filter((s) => s.tags.includes(activeTag));
+  }, [activeTag, effectiveAudienceId, songs]);
 
-  const chips = ["All", ...tags.slice(0, 8)];
+  const visibleTags = useMemo(
+    () => Array.from(new Set(curateSongsForAudience(songs, effectiveAudienceId).flatMap((song) => song.tags))),
+    [effectiveAudienceId, songs],
+  );
+  const chips = ["All", ...tags.filter((tag) => visibleTags.includes(tag)).slice(0, 8)];
 
   return (
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-            {listenerAge !== null ? `Picked for age ${listenerAge}` : "Featured family songs"}
+            {audience ? `Picked for ${audience.label}` : "Featured family songs"}
           </h2>
           <p className="text-sm font-bold text-[var(--jb-muted)]">
-            {listenerAge !== null
-              ? getListenerCurationSubtitle(listenerAge)
+            {audience
+              ? getAudienceCurationSubtitle(audience.id)
               : "Pick a song — the hero updates live while you listen."}
           </p>
         </div>

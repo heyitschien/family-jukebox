@@ -7,7 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AlbumCoverRotator, getPlayStartIndex } from "@/components/album-cover-rotator";
 import { ArtistLink } from "@/components/artist-link";
 import { PlayIconButton } from "@/components/play-icon-button";
-import { Topbar } from "@/components/topbar";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import { getAlbumSongs, type Album } from "@/data/albums";
 import { getAlbumAuthor } from "@/data/albums";
@@ -21,6 +21,7 @@ import {
   getSpotlightAlbumAuthorNames,
 } from "@/lib/album-rotation";
 import { BRAND_NAME } from "@/lib/brand";
+import { curateSongsForAudience } from "@/lib/audience";
 import { cn } from "@/lib/utils";
 
 type AlbumCarousel3DProps = {
@@ -31,6 +32,7 @@ type AlbumCarousel3DProps = {
 
 export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCarousel3DProps) {
   const router = useRouter();
+  const { audienceId } = useFamilyAudienceContext();
   const { playQueue, currentSong, isPlaying, queue, togglePlay } = usePlayer();
   const [activeIndex, setActiveIndex] = useState(() =>
     Math.max(
@@ -40,7 +42,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   );
   const [isPaused, setIsPaused] = useState(false);
   const touchStartX = useRef(0);
-  const familyQueue = getFairRotationQueue(refreshSeed);
+  const familyQueue = curateSongsForAudience(getFairRotationQueue(refreshSeed), audienceId);
 
   const activeAlbum = albums[activeIndex] ?? featuredAlbum;
   const activeSongs = getAlbumSongs(activeAlbum);
@@ -127,10 +129,6 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <div className="relative z-20 px-4 pt-[max(12px,env(safe-area-inset-top))] sm:px-[34px] sm:pt-[34px]">
-        <Topbar variant="embedded" />
-      </div>
-
       <div
         className="absolute inset-0"
         style={{
