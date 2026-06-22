@@ -4,13 +4,14 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
 const FAVORITES_STORAGE_KEY = "family-jukebox:favorites";
+const favoriteListeners = new Set<() => void>();
+const EMPTY_FAVORITES: string[] = [];
 
 type FavoritesContextValue = {
   favoriteSlugs: string[];
@@ -48,38 +49,47 @@ function readFavoriteSlugs(): string[] {
   }
 }
 
+function emitFavoriteChange() {
+  for (const listener of favoriteListeners) {
+    listener();
+  }
+}
+
 function writeFavoriteSlugs(favoriteSlugs: string[]) {
   if (typeof window === "undefined") return;
 
   try {
     window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favoriteSlugs));
+    emitFavoriteChange();
   } catch {
     // Ignore storage write failures so favorites remain non-blocking.
   }
 }
 
+function subscribeToFavorites(listener: () => void) {
+  favoriteListeners.add(listener);
+
+  const handleStorage = (event: StorageEvent) => {
+    if (event.key !== FAVORITES_STORAGE_KEY && event.key !== null) return;
+    listener();
+  };
+
+  window.addEventListener("storage", handleStorage);
+
+  return () => {
+    favoriteListeners.delete(listener);
+    window.removeEventListener("storage", handleStorage);
+  };
+}
+
 export function FavoritesProvider({ children }: { children: ReactNode }) {
-  const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>([]);
-  const [favoritesReady, setFavoritesReady] = useState(false);
-
-  useEffect(() => {
-    setFavoriteSlugs(readFavoriteSlugs());
-    setFavoritesReady(true);
-
-    const handleStorage = (event: StorageEvent) => {
-      if (event.key !== FAVORITES_STORAGE_KEY) return;
-      setFavoriteSlugs(readFavoriteSlugs());
-    };
-
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
-
-  useEffect(() => {
-    if (!favoritesReady) return;
-    writeFavoriteSlugs(favoriteSlugs);
-  }, [favoriteSlugs, favoritesReady]);
-
+  const favoriteSnapshot = useSyncExternalStore<string[] | null>(
+    subscribeToFavorites,
+    readFavoriteSlugs,
+    () => null,
+  );
+  const favoriteSlugs = useMemo(() => favoriteSnapshot ?? EMPTY_FAVORITES, [favoriteSnapshot]);
+  const favoritesReady = favoriteSnapshot !== null;
   const favoriteSlugSet = useMemo(() => new Set(favoriteSlugs), [favoriteSlugs]);
 
   const isFavorite = useCallback(
@@ -88,21 +98,23 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
   );
 
   const setFavorite = useCallback((songSlug: string, nextValue: boolean) => {
-    setFavoriteSlugs((current) => {
-      const alreadyFavorite = current.includes(songSlug);
+    const current = readFavoriteSlugs();
+    const alreadyFavorite = current.includes(songSlug);
 
-      if (nextValue) {
-        if (alreadyFavorite) return current;
-        return [songSlug, ...current];
-      }
+    if (nextValue) {
+      if (alreadyFavorite) return;
+      writeFavoriteSlugs([songSlug, ...current]);
+      return;
+    }
 
-      if (!alreadyFavorite) return current;
-      return current.filter((slug) => slug !== songSlug);
-    });
+    if (!alreadyFavorite) return;
+    writeFavoriteSlugs(current.filter((slug) => slug !== songSlug));
   }, []);
 
   const toggleFavorite = useCallback((songSlug: string) => {
-    setFavoriteSlugs((current) =>
+    const current = readFavoriteSlugs();
+
+    writeFavoriteSlugs(
       current.includes(songSlug)
         ? current.filter((slug) => slug !== songSlug)
         : [songSlug, ...current],
