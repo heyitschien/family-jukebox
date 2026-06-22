@@ -3,8 +3,10 @@
 import Link from "next/link";
 
 import { SongRow } from "@/components/song-row";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import type { Song } from "@/data/songs";
+import { filterSongsForAudience } from "@/lib/audience";
 
 type SongShelfProps = {
   songs: Song[];
@@ -24,8 +26,10 @@ export function SongShelf({
   compact = false,
 }: SongShelfProps) {
   const { playQueue } = usePlayer();
+  const { audienceId } = useFamilyAudienceContext();
+  const visibleSongs = audienceId ? filterSongsForAudience(songs, audienceId) : songs;
 
-  if (songs.length === 0) return null;
+  if (visibleSongs.length === 0) return null;
 
   return (
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
@@ -37,10 +41,10 @@ export function SongShelf({
           ) : null}
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          {songs.length > 1 ? (
+          {visibleSongs.length > 1 ? (
             <button
               type="button"
-              onClick={() => playQueue(songs, 0, "shelf")}
+              onClick={() => playQueue(visibleSongs, 0, "shelf")}
               className="inline-flex min-h-11 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
             >
               Play all
@@ -58,13 +62,13 @@ export function SongShelf({
       </div>
 
       <div className={compact ? "grid gap-1" : "grid gap-2"}>
-        {songs.map((song, index) => (
+        {visibleSongs.map((song, index) => (
           <SongRow
             key={song.slug}
             song={song}
             index={index}
             showIndex={!compact}
-            playlist={songs}
+            playlist={visibleSongs}
           />
         ))}
       </div>

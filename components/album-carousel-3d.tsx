@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { AlbumCoverRotator, getPlayStartIndex } from "@/components/album-cover-rotator";
+import { AudienceSelector } from "@/components/audience-selector";
 import { ArtistLink } from "@/components/artist-link";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { Topbar } from "@/components/topbar";
@@ -129,6 +130,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
     >
       <div className="relative z-20 px-4 pt-[max(12px,env(safe-area-inset-top))] sm:px-[34px] sm:pt-[34px]">
         <Topbar variant="embedded" />
+        <AudienceSelector className="mt-4" />
       </div>
 
       <div

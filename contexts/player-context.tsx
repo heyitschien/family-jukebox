@@ -13,7 +13,7 @@ import {
 import type { Song } from "@/data/songs";
 import type { PlaySource } from "@/lib/analytics/constants";
 import { trackPlayEvent } from "@/lib/analytics/track-play";
-import { useListenerAgeContext } from "@/contexts/listener-age-context";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { buildRadioContinuation, shouldContinueRadio } from "@/lib/cousin-radio";
 import { recordSessionPlay } from "@/lib/session-listening";
 import {
@@ -74,7 +74,7 @@ function songSrcMatches(audio: HTMLAudioElement, audioSrc: string): boolean {
 export { formatTime };
 
 export function PlayerProvider({ children }: { children: ReactNode }) {
-  const { listenerAge } = useListenerAgeContext();
+  const { audienceId, listenerAge } = useFamilyAudienceContext();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const queueRef = useRef<Song[]>([]);
   const originalQueueRef = useRef<Song[]>([]);
@@ -159,7 +159,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
   const continueRadioFrom = useCallback(
     (seed: Song) => {
-      const continuation = buildRadioContinuation(seed, { listenerAge });
+      const continuation = buildRadioContinuation(seed, { audienceId, listenerAge });
       if (continuation.length === 0) {
         setIsPlaying(false);
         return;
@@ -174,7 +174,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       const track = nextQueue[index];
       if (track) startPlayback(track, nextQueue, index, "auto-advance");
     },
-    [listenerAge, startPlayback],
+    [audienceId, listenerAge, startPlayback],
   );
 
   const advanceTrack = useCallback(

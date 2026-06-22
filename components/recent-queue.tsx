@@ -5,20 +5,24 @@ import Link from "next/link";
 import { CoverImage } from "@/components/cover-image";
 import { JukeboxStatsCard } from "@/components/jukebox-stats-card";
 import { PlayIconButton } from "@/components/play-icon-button";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
 import { members } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { songs as allSongs } from "@/data/songs";
-import { getListenerCurationSubtitle } from "@/lib/audience";
+import {
+  filterSongsForAudience,
+  getFamilyAudienceLabel,
+  getFamilyAudienceSubtitle,
+} from "@/lib/audience";
 import { cn } from "@/lib/utils";
 
 type RecentQueueProps = {
   songs: Song[];
   familyQueue: Song[];
   spotlightSlugs: string[];
-  listenerAge?: number | null;
 };
 
 function QueueBadge({
@@ -101,10 +105,13 @@ export function RecentQueue({
   songs,
   familyQueue,
   spotlightSlugs,
-  listenerAge = null,
 }: RecentQueueProps) {
   const { playQueue } = usePlayer();
-  const recent = [...songs].slice(0, 5);
+  const { audienceId } = useFamilyAudienceContext();
+  const visibleSongs = audienceId ? filterSongsForAudience(songs, audienceId) : songs;
+  const visibleFamilyQueue = audienceId ? filterSongsForAudience(familyQueue, audienceId) : familyQueue;
+  const playableFamilyQueue = visibleFamilyQueue.length > 0 ? visibleFamilyQueue : visibleSongs;
+  const recent = [...visibleSongs].slice(0, 5);
   const videoCount = allSongs.filter((s) => s.videoSrc).length;
   const spotlightSet = new Set(spotlightSlugs);
 
@@ -115,11 +122,11 @@ export function RecentQueue({
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
             <div>
               <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-                {listenerAge !== null ? `Suggested for age ${listenerAge}` : "Recently added"}
+                {audienceId ? `${getFamilyAudienceLabel(audienceId)} suggestions` : "Recently added"}
               </h2>
               <p className="text-sm font-bold text-[var(--jb-muted)]">
-                {listenerAge !== null
-                  ? getListenerCurationSubtitle(listenerAge)
+                {audienceId
+                  ? getFamilyAudienceSubtitle(audienceId)
                   : "Fresh picks from the shelf — play any track to queue the rest."}
               </p>
             </div>
@@ -148,11 +155,11 @@ export function RecentQueue({
         <div>
           <div className="mb-4">
             <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-              {listenerAge !== null ? "Your family mix" : "Family mix"}
+              {audienceId ? "Your family mix" : "Family mix"}
             </h2>
             <p className="text-sm font-bold text-[var(--jb-muted)]">
-              {listenerAge !== null
-                ? "Age-aware rotation — every artist still in the queue."
+              {audienceId
+                ? "Audience-aware rotation — safe for the audience you picked."
                 : "Every artist, one fair rotation."}
             </p>
           </div>
@@ -175,7 +182,7 @@ export function RecentQueue({
             </div>
             <button
               type="button"
-              onClick={() => playQueue(familyQueue, 0, "queue")}
+              onClick={() => playQueue(playableFamilyQueue, 0, "queue")}
               className="mt-4 inline-flex min-h-11 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
             >
               Play family mix

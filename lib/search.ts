@@ -1,7 +1,13 @@
 import { albums, getAlbumAuthor, type Album } from "@/data/albums";
 import { members, type FamilyMember } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
-import { scoreAlbumForListener, scoreSongForListener } from "@/lib/audience";
+import {
+  isAlbumVisibleForAudience,
+  isSongVisibleForAudience,
+  scoreAlbumForListener,
+  scoreSongForListener,
+  type FamilyAudienceId,
+} from "@/lib/audience";
 
 export type SearchResultKind = "member" | "album" | "song";
 
@@ -22,6 +28,7 @@ export type SearchFilters = {
   tag?: string | null;
   /** Boost results suited to this listener age without hiding the full catalog. */
   listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
 function scoreText(text: string, query: string): number {
@@ -70,6 +77,12 @@ function passesFilters(
   return true;
 }
 
+function memberHasVisibleSongs(member: FamilyMember, audienceId: FamilyAudienceId): boolean {
+  return songs.some(
+    (song) => song.authorSlug === member.slug && isSongVisibleForAudience(song, audienceId),
+  );
+}
+
 function listenerAgeBoost(
   kind: SearchResultKind,
   item: FamilyMember | Album | Song,
@@ -98,6 +111,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
   const results: SearchResult[] = [];
 
   for (const member of members) {
+    if (filters.audienceId && !memberHasVisibleSongs(member, filters.audienceId)) continue;
     if (!passesFilters(member.slug, undefined, member.age, filters)) continue;
     const score = trimmed ? bestScore(memberFields(member), trimmed) : 40;
     if (score > 0 || !trimmed) {
@@ -112,6 +126,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
 
   for (const album of albums) {
     const author = getAlbumAuthor(album);
+    if (filters.audienceId && !isAlbumVisibleForAudience(album, filters.audienceId)) continue;
     if (!passesFilters(album.authorSlug, undefined, author?.age, filters)) continue;
     const score = trimmed ? bestScore(albumFields(album), trimmed) : 35;
     if (score > 0 || !trimmed) {
@@ -126,6 +141,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
 
   for (const song of songs) {
     const author = members.find((member) => member.slug === song.authorSlug);
+    if (filters.audienceId && !isSongVisibleForAudience(song, filters.audienceId)) continue;
     if (!passesFilters(song.authorSlug, song.tags, author?.age, filters)) continue;
     const score = trimmed ? bestScore(songFields(song), trimmed) : 30;
     if (score > 0 || !trimmed) {

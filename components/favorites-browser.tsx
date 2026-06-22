@@ -4,10 +4,12 @@ import { useMemo } from "react";
 
 import { EmptyState } from "@/components/empty-state";
 import { SongGrid } from "@/components/song-grid";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import { members } from "@/data/members";
 import { songs } from "@/data/songs";
 import { useFavoriteSongs } from "@/hooks/use-favorite-songs";
+import { filterSongsForAudience } from "@/lib/audience";
 import { buildSmartShuffledQueue } from "@/lib/smart-shuffle";
 
 function getFavoriteFilters(favoriteSongs: typeof songs) {
@@ -25,10 +27,15 @@ function getFavoriteFilters(favoriteSongs: typeof songs) {
 export function FavoritesBrowser() {
   const { favoriteSet } = useFavoriteSongs();
   const { playQueue } = usePlayer();
+  const { audienceId } = useFamilyAudienceContext();
 
   const favoriteSongs = useMemo(
     () => songs.filter((song) => favoriteSet.has(song.slug)),
     [favoriteSet],
+  );
+  const visibleFavoriteSongs = useMemo(
+    () => (audienceId ? filterSongsForAudience(favoriteSongs, audienceId) : favoriteSongs),
+    [audienceId, favoriteSongs],
   );
 
   if (favoriteSongs.length === 0) {
@@ -40,16 +47,25 @@ export function FavoritesBrowser() {
     );
   }
 
-  const { favoriteMembers, favoriteAges, favoriteTags } = getFavoriteFilters(favoriteSongs);
-  const canPlayAll = favoriteSongs.length >= 2;
+  if (visibleFavoriteSongs.length === 0) {
+    return (
+      <EmptyState
+        title="Favorites hidden for this audience"
+        description="Your saved songs are still here — switch the family audience from the profile avatar to see them."
+      />
+    );
+  }
+
+  const { favoriteMembers, favoriteAges, favoriteTags } = getFavoriteFilters(visibleFavoriteSongs);
+  const canPlayAll = visibleFavoriteSongs.length >= 2;
 
   const playFavoritesShuffled = () => {
-    const shuffled = buildSmartShuffledQueue(favoriteSongs, 0);
+    const shuffled = buildSmartShuffledQueue(visibleFavoriteSongs, 0);
     playQueue(shuffled, 0, "shelf");
   };
 
   const playFavoritesInOrder = () => {
-    playQueue(favoriteSongs, 0, "shelf");
+    playQueue(visibleFavoriteSongs, 0, "shelf");
   };
 
   return (
@@ -74,7 +90,7 @@ export function FavoritesBrowser() {
       ) : null}
 
       <SongGrid
-        songs={favoriteSongs}
+        songs={visibleFavoriteSongs}
         tags={favoriteTags}
         members={favoriteMembers}
         ages={favoriteAges}

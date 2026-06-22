@@ -1,6 +1,4 @@
-import Link from "next/link";
-
-import { AlbumCard } from "@/components/album-card";
+import { AlbumsBrowser } from "@/components/albums-browser";
 import { Topbar } from "@/components/topbar";
 import { getBrowseAlbumSections } from "@/data/albums";
 import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
@@ -26,31 +24,7 @@ export default function AlbumsPage() {
         </p>
       </header>
 
-      <div className="space-y-10">
-        {sections.map((section) => (
-          <section key={section.id}>
-            <div className="mb-4">
-              <h2 className="text-xl font-bold tracking-tight sm:text-2xl">{section.title}</h2>
-              <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">{section.subtitle}</p>
-            </div>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
-              {section.albums.map((album) => (
-                <AlbumCard key={album.slug} album={album} size="sm" className="w-full" showKind />
-              ))}
-            </div>
-          </section>
-        ))}
-      </div>
-
-      {sections.length === 0 ? (
-        <p className="text-[var(--jb-muted)]">No albums yet — check back after the next music day.</p>
-      ) : null}
-
-      <p className="mt-8 text-center">
-        <Link href="/" className="text-sm font-bold text-[var(--family-pink)] hover:underline">
-          ← Back to home
-        </Link>
-      </p>
+      <AlbumsBrowser sections={sections} />
     </main>
   );
 }

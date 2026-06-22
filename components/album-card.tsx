@@ -5,10 +5,12 @@ import Link from "next/link";
 import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getAlbumAuthor, getAlbumKindLabel, getAlbumSongs, type Album } from "@/data/albums";
 import { songs } from "@/data/songs";
+import { filterSongsForAudience } from "@/lib/audience";
 import { cn } from "@/lib/utils";
 
 type AlbumCardProps = {
@@ -20,7 +22,10 @@ type AlbumCardProps = {
 
 export function AlbumCard({ album, className, size = "md", showKind = false }: AlbumCardProps) {
   const { playQueue, currentSong, isPlaying, queue } = usePlayer();
-  const albumSongs = getAlbumSongs(album);
+  const { audienceId } = useFamilyAudienceContext();
+  const albumSongs = audienceId
+    ? filterSongsForAudience(getAlbumSongs(album), audienceId)
+    : getAlbumSongs(album);
   const author = getAlbumAuthor(album);
   const firstSong = albumSongs[0];
 

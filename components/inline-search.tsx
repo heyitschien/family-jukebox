@@ -15,7 +15,7 @@ import {
 import { Search, X } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
-import { useListenerAgeContext } from "@/contexts/listener-age-context";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { getAlbumAuthor } from "@/data/albums";
 import { getMemberBySlug } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
@@ -66,10 +66,10 @@ export function InlineSearch({
 
   const embedded = variant === "embedded";
   const trimmed = query.trim();
-  const { listenerAge } = useListenerAgeContext();
+  const { audienceId, listenerAge } = useFamilyAudienceContext();
   const grouped = useMemo(
-    () => getInlineSearchResults(query, { listenerAge }),
-    [listenerAge, query],
+    () => getInlineSearchResults(query, { audienceId, listenerAge }),
+    [audienceId, listenerAge, query],
   );
   const flatResults = useMemo(() => flattenGroupedResults(grouped), [grouped]);
   const indexedSections = useMemo(() => {

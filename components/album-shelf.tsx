@@ -3,8 +3,10 @@
 import Link from "next/link";
 
 import { AlbumCard } from "@/components/album-card";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import { usePlayer } from "@/contexts/player-context";
 import { getAlbumSongs, type Album } from "@/data/albums";
+import { filterAlbumsForAudience, filterSongsForAudience } from "@/lib/audience";
 
 type AlbumShelfProps = {
   albums: Album[];
@@ -19,7 +21,10 @@ export function AlbumShelf({
   subtitle = "One collection per cousin — tap to explore or play the whole album",
   showViewAll = true,
 }: AlbumShelfProps) {
-  if (albums.length === 0) return null;
+  const { audienceId } = useFamilyAudienceContext();
+  const visibleAlbums = audienceId ? filterAlbumsForAudience(albums, audienceId) : albums;
+
+  if (visibleAlbums.length === 0) return null;
 
   return (
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
@@ -39,7 +44,7 @@ export function AlbumShelf({
       </div>
 
       <div className="flex gap-4 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-none">
-        {albums.map((album) => (
+        {visibleAlbums.map((album) => (
           <AlbumCard key={album.slug} album={album} className="snap-start" />
         ))}
       </div>
@@ -49,11 +54,15 @@ export function AlbumShelf({
 
 export function AlbumShelfCompact({ albums }: { albums: Album[] }) {
   const { playQueue } = usePlayer();
+  const { audienceId } = useFamilyAudienceContext();
+  const visibleAlbums = audienceId ? filterAlbumsForAudience(albums, audienceId) : albums;
 
   return (
     <div className="flex gap-3 overflow-x-auto pb-1 scrollbar-none">
-      {albums.map((album) => {
-        const albumSongs = getAlbumSongs(album);
+      {visibleAlbums.map((album) => {
+        const albumSongs = audienceId
+          ? filterSongsForAudience(getAlbumSongs(album), audienceId)
+          : getAlbumSongs(album);
         return (
           <button
             key={album.slug}

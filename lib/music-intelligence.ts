@@ -2,7 +2,7 @@ import { songs, type Song } from "@/data/songs";
 import { getCelebrationSongSlugs } from "@/lib/celebrations";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
 import { getMoreFromArtist, getSimilarSongs } from "@/lib/music-discovery";
-import { scoreSongForListener } from "@/lib/audience";
+import { isSongVisibleForAudience, scoreSongForListener, type FamilyAudienceId } from "@/lib/audience";
 import type { SessionListeningSnapshot } from "@/lib/session-listening";
 import { EMPTY_SESSION_SNAPSHOT } from "@/lib/session-listening";
 
@@ -15,6 +15,7 @@ export type IntelligenceContext = {
   excludeSlugs?: ReadonlySet<string>;
   /** Listener age — boosts age-appropriate tracks in recommendations. */
   listenerAge?: number | null;
+  audienceId?: FamilyAudienceId | null;
 };
 
 export type ScoredSong = {
@@ -90,7 +91,11 @@ export function rankSimilarSongs(
   const exclude = context.excludeSlugs ?? new Set<string>();
 
   return songs
-    .filter((song) => song.slug !== seed.slug && !exclude.has(song.slug))
+    .filter((song) => {
+      if (song.slug === seed.slug || exclude.has(song.slug)) return false;
+      if (context.audienceId && !isSongVisibleForAudience(song, context.audienceId)) return false;
+      return true;
+    })
     .map((song) => ({ song, score: scoreSongAffinity(seed, song, context) }))
     .filter((entry) => entry.score > 0)
     .sort(
@@ -136,18 +141,32 @@ export function buildIntelligentQueue(
 
   // Same artist deep-cut if room remains.
   if (options.includeArtistTracks !== false && results.length < limit) {
-    addCandidates(getMoreFromArtist(seed, limit));
+    addCandidates(
+      getMoreFromArtist(seed, limit).filter((song) =>
+        context.audienceId ? isSongVisibleForAudience(song, context.audienceId) : true,
+      ),
+    );
   }
 
   // Fair rotation fill for variety across the family.
   if (results.length < limit) {
     const fair = getFairRotationQueue(context.refreshSeed ?? 0);
-    addCandidates(fair);
+    addCandidates(
+      fair.filter((song) =>
+        context.audienceId ? isSongVisibleForAudience(song, context.audienceId) : true,
+      ),
+    );
   }
 
   // Last resort — any remaining catalog songs.
   if (results.length < limit) {
-    addCandidates(songs.filter((song) => !seen.has(song.slug)));
+    addCandidates(
+      songs.filter((song) => {
+        if (seen.has(song.slug)) return false;
+        if (context.audienceId && !isSongVisibleForAudience(song, context.audienceId)) return false;
+        return true;
+      }),
+    );
   }
 
   return results.slice(0, limit);
@@ -164,7 +183,11 @@ export function getIntelligentSimilarSongs(
 
   const seen = new Set(intelligent.map((song) => song.slug));
   seen.add(seed.slug);
-  const fallback = getSimilarSongs(seed, limit).filter((song) => !seen.has(song.slug));
+  const fallback = getSimilarSongs(seed, limit).filter((song) => {
+    if (seen.has(song.slug)) return false;
+    if (context.audienceId && !isSongVisibleForAudience(song, context.audienceId)) return false;
+    return true;
+  });
   return [...intelligent, ...fallback].slice(0, limit);
 }
 
@@ -173,7 +196,11 @@ export function scoreSongsForSeed(
   context: IntelligenceContext = {},
 ): ScoredSong[] {
   return songs
-    .filter((song) => song.slug !== seed.slug)
+    .filter((song) => {
+      if (song.slug === seed.slug) return false;
+      if (context.audienceId && !isSongVisibleForAudience(song, context.audienceId)) return false;
+      return true;
+    })
     .map((song) => ({ song, score: scoreSongAffinity(seed, song, context) }))
     .sort((a, b) => b.score - a.score || a.song.title.localeCompare(b.song.title));
 }

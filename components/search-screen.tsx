@@ -8,36 +8,33 @@ import { EmptyState } from "@/components/empty-state";
 import { InlineSearch } from "@/components/inline-search";
 import { SongRow } from "@/components/song-row";
 import { Topbar } from "@/components/topbar";
-import { useListenerAgeContext } from "@/contexts/listener-age-context";
+import { useFamilyAudienceContext } from "@/contexts/family-audience-context";
 import type { FamilyMember } from "@/data/members";
-import type { Song } from "@/data/songs";
+import { getFamilyAudienceLabel, getFamilyAudienceSubtitle } from "@/lib/audience";
 import { filterAlbums, filterSongs } from "@/lib/search";
 import { cn } from "@/lib/utils";
 
 type SearchScreenProps = {
-  songs: Song[];
   tags: string[];
   members: FamilyMember[];
-  ages: number[];
 };
 
-export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
-  const { listenerAge } = useListenerAgeContext();
+export function SearchScreen({ tags, members }: SearchScreenProps) {
+  const { audienceId, listenerAge } = useFamilyAudienceContext();
   const searchParams = useSearchParams();
   const initial = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initial);
   const [activeTag, setActiveTag] = useState<string | null>(null);
   const [activeMember, setActiveMember] = useState<string | null>(null);
-  const [activeAge, setActiveAge] = useState<number | null>(null);
 
   const filters = useMemo(
     () => ({
       memberSlug: activeMember,
-      age: activeAge,
       tag: activeTag,
+      audienceId,
       listenerAge,
     }),
-    [activeAge, activeMember, activeTag, listenerAge],
+    [activeMember, activeTag, audienceId, listenerAge],
   );
 
   const filteredAlbums = useMemo(() => filterAlbums(query, filters), [filters, query]);
@@ -48,10 +45,20 @@ export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
       <Topbar />
       <h1 className="text-2xl font-extrabold">Search</h1>
 
+      {audienceId ? (
+        <div className="rounded-[24px] border border-white/[0.08] bg-white/[0.05] px-4 py-3">
+          <p className="text-xs font-extrabold uppercase tracking-[0.16em] text-[var(--family-ocean)]">
+            Family audience
+          </p>
+          <p className="mt-1 text-base font-extrabold text-white">{getFamilyAudienceLabel(audienceId)}</p>
+          <p className="mt-1 text-sm text-[var(--jb-muted)]">{getFamilyAudienceSubtitle(audienceId)}</p>
+        </div>
+      ) : null}
+
       <InlineSearch
         value={query}
         onValueChange={setQuery}
-        placeholder="Songs, kids, ages, tags..."
+        placeholder="Search songs, family, tags, memories..."
         className="[&_form]:border-white/[0.07] [&_form]:bg-white/[0.08]"
       />
 
@@ -65,21 +72,6 @@ export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
               active={activeMember === m.slug}
               onClick={() => setActiveMember(activeMember === m.slug ? null : m.slug)}
               label={`${m.emoji} ${m.name}`}
-            />
-          ))}
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <p className="text-sm font-bold text-[var(--jb-muted)]">Age</p>
-        <div className="flex flex-wrap gap-2">
-          <FilterChip active={!activeAge} onClick={() => setActiveAge(null)} label="All ages" />
-          {ages.map((age) => (
-            <FilterChip
-              key={age}
-              active={activeAge === age}
-              onClick={() => setActiveAge(activeAge === age ? null : age)}
-              label={String(age)}
             />
           ))}
         </div>
