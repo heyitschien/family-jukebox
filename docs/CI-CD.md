@@ -6,18 +6,23 @@ Family Jukebox uses GitHub Actions for CI and relies on Vercel for production de
 
 ```txt
 Open PR → CI runs (lint, smoke, build)
-       → if green → auto-merge to main
+       → if green → auto-merge to main (PRs targeting main only)
        → Deploy workflow pushes to Vercel production
        → CD workflow verifies production is live
+
+Push to staging → Deploy Staging → family-jukebox-staging.vercel.app
 ```
+
+See [`docs/STAGING.md`](./STAGING.md) for the staging branch workflow.
 
 ## Workflows
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
-| **CI** | PR + push to `main` | `npm run lint`, `npm run smoke`, `npm run build`, production browser smoke |
-| **CI → auto-merge** | PR only, after CI passes | Merges the PR and deletes the branch |
+| **CI** | PR + push to `main` or `staging` | `npm run lint`, `npm run smoke`, `npm run build`, production browser smoke |
+| **CI → auto-merge** | PR to `main` only, after CI passes | Merges the PR and deletes the branch |
 | **Deploy** | Push to `main` | Builds and deploys to Vercel production |
+| **Deploy Staging** | Push to `staging` | Builds and deploys to Vercel staging preview |
 | **CD** | After Deploy succeeds | Smoke-checks production URLs (no `__next_error__`) |
 
 ## Opt out of auto-merge
@@ -42,11 +47,14 @@ npm run ci
 
 `main` should require the **Build, lint & smoke** status check before merge. Auto-merge satisfies this because it runs only after that job passes.
 
-## Deploy target
+## Deploy targets
 
-Production: [https://family-jukebox.vercel.app](https://family-jukebox.vercel.app)
+| Environment | URL |
+|-------------|-----|
+| **Production** | [https://family-jukebox.vercel.app](https://family-jukebox.vercel.app) |
+| **Staging** | [https://family-jukebox-staging.vercel.app](https://family-jukebox-staging.vercel.app) |
 
-GitHub Actions deploys `main` to Vercel. Add these repository secrets once:
+GitHub Actions deploys `main` to Vercel production and `staging` to the staging preview. Add these repository secrets once:
 
 | Secret | Value |
 |--------|--------|

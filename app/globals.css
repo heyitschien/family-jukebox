@@ -48,6 +48,24 @@
   --radius: 0.625rem;
 }
 
+html[data-env="staging"] {
+  --family-pink: #fbbf24;
+  --family-ocean: #fdba74;
+  --family-lilac: #fcd34d;
+  --family-glow: #fde68a;
+  --family-accent: #f59e0b;
+  --family-accent-deep: #d97706;
+  --ring: rgba(245, 158, 11, 0.45);
+}
+
+html[data-env="staging"] body {
+  background:
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.14), transparent 34%),
+    radial-gradient(circle at 80% 10%, rgba(251, 191, 36, 0.12), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(217, 119, 6, 0.08), transparent 40%),
+    linear-gradient(180deg, #120d07 0%, var(--jb-bg) 45%, #07090c 100%);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

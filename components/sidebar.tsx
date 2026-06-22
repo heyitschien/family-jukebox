@@ -15,17 +15,28 @@ const links = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const isStaging = process.env.NEXT_PUBLIC_APP_ENV === "staging";
 
   return (
     <aside className="sticky top-[18px] hidden h-[calc(100dvh-36px)] flex-col gap-5 rounded-[var(--jb-radius)] border border-white/[0.07] bg-[rgba(17,24,33,0.86)] p-5 shadow-[0_20px_60px_rgba(0,0,0,0.35)] backdrop-blur-[18px] lg:flex">
       <Link href="/" className="flex items-center gap-3 text-2xl font-extrabold tracking-tight">
         <span className="grid size-11 place-items-center rounded-2xl bg-family-accent text-xl text-[#1a0812] shadow-[0_12px_34px_rgba(255,111,177,0.26)]">
-          ♪
+          {isStaging ? "◎" : "♪"}
         </span>
         <span className="leading-tight">
-          Family
-          <br />
-          Jukebox
+          {isStaging ? (
+            <>
+              Jukebox
+              <br />
+              <span className="text-base text-amber-300">Staging</span>
+            </>
+          ) : (
+            <>
+              Family
+              <br />
+              Jukebox
+            </>
+          )}
         </span>
       </Link>
 

@@ -3,13 +3,19 @@ import type { Metadata } from "next";
 import type { Album } from "@/data/albums";
 import type { FamilyMember } from "@/data/members";
 import type { Song } from "@/data/songs";
+import {
+  getRuntimeSiteUrl,
+  getSiteDescription,
+  getSiteName,
+  PRODUCTION_SITE_URL,
+} from "@/lib/site-env";
 
-export const SITE_URL = "https://family-jukebox.vercel.app";
+/** Canonical production URL — used in smoke tests and share fallbacks. */
+export const SITE_URL = PRODUCTION_SITE_URL;
 
-export const SITE_NAME = "Family Jukebox";
+export const SITE_NAME = getSiteName();
 
-export const SITE_DESCRIPTION =
-  "Songs we made together — silly fox trails, pink glasses, gravity shifts, and little family anthems.";
+export const SITE_DESCRIPTION = getSiteDescription();
 
 /** Default link preview when no page-specific art is set */
 export const SHARE_IMAGE_PATH = "/og-share.jpg";
@@ -39,7 +45,7 @@ export function resolveShareImageUrl(pathOrUrl: string): string {
   }
 
   const path = pathOrUrl.startsWith("/") ? pathOrUrl : `/${pathOrUrl}`;
-  return `${SITE_URL}${path}`;
+  return `${getRuntimeSiteUrl()}${path}`;
 }
 
 function trimShareDescription(text: string): string {
@@ -87,7 +93,7 @@ export function buildShareMetadata(overrides?: {
 }): Metadata {
   const title = overrides?.title ?? SITE_NAME;
   const description = overrides?.description ?? SITE_DESCRIPTION;
-  const pageUrl = overrides?.path ? `${SITE_URL}${overrides.path}` : SITE_URL;
+  const pageUrl = overrides?.path ? `${getRuntimeSiteUrl()}${overrides.path}` : getRuntimeSiteUrl();
   const image = overrides?.image ?? defaultShareImage;
 
   return {

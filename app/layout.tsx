@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import { AppShell } from "@/components/app-shell";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site-metadata";
+import { getAppEnvironment, getRuntimeSiteUrl, getSiteDescription, getSiteName } from "@/lib/site-env";
 
 import "./globals.css";
 
@@ -13,12 +13,12 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(getRuntimeSiteUrl()),
   title: {
-    default: SITE_NAME,
-    template: `%s · ${SITE_NAME}`,
+    default: getSiteName(),
+    template: `%s · ${getSiteName()}`,
   },
-  description: SITE_DESCRIPTION,
+  description: getSiteDescription(),
   icons: {
     icon: "/og-share.jpg",
     apple: "/og-share.jpg",
@@ -30,8 +30,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const appEnvironment = getAppEnvironment();
+
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`}>
+    <html lang="en" data-env={appEnvironment} className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full">
         <AppShell>{children}</AppShell>
       </body>
