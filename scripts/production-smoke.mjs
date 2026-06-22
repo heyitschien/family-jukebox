@@ -64,12 +64,22 @@ server.stderr?.on("data", (chunk) => {
 });
 
 const shutdown = () => {
-  if (!server.killed) server.kill("SIGTERM");
+  if (!server.killed) {
+    server.kill("SIGTERM");
+    setTimeout(() => {
+      if (!server.killed) server.kill("SIGKILL");
+    }, 2_000).unref();
+  }
 };
 
-process.on("exit", shutdown);
-process.on("SIGINT", () => process.exit(1));
-process.on("SIGTERM", () => process.exit(1));
+process.on("SIGINT", () => {
+  shutdown();
+  process.exit(1);
+});
+process.on("SIGTERM", () => {
+  shutdown();
+  process.exit(1);
+});
 
 try {
   await waitForServer(`${BASE_URL}/`);
@@ -103,14 +113,15 @@ try {
   }
 
   await browser.close();
+  shutdown();
   console.log("Production smoke passed for all routes.");
+  process.exit(0);
 } catch (error) {
   console.error(error instanceof Error ? error.message : error);
   if (serverOutput) {
     console.error("--- server output ---");
     console.error(serverOutput.slice(-4000));
   }
-  process.exitCode = 1;
-} finally {
   shutdown();
+  process.exit(1);
 }
