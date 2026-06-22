@@ -1,6 +1,7 @@
 import { albums, getAlbumAuthor, type Album } from "@/data/albums";
 import { members, type FamilyMember } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
+import { scoreAlbumForListener, scoreSongForListener } from "@/lib/audience";
 
 export type SearchResultKind = "member" | "album" | "song";
 
@@ -19,6 +20,8 @@ export type SearchFilters = {
   memberSlug?: string | null;
   age?: number | null;
   tag?: string | null;
+  /** Boost results suited to this listener age without hiding the full catalog. */
+  listenerAge?: number | null;
 };
 
 function scoreText(text: string, query: string): number {
@@ -67,6 +70,29 @@ function passesFilters(
   return true;
 }
 
+function listenerAgeBoost(
+  kind: SearchResultKind,
+  item: FamilyMember | Album | Song,
+  listenerAge: number | null | undefined,
+): number {
+  if (listenerAge == null) return 0;
+
+  switch (kind) {
+    case "member": {
+      const member = item as FamilyMember;
+      return Math.max(0, 30 - Math.abs(member.age - listenerAge) * 2);
+    }
+    case "album":
+      return scoreAlbumForListener(item as Album, listenerAge) * 0.2;
+    case "song":
+      return scoreSongForListener(item as Song, listenerAge) * 0.2;
+    default: {
+      const _exhaustive: never = kind;
+      return _exhaustive;
+    }
+  }
+}
+
 export function searchCatalog(query: string, filters: SearchFilters = {}): SearchResult[] {
   const trimmed = query.trim();
   const results: SearchResult[] = [];
@@ -78,7 +104,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
       results.push({
         kind: "member",
         member,
-        score: trimmed ? score : 40 - members.indexOf(member),
+        score: (trimmed ? score : 40 - members.indexOf(member)) + listenerAgeBoost("member", member, filters.listenerAge),
         href: `/members/${member.slug}`,
       });
     }
@@ -92,7 +118,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
       results.push({
         kind: "album",
         album,
-        score: trimmed ? score : 35 - albums.indexOf(album),
+        score: (trimmed ? score : 35 - albums.indexOf(album)) + listenerAgeBoost("album", album, filters.listenerAge),
         href: `/albums/${album.slug}`,
       });
     }
@@ -106,7 +132,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
       results.push({
         kind: "song",
         song,
-        score: trimmed ? score : 30 - songs.indexOf(song),
+        score: (trimmed ? score : 30 - songs.indexOf(song)) + listenerAgeBoost("song", song, filters.listenerAge),
         href: `/songs/${song.slug}`,
       });
     }

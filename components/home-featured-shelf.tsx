@@ -17,8 +17,9 @@ const FeaturedShelf = dynamic(
 type HomeFeaturedShelfProps = {
   songs: Song[];
   tags: string[];
+  listenerAge?: number | null;
 };
 
-export function HomeFeaturedShelf(props: HomeFeaturedShelfProps) {
-  return <FeaturedShelf {...props} />;
+export function HomeFeaturedShelf({ listenerAge, ...props }: HomeFeaturedShelfProps) {
+  return <FeaturedShelf {...props} listenerAge={listenerAge} />;
 }

@@ -8,6 +8,7 @@ import { EmptyState } from "@/components/empty-state";
 import { InlineSearch } from "@/components/inline-search";
 import { SongRow } from "@/components/song-row";
 import { Topbar } from "@/components/topbar";
+import { useListenerAgeContext } from "@/contexts/listener-age-context";
 import type { FamilyMember } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { filterAlbums, filterSongs } from "@/lib/search";
@@ -21,6 +22,7 @@ type SearchScreenProps = {
 };
 
 export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
+  const { listenerAge } = useListenerAgeContext();
   const searchParams = useSearchParams();
   const initial = searchParams.get("q") ?? "";
   const [query, setQuery] = useState(initial);
@@ -33,8 +35,9 @@ export function SearchScreen({ tags, members, ages }: SearchScreenProps) {
       memberSlug: activeMember,
       age: activeAge,
       tag: activeTag,
+      listenerAge,
     }),
-    [activeAge, activeMember, activeTag],
+    [activeAge, activeMember, activeTag, listenerAge],
   );
 
   const filteredAlbums = useMemo(() => filterAlbums(query, filters), [filters, query]);

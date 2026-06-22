@@ -1,7 +1,4 @@
-import { HomeAlbumShelf } from "@/components/home-album-shelf";
-import { HomeFeaturedShelf } from "@/components/home-featured-shelf";
-import { HomeHeroCarousel } from "@/components/home-hero-carousel";
-import { HomeRecentQueue } from "@/components/home-recent-queue";
+import { HomeCuratedContent } from "@/components/home-curated-content";
 import { getSupplementarySeriesAlbums } from "@/data/albums";
 import { getAllTags } from "@/data/songs";
 import {
@@ -31,22 +28,16 @@ export default function HomePage() {
 
   return (
     <main className="min-w-0 px-3 lg:px-0">
-      <HomeHeroCarousel
-        albums={carouselAlbums}
-        featuredAlbum={featuredAlbum}
+      <HomeCuratedContent
         refreshSeed={refreshSeed}
+        featuredAlbum={featuredAlbum}
+        carouselAlbums={carouselAlbums}
+        supplementarySeries={supplementarySeries}
+        shelfSongs={shelfSongs}
+        familyQueue={familyQueue}
+        spotlightSlugs={spotlightSlugs}
+        tags={getAllTags()}
       />
-      <HomeAlbumShelf albums={carouselAlbums} subtitle="One album per family member — tap to explore or play" />
-      {supplementarySeries.length > 0 ? (
-        <HomeAlbumShelf
-          albums={supplementarySeries}
-          title="Growing series"
-          subtitle="Themed albums gaining new singles — not in the hero ring yet"
-          showViewAll
-        />
-      ) : null}
-      <HomeFeaturedShelf songs={shelfSongs} tags={getAllTags()} />
-      <HomeRecentQueue songs={shelfSongs} familyQueue={familyQueue} spotlightSlugs={spotlightSlugs} />
     </main>
   );
 }
