@@ -76,6 +76,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "../lib/site-metadata";
+import { APP_ICON_PATHS, buildWebAppManifest } from "../lib/app-install";
 import { getSongAuthor, getSongBySlug } from "../data/songs";
 import { getAlbumAuthor, getAlbumBySlug } from "../data/albums";
 import { getMemberBySlug } from "../data/members";
@@ -741,5 +742,46 @@ describe("link preview metadata", () => {
 
     assert.equal(metadata.openGraph?.url, `${SITE_URL}/family`);
     assert.equal(metadata.openGraph?.title, "Family artists · Cousin Radio");
+  });
+});
+
+describe("installable app icon metadata", () => {
+  it("exposes a standalone web manifest with square Cousin Radio brand icons", () => {
+    const manifest = buildWebAppManifest();
+
+    assert.equal(manifest.display, "standalone");
+    assert.equal(manifest.start_url, "/");
+    assert.equal(manifest.short_name, "Cousin Radio");
+    assert.equal(manifest.name, "Cousin Radio");
+    assert.equal(manifest.theme_color, "#0b0f14");
+    assert.equal(manifest.background_color, "#0b0f14");
+
+    const iconSources = manifest.icons?.map((icon) => icon.src) ?? [];
+    assert.deepEqual(iconSources, [
+      APP_ICON_PATHS.icon192,
+      APP_ICON_PATHS.icon512,
+      APP_ICON_PATHS.icon512Maskable,
+    ]);
+
+    const squareSizes = manifest.icons?.map((icon) => icon.sizes) ?? [];
+    assert.ok(squareSizes.every((size) => /^\d+x\d+$/.test(size ?? "")));
+    assert.ok(squareSizes.includes("192x192"));
+    assert.ok(squareSizes.includes("512x512"));
+  });
+
+  it("does not point install icons at the wide opengraph preview image", () => {
+    const manifest = buildWebAppManifest();
+    const iconSources = manifest.icons?.map((icon) => icon.src) ?? [];
+
+    assert.ok(iconSources.every((src) => !src.includes("opengraph-image")));
+    assert.ok(iconSources.every((src) => src.startsWith("/icon/")));
+  });
+
+  it("does not ship the default Vercel favicon.ico", () => {
+    assert.equal(
+      existsSync(path.join(process.cwd(), "app", "favicon.ico")),
+      false,
+      "remove app/favicon.ico so Next.js serves Cousin Radio icon routes",
+    );
   });
 });

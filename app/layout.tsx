@@ -1,7 +1,8 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 
 import { AppShell } from "@/components/app-shell";
+import { APP_THEME_COLOR } from "@/lib/app-install";
 import { getAppEnvironment, getRuntimeSiteUrl, getSiteDescription, getSiteName } from "@/lib/site-env";
 
 import "./globals.css";
@@ -19,6 +20,17 @@ export const metadata: Metadata = {
     template: `%s · ${getSiteName()}`,
   },
   description: getSiteDescription(),
+  applicationName: getSiteName(),
+  appleWebApp: {
+    capable: true,
+    title: "Cousin Radio",
+    statusBarStyle: "black-translucent",
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: APP_THEME_COLOR,
+  colorScheme: "dark",
 };
 
 export default function RootLayout({

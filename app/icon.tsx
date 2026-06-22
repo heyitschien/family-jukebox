@@ -1,28 +1,30 @@
 import { ImageResponse } from "next/og";
 
-export const size = { width: 32, height: 32 };
+import { BrandAppIcon, getBrandIconDimensions } from "@/lib/brand-app-icon";
+
 export const contentType = "image/png";
 
-export default function Icon() {
+const ICON_VARIANTS = [
+  { id: "32", size: 32, variant: "default" as const },
+  { id: "192", size: 192, variant: "default" as const },
+  { id: "512", size: 512, variant: "default" as const },
+  { id: "512-maskable", size: 512, variant: "maskable" as const },
+] as const;
+
+export function generateImageMetadata() {
+  return ICON_VARIANTS.map(({ id, size }) => ({
+    id,
+    size: getBrandIconDimensions(size),
+    contentType: "image/png" as const,
+  }));
+}
+
+export default async function Icon({ id }: { id: Promise<string> }) {
+  const iconId = await id;
+  const config = ICON_VARIANTS.find((item) => item.id === iconId) ?? ICON_VARIANTS[0];
+
   return new ImageResponse(
-    (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          borderRadius: 8,
-          background: "#ff6fb1",
-          color: "#1a0812",
-          fontSize: 20,
-          fontWeight: 900,
-        }}
-      >
-        ♪
-      </div>
-    ),
-    { ...size },
+    <BrandAppIcon size={config.size} variant={config.variant} />,
+    getBrandIconDimensions(config.size),
   );
 }

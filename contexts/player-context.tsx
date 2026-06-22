@@ -11,9 +11,16 @@ import {
 } from "react";
 
 import type { Song } from "@/data/songs";
+import { getMemberBySlug } from "@/data/members";
 import type { PlaySource } from "@/lib/analytics/constants";
 import { trackPlayEvent } from "@/lib/analytics/track-play";
 import { buildRadioContinuation, shouldContinueRadio } from "@/lib/cousin-radio";
+import {
+  bindMediaSessionActions,
+  clearMediaSessionMetadata,
+  syncMediaSessionMetadata,
+  syncMediaSessionPlaybackState,
+} from "@/lib/media-session";
 import { recordSessionPlay } from "@/lib/session-listening";
 import {
   cycleRepeatMode,
@@ -375,6 +382,46 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       audio.removeEventListener("ended", onEnded);
     };
   }, [advanceTrack]);
+
+  useEffect(() => {
+    return bindMediaSessionActions({
+      onPlay: () => {
+        const audio = audioRef.current;
+        if (!audio || !currentSongRef.current) return;
+        void audio
+          .play()
+          .then(() => setIsPlaying(true))
+          .catch(() => setIsPlaying(false));
+      },
+      onPause: () => {
+        audioRef.current?.pause();
+        setIsPlaying(false);
+      },
+      onSkipNext: () => advanceTrack("next", true),
+      onSkipPrev: () => {
+        const audio = audioRef.current;
+        if (audio && audio.currentTime > 3) {
+          restartCurrentTrack(audio);
+          return;
+        }
+        advanceTrack("prev", true);
+      },
+    });
+  }, [advanceTrack, restartCurrentTrack]);
+
+  useEffect(() => {
+    if (!currentSong) {
+      clearMediaSessionMetadata();
+      return;
+    }
+
+    const author = getMemberBySlug(currentSong.authorSlug);
+    syncMediaSessionMetadata(currentSong, author ?? null);
+  }, [currentSong]);
+
+  useEffect(() => {
+    syncMediaSessionPlaybackState(isPlaying);
+  }, [isPlaying]);
 
   return (
     <PlayerContext.Provider
