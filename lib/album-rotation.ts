@@ -1,10 +1,11 @@
 import {
   getAllAlbums,
+  getAlbumSongs,
   getPrimaryAlbums,
   type Album,
 } from "@/data/albums";
 import { members } from "@/data/members";
-import { songs } from "@/data/songs";
+import { songs, type Song } from "@/data/songs";
 import {
   getCelebrationAlbumSlugs,
   getCelebrationHeroBadge,
@@ -19,6 +20,52 @@ function rotateArray<T>(items: T[], offset: number): T[] {
   if (items.length === 0) return items;
   const normalized = ((offset % items.length) + items.length) % items.length;
   return [...items.slice(normalized), ...items.slice(0, normalized)];
+}
+
+function hashSlug(slug: string): number {
+  let hash = 0;
+  for (let i = 0; i < slug.length; i += 1) {
+    hash = (hash * 31 + slug.charCodeAt(i)) >>> 0;
+  }
+  return hash;
+}
+
+/** Album tracks sorted newest-first — used for cover rotation and spotlight picks. */
+export function getAlbumSongsByRecency(album: Album): Song[] {
+  const trackOrder = new Map(album.songSlugs.map((slug, index) => [slug, index]));
+
+  return [...getAlbumSongs(album)].sort((a, b) => {
+    const dateCmp = b.dateCreated.localeCompare(a.dateCreated);
+    if (dateCmp !== 0) return dateCmp;
+
+    const trackCmp = (trackOrder.get(b.slug) ?? 0) - (trackOrder.get(a.slug) ?? 0);
+    if (trackCmp !== 0) return trackCmp;
+
+    return a.title.localeCompare(b.title);
+  });
+}
+
+/** Daily spotlight track within a multi-song album (latest-first ordering). */
+export function getAlbumSpotlightSongIndex(album: Album, refreshSeed = 0): number {
+  const recencySongs = getAlbumSongsByRecency(album);
+  if (recencySongs.length <= 1) return 0;
+  return (getDayIndex() + refreshSeed + hashSlug(album.slug)) % recencySongs.length;
+}
+
+export function getAlbumSpotlightSong(album: Album, refreshSeed = 0): Song | undefined {
+  const recencySongs = getAlbumSongsByRecency(album);
+  const index = getAlbumSpotlightSongIndex(album, refreshSeed);
+  return recencySongs[index];
+}
+
+/** Map album slug → spotlight song for the current refresh seed. */
+export function getAlbumSpotlightSongMap(
+  albumList: Album[],
+  refreshSeed = 0,
+): Map<string, Song | undefined> {
+  return new Map(
+    albumList.map((album) => [album.slug, getAlbumSpotlightSong(album, refreshSeed)]),
+  );
 }
 
 /** One primary album per family member — same set as the 3D carousel. */

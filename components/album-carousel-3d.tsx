@@ -2,17 +2,24 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { AlbumCoverRotator, getPlayStartIndex } from "@/components/album-cover-rotator";
 import { ArtistLink } from "@/components/artist-link";
-import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { Topbar } from "@/components/topbar";
 import { usePlayer } from "@/contexts/player-context";
 import { getAlbumSongs, type Album } from "@/data/albums";
 import { getAlbumAuthor } from "@/data/albums";
+import { getCarouselRingLayout } from "@/lib/carousel-layout";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
-import { getAlbumHeroBadge, getSpotlightAlbumAuthorNames } from "@/lib/album-rotation";
+import {
+  getAlbumHeroBadge,
+  getAlbumSongsByRecency,
+  getAlbumSpotlightSong,
+  getAlbumSpotlightSongIndex,
+  getSpotlightAlbumAuthorNames,
+} from "@/lib/album-rotation";
 import { cn } from "@/lib/utils";
 
 type AlbumCarousel3DProps = {
@@ -36,6 +43,8 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   const activeAlbum = albums[activeIndex] ?? featuredAlbum;
   const activeSongs = getAlbumSongs(activeAlbum);
+  const activeRecencySongs = useMemo(() => getAlbumSongsByRecency(activeAlbum), [activeAlbum]);
+  const activeSpotlightSong = getAlbumSpotlightSong(activeAlbum, refreshSeed);
   const author = getAlbumAuthor(activeAlbum);
   const spotlightNames = getSpotlightAlbumAuthorNames();
   const heroBadge = getAlbumHeroBadge(activeAlbum, featuredAlbum);
@@ -65,10 +74,19 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
     return () => clearInterval(timer);
   }, [isPaused, albums.length, rotateNext]);
 
+  const playAlbum = useCallback(
+    (album: Album, displaySong = getAlbumSpotlightSong(album, refreshSeed)) => {
+      const albumSongs = getAlbumSongs(album);
+      if (albumSongs.length === 0) return;
+      const startIndex = getPlayStartIndex(albumSongs, displaySong);
+      playQueue(albumSongs, startIndex);
+    },
+    [playQueue, refreshSeed],
+  );
+
   const playActiveAlbum = useCallback(() => {
-    if (activeSongs.length === 0) return;
-    playQueue(activeSongs, 0);
-  }, [activeSongs, playQueue]);
+    playAlbum(activeAlbum, activeSpotlightSong);
+  }, [activeAlbum, activeSpotlightSong, playAlbum]);
 
   const handlePlayToggle = useCallback(() => {
     if (isAlbumPlaying) {
@@ -91,9 +109,14 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   const count = albums.length;
   const angleStep = count > 0 ? 360 / count : 0;
-  const coverSize = count <= 5 ? 180 : 160;
-  const radius =
-    count <= 3 ? 140 : count <= 5 ? 168 : count <= 6 ? 175 : Math.min(200, Math.round(coverSize / Math.sin(Math.PI / count)));
+  const layout = getCarouselRingLayout(count);
+  const { coverSize, radius, dotSizeClass, activeDotWidthClass, maxDotsVisible } = layout;
+
+  const dotWindowStart =
+    count <= maxDotsVisible
+      ? 0
+      : Math.max(0, Math.min(activeIndex - Math.floor(maxDotsVisible / 2), count - maxDotsVisible));
+  const visibleDots = albums.slice(dotWindowStart, dotWindowStart + maxDotsVisible);
 
   return (
     <section
@@ -117,7 +140,6 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
       />
 
       <div className="relative z-10 grid gap-6 p-6 sm:grid-cols-[1fr_1.1fr] sm:items-center sm:gap-8 sm:p-[34px] lg:min-h-[400px]">
-        {/* 3D Carousel */}
         <div
           className="relative mx-auto flex h-[280px] w-full max-w-[340px] items-center justify-center sm:h-[320px] sm:max-w-none"
           style={{ perspective: "1200px" }}
@@ -135,6 +157,9 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               const isFront = i === activeIndex;
               const albumAuthor = getAlbumAuthor(album);
               const albumSongs = getAlbumSongs(album);
+              const recencySongs = getAlbumSongsByRecency(album);
+              const spotlightSongIndex = getAlbumSpotlightSongIndex(album, refreshSeed);
+              const spotlightSong = recencySongs[spotlightSongIndex];
               const albumIsPlaying =
                 isPlaying &&
                 albumSongs.length > 0 &&
@@ -167,7 +192,15 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                       : "0 12px 32px rgba(0,0,0,0.3)",
                   }}
                 >
-                  <CoverImage src={album.coverSrc} alt="" className="size-full" />
+                  <AlbumCoverRotator
+                    key={`${album.slug}-${isFront ? "front" : `side-${spotlightSongIndex}`}`}
+                    album={album}
+                    songs={recencySongs}
+                    initialSongIndex={spotlightSongIndex}
+                    isFront={isFront}
+                    isPaused={isPaused}
+                    className="size-full"
+                  />
                   {isFront ? (
                     <>
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
@@ -184,7 +217,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                               handlePlayToggle();
                             } else {
                               rotateTo(i);
-                              playQueue(albumSongs, 0);
+                              playAlbum(album, spotlightSong);
                             }
                           }}
                           className="shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
@@ -200,6 +233,11 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                         ) : (
                           <p className="truncate text-xs font-bold text-white">Family</p>
                         )}
+                        {recencySongs.length > 1 ? (
+                          <p className="truncate text-[10px] text-white/75">
+                            {recencySongs.length} songs · rotating covers
+                          </p>
+                        ) : null}
                       </div>
                     </>
                   ) : (
@@ -249,24 +287,38 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
             })}
           </div>
 
-          {/* Carousel dots */}
-          <div className="absolute bottom-0 left-1/2 flex -translate-x-1/2 gap-1.5">
-            {albums.map((album, i) => (
-              <button
-                key={album.slug}
-                type="button"
-                onClick={() => rotateTo(i)}
-                className={cn(
-                  "size-2 rounded-full transition-all",
-                  i === activeIndex ? "w-5 bg-[var(--family-pink)]" : "bg-white/25 hover:bg-white/40",
-                )}
-                aria-label={`Go to ${album.title}`}
-              />
-            ))}
+          <div className="absolute bottom-0 left-1/2 flex max-w-[min(100%,280px)] -translate-x-1/2 items-center gap-1.5 overflow-hidden px-2">
+            {dotWindowStart > 0 ? (
+              <span className="text-[10px] text-white/35" aria-hidden>
+                ···
+              </span>
+            ) : null}
+            {visibleDots.map((album, offset) => {
+              const i = dotWindowStart + offset;
+              return (
+                <button
+                  key={album.slug}
+                  type="button"
+                  onClick={() => rotateTo(i)}
+                  className={cn(
+                    "shrink-0 rounded-full transition-all",
+                    dotSizeClass,
+                    i === activeIndex
+                      ? cn(activeDotWidthClass, "bg-[var(--family-pink)]")
+                      : "bg-white/25 hover:bg-white/40",
+                  )}
+                  aria-label={`Go to ${album.title}`}
+                />
+              );
+            })}
+            {dotWindowStart + maxDotsVisible < count ? (
+              <span className="text-[10px] text-white/35" aria-hidden>
+                ···
+              </span>
+            ) : null}
           </div>
         </div>
 
-        {/* Hero copy + actions */}
         <div className="relative z-10 min-w-0">
           <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
             {heroBadge.emoji} {heroBadge.prefix}
@@ -286,6 +338,18 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
           >
             {activeAlbum.title}
           </Link>
+          {activeRecencySongs.length > 1 && activeSpotlightSong ? (
+            <p className="mt-1 text-sm font-semibold text-white/90">
+              Featuring{" "}
+              <Link
+                href={`/songs/${activeSpotlightSong.slug}`}
+                className="transition hover:underline"
+                style={{ color: activeAlbum.accentColor }}
+              >
+                {activeSpotlightSong.title}
+              </Link>
+            </p>
+          ) : null}
           <p className="mt-1 text-sm text-[var(--jb-muted)]">
             {activeAlbum.subtitle ?? `${activeSongs.length} songs`}
             {author ? (
@@ -297,10 +361,10 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
           </p>
           <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
             Spin through cousin albums — silly fox trails, gravity shifts, pink glasses, and every
-            family anthem in one place.
+            family anthem in one place. Multi-song albums rotate their latest tracks in 3D.
           </p>
           <p className="mt-2 text-xs font-bold text-[var(--family-ocean)]">
-            Rotating spotlight: {spotlightNames}
+            {count} family albums · rotating spotlight: {spotlightNames}
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
