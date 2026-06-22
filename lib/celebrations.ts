@@ -19,6 +19,20 @@ export function getFathersDayDate(year: number): { month: number; day: number } 
   return { month: 6, day: thirdSunday };
 }
 
+/** Local calendar day match with a small window so releases stay featured after midnight. */
+export function isWithinCelebrationWindow(
+  date: Date,
+  month: number,
+  day: number,
+  windowDays = 3,
+): boolean {
+  const year = date.getFullYear();
+  const target = new Date(year, date.getMonth(), date.getDate()).getTime();
+  const center = new Date(year, month - 1, day).getTime();
+  const windowMs = windowDays * 24 * 60 * 60 * 1000;
+  return Math.abs(target - center) <= windowMs;
+}
+
 export const celebrationHighlights: CelebrationHighlight[] = [
   {
     id: "marceline-birthday",
@@ -27,7 +41,7 @@ export const celebrationHighlights: CelebrationHighlight[] = [
     badgePrefix: "Happy 3rd birthday · ",
     songSlugs: ["three-candles-for-marceline"],
     albumSlugs: ["three-candles-for-marceline-album"],
-    matchesDate: (date) => date.getMonth() === 5 && date.getDate() === 21,
+    matchesDate: (date) => isWithinCelebrationWindow(date, 6, 21),
   },
   {
     id: "fathers-day",
@@ -38,7 +52,7 @@ export const celebrationHighlights: CelebrationHighlight[] = [
     albumSlugs: ["legacy-in-the-lane-album"],
     matchesDate: (date) => {
       const fathersDay = getFathersDayDate(date.getFullYear());
-      return date.getMonth() + 1 === fathersDay.month && date.getDate() === fathersDay.day;
+      return isWithinCelebrationWindow(date, fathersDay.month, fathersDay.day);
     },
   },
 ];

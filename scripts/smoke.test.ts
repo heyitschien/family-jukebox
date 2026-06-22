@@ -1,4 +1,6 @@
 import assert from "node:assert/strict";
+import { existsSync } from "node:fs";
+import path from "node:path";
 import { describe, it } from "node:test";
 
 import {
@@ -51,6 +53,14 @@ import {
 import { getSongAuthor, getSongBySlug } from "../data/songs";
 import { getAlbumAuthor, getAlbumBySlug } from "../data/albums";
 
+const PUBLIC_ROOT = path.join(process.cwd(), "public");
+
+function assertPublicAssetExists(publicPath: string, label: string): void {
+  const relativePath = publicPath.replace(/^\//, "");
+  const absolutePath = path.join(PUBLIC_ROOT, relativePath);
+  assert.ok(existsSync(absolutePath), `${label} missing on disk: ${publicPath}`);
+}
+
 describe("jukebox catalog", () => {
   it("has songs with playable assets", () => {
     assert.ok(songs.length > 0, "catalog should not be empty");
@@ -60,10 +70,21 @@ describe("jukebox catalog", () => {
       assert.ok(song.title, `song missing title: ${song.slug}`);
       assert.ok(song.audioSrc.startsWith("/"), `${song.slug} audioSrc should be a public path`);
       assert.ok(song.coverSrc.startsWith("/"), `${song.slug} coverSrc should be a public path`);
+      assertPublicAssetExists(song.audioSrc, `${song.slug} audio`);
+      assertPublicAssetExists(song.coverSrc, `${song.slug} cover`);
       assert.ok(
         members.some((member) => member.slug === song.authorSlug),
         `${song.slug} authorSlug should match a family member`,
       );
+    }
+  });
+
+  it("ships cover art for celebration singles", () => {
+    for (const slug of ["three-candles-for-marceline", "legacy-in-the-lane"] as const) {
+      const song = songs.find((entry) => entry.slug === slug);
+      assert.ok(song, `${slug} should exist in catalog`);
+      assertPublicAssetExists(song.coverSrc, `${slug} cover`);
+      assertPublicAssetExists(song.audioSrc, `${slug} audio`);
     }
   });
 });
@@ -230,6 +251,14 @@ describe("celebration highlights", () => {
     ]);
     assert.ok(getCelebrationAlbumSlugs(date).includes("three-candles-for-marceline-album"));
     assert.ok(getCelebrationAlbumSlugs(date).includes("legacy-in-the-lane-album"));
+  });
+
+  it("keeps celebration releases featured for a few days after launch", () => {
+    const dayAfter = new Date(2026, 5, 22);
+    assert.deepEqual(getCelebrationSongSlugs(dayAfter), [
+      "three-candles-for-marceline",
+      "legacy-in-the-lane",
+    ]);
   });
 
   it("computes US Father's Day as the third Sunday in June", () => {
