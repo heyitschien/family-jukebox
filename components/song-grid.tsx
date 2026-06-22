@@ -54,7 +54,6 @@ export function SongGrid({
     const normalizedQuery = query.trim().toLowerCase();
 
     return songs.filter((song) => {
-      const author = getMemberBySlug(song.authorSlug);
       const matchesAudience = isSongVisibleForAudience(song, audienceId);
       const matchesTag = activeTag ? song.tags.includes(activeTag) : true;
       const matchesMember = activeMember ? song.authorSlug === activeMember : true;

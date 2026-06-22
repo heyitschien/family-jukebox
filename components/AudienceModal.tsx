@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Music2, X } from "lucide-react";
 
 import { AudienceCard } from "@/components/AudienceCard";
@@ -15,20 +15,15 @@ export function AudienceModal() {
     hydrated,
     setAudienceId,
   } = useFamilyAudienceContext();
-  const [selectedId, setSelectedId] = useState<FamilyAudienceId | null>(audienceId);
+  const [pendingId, setPendingId] = useState<FamilyAudienceId | null>(null);
 
   const firstVisit = hydrated && audienceId === null;
   const shouldShow = hydrated && (firstVisit || audienceModalOpen);
 
-  useEffect(() => {
-    if (shouldShow) {
-      setSelectedId(audienceId);
-    }
-  }, [audienceId, shouldShow]);
-
   if (!shouldShow) return null;
 
   const canClose = audienceId !== null;
+  const selectedId = pendingId ?? audienceId;
 
   return (
     <div
@@ -43,7 +38,10 @@ export function AudienceModal() {
         {canClose ? (
           <button
             type="button"
-            onClick={closeAudienceModal}
+            onClick={() => {
+              setPendingId(null);
+              closeAudienceModal();
+            }}
             className="absolute right-4 top-4 z-10 grid size-9 place-items-center rounded-full bg-white/[0.08] text-[var(--jb-muted)] transition hover:bg-white/[0.14] hover:text-white"
             aria-label="Close"
           >
@@ -74,7 +72,7 @@ export function AudienceModal() {
               key={audience.id}
               audience={audience}
               selected={selectedId === audience.id}
-              onSelect={() => setSelectedId(audience.id)}
+              onSelect={() => setPendingId(audience.id)}
               variant="modal"
             />
           ))}
@@ -88,7 +86,10 @@ export function AudienceModal() {
           <button
             type="button"
             onClick={() => {
-              if (selectedId) setAudienceId(selectedId);
+              if (selectedId) {
+                setAudienceId(selectedId);
+                setPendingId(null);
+              }
             }}
             disabled={!selectedId}
             className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-full bg-family-accent px-6 py-3 text-sm font-black text-[#1a0812] transition hover:scale-[1.02] disabled:cursor-not-allowed disabled:opacity-45"
