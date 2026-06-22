@@ -47,6 +47,7 @@ import {
   readFavoriteSlugsFromRaw,
   serializeFavoriteSlugs,
 } from "../lib/favorites-storage";
+import { verifyCopyrightRegistry } from "../lib/copyright-registry";
 import {
   buildAlbumShareDescription,
   buildCoverShareImage,
@@ -425,6 +426,17 @@ describe("player queue logic", () => {
     assert.equal(result.index, 0);
     assert.equal(result.queue[0]?.slug, "c");
     assert.equal(result.queue.length, 3);
+  });
+});
+
+describe("copyright registry", () => {
+  it("tracks every catalog song with valid SHA-256 fingerprints", () => {
+    const issues = verifyCopyrightRegistry();
+    assert.equal(
+      issues.length,
+      0,
+      issues.map((issue) => `${issue.songSlug}: ${issue.message}`).join("\n"),
+    );
   });
 });
 

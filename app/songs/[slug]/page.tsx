@@ -26,6 +26,8 @@ import {
   buildShareMetadata,
   buildSongShareDescription,
 } from "@/lib/site-metadata";
+import { getCopyrightRecordBySlug } from "@/lib/copyright-registry";
+import { SongCopyrightNotice } from "@/components/song-copyright-notice";
 
 type SongPageProps = {
   params: Promise<{ slug: string }>;
@@ -64,6 +66,7 @@ export default async function SongPage({ params }: SongPageProps) {
       ? getSimilarSongs(song)
       : getDiscoverSongs([song.slug, ...moreFromArtist.map((entry) => entry.slug)], 6);
   const discoverMembers = getDiscoverMembers(song.authorSlug);
+  const copyrightRecord = getCopyrightRecordBySlug(song.slug);
 
   return (
     <main className="min-w-0 px-3 pb-4 lg:px-0">
@@ -159,6 +162,7 @@ export default async function SongPage({ params }: SongPageProps) {
             </pre>
           </section>
         ) : null}
+        {copyrightRecord ? <SongCopyrightNotice record={copyrightRecord} /> : null}
       </div>
 
       {moreFromAlbum.length > 0 && parentAlbum ? (

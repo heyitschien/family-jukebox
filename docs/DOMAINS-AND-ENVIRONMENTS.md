@@ -76,6 +76,7 @@ Staging deploy workflow runs `vercel alias set … staging.cousinradio.com` afte
 - ✅ Run `npm run ci` before pushing  
 - ✅ Log production incidents in `docs/INCIDENTS.md`  
 - ✅ Song/catalog work: see `docs/ADDING_SONGS.md`  
+- ✅ Copyright / ownership: see `docs/COPYRIGHT-AND-OWNERSHIP.md` — register every new song  
 - ✅ Staging workflow details: `docs/STAGING.md`  
 - ✅ CI/CD overview: `docs/CI-CD.md`  
 
