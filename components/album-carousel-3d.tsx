@@ -20,6 +20,7 @@ import {
   getAlbumSpotlightSongIndex,
   getSpotlightAlbumAuthorNames,
 } from "@/lib/album-rotation";
+import { BRAND_NAME } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 
 type AlbumCarousel3DProps = {
@@ -329,7 +330,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
             )}
           </span>
           <h1 className="text-[clamp(40px,10vw,72px)] leading-[0.9] font-extrabold tracking-[-0.06em]">
-            Family Jukebox
+            {BRAND_NAME}
           </h1>
           <Link
             href={`/albums/${activeAlbum.slug}`}

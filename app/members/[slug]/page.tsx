@@ -144,7 +144,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
         <SongShelf
           songs={discoverSongs}
           title="Discover more songs"
-          subtitle="Fresh picks from across the jukebox"
+          subtitle="Fresh picks from across Cousin Radio"
           viewAllHref="/songs"
           viewAllLabel="Browse songs"
           compact

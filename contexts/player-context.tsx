@@ -26,6 +26,8 @@ import {
   type RepeatMode,
   type ShuffleMode,
 } from "@/lib/player-queue";
+import { BRAND_NAME, buildBrandArtworkUrl } from "@/lib/brand";
+import { getMemberBySlug } from "@/data/members";
 
 type PlayerContextValue = {
   currentSong: Song | null;
@@ -375,6 +377,36 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
       audio.removeEventListener("ended", onEnded);
     };
   }, [advanceTrack]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("mediaSession" in navigator)) return;
+
+    if (!currentSong) {
+      navigator.mediaSession.metadata = null;
+      return;
+    }
+
+    const author = getMemberBySlug(currentSong.authorSlug);
+    const origin = window.location.origin;
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: currentSong.title,
+      artist: author?.name ?? BRAND_NAME,
+      album: BRAND_NAME,
+      artwork: [
+        {
+          src: buildBrandArtworkUrl(origin, 256),
+          sizes: "256x256",
+          type: "image/png",
+        },
+        {
+          src: buildBrandArtworkUrl(origin, 512),
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    });
+  }, [currentSong]);
 
   return (
     <PlayerContext.Provider
