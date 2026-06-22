@@ -4,13 +4,16 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
+  useSyncExternalStore,
   type ReactNode,
 } from "react";
 
 const FAVORITES_STORAGE_KEY = "family-jukebox:favorites";
+const FAVORITES_CHANGE_EVENT = "family-jukebox:favorites-change";
+const EMPTY_FAVORITES_VALUE = "[]";
+
+let fallbackFavoritesValue = EMPTY_FAVORITES_VALUE;
 
 type FavoritesContextValue = {
   favoriteSlugs: string[];
@@ -51,42 +54,84 @@ function parseFavoriteSlugs(rawValue: string | null): string[] {
   }
 }
 
-function readFavoriteSlugs(): string[] {
-  if (typeof window === "undefined") return [];
+function readFavoritesStorageValue(): string {
+  if (typeof window === "undefined") return fallbackFavoritesValue;
 
   try {
-    return parseFavoriteSlugs(window.localStorage.getItem(FAVORITES_STORAGE_KEY));
+    return window.localStorage.getItem(FAVORITES_STORAGE_KEY) ?? EMPTY_FAVORITES_VALUE;
   } catch {
-    return [];
+    return fallbackFavoritesValue;
   }
+}
+
+function getServerFavoritesStorageValue(): string {
+  return EMPTY_FAVORITES_VALUE;
+}
+
+function getHydratedSnapshot(): boolean {
+  return true;
+}
+
+function getServerHydratedSnapshot(): boolean {
+  return false;
+}
+
+function subscribeToHydration() {
+  return () => {};
+}
+
+function notifyFavoriteSubscribers() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new Event(FAVORITES_CHANGE_EVENT));
+}
+
+function subscribeToFavoriteStorage(onStoreChange: () => void) {
+  if (typeof window === "undefined") return () => {};
+
+  function handleStorage(event: StorageEvent) {
+    if (event.key !== FAVORITES_STORAGE_KEY) return;
+    fallbackFavoritesValue = event.newValue ?? EMPTY_FAVORITES_VALUE;
+    onStoreChange();
+  }
+
+  window.addEventListener("storage", handleStorage);
+  window.addEventListener(FAVORITES_CHANGE_EVENT, onStoreChange);
+
+  return () => {
+    window.removeEventListener("storage", handleStorage);
+    window.removeEventListener(FAVORITES_CHANGE_EVENT, onStoreChange);
+  };
 }
 
 function writeFavoriteSlugs(slugs: string[]) {
+  fallbackFavoritesValue = JSON.stringify(slugs);
+
   if (typeof window === "undefined") return;
 
   try {
-    window.localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(slugs));
+    window.localStorage.setItem(FAVORITES_STORAGE_KEY, fallbackFavoritesValue);
   } catch {
     // Keep in-memory favorites usable even if browser storage is unavailable.
   }
+
+  notifyFavoriteSubscribers();
 }
 
 export function FavoritesProvider({ children }: { children: ReactNode }) {
-  const [favoriteSlugs, setFavoriteSlugs] = useState<string[]>([]);
-  const [hasHydrated, setHasHydrated] = useState(false);
-
-  useEffect(() => {
-    setFavoriteSlugs(readFavoriteSlugs());
-    setHasHydrated(true);
-
-    function handleStorage(event: StorageEvent) {
-      if (event.key !== FAVORITES_STORAGE_KEY) return;
-      setFavoriteSlugs(parseFavoriteSlugs(event.newValue));
-    }
-
-    window.addEventListener("storage", handleStorage);
-    return () => window.removeEventListener("storage", handleStorage);
-  }, []);
+  const favoriteStorageValue = useSyncExternalStore(
+    subscribeToFavoriteStorage,
+    readFavoritesStorageValue,
+    getServerFavoritesStorageValue,
+  );
+  const hasHydrated = useSyncExternalStore(
+    subscribeToHydration,
+    getHydratedSnapshot,
+    getServerHydratedSnapshot,
+  );
+  const favoriteSlugs = useMemo(
+    () => parseFavoriteSlugs(favoriteStorageValue),
+    [favoriteStorageValue],
+  );
 
   const favoriteSlugSet = useMemo(() => new Set(favoriteSlugs), [favoriteSlugs]);
 
@@ -99,34 +144,26 @@ export function FavoritesProvider({ children }: { children: ReactNode }) {
     const normalizedSlug = songSlug.trim();
     if (!normalizedSlug) return;
 
-    setFavoriteSlugs((current) => {
-      if (current.includes(normalizedSlug)) return current;
-      const next = [...current, normalizedSlug];
-      writeFavoriteSlugs(next);
-      return next;
-    });
+    const current = parseFavoriteSlugs(readFavoritesStorageValue());
+    if (current.includes(normalizedSlug)) return;
+    writeFavoriteSlugs([...current, normalizedSlug]);
   }, []);
 
   const removeFavorite = useCallback((songSlug: string) => {
-    setFavoriteSlugs((current) => {
-      if (!current.includes(songSlug)) return current;
-      const next = current.filter((slug) => slug !== songSlug);
-      writeFavoriteSlugs(next);
-      return next;
-    });
+    const current = parseFavoriteSlugs(readFavoritesStorageValue());
+    if (!current.includes(songSlug)) return;
+    writeFavoriteSlugs(current.filter((slug) => slug !== songSlug));
   }, []);
 
   const toggleFavorite = useCallback((songSlug: string) => {
     const normalizedSlug = songSlug.trim();
     if (!normalizedSlug) return;
 
-    setFavoriteSlugs((current) => {
-      const next = current.includes(normalizedSlug)
-        ? current.filter((slug) => slug !== normalizedSlug)
-        : [...current, normalizedSlug];
-      writeFavoriteSlugs(next);
-      return next;
-    });
+    const current = parseFavoriteSlugs(readFavoritesStorageValue());
+    const next = current.includes(normalizedSlug)
+      ? current.filter((slug) => slug !== normalizedSlug)
+      : [...current, normalizedSlug];
+    writeFavoriteSlugs(next);
   }, []);
 
   const value = useMemo(
