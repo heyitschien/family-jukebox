@@ -15,7 +15,7 @@ Open PR → CI runs (lint, smoke, build)
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
-| **CI** | PR + push to `main` | `npm run lint`, `npm run smoke`, `npm run build` |
+| **CI** | PR + push to `main` | `npm run lint`, `npm run smoke`, `npm run build`, production browser smoke |
 | **CI → auto-merge** | PR only, after CI passes | Merges the PR and deletes the branch |
 | **Deploy** | Push to `main` | Builds and deploys to Vercel production |
 | **CD** | After Deploy succeeds | Smoke-checks production URLs (no `__next_error__`) |
@@ -29,6 +29,14 @@ Add the **`no-automerge`** label to a PR if you want to review or merge manually
 ```bash
 npm run ci
 ```
+
+`npm run ci` ends with **production browser smoke** — it starts the built app and opens `/`, `/songs`, `/favorites`, and `/family` in headless Chrome. This catches client-side React crashes that plain HTTP checks miss. See `docs/INCIDENTS.md` for why this exists.
+
+## When production breaks
+
+1. Log the incident in [`docs/INCIDENTS.md`](./INCIDENTS.md) (symptoms, root cause, fix, prevention).
+2. Add a test or CI step so the same failure cannot merge again.
+3. Run `npm run ci` before pushing.
 
 ## Branch protection
 

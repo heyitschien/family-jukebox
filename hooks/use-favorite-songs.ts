@@ -2,53 +2,30 @@
 
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 
-const FAVORITE_STORAGE_KEY = "family-jukebox:favorites";
-const FAVORITES_CHANGED_EVENT = "family-jukebox:favorites:changed";
+import {
+  EMPTY_FAVORITE_SLUGS,
+  FAVORITES_CHANGED_EVENT,
+  FAVORITE_STORAGE_KEY,
+  readFavoriteSlugsFromRaw,
+  serializeFavoriteSlugs,
+  type FavoriteSnapshotCache,
+} from "@/lib/favorites-storage";
 
-let favoriteSnapshotCache: { raw: string | null; slugs: readonly string[] } | null = null;
-const EMPTY_FAVORITE_SLUGS: readonly string[] = Object.freeze([]);
-
-function normalizeFavoriteSlugs(slugs: string[]): string[] {
-  return Array.from(
-    new Set(
-      slugs
-        .map((slug) => slug.trim())
-        .filter(Boolean),
-    ),
-  );
-}
-
-function parseFavoriteSlugs(serialized: string | null): string[] {
-  if (!serialized) return [];
-
-  try {
-    const parsed = JSON.parse(serialized);
-    if (!Array.isArray(parsed)) return [];
-    return normalizeFavoriteSlugs(parsed.filter((entry): entry is string => typeof entry === "string"));
-  } catch {
-    return [];
-  }
-}
+const favoriteSnapshotCache: { current: FavoriteSnapshotCache } = { current: null };
 
 function getStoredFavoriteSlugs(): readonly string[] {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") return EMPTY_FAVORITE_SLUGS;
 
   const raw = window.localStorage.getItem(FAVORITE_STORAGE_KEY);
-  if (favoriteSnapshotCache?.raw === raw) {
-    return favoriteSnapshotCache.slugs;
-  }
-
-  const slugs = Object.freeze(parseFavoriteSlugs(raw));
-  favoriteSnapshotCache = { raw, slugs };
-  return slugs;
+  return readFavoriteSlugsFromRaw(raw, favoriteSnapshotCache);
 }
 
 function writeFavoriteSlugs(slugs: string[]): void {
   if (typeof window === "undefined") return;
-  const normalized = normalizeFavoriteSlugs(slugs);
-  const serialized = JSON.stringify(normalized);
+
+  const { serialized, snapshot } = serializeFavoriteSlugs(slugs);
   window.localStorage.setItem(FAVORITE_STORAGE_KEY, serialized);
-  favoriteSnapshotCache = { raw: serialized, slugs: Object.freeze(normalized) };
+  favoriteSnapshotCache.current = { raw: serialized, slugs: snapshot };
   window.dispatchEvent(new Event(FAVORITES_CHANGED_EVENT));
 }
 

@@ -43,6 +43,9 @@ jobs:
       - name: Production build
         run: npm run build
 
+      - name: Production browser smoke
+        run: npm run smoke:production
+
   auto-merge:
     name: Auto-merge when green
     needs: jukebox-safety

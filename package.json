@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "smoke": "tsx --test scripts/smoke.test.ts",
-    "ci": "npm run lint && npm run smoke && npm run build",
+    "smoke:production": "node scripts/production-smoke.mjs",
+    "ci": "npm run lint && npm run smoke && npm run build && npm run smoke:production",
     "db:generate": "drizzle-kit generate",
     "db:push": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs push",
     "db:studio": "node --env-file=.env.local node_modules/drizzle-kit/bin.cjs studio"
@@ -37,6 +38,7 @@
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
     "tsx": "^4.20.5",
-    "typescript": "^5"
+    "typescript": "^5",
+    "puppeteer": "^24.36.1"
   }
 }

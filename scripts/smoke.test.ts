@@ -43,6 +43,11 @@ import {
 } from "../lib/player-queue";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
 import {
+  parseFavoriteSlugs,
+  readFavoriteSlugsFromRaw,
+  serializeFavoriteSlugs,
+} from "../lib/favorites-storage";
+import {
   buildAlbumShareDescription,
   buildCoverShareImage,
   buildShareMetadata,
@@ -387,6 +392,41 @@ describe("player queue logic", () => {
     assert.equal(result.index, 0);
     assert.equal(result.queue[0]?.slug, "c");
     assert.equal(result.queue.length, 3);
+  });
+});
+
+describe("favorites storage (regression: React error #185)", () => {
+  it("returns the same snapshot reference when localStorage raw value is unchanged", () => {
+    const cache = { current: null as import("../lib/favorites-storage").FavoriteSnapshotCache };
+    const raw = '["gravity-shift","legacy-in-the-lane"]';
+
+    const first = readFavoriteSlugsFromRaw(raw, cache);
+    const second = readFavoriteSlugsFromRaw(raw, cache);
+
+    assert.equal(first, second, "getSnapshot must stay referentially stable");
+    assert.deepEqual([...first], ["gravity-shift", "legacy-in-the-lane"]);
+  });
+
+  it("returns a new snapshot only when raw localStorage changes", () => {
+    const cache = { current: null as import("../lib/favorites-storage").FavoriteSnapshotCache };
+
+    const before = readFavoriteSlugsFromRaw('["gravity-shift"]', cache);
+    const after = readFavoriteSlugsFromRaw('["gravity-shift","tap-on-the-glass"]', cache);
+
+    assert.notEqual(before, after);
+    assert.deepEqual([...after], ["gravity-shift", "tap-on-the-glass"]);
+  });
+
+  it("normalizes and serializes favorites consistently", () => {
+    const { serialized, snapshot } = serializeFavoriteSlugs([
+      " gravity-shift ",
+      "gravity-shift",
+      "",
+      "tap-on-the-glass",
+    ]);
+
+    assert.deepEqual([...snapshot], ["gravity-shift", "tap-on-the-glass"]);
+    assert.deepEqual(parseFavoriteSlugs(serialized), ["gravity-shift", "tap-on-the-glass"]);
   });
 });
 
