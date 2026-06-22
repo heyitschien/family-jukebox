@@ -3,6 +3,7 @@
 import Link from "next/link";
 
 import { CoverImage } from "@/components/cover-image";
+import { FavoriteButton } from "@/components/favorite-button";
 import { JukeboxStatsCard } from "@/components/jukebox-stats-card";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
@@ -48,7 +49,7 @@ function QueueRow({ song, playlist }: { song: Song; playlist: Song[] }) {
   return (
     <div
       className={cn(
-        "grid grid-cols-[auto_44px_1fr_auto] items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
+        "grid grid-cols-[auto_44px_1fr_auto_auto] items-center gap-3 rounded-2xl border p-2 transition hover:bg-white/[0.08]",
         isCurrent
           ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
           : "border-white/[0.045] bg-white/[0.045]",
@@ -77,6 +78,7 @@ function QueueRow({ song, playlist }: { song: Song; playlist: Song[] }) {
       <div className="hidden sm:block">
         <QueueBadge song={song} />
       </div>
+      <FavoriteButton song={song} size="sm" variant="subtle" />
     </div>
   );
 }

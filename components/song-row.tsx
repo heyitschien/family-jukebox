@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { FavoriteButton } from "@/components/favorite-button";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getMemberBySlug } from "@/data/members";
@@ -67,6 +68,7 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
           aria-hidden
         />
       </Link>
+      <FavoriteButton song={song} size="sm" variant="subtle" />
     </div>
   );
 }

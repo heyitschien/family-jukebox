@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 
 import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
+import { FavoriteButton } from "@/components/favorite-button";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -32,6 +33,12 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
     >
       <div className="relative aspect-square overflow-hidden rounded-[18px] bg-gradient-to-br from-[#314155] to-[#14202c] shadow-[0_16px_30px_rgba(0,0,0,0.22)]">
         <CoverImage src={song.coverSrc} alt="" className="size-full" />
+        <FavoriteButton
+          song={song}
+          size="sm"
+          variant="floating"
+          className="absolute right-2 top-2"
+        />
         <PlayIconButton
           size="sm"
           playing={playing}

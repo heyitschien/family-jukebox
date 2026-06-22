@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 
 import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
+import { FavoriteButton } from "@/components/favorite-button";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
 import type { RepeatMode, ShuffleMode } from "@/lib/player-queue";
@@ -77,6 +78,7 @@ export function MiniPlayer() {
             <span className="mx-0.5 opacity-50">/</span>
             <span>{formatTime(duration)}</span>
           </div>
+          <FavoriteButton song={currentSong} size="sm" variant="subtle" />
         </div>
 
         <PlayerTransportControls
@@ -138,6 +140,7 @@ export function MiniPlayer() {
         </div>
 
         <div className="hidden items-center justify-end gap-2.5 text-[var(--jb-muted)] sm:flex">
+          <FavoriteButton song={currentSong} size="sm" variant="subtle" />
           <VolumeIcon />
           <div className="h-[5px] w-24 overflow-hidden rounded-full bg-white/15">
             <div className="family-progress h-full w-[70%]" />
