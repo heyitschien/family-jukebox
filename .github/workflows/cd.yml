@@ -3,6 +3,7 @@ name: CD
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
   group: cd-production
@@ -15,54 +16,66 @@ jobs:
   verify-production:
     name: Verify Vercel production deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     env:
       PRODUCTION_URL: https://family-jukebox.vercel.app
 
     steps:
-      - name: Wait for Vercel deploy
-        run: sleep 75
-
-      - name: Check homepage is live
-        run: |
-          for attempt in 1 2 3 4 5; do
-            if curl -fsSL "$PRODUCTION_URL" | grep -q "Family Jukebox"; then
-              echo "Production homepage OK (attempt $attempt)"
-              exit 0
-            fi
-            echo "Attempt $attempt failed — retrying in 30s..."
-            sleep 30
-          done
-          echo "Production verification failed after 5 attempts"
-          exit 1
-
-      - name: Check albums route
-        run: curl -fsSL "$PRODUCTION_URL/albums" | grep -q "Family albums"
-
-      - name: Check API stats route
-        run: |
-          code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL/api/stats")"
-          test "$code" = "200"
-
-      - name: Check celebration song pages and assets
+      - name: Wait for production deploy and verify routes
         run: |
           set -euo pipefail
-          for slug in three-candles-for-marceline legacy-in-the-lane; do
-            code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL/songs/$slug")"
-            echo "song /songs/$slug -> $code"
+
+          check_homepage() {
+            curl -fsSL "$PRODUCTION_URL" | grep -q "Family Jukebox"
+          }
+
+          check_albums() {
+            curl -fsSL "$PRODUCTION_URL/albums" | grep -q "Family albums"
+          }
+
+          check_api_stats() {
+            local code
+            code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL/api/stats")"
+            echo "api /api/stats -> $code"
             test "$code" = "200"
+          }
+
+          check_celebration_release() {
+            for slug in three-candles-for-marceline legacy-in-the-lane; do
+              local code
+              code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL/songs/$slug")"
+              echo "song /songs/$slug -> $code"
+              test "$code" = "200"
+            done
+
+            for slug in three-candles-for-marceline-album legacy-in-the-lane-album; do
+              local code
+              code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL/albums/$slug")"
+              echo "album /albums/$slug -> $code"
+              test "$code" = "200"
+            done
+
+            for asset in \
+              /assets/marceline/three-candles-for-marceline.jpg \
+              /assets/marceline/three-candles-for-marceline.mp3 \
+              /assets/tio-chien/legacy-in-the-lane.png \
+              /assets/tio-chien/legacy-in-the-lane.mp3; do
+              local code
+              code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL$asset")"
+              echo "asset $asset -> $code"
+              test "$code" = "200"
+            done
+          }
+
+          for attempt in $(seq 1 20); do
+            echo "=== Production verification attempt $attempt/20 ==="
+            if check_homepage && check_albums && check_api_stats && check_celebration_release; then
+              echo "Production deploy verified."
+              exit 0
+            fi
+            echo "Deploy not ready yet. Waiting 30s before retry..."
+            sleep 30
           done
-          for slug in three-candles-for-marceline-album legacy-in-the-lane-album; do
-            code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL/albums/$slug")"
-            echo "album /albums/$slug -> $code"
-            test "$code" = "200"
-          done
-          for asset in \
-            /assets/marceline/three-candles-for-marceline.jpg \
-            /assets/marceline/three-candles-for-marceline.mp3 \
-            /assets/tio-chien/legacy-in-the-lane.png \
-            /assets/tio-chien/legacy-in-the-lane.mp3; do
-            code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL$asset")"
-            echo "asset $asset -> $code"
-            test "$code" = "200"
-          done
+
+          echo "Production verification failed after 20 attempts (~10 minutes)."
+          exit 1

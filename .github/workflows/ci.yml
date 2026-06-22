@@ -57,9 +57,27 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Merge pull request
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
+          set -euo pipefail
+
+          state="$(gh pr view "$PR_NUMBER" --json state -q .state)"
+          if [ "$state" = "MERGED" ]; then
+            echo "PR #$PR_NUMBER is already merged."
+            exit 0
+          fi
+
+          mergeable="$(gh pr view "$PR_NUMBER" --json mergeable -q .mergeable)"
+          if [ "$mergeable" != "MERGEABLE" ]; then
+            echo "PR #$PR_NUMBER is not mergeable (status: $mergeable)."
+            exit 1
+          fi
+
           gh pr merge "$PR_NUMBER" --merge --delete-branch
+          echo "Merged PR #$PR_NUMBER."

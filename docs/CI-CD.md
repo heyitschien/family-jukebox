@@ -16,8 +16,8 @@ Open PR → CI runs (lint, smoke, build)
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
 | **CI** | PR + push to `main` | `npm run lint`, `npm run smoke`, `npm run build` |
-| **CI → auto-merge** | PR only, after CI passes | Merges the PR and deletes the branch |
-| **CD** | Push to `main` | Waits for Vercel, then smoke-checks production URLs |
+| **CI → auto-merge** | PR only, after CI passes | Checks out the repo, merges the PR, and deletes the branch |
+| **CD** | Push to `main` or manual dispatch | Polls production for up to ~10 minutes, then smoke-checks URLs |
 
 ## Opt out of auto-merge
 
@@ -38,3 +38,5 @@ npm run ci
 Production: [https://family-jukebox.vercel.app](https://family-jukebox.vercel.app)
 
 Vercel watches the GitHub `main` branch — no manual `vercel deploy` needed after merge.
+
+If **CD** fails but CI passed, Vercel may still be deploying. Re-run the **CD** workflow from the Actions tab (`workflow_dispatch`), or confirm the Vercel project is connected to `main` and the latest deployment succeeded.
