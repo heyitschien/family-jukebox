@@ -76,6 +76,7 @@ import {
   SITE_NAME,
   SITE_URL,
 } from "../lib/site-metadata";
+import { APP_ICON_BACKGROUND, buildWebManifest } from "../lib/app-icon";
 import { getSongAuthor, getSongBySlug } from "../data/songs";
 import { getAlbumAuthor, getAlbumBySlug } from "../data/albums";
 import { getMemberBySlug } from "../data/members";
@@ -741,5 +742,48 @@ describe("link preview metadata", () => {
 
     assert.equal(metadata.openGraph?.url, `${SITE_URL}/family`);
     assert.equal(metadata.openGraph?.title, "Family artists · Cousin Radio");
+  });
+});
+
+describe("web app manifest", () => {
+  it("publishes install-sized square icons for saved web apps", () => {
+    const manifest = buildWebManifest();
+
+    assert.equal(manifest.name, "Cousin Radio");
+    assert.equal(manifest.short_name, "Cousin Radio");
+    assert.equal(manifest.display, "standalone");
+    assert.equal(manifest.background_color, APP_ICON_BACKGROUND);
+    assert.equal(manifest.theme_color, APP_ICON_BACKGROUND);
+    assert.deepEqual(manifest.icons, [
+      {
+        src: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-192.png",
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "any",
+      },
+      {
+        src: "/icon-512.png",
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
+      },
+      {
+        src: "/apple-icon",
+        sizes: "180x180",
+        type: "image/png",
+      },
+    ]);
   });
 });
