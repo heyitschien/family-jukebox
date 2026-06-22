@@ -18,8 +18,9 @@ type HomeRecentQueueProps = {
   songs: Song[];
   familyQueue: Song[];
   spotlightSlugs: string[];
+  listenerAge?: number | null;
 };
 
-export function HomeRecentQueue(props: HomeRecentQueueProps) {
-  return <RecentQueue {...props} />;
+export function HomeRecentQueue({ listenerAge, ...props }: HomeRecentQueueProps) {
+  return <RecentQueue {...props} listenerAge={listenerAge} />;
 }

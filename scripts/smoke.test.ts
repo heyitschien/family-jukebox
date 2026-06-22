@@ -61,6 +61,16 @@ import {
 } from "../lib/session-listening";
 import { filterSongs, getInlineSearchResults, searchCatalog } from "../lib/search";
 import {
+  curateSongsForListener,
+  scoreSongForListener,
+  isValidListenerAge,
+} from "../lib/audience";
+import {
+  parseListenerAgeSnapshot,
+  readListenerAgeFromRaw,
+  serializeListenerAge,
+} from "../lib/audience-storage";
+import {
   parseFavoriteSlugs,
   readFavoriteSlugsFromRaw,
   serializeFavoriteSlugs,
@@ -564,6 +574,58 @@ describe("smart shuffle", () => {
   it("pins the start song first", () => {
     const shuffled = buildSmartShuffledQueue(songs, 2);
     assert.equal(shuffled[0]?.slug, songs[2]?.slug);
+  });
+});
+
+describe("age-based audience curation", () => {
+  it("scores adult songs higher for grown-up listeners", () => {
+    const legacy = songs.find((song) => song.slug === "legacy-in-the-lane");
+    const dash = songs.find((song) => song.slug === "dash-and-go");
+    assert.ok(legacy, "legacy song should exist");
+    assert.ok(dash, "dash-and-go should exist");
+
+    const adultLegacy = scoreSongForListener(legacy, 35);
+    const adultDash = scoreSongForListener(dash, 35);
+    assert.ok(adultLegacy > adultDash, "adults should prefer grown-up tracks over toddler songs");
+  });
+
+  it("scores kid songs higher for young listeners", () => {
+    const dash = songs.find((song) => song.slug === "dash-and-go");
+    const legacy = songs.find((song) => song.slug === "legacy-in-the-lane");
+    assert.ok(dash && legacy);
+
+    const kidDash = scoreSongForListener(dash, 3);
+    const kidLegacy = scoreSongForListener(legacy, 3);
+    assert.ok(kidDash > kidLegacy, "young listeners should prefer kid-authored songs");
+  });
+
+  it("curates without dropping songs from the catalog", () => {
+    const curated = curateSongsForListener(songs, 35);
+    assert.equal(curated.length, songs.length);
+    assert.deepEqual(new Set(curated.map((song) => song.slug)), new Set(songs.map((song) => song.slug)));
+  });
+
+  it("boosts age-matched results in search ranking", () => {
+    const adultResults = searchCatalog("", { listenerAge: 35 }).filter((result) => result.kind === "song");
+    const first = adultResults[0];
+    assert.ok(first && first.kind === "song");
+    const author = getSongAuthor(first.song);
+    assert.ok(author && author.age >= 10, "top search pick for adults should lean mature");
+  });
+
+  it("validates listener ages and persists snapshots", () => {
+    assert.equal(isValidListenerAge(35), true);
+    assert.equal(isValidListenerAge(0), false);
+    assert.equal(isValidListenerAge(121), false);
+
+    const { serialized, snapshot } = serializeListenerAge(35);
+    assert.equal(snapshot.age, 35);
+    assert.deepEqual(parseListenerAgeSnapshot(serialized), snapshot);
+
+    const cache = { current: null as import("../lib/audience-storage").ListenerAgeSnapshotCache };
+    const first = readListenerAgeFromRaw(serialized, cache);
+    const second = readListenerAgeFromRaw(serialized, cache);
+    assert.equal(first, second, "listener age snapshot must stay referentially stable");
   });
 });
 

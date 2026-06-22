@@ -14,6 +14,7 @@ export type RadioContext = {
   session?: SessionListeningSnapshot;
   refreshSeed?: number;
   batchSize?: number;
+  listenerAge?: number | null;
 };
 
 /**
@@ -30,7 +31,11 @@ export function buildRadioContinuation(
   recentSlugs.add(seed.slug);
 
   const excludeSlugs = new Set(recentSlugs);
-  const scored = scoreSongsForSeed(seed, { session, excludeSlugs });
+  const scored = scoreSongsForSeed(seed, {
+    session,
+    excludeSlugs,
+    listenerAge: context.listenerAge,
+  });
 
   const picks: Song[] = [];
   const seen = new Set<string>([seed.slug]);
@@ -57,7 +62,12 @@ export function buildRadioContinuation(
   if (picks.length < batchSize) {
     const intelligent = buildIntelligentQueue(seed, {
       limit: batchSize + 1,
-      context: { session, excludeSlugs: seen, refreshSeed: context.refreshSeed },
+      context: {
+        session,
+        excludeSlugs: seen,
+        refreshSeed: context.refreshSeed,
+        listenerAge: context.listenerAge,
+      },
     }).filter((song) => !seen.has(song.slug) && !recentSlugs.has(song.slug));
 
     for (const song of intelligent) {

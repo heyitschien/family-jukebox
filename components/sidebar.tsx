@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Heart, Home, Music, Users } from "lucide-react";
 
+import { ListenerAgeSelector } from "@/components/listener-age-selector";
 import { cn } from "@/lib/utils";
 
 const links = [
@@ -62,7 +63,9 @@ export function Sidebar() {
         })}
       </nav>
 
-      <div className="mt-auto rounded-[22px] border border-white/[0.08] bg-gradient-to-br from-white/[0.11] to-white/[0.04] p-4">
+      <ListenerAgeSelector className="mt-auto" />
+
+      <div className="rounded-[22px] border border-white/[0.08] bg-gradient-to-br from-white/[0.11] to-white/[0.04] p-4">
         <h3 className="text-[15px] font-bold">Made together</h3>
         <p className="mt-1.5 text-[13px] leading-snug text-[var(--jb-muted)]">
           AI songs, funny prompts, kid stories, cousin games, and little memories worth replaying.

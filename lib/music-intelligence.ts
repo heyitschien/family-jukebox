@@ -2,6 +2,7 @@ import { songs, type Song } from "@/data/songs";
 import { getCelebrationSongSlugs } from "@/lib/celebrations";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
 import { getMoreFromArtist, getSimilarSongs } from "@/lib/music-discovery";
+import { scoreSongForListener } from "@/lib/audience";
 import type { SessionListeningSnapshot } from "@/lib/session-listening";
 import { EMPTY_SESSION_SNAPSHOT } from "@/lib/session-listening";
 
@@ -12,6 +13,8 @@ export type IntelligenceContext = {
   refreshSeed?: number;
   /** Slugs to hard-exclude (e.g. current queue). */
   excludeSlugs?: ReadonlySet<string>;
+  /** Listener age — boosts age-appropriate tracks in recommendations. */
+  listenerAge?: number | null;
 };
 
 export type ScoredSong = {
@@ -69,6 +72,11 @@ export function scoreSongAffinity(
     score += 10;
   } else if (candidate.featured) {
     score += 5;
+  }
+
+  // Age-aware curation boost.
+  if (context.listenerAge != null) {
+    score += scoreSongForListener(candidate, context.listenerAge) * 0.15;
   }
 
   return score;
