@@ -66,7 +66,9 @@ import {
   buildCoverShareImage,
   buildShareMetadata,
   buildSongShareDescription,
+  formatPageTitle,
   resolveShareImageUrl,
+  SITE_NAME,
   SITE_URL,
 } from "../lib/site-metadata";
 import { getSongAuthor, getSongBySlug } from "../data/songs";
@@ -615,11 +617,28 @@ describe("favorites storage (regression: React error #185)", () => {
 });
 
 describe("link preview metadata", () => {
+  it("defaults SITE_URL to cousinradio.com for crawlers", () => {
+    assert.equal(SITE_URL, "https://cousinradio.com");
+    assert.equal(SITE_NAME, "Cousin Radio");
+  });
+
+  it("formats page titles with the site name", () => {
+    assert.equal(formatPageTitle("Legacy in the Lane"), "Legacy in the Lane · Cousin Radio");
+  });
+
   it("resolves cover art to absolute URLs for iMessage crawlers", () => {
     assert.equal(
       resolveShareImageUrl("/assets/ocean/gravity-shift.jpg"),
       `${SITE_URL}/assets/ocean/gravity-shift.jpg`,
     );
+  });
+
+  it("uses the generated opengraph image for default previews", () => {
+    const metadata = buildShareMetadata();
+    assert.equal(metadata.openGraph?.images?.[0]?.url, `${SITE_URL}/opengraph-image`);
+    assert.equal(metadata.openGraph?.url, SITE_URL);
+    assert.equal(metadata.openGraph?.siteName, "Cousin Radio");
+    assert.equal(metadata.openGraph?.locale, "en_US");
   });
 
   it("sets per-song og:image and description for legacy in the lane", () => {
@@ -628,13 +647,13 @@ describe("link preview metadata", () => {
 
     const author = getSongAuthor(song);
     const metadata = buildShareMetadata({
-      title: `${song.title} · Family Jukebox`,
+      title: formatPageTitle(song.title),
       description: buildSongShareDescription(song, author),
       path: `/songs/${song.slug}`,
       image: buildCoverShareImage(song.title, song.coverSrc),
     });
 
-    assert.equal(metadata.openGraph?.title, "Legacy in the Lane · Family Jukebox");
+    assert.equal(metadata.openGraph?.title, "Legacy in the Lane · Cousin Radio");
     assert.match(String(metadata.description), /Father's Day/i);
     assert.equal(
       metadata.openGraph?.images?.[0]?.url,
@@ -653,7 +672,7 @@ describe("link preview metadata", () => {
 
     const author = getAlbumAuthor(album);
     const metadata = buildShareMetadata({
-      title: `${album.title} · Family Jukebox`,
+      title: formatPageTitle(album.title),
       description: buildAlbumShareDescription(album, author),
       path: `/albums/${album.slug}`,
       image: buildCoverShareImage(album.title, album.coverSrc),
@@ -665,5 +684,16 @@ describe("link preview metadata", () => {
       `${SITE_URL}/assets/sam-and-josh/legacy-in-the-lane.png`,
     );
     assert.equal(metadata.openGraph?.url, `${SITE_URL}/albums/legacy-in-the-lane-album`);
+  });
+
+  it("sets family page metadata with canonical cousinradio.com path", () => {
+    const metadata = buildShareMetadata({
+      title: formatPageTitle("Family artists"),
+      description: "Meet the cousins who make the music.",
+      path: "/family",
+    });
+
+    assert.equal(metadata.openGraph?.url, `${SITE_URL}/family`);
+    assert.equal(metadata.openGraph?.title, "Family artists · Cousin Radio");
   });
 });

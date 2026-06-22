@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 
+import { CopyPublicLinkButton } from "@/components/copy-public-link-button";
 import { InlineSearch } from "@/components/inline-search";
 import { cn } from "@/lib/utils";
 
@@ -24,11 +25,7 @@ export function Topbar({ className, variant = "default" }: TopbarProps) {
       )}
     >
       <InlineSearch variant={variant} />
-      {!embedded && pathname === "/" ? (
-        <span className="hidden rounded-full border border-white/[0.09] bg-white/[0.07] px-3.5 py-2.5 text-sm font-extrabold whitespace-nowrap lg:inline">
-          Public family link
-        </span>
-      ) : null}
+      {!embedded && pathname === "/" ? <CopyPublicLinkButton /> : null}
     </header>
   );
 }

@@ -122,7 +122,7 @@ function buildFallbackAlbum(): Album {
     title: "Family Mix",
     subtitle: "All our songs",
     authorSlug: firstSong?.authorSlug ?? "ocean",
-    coverSrc: firstSong?.coverSrc ?? "/og-share.jpg",
+    coverSrc: firstSong?.coverSrc ?? "/opengraph-image",
     songSlugs: songs.map((s) => s.slug),
     dateCreated: firstSong?.dateCreated ?? "2026-06-19",
     accentColor: "#ff6fb1",
