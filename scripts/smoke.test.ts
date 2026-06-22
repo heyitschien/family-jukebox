@@ -695,9 +695,12 @@ describe("link preview metadata", () => {
     assert.equal(webManifest.display, "standalone");
     assert.equal(webManifest.icons?.[0]?.src, "/icon");
     assert.equal(webManifest.icons?.[0]?.sizes, "512x512");
-    assert.equal(webManifest.icons?.[0]?.purpose, "any maskable");
-    assert.equal(webManifest.icons?.[1]?.src, "/apple-icon");
-    assert.equal(webManifest.icons?.[1]?.sizes, "180x180");
+    assert.equal(webManifest.icons?.[0]?.purpose, "any");
+    assert.equal(webManifest.icons?.[1]?.src, "/icon");
+    assert.equal(webManifest.icons?.[1]?.sizes, "512x512");
+    assert.equal(webManifest.icons?.[1]?.purpose, "maskable");
+    assert.equal(webManifest.icons?.[2]?.src, "/apple-icon");
+    assert.equal(webManifest.icons?.[2]?.sizes, "180x180");
   });
 
   it("sets per-song og:image and description for legacy in the lane", () => {
