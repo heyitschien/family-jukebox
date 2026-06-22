@@ -6,6 +6,8 @@ import { getAppEnvironment, getRuntimeSiteUrl, getSiteDescription, getSiteName }
 
 import "./globals.css";
 
+const ICON_CACHE_VERSION = "20260622";
+
 const inter = Inter({
   variable: "--font-sans",
   subsets: ["latin"],
@@ -19,6 +21,11 @@ export const metadata: Metadata = {
     template: `%s · ${getSiteName()}`,
   },
   description: getSiteDescription(),
+  icons: {
+    icon: [{ url: `/icon?v=${ICON_CACHE_VERSION}`, sizes: "32x32", type: "image/png" }],
+    shortcut: [`/icon?v=${ICON_CACHE_VERSION}`],
+    apple: [{ url: `/apple-icon?v=${ICON_CACHE_VERSION}`, sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({

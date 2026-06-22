@@ -10,6 +10,7 @@ import {
   type ReactNode,
 } from "react";
 
+import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 import type { PlaySource } from "@/lib/analytics/constants";
 import { trackPlayEvent } from "@/lib/analytics/track-play";
@@ -51,11 +52,28 @@ type PlayerContextValue = {
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
 
+const COUSIN_LOGO_ARTWORK: ReadonlyArray<MediaImage> = [
+  { src: "/apple-icon?v=20260622", sizes: "180x180", type: "image/png" },
+  { src: "/icon?v=20260622", sizes: "32x32", type: "image/png" },
+];
+
 function formatTime(seconds: number): string {
   if (!Number.isFinite(seconds) || seconds < 0) return "0:00";
   const m = Math.floor(seconds / 60);
   const s = Math.floor(seconds % 60);
   return `${m}:${s.toString().padStart(2, "0")}`;
+}
+
+function resolveMediaArtworkUrl(pathOrUrl: string): string {
+  if (pathOrUrl.startsWith("http://") || pathOrUrl.startsWith("https://")) {
+    return pathOrUrl;
+  }
+
+  if (typeof window === "undefined") {
+    return pathOrUrl;
+  }
+
+  return new URL(pathOrUrl, window.location.origin).toString();
 }
 
 function songSrcMatches(audio: HTMLAudioElement, audioSrc: string): boolean {
@@ -104,6 +122,31 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     radioModeRef.current = radioMode;
   }, [radioMode]);
+
+  useEffect(() => {
+    if (typeof navigator === "undefined" || !("mediaSession" in navigator)) {
+      return;
+    }
+    if (typeof MediaMetadata === "undefined") {
+      return;
+    }
+
+    if (!currentSong) {
+      navigator.mediaSession.metadata = null;
+      return;
+    }
+
+    const author = getMemberBySlug(currentSong.authorSlug);
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: currentSong.title,
+      artist: author?.name ?? "Family",
+      album: "Cousin Radio",
+      artwork: COUSIN_LOGO_ARTWORK.map((image) => ({
+        ...image,
+        src: resolveMediaArtworkUrl(image.src),
+      })),
+    });
+  }, [currentSong]);
 
   const restartCurrentTrack = useCallback((audio: HTMLAudioElement) => {
     audio.currentTime = 0;
