@@ -1,7 +1,7 @@
-import { AlbumCarousel3D } from "@/components/album-carousel-3d";
-import { AlbumShelf } from "@/components/album-shelf";
-import { FeaturedShelf } from "@/components/featured-shelf";
-import { RecentQueue } from "@/components/recent-queue";
+import { HomeAlbumShelf } from "@/components/home-album-shelf";
+import { HomeFeaturedShelf } from "@/components/home-featured-shelf";
+import { HomeHeroCarousel } from "@/components/home-hero-carousel";
+import { HomeRecentQueue } from "@/components/home-recent-queue";
 import { getSupplementarySeriesAlbums } from "@/data/albums";
 import { getAllTags } from "@/data/songs";
 import {
@@ -12,6 +12,7 @@ import {
 import {
   getFairRotationQueue,
   getRotatedFeaturedShelf,
+  getSpotlightSongPerMember,
 } from "@/lib/featured-rotation";
 import { buildShareMetadata } from "@/lib/site-metadata";
 
@@ -26,25 +27,26 @@ export default function HomePage() {
   const supplementarySeries = getSupplementarySeriesAlbums();
   const shelfSongs = getRotatedFeaturedShelf(refreshSeed);
   const familyQueue = getFairRotationQueue(refreshSeed);
+  const spotlightSlugs = getSpotlightSongPerMember().map((song) => song.slug);
 
   return (
     <main className="min-w-0 px-3 lg:px-0">
-      <AlbumCarousel3D
+      <HomeHeroCarousel
         albums={carouselAlbums}
         featuredAlbum={featuredAlbum}
         refreshSeed={refreshSeed}
       />
-      <AlbumShelf albums={carouselAlbums} subtitle="One album per family member — tap to explore or play" />
+      <HomeAlbumShelf albums={carouselAlbums} subtitle="One album per family member — tap to explore or play" />
       {supplementarySeries.length > 0 ? (
-        <AlbumShelf
+        <HomeAlbumShelf
           albums={supplementarySeries}
           title="Growing series"
           subtitle="Themed albums gaining new singles — not in the hero ring yet"
           showViewAll
         />
       ) : null}
-      <FeaturedShelf songs={shelfSongs} tags={getAllTags()} />
-      <RecentQueue songs={shelfSongs} familyQueue={familyQueue} />
+      <HomeFeaturedShelf songs={shelfSongs} tags={getAllTags()} />
+      <HomeRecentQueue songs={shelfSongs} familyQueue={familyQueue} spotlightSlugs={spotlightSlugs} />
     </main>
   );
 }

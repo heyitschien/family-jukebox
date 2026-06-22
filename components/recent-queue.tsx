@@ -11,16 +11,22 @@ import { getMemberBySlug } from "@/data/members";
 import { members } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { songs as allSongs } from "@/data/songs";
-import { isSpotlightSong } from "@/lib/featured-rotation";
 import { cn } from "@/lib/utils";
 
 type RecentQueueProps = {
   songs: Song[];
   familyQueue: Song[];
+  spotlightSlugs: string[];
 };
 
-function QueueBadge({ song }: { song: Song }) {
-  if (isSpotlightSong(song)) {
+function QueueBadge({
+  song,
+  spotlightSlugs,
+}: {
+  song: Song;
+  spotlightSlugs: ReadonlySet<string>;
+}) {
+  if (spotlightSlugs.has(song.slug)) {
     return (
       <span className="rounded-full bg-family-accent px-2 py-1.5 text-[11px] font-black text-[#1a0812]">
         Spotlight
@@ -41,7 +47,15 @@ function QueueBadge({ song }: { song: Song }) {
   );
 }
 
-function QueueRow({ song, playlist }: { song: Song; playlist: Song[] }) {
+function QueueRow({
+  song,
+  playlist,
+  spotlightSlugs,
+}: {
+  song: Song;
+  playlist: Song[];
+  spotlightSlugs: ReadonlySet<string>;
+}) {
   const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
   const author = getMemberBySlug(song.authorSlug);
 
@@ -75,16 +89,17 @@ function QueueRow({ song, playlist }: { song: Song; playlist: Song[] }) {
         </span>
       </Link>
       <div className="hidden sm:block">
-        <QueueBadge song={song} />
+        <QueueBadge song={song} spotlightSlugs={spotlightSlugs} />
       </div>
     </div>
   );
 }
 
-export function RecentQueue({ songs, familyQueue }: RecentQueueProps) {
+export function RecentQueue({ songs, familyQueue, spotlightSlugs }: RecentQueueProps) {
   const { playQueue } = usePlayer();
   const recent = [...songs].slice(0, 5);
   const videoCount = allSongs.filter((s) => s.videoSrc).length;
+  const spotlightSet = new Set(spotlightSlugs);
 
   return (
     <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
@@ -109,7 +124,12 @@ export function RecentQueue({ songs, familyQueue }: RecentQueueProps) {
           </div>
           <div className="grid gap-2">
             {recent.map((song) => (
-              <QueueRow key={song.slug} song={song} playlist={recent} />
+              <QueueRow
+                key={song.slug}
+                song={song}
+                playlist={recent}
+                spotlightSlugs={spotlightSet}
+              />
             ))}
           </div>
         </div>

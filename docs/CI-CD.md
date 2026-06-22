@@ -7,7 +7,7 @@ Family Jukebox uses GitHub Actions for CI and relies on Vercel for production de
 ```txt
 Open PR → CI runs (lint, smoke, build)
        → if green → auto-merge to main
-       → Vercel deploys main automatically
+       → Deploy workflow pushes to Vercel production
        → CD workflow verifies production is live
 ```
 
@@ -17,7 +17,8 @@ Open PR → CI runs (lint, smoke, build)
 |----------|---------|--------------|
 | **CI** | PR + push to `main` | `npm run lint`, `npm run smoke`, `npm run build` |
 | **CI → auto-merge** | PR only, after CI passes | Merges the PR and deletes the branch |
-| **CD** | Push to `main` | Waits for Vercel, then smoke-checks production URLs |
+| **Deploy** | Push to `main` | Builds and deploys to Vercel production |
+| **CD** | After Deploy succeeds | Smoke-checks production URLs (no `__next_error__`) |
 
 ## Opt out of auto-merge
 
@@ -37,4 +38,12 @@ npm run ci
 
 Production: [https://family-jukebox.vercel.app](https://family-jukebox.vercel.app)
 
-Vercel watches the GitHub `main` branch — no manual `vercel deploy` needed after merge.
+GitHub Actions deploys `main` to Vercel. Add these repository secrets once:
+
+| Secret | Value |
+|--------|--------|
+| `VERCEL_TOKEN` | Vercel account token |
+| `VERCEL_ORG_ID` | Team / user id from `.vercel/project.json` |
+| `VERCEL_PROJECT_ID` | Project id from `.vercel/project.json` |
+
+Optional: keep Vercel Git integration connected as a backup trigger.

@@ -1,11 +1,11 @@
 import { members } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
 import { getCelebrationSongSlugs } from "@/lib/celebrations";
+import { getFamilyDayIndex } from "@/lib/family-calendar";
 
 /** Day index for fair daily rotation across the family. */
-export function getDayIndex(): number {
-  const start = new Date(new Date().getFullYear(), 0, 0);
-  return Math.floor((Date.now() - start.getTime()) / (1000 * 60 * 60 * 24));
+export function getDayIndex(date = new Date()): number {
+  return getFamilyDayIndex(date);
 }
 
 /** Per-request seed so the hero changes on every refresh while staying daily-fair. */

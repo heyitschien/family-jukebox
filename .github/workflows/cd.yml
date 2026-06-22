@@ -1,8 +1,10 @@
 name: CD
 
 on:
-  push:
-    branches: [main]
+  workflow_run:
+    workflows: [Deploy]
+    types: [completed]
+  workflow_dispatch:
 
 concurrency:
   group: cd-production
@@ -14,27 +16,39 @@ permissions:
 jobs:
   verify-production:
     name: Verify Vercel production deploy
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
       PRODUCTION_URL: https://family-jukebox.vercel.app
 
     steps:
-      - name: Wait for Vercel deploy
-        run: sleep 75
+      - name: Wait for production alias
+        run: sleep 20
 
       - name: Check homepage is live
         run: |
-          for attempt in 1 2 3 4 5; do
-            if curl -fsSL "$PRODUCTION_URL" | grep -q "Family Jukebox"; then
+          set -euo pipefail
+          for attempt in 1 2 3 4 5 6 8 10; do
+            html="$(curl -fsSL "$PRODUCTION_URL" || true)"
+            if echo "$html" | grep -q "Family Jukebox" && ! echo "$html" | grep -q '__next_error__'; then
               echo "Production homepage OK (attempt $attempt)"
               exit 0
             fi
-            echo "Attempt $attempt failed — retrying in 30s..."
-            sleep 30
+            echo "Attempt $attempt failed — retrying in 20s..."
+            sleep 20
           done
-          echo "Production verification failed after 5 attempts"
+          echo "Production verification failed after retries"
           exit 1
+
+      - name: Check core routes
+        run: |
+          set -euo pipefail
+          for path in /favorites /songs/tap-on-the-glass /songs/legacy-in-the-lane /members/sam-and-josh; do
+            code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL$path")"
+            echo "$path -> $code"
+            test "$code" = "200"
+          done
 
       - name: Check albums route
         run: curl -fsSL "$PRODUCTION_URL/albums" | grep -q "Family albums"
@@ -61,8 +75,13 @@ jobs:
             /assets/marceline/three-candles-for-marceline.jpg \
             /assets/marceline/three-candles-for-marceline.mp3 \
             /assets/sam-and-josh/legacy-in-the-lane.png \
-            /assets/sam-and-josh/legacy-in-the-lane.mp3; do
+            /assets/sam-and-josh/legacy-in-the-lane.mp3 \
+            /assets/tio-chien/tap-on-the-glass.jpg \
+            /assets/tio-chien/tap-on-the-glass.mp3; do
             code="$(curl -s -o /dev/null -w '%{http_code}' "$PRODUCTION_URL$asset")"
             echo "asset $asset -> $code"
             test "$code" = "200"
           done
+
+      - name: Check favorites page copy
+        run: curl -fsSL "$PRODUCTION_URL/favorites" | grep -q "Your favorites"

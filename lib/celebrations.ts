@@ -1,5 +1,9 @@
 import type { Album } from "@/data/albums";
 import type { Song } from "@/data/songs";
+import {
+  getFamilyCalendarParts,
+  isWithinFamilyCelebrationWindow,
+} from "@/lib/family-calendar";
 
 export type CelebrationHighlight = {
   id: string;
@@ -11,26 +15,22 @@ export type CelebrationHighlight = {
   matchesDate: (date: Date) => boolean;
 };
 
-/** Third Sunday of June — US Father's Day. */
+/** Third Sunday of June — US Father's Day (family calendar). */
 export function getFathersDayDate(year: number): { month: number; day: number } {
-  const june1 = new Date(year, 5, 1);
-  const daysUntilSunday = (7 - june1.getDay()) % 7;
+  const june1 = new Date(Date.UTC(year, 5, 1));
+  const daysUntilSunday = (7 - june1.getUTCDay()) % 7;
   const thirdSunday = 1 + daysUntilSunday + 14;
   return { month: 6, day: thirdSunday };
 }
 
-/** Local calendar day match with a small window so releases stay featured after midnight. */
+/** Stable celebration window using the family timezone. */
 export function isWithinCelebrationWindow(
   date: Date,
   month: number,
   day: number,
   windowDays = 3,
 ): boolean {
-  const year = date.getFullYear();
-  const target = new Date(year, date.getMonth(), date.getDate()).getTime();
-  const center = new Date(year, month - 1, day).getTime();
-  const windowMs = windowDays * 24 * 60 * 60 * 1000;
-  return Math.abs(target - center) <= windowMs;
+  return isWithinFamilyCelebrationWindow(month, day, windowDays, date);
 }
 
 export const celebrationHighlights: CelebrationHighlight[] = [
@@ -51,7 +51,7 @@ export const celebrationHighlights: CelebrationHighlight[] = [
     songSlugs: ["legacy-in-the-lane"],
     albumSlugs: ["legacy-in-the-lane-album"],
     matchesDate: (date) => {
-      const fathersDay = getFathersDayDate(date.getFullYear());
+      const fathersDay = getFathersDayDate(getFamilyCalendarParts(date).year);
       return isWithinCelebrationWindow(date, fathersDay.month, fathersDay.day);
     },
   },
