@@ -67,7 +67,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   const playActiveAlbum = useCallback(() => {
     if (activeSongs.length === 0) return;
-    playQueue(activeSongs, 0);
+    playQueue(activeSongs, 0, "hero");
   }, [activeSongs, playQueue]);
 
   const handlePlayToggle = useCallback(() => {
@@ -184,7 +184,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                               handlePlayToggle();
                             } else {
                               rotateTo(i);
-                              playQueue(albumSongs, 0);
+                              playQueue(albumSongs, 0, "hero");
                             }
                           }}
                           className="shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
@@ -312,7 +312,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
             />
             <button
               type="button"
-              onClick={() => playQueue(familyQueue, 0)}
+              onClick={() => playQueue(familyQueue, 0, "hero")}
               className="inline-flex min-h-11 items-center rounded-full bg-[var(--jb-text)] px-5 py-3 text-sm font-black text-[#050608] [-webkit-tap-highlight-color:transparent]"
             >
               Play family mix

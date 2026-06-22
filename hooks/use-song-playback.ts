@@ -4,35 +4,38 @@ import { useCallback } from "react";
 
 import { usePlayer } from "@/contexts/player-context";
 import type { Song } from "@/data/songs";
+import type { PlaySource } from "@/lib/analytics/constants";
 
 type UseSongPlaybackOptions = {
   /** When set, play advances through the full list unless this is a lone track. */
   playlist?: Song[];
   /** Force single-track playback even when a playlist is provided. */
   singleOnly?: boolean;
+  /** Analytics source for play-start events. */
+  source?: PlaySource;
 };
 
 /** Shared play/pause state for any song button in the app */
 export function useSongPlayback(song: Song, options: UseSongPlaybackOptions = {}) {
-  const { playlist, singleOnly = false } = options;
+  const { playlist, singleOnly = false, source = "unknown" } = options;
   const { toggleSong, playQueue, isSongPlaying, currentSong } = usePlayer();
 
   const playInContext = useCallback(() => {
     if (!singleOnly && playlist && playlist.length > 1) {
       const idx = playlist.findIndex((s) => s.slug === song.slug);
-      playQueue(playlist, idx >= 0 ? idx : 0);
+      playQueue(playlist, idx >= 0 ? idx : 0, source);
       return;
     }
-    toggleSong(song);
-  }, [singleOnly, playlist, song, playQueue, toggleSong]);
+    toggleSong(song, source);
+  }, [singleOnly, playlist, song, playQueue, toggleSong, source]);
 
   const toggle = useCallback(() => {
     if (currentSong?.slug === song.slug) {
-      toggleSong(song);
+      toggleSong(song, source);
       return;
     }
     playInContext();
-  }, [currentSong?.slug, song, toggleSong, playInContext]);
+  }, [currentSong?.slug, song, toggleSong, playInContext, source]);
 
   return {
     playing: isSongPlaying(song),

@@ -1,7 +1,9 @@
 import type { Song } from "@/data/songs";
+import { buildSmartShuffledQueue, smartReshuffleFromCurrent } from "@/lib/smart-shuffle";
 
 export type RepeatMode = "off" | "one" | "all";
 export type ShuffleMode = "off" | "on";
+export type RadioMode = "off" | "on";
 
 export function cycleRepeatMode(current: RepeatMode): RepeatMode {
   switch (current) {
@@ -30,9 +32,11 @@ function shuffleInPlace<T>(items: T[]): T[] {
   return items;
 }
 
-/** Build playback order when shuffle is on — start song stays first. */
-export function buildShuffledQueue(songs: Song[], startIndex: number): Song[] {
+/** Build playback order when shuffle is on — start song stays first. Uses smart artist-diversity shuffle. */
+export function buildShuffledQueue(songs: Song[], startIndex: number, smart = true): Song[] {
   if (songs.length <= 1) return [...songs];
+  if (smart) return buildSmartShuffledQueue(songs, startIndex);
+
   const clamped = Math.min(Math.max(startIndex, 0), songs.length - 1);
   const startSong = songs[clamped];
   const rest = songs.filter((_, i) => i !== clamped);
@@ -41,14 +45,20 @@ export function buildShuffledQueue(songs: Song[], startIndex: number): Song[] {
 }
 
 /** Reshuffle remaining tracks while keeping the current song at the front. */
-export function reshuffleFromCurrent(original: Song[], currentSlug: string): Song[] {
+export function reshuffleFromCurrent(original: Song[], currentSlug: string, smart = true): Song[] {
   if (original.length <= 1) return [...original];
+  if (smart) return smartReshuffleFromCurrent(original, currentSlug);
+
   const currentIdx = original.findIndex((s) => s.slug === currentSlug);
   if (currentIdx < 0) return [...original];
   const current = original[currentIdx];
   const remaining = [...original.slice(0, currentIdx), ...original.slice(currentIdx + 1)];
   shuffleInPlace(remaining);
   return [current, ...remaining];
+}
+
+export function toggleRadioMode(current: RadioMode): RadioMode {
+  return current === "off" ? "on" : "off";
 }
 
 export function resolveQueueForPlayback(

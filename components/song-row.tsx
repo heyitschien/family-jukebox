@@ -24,7 +24,7 @@ function buildRowSubtitle(song: Song, authorName?: string): string {
 }
 
 export function SongRow({ song, index, showIndex = false, playlist }: SongRowProps) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
+  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist, source: "shelf" });
   const author = getMemberBySlug(song.authorSlug);
 
   return (

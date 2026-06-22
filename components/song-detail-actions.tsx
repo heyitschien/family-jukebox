@@ -23,7 +23,7 @@ export function SongDetailActions({
   parentAlbum,
 }: SongDetailActionsProps) {
   const { playQueue } = usePlayer();
-  const { playing, toggle } = useSongPlayback(song, { singleOnly: true });
+  const { playing, toggle } = useSongPlayback(song, { singleOnly: true, source: "detail" });
   const playAlbumQueue = albumQueue ?? queue;
 
   return (
@@ -42,6 +42,7 @@ export function SongDetailActions({
             playQueue(
               playAlbumQueue,
               playAlbumQueue.findIndex((s) => s.slug === song.slug),
+              "detail",
             )
           }
           className="inline-flex min-h-11 items-center rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-black [-webkit-tap-highlight-color:transparent]"
@@ -51,7 +52,7 @@ export function SongDetailActions({
       ) : (
         <button
           type="button"
-          onClick={() => playQueue(queue, queue.findIndex((s) => s.slug === song.slug))}
+          onClick={() => playQueue(queue, queue.findIndex((s) => s.slug === song.slug), "detail")}
           className="inline-flex min-h-11 items-center rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-black [-webkit-tap-highlight-color:transparent]"
         >
           Play artist mix

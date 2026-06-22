@@ -19,7 +19,7 @@ export function MemberPlayHeader({ songs, memberName }: MemberPlayHeaderProps) {
     <PlayButton
       size="lg"
       label={`Play ${memberName}`}
-      onClick={() => playQueue(songs, 0)}
+      onClick={() => playQueue(songs, 0, "shelf")}
     />
   );
 }

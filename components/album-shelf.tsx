@@ -58,7 +58,7 @@ export function AlbumShelfCompact({ albums }: { albums: Album[] }) {
           <button
             key={album.slug}
             type="button"
-            onClick={() => playQueue(albumSongs, 0)}
+            onClick={() => playQueue(albumSongs, 0, "shelf")}
             className="shrink-0 rounded-2xl border border-white/[0.08] bg-white/[0.06] px-4 py-3 text-left transition hover:bg-white/[0.1] [-webkit-tap-highlight-color:transparent]"
           >
             <p className="text-sm font-bold">{album.title}</p>

@@ -19,7 +19,7 @@ type FeaturedShelfProps = {
 };
 
 function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] }) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist });
+  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist, source: "shelf" });
   const author = getMemberBySlug(song.authorSlug);
 
   return (
@@ -96,7 +96,7 @@ export function FeaturedShelf({ songs, tags }: FeaturedShelfProps) {
         {filtered.length > 1 ? (
           <button
             type="button"
-            onClick={() => playQueue(filtered, 0)}
+            onClick={() => playQueue(filtered, 0, "shelf")}
             className="inline-flex min-h-11 shrink-0 items-center rounded-full bg-family-accent px-4 py-2.5 text-sm font-black text-[#1a0812] [-webkit-tap-highlight-color:transparent]"
           >
             Play all
