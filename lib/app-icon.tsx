@@ -142,13 +142,25 @@ export function buildWebManifest(): MetadataRoute.Manifest {
         src: APP_ICON_192_PATH,
         sizes: "192x192",
         type: "image/png",
-        purpose: "any maskable",
+        purpose: "any",
+      },
+      {
+        src: APP_ICON_192_PATH,
+        sizes: "192x192",
+        type: "image/png",
+        purpose: "maskable",
       },
       {
         src: APP_ICON_512_PATH,
         sizes: "512x512",
         type: "image/png",
-        purpose: "any maskable",
+        purpose: "any",
+      },
+      {
+        src: APP_ICON_512_PATH,
+        sizes: "512x512",
+        type: "image/png",
+        purpose: "maskable",
       },
       {
         src: "/apple-icon",
