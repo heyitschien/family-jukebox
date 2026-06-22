@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 
+import { BrandMark, BrandWordmark } from "@/lib/brand-image";
 import { SITE_DESCRIPTION, SITE_NAME } from "@/lib/site-metadata";
 
 export const alt = "Cousin Radio — family songs and little anthems";
@@ -23,32 +24,13 @@ export default function OpenGraphImage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-          <div
-            style={{
-              width: 88,
-              height: 88,
-              borderRadius: 24,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              background: "#ff6fb1",
-              color: "#1a0812",
-              fontSize: 48,
-              fontWeight: 900,
-            }}
-          >
-            ♪
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ fontSize: 56, fontWeight: 900, letterSpacing: -1 }}>{SITE_NAME}</div>
-            <div style={{ fontSize: 28, color: "#94a3b8", fontWeight: 700 }}>
-              Little anthems · family jukebox
-            </div>
-          </div>
+          <BrandMark size={88} radius={24} />
+          <BrandWordmark titleSize={56} subtitleSize={28} subtitle="Little anthems · cousin-made songs" />
         </div>
         <div style={{ fontSize: 34, lineHeight: 1.35, color: "#cbd5e1", maxWidth: 920 }}>
           {SITE_DESCRIPTION}
         </div>
+        <div style={{ fontSize: 18, lineHeight: 1.2, color: "#64748b", fontWeight: 700 }}>{SITE_NAME}</div>
       </div>
     ),
     { ...size },

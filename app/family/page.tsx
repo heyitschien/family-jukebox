@@ -22,7 +22,7 @@ export default function FamilyPage() {
       <Topbar />
       <header className="px-1">
         <h1 className="text-3xl font-extrabold tracking-tight">Cousin Radio</h1>
-        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Family artists in the jukebox</p>
+        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Family artists on Cousin Radio</p>
       </header>
 
       <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
