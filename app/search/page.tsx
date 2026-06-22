@@ -3,6 +3,13 @@ import { Suspense } from "react";
 import { SearchScreen } from "@/components/search-screen";
 import { getAllAges, members } from "@/data/members";
 import { getAllTags, songs } from "@/data/songs";
+import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
+
+export const metadata = buildShareMetadata({
+  title: formatPageTitle("Search"),
+  description: "Find songs, albums, and family artists on Cousin Radio.",
+  path: "/search",
+});
 
 export default function SearchPage() {
   return (

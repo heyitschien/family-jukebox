@@ -19,10 +19,6 @@ export const metadata: Metadata = {
     template: `%s · ${getSiteName()}`,
   },
   description: getSiteDescription(),
-  icons: {
-    icon: "/og-share.jpg",
-    apple: "/og-share.jpg",
-  },
 };
 
 export default function RootLayout({

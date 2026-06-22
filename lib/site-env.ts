@@ -46,12 +46,12 @@ export function getRuntimeSiteUrl(): string {
 }
 
 export function getSiteName(): string {
-  return isStagingEnvironment() ? "Family Jukebox · Staging" : "Family Jukebox";
+  return isStagingEnvironment() ? "Cousin Radio · Staging" : "Cousin Radio";
 }
 
 export function getSiteDescription(): string {
   if (!isStagingEnvironment()) {
-    return "Songs we made together — silly fox trails, pink glasses, gravity shifts, and little family anthems.";
+    return "Family songs we made together — silly fox trails, pink glasses, gravity shifts, and little anthems worth replaying.";
   }
   return "Staging preview — test new songs and layout changes before they go live on cousinradio.com.";
 }

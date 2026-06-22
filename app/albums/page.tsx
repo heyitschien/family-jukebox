@@ -3,11 +3,12 @@ import Link from "next/link";
 import { AlbumCard } from "@/components/album-card";
 import { Topbar } from "@/components/topbar";
 import { getBrowseAlbumSections } from "@/data/albums";
-import { buildShareMetadata } from "@/lib/site-metadata";
+import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
 
 export const metadata = buildShareMetadata({
-  title: "Family Albums · Family Jukebox",
+  title: formatPageTitle("Family albums"),
   description: "Growing series and full collections from every family member.",
+  path: "/albums",
 });
 
 export default function AlbumsPage() {

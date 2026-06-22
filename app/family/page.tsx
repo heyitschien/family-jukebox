@@ -4,6 +4,14 @@ import { MemberCircle } from "@/components/member-circle";
 import { Topbar } from "@/components/topbar";
 import { getRoleLabel, members } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
+import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
+
+export const metadata = buildShareMetadata({
+  title: formatPageTitle("Family artists"),
+  description:
+    "Meet the cousins who make the music — Eliana, Solene, Ocean, Marceline, Evelyn, and the whole crew.",
+  path: "/family",
+});
 
 export default function FamilyPage() {
   const girls = members.filter((m) => m.role === "girl");
