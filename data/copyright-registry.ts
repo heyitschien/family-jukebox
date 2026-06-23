@@ -403,5 +403,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/the-city-breathing.jpg",
     "audioSha256": "f170fd098564e85e7e08f1fca7fc8719f5146e7c2e779b40ab8e57f68249894b",
     "coverSha256": "a4ad82622cc686a7b9ec05769d2c1d5d76b4ebea6c2f6ab464e3428c62b7c59a"
+  },
+  {
+    "registryId": "CR-2026-the-future-in-my-palm",
+    "songSlug": "the-future-in-my-palm",
+    "title": "The Future in My Palm",
+    "workType": "family-original",
+    "createdDate": "2026-06-23",
+    "registeredAt": "2026-06-23T20:18:13.805Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The Future in My Palm\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/the-future-in-my-palm.mp3",
+    "coverAssetPath": "/assets/tio-chien/the-future-in-my-palm.jpg",
+    "audioSha256": "7be01b80dd89672caff90612f0646e8ca1b6012f79c529f51f45e08a6c1c26aa",
+    "coverSha256": "7bb684e0aef698a1e562b7ec39a70a47a5d268981062d4aea37de16c99ebebfc"
   }
 ];

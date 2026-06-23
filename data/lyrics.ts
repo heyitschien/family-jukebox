@@ -534,6 +534,42 @@ Everything moves, moves when I tap the tap
 When I ask, yeah Miracle hidden behind the glass
 Invisible city
 We carry the light`,
+  "the-future-in-my-palm": `Just a grain of sand, new one ace again 🎵
+A single grain of sand, your time in mine 🎵
+Ordinary mad awakened from the sleep 🎵
+Printing all our secrets in the silicon deep 🎵
+Small grain, big dream, look at how it glows 🎵
+Guso, some Gyojin, everything it knows 🎵
+The signal wakes up, electric pulse heartbeat 🎵
+It's starting to home, we are becoming one 🎵
+Sand to signal, light to light 🎵
+Little spark running through the night 🎵
+From the ground to the sky 🎵
+Now the future talks in my hand 🎵
+From the sunlight is born, from the sunlight is born 🎵
+Every single dawn 🎵
+Every single dawn 🎵
+Circuit lines glowing like rivers of gold 🎵
+Goring vital story is about to be told 🎵
+Electric pulses dancing the palm of my hand 🎵
+No more distance left across the sea or the land 🎵
+Jageun, Gyojeong-do, small decisions making it clear 🎵
+The signal is rising, finally here 🎵
+The signal wakes up, electric pulse heartbeat 🎵
+It's starting to home, we are becoming one 🎵
+Sand to signal, light to light 🎵
+Little spark running through the night 🎵
+From the ground to the sky 🎵
+Now the future talks in my hand 🎵
+From the sunlight is born, from the sunlight is born 🎵
+Every single dawn 🎵
+Every single dawn 🎵
+Language appearing on the glass 🎵
+Can't you feel it as the signal's passed 🎵
+From the ground to the sky 🎵
+Sand to signal, sand to signal 🎵
+The future talks in my hand 🎵
+From the dream, yeah 🎵`,
   "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
 Ico is your very best friend Happy times that never end
 One and two and now you're three Happy birthday Marceline

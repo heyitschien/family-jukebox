@@ -84,10 +84,10 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   {
     slug: "miracle-in-the-sand-album",
     title: "Printing Intelligence on Sand",
-    subtitle: "Miracle in the Sand · Tap on the Glass · Morning Sun Neon Light · The City Breathing · more coming",
+    subtitle: "Miracle in the Sand · Tap on the Glass · Morning Sun Neon Light · The City Breathing · The Future in My Palm · more coming",
     authorSlug: "tio-chien",
     coverSrc: "/assets/tio-chien/miracle-in-the-sand.jpg",
-    songSlugs: ["miracle-in-the-sand", "tap-on-the-glass", "morning-sun-neon-light", "the-city-breathing"],
+    songSlugs: ["miracle-in-the-sand", "tap-on-the-glass", "morning-sun-neon-light", "the-city-breathing", "the-future-in-my-palm"],
     dateCreated: "2026-06-21",
     story:
       "A growing album series from Tio Chien — semiconductor dreams, silicon hearts, and indie-pop built one single at a time.",

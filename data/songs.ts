@@ -238,6 +238,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "tio-chien", "series", "featured"],
     featured: true,
   },
+  {
+    slug: "the-future-in-my-palm",
+    title: "The Future in My Palm",
+    subtitle: "Track five · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-23",
+    audioSrc: "/assets/tio-chien/the-future-in-my-palm.mp3",
+    coverSrc: "/assets/tio-chien/the-future-in-my-palm.jpg",
+    story:
+      "The fifth single from Printing Intelligence on Sand — sand becomes signal, and the future speaks back in your hand.",
+    lyrics: songLyrics["the-future-in-my-palm"],
+    tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
