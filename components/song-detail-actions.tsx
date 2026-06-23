@@ -9,6 +9,8 @@ import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import type { Album } from "@/data/albums";
 import type { Song } from "@/data/songs";
+import { getMemberBySlug } from "@/data/members";
+import { buildAlbumQueueContext, buildArtistQueueContext } from "@/lib/queue-context";
 
 type SongDetailActionsProps = {
   song: Song;
@@ -26,6 +28,10 @@ export function SongDetailActions({
   const { playQueue } = usePlayer();
   const { playing, toggle } = useSongPlayback(song, { singleOnly: true, source: "detail" });
   const playAlbumQueue = albumQueue ?? queue;
+  const author = getMemberBySlug(song.authorSlug);
+  const albumContext = parentAlbum
+    ? buildAlbumQueueContext(parentAlbum.slug, parentAlbum.title)
+    : buildArtistQueueContext(song.authorSlug, author?.name ?? "Artist");
 
   return (
     <div className="flex flex-wrap items-center justify-center gap-3">
@@ -49,6 +55,7 @@ export function SongDetailActions({
               playAlbumQueue,
               playAlbumQueue.findIndex((s) => s.slug === song.slug),
               "detail",
+              albumContext,
             )
           }
           className="inline-flex min-h-11 items-center rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-black [-webkit-tap-highlight-color:transparent]"
@@ -58,7 +65,14 @@ export function SongDetailActions({
       ) : (
         <button
           type="button"
-          onClick={() => playQueue(queue, queue.findIndex((s) => s.slug === song.slug), "detail")}
+          onClick={() =>
+            playQueue(
+              queue,
+              queue.findIndex((s) => s.slug === song.slug),
+              "detail",
+              albumContext,
+            )
+          }
           className="inline-flex min-h-11 items-center rounded-full border border-white/10 bg-white/10 px-5 py-3 text-sm font-black [-webkit-tap-highlight-color:transparent]"
         >
           Play artist mix

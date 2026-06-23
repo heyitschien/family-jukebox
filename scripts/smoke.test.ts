@@ -76,6 +76,15 @@ import {
   readFavoriteSlugsFromRaw,
   serializeFavoriteSlugs,
 } from "../lib/favorites-storage";
+import {
+  MIN_RESUME_SECONDS,
+  shouldResumeFrom,
+} from "../lib/playback-position";
+import {
+  buildAlbumQueueContext,
+  buildArtistQueueContext,
+  FAVORITES_QUEUE_CONTEXT,
+} from "../lib/queue-context";
 import { verifyCopyrightRegistry } from "../lib/copyright-registry";
 import {
   buildAlbumShareDescription,
@@ -904,5 +913,29 @@ describe("web app manifest", () => {
         type: "image/png",
       },
     ]);
+  });
+});
+
+describe("playback position memory", () => {
+  it("shouldResumeFrom skips near-start and near-end positions", () => {
+    assert.equal(shouldResumeFrom(MIN_RESUME_SECONDS - 1, 180), false);
+    assert.equal(shouldResumeFrom(45, 180), true);
+    assert.equal(shouldResumeFrom(175, 180), false);
+  });
+});
+
+describe("queue context helpers", () => {
+  it("builds album, artist, and favorites contexts", () => {
+    assert.deepEqual(buildAlbumQueueContext("test-album", "Test Album"), {
+      kind: "album",
+      label: "Test Album",
+      href: "/albums/test-album",
+    });
+    assert.deepEqual(buildArtistQueueContext("marceline", "Marceline"), {
+      kind: "artist",
+      label: "Marceline",
+      href: "/members/marceline",
+    });
+    assert.equal(FAVORITES_QUEUE_CONTEXT.href, "/favorites");
   });
 });

@@ -27,8 +27,19 @@ import {
   type RepeatMode,
   type ShuffleMode,
 } from "@/lib/player-queue";
-import { BRAND_NAME, buildBrandArtworkUrl } from "@/lib/brand";
+import {
+  clearPlaybackPosition,
+  getPlaybackPosition,
+  savePlaybackPosition,
+  shouldResumeFrom,
+} from "@/lib/playback-position";
+import { BRAND_NAME, buildNowPlayingArtworkUrl } from "@/lib/brand";
 import { getMemberBySlug } from "@/data/members";
+import {
+  buildSingleQueueContext,
+  COUSIN_RADIO_CONTEXT,
+  type QueueContext,
+} from "@/lib/queue-context";
 
 type PlayerContextValue = {
   currentSong: Song | null;
@@ -38,10 +49,15 @@ type PlayerContextValue = {
   repeatMode: RepeatMode;
   shuffleMode: ShuffleMode;
   radioMode: RadioMode;
-  playSong: (song: Song, source?: PlaySource) => void;
-  toggleSong: (song: Song, source?: PlaySource) => void;
+  playSong: (song: Song, source?: PlaySource, context?: QueueContext) => void;
+  toggleSong: (song: Song, source?: PlaySource, context?: QueueContext) => void;
   isSongPlaying: (song: Song) => boolean;
-  playQueue: (songs: Song[], startIndex?: number, source?: PlaySource) => void;
+  playQueue: (
+    songs: Song[],
+    startIndex?: number,
+    source?: PlaySource,
+    context?: QueueContext,
+  ) => void;
   togglePlay: () => void;
   pause: () => void;
   skipNext: () => void;
@@ -50,6 +66,7 @@ type PlayerContextValue = {
   toggleShuffle: () => void;
   toggleRadio: () => void;
   queue: Song[];
+  queueContext: QueueContext | null;
 };
 
 const PlayerContext = createContext<PlayerContextValue | null>(null);
@@ -83,9 +100,13 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   const shuffleModeRef = useRef<ShuffleMode>("off");
   const radioModeRef = useRef<RadioMode>("off");
   const playSourceRef = useRef<PlaySource>("unknown");
+  const queueContextRef = useRef<QueueContext | null>(null);
+  const lastPositionSaveRef = useRef(0);
+  const pendingResumeRef = useRef<number | null>(null);
   const [currentSong, setCurrentSong] = useState<Song | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [queue, setQueue] = useState<Song[]>([]);
+  const [queueContext, setQueueContext] = useState<QueueContext | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [repeatMode, setRepeatMode] = useState<RepeatMode>("off");
@@ -119,11 +140,20 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
   // Mobile browsers require play() inside the tap handler — not in useEffect.
   const startPlayback = useCallback(
-    (song: Song, nextQueue: Song[], index: number, source: PlaySource = "unknown") => {
+    (
+      song: Song,
+      nextQueue: Song[],
+      index: number,
+      source: PlaySource = "unknown",
+      context?: QueueContext,
+    ) => {
       const audio = audioRef.current;
       if (!audio) return;
 
       playSourceRef.current = source;
+      const nextContext = context ?? buildSingleQueueContext(song.title, song.slug);
+      queueContextRef.current = nextContext;
+      setQueueContext(nextContext);
 
       const safeIndex =
         index >= 0 && index < nextQueue.length
@@ -139,10 +169,16 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
       recordSessionPlay(song.slug);
 
+      const savedPosition = getPlaybackPosition(song.slug);
+      pendingResumeRef.current =
+        savedPosition !== null && shouldResumeFrom(savedPosition, audio.duration || Infinity)
+          ? savedPosition
+          : null;
+
       const sameSource = songSrcMatches(audio, song.audioSrc);
       if (!sameSource) {
         audio.src = song.audioSrc;
-      } else {
+      } else if (pendingResumeRef.current === null) {
         audio.currentTime = 0;
       }
 
@@ -172,7 +208,9 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         shuffleModeRef.current,
       );
       const track = nextQueue[index];
-      if (track) startPlayback(track, nextQueue, index, "auto-advance");
+      if (track) {
+        startPlayback(track, nextQueue, index, "auto-advance", COUSIN_RADIO_CONTEXT);
+      }
     },
     [listenerAge, startPlayback],
   );
@@ -216,13 +254,19 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      startPlayback(song, q, result.index, manual ? playSourceRef.current : "auto-advance");
+      startPlayback(
+        song,
+        q,
+        result.index,
+        manual ? playSourceRef.current : "auto-advance",
+        queueContextRef.current ?? undefined,
+      );
     },
     [restartCurrentTrack, startPlayback, continueRadioFrom],
   );
 
   const playSong = useCallback(
-    (song: Song, source: PlaySource = "unknown") => {
+    (song: Song, source: PlaySource = "unknown", context?: QueueContext) => {
       originalQueueRef.current = [song];
       const { queue: nextQueue, index } = resolveQueueForPlayback(
         [song],
@@ -230,7 +274,15 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         shuffleModeRef.current,
       );
       const track = nextQueue[index];
-      if (track) startPlayback(track, nextQueue, index, source);
+      if (track) {
+        startPlayback(
+          track,
+          nextQueue,
+          index,
+          source,
+          context ?? buildSingleQueueContext(song.title, song.slug),
+        );
+      }
     },
     [startPlayback],
   );
@@ -241,7 +293,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
   );
 
   const toggleSong = useCallback(
-    (song: Song, source: PlaySource = "unknown") => {
+    (song: Song, source: PlaySource = "unknown", context?: QueueContext) => {
       const audio = audioRef.current;
       if (!audio) return;
 
@@ -260,13 +312,18 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         return;
       }
 
-      playSong(song, source);
+      playSong(song, source, context);
     },
     [currentSong, playSong],
   );
 
   const playQueue = useCallback(
-    (songs: Song[], startIndex = 0, source: PlaySource = "unknown") => {
+    (
+      songs: Song[],
+      startIndex = 0,
+      source: PlaySource = "unknown",
+      context?: QueueContext,
+    ) => {
       if (songs.length === 0) return;
       originalQueueRef.current = [...songs];
       const { queue: nextQueue, index } = resolveQueueForPlayback(
@@ -275,7 +332,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         shuffleModeRef.current,
       );
       const track = nextQueue[index];
-      if (track) startPlayback(track, nextQueue, index, source);
+      if (track) startPlayback(track, nextQueue, index, source, context);
     },
     [startPlayback],
   );
@@ -348,13 +405,42 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const onTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const onLoadedMetadata = () => setDuration(audio.duration);
+    const onTimeUpdate = () => {
+      setCurrentTime(audio.currentTime);
+      const slug = currentSongRef.current?.slug;
+      if (!slug) return;
+
+      const now = Date.now();
+      if (now - lastPositionSaveRef.current < 4000) return;
+      lastPositionSaveRef.current = now;
+      savePlaybackPosition(slug, audio.currentTime);
+    };
+
+    const onLoadedMetadata = () => {
+      setDuration(audio.duration);
+      const resumeAt = pendingResumeRef.current;
+      const slug = currentSongRef.current?.slug;
+      if (resumeAt !== null && slug && shouldResumeFrom(resumeAt, audio.duration)) {
+        audio.currentTime = resumeAt;
+        setCurrentTime(resumeAt);
+      }
+      pendingResumeRef.current = null;
+    };
+
     const onPlay = () => setIsPlaying(true);
-    const onPause = () => setIsPlaying(false);
+
+    const onPause = () => {
+      setIsPlaying(false);
+      const slug = currentSongRef.current?.slug;
+      if (slug && audio.currentTime > 0) {
+        savePlaybackPosition(slug, audio.currentTime);
+      }
+    };
+
     const onEnded = () => {
       const song = currentSongRef.current;
       if (song) {
+        clearPlaybackPosition(song.slug);
         trackPlayEvent({
           songSlug: song.slug,
           event: "complete",
@@ -385,30 +471,55 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
 
     if (!currentSong) {
       navigator.mediaSession.metadata = null;
+      navigator.mediaSession.playbackState = "none";
       return;
     }
 
     const author = getMemberBySlug(currentSong.authorSlug);
     const origin = window.location.origin;
+    const contextLabel = queueContext?.label ?? BRAND_NAME;
+    const artworkSizes = [128, 256, 512, 1024] as const;
 
     navigator.mediaSession.metadata = new MediaMetadata({
       title: currentSong.title,
       artist: author?.name ?? BRAND_NAME,
-      album: BRAND_NAME,
-      artwork: [
-        {
-          src: buildBrandArtworkUrl(origin, 256),
-          sizes: "256x256",
-          type: "image/png",
-        },
-        {
-          src: buildBrandArtworkUrl(origin, 512),
-          sizes: "512x512",
-          type: "image/png",
-        },
-      ],
+      album: contextLabel,
+      artwork: artworkSizes.map((size) => ({
+        src: buildNowPlayingArtworkUrl(origin, currentSong.slug, size),
+        sizes: `${size}x${size}`,
+        type: "image/png",
+      })),
     });
-  }, [currentSong]);
+
+    navigator.mediaSession.playbackState = isPlaying ? "playing" : "paused";
+  }, [currentSong, isPlaying, queueContext]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !("mediaSession" in navigator)) return;
+
+    const setHandler = (
+      action: MediaSessionAction,
+      handler: (() => void) | null,
+    ) => {
+      try {
+        navigator.mediaSession.setActionHandler(action, handler);
+      } catch {
+        // Some browsers reject unsupported actions.
+      }
+    };
+
+    setHandler("play", () => togglePlay());
+    setHandler("pause", () => pause());
+    setHandler("previoustrack", () => skipPrev());
+    setHandler("nexttrack", () => skipNext());
+
+    return () => {
+      setHandler("play", null);
+      setHandler("pause", null);
+      setHandler("previoustrack", null);
+      setHandler("nexttrack", null);
+    };
+  }, [togglePlay, pause, skipPrev, skipNext]);
 
   return (
     <PlayerContext.Provider
@@ -432,6 +543,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         toggleShuffle,
         toggleRadio,
         queue,
+        queueContext,
       }}
     >
       {children}
