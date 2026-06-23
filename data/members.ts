@@ -57,16 +57,16 @@ export const members: FamilyMember[] = [
   },
   {
     slug: "evelyn",
-    name: "Evelyn",
+    name: "Tia Evelyn",
     age: 35,
     role: "family",
     emoji: "💛",
     description:
-      "Evelyn — heart of the home. Her album Gold in the Tile is a growing collection of songs made with love, one release at a time.",
+      "Tia Evelyn — heart of the home. Her album Gold in the Tile is a growing collection of songs made with love, one release at a time.",
   },
   {
     slug: "sam-and-josh",
-    name: "Sam & Josh",
+    name: "Tio Sam & Tio Josh",
     age: 40,
     role: "family",
     emoji: "🏀",
