@@ -249,7 +249,7 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "title": "Morning Sun Neon Light",
     "workType": "family-original",
     "createdDate": "2026-06-22",
-    "registeredAt": "2026-06-23T00:23:28.455Z",
+    "registeredAt": "2026-06-23T00:40:00.607Z",
     "primaryArtistSlug": "tio-chien",
     "subjectMemberSlugs": [
       "tio-chien"
@@ -264,7 +264,7 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "audioAssetPath": "/assets/tio-chien/morning-sun-neon-light.mp3",
     "coverAssetPath": "/assets/tio-chien/morning-sun-neon-light.jpg",
     "audioSha256": "4c19f2ae14adc1c3a32fb4bc9230f7ccd708ce1381eee4bca2f2fffb8f1dc6b1",
-    "coverSha256": "5d51fb6e8ac29f1a139c59a734f94d1b72dcad67dd83d4e4b29dcd6c4f9d943b"
+    "coverSha256": "738a751a1ed02101040115227c904aa256ba08916693cd232952a0395ff7ec0a"
   },
   {
     "registryId": "CR-2026-gold-in-the-tile",
