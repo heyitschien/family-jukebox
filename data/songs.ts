@@ -157,13 +157,13 @@ export const songs: Song[] = [
   {
     slug: "gold-in-the-tile",
     title: "Gold in the Tile",
-    subtitle: "The first single from Evelyn's growing album",
+    subtitle: "The first single from Tia Evelyn's growing album",
     authorSlug: "evelyn",
     dateCreated: "2026-06-21",
     audioSrc: "/assets/evelyn/gold-in-the-tile.mp3",
     coverSrc: "/assets/evelyn/gold-in-the-tile.jpg",
     story:
-      "The opening single from Evelyn's Gold in the Tile album — warm, golden, and built to grow track by track.",
+      "The opening single from Tia Evelyn's Gold in the Tile album — warm, golden, and built to grow track by track.",
     lyrics: songLyrics["gold-in-the-tile"],
     tags: ["single", "gold", "evelyn", "featured"],
     featured: true,
@@ -171,13 +171,13 @@ export const songs: Song[] = [
   {
     slug: "orange-sweater-sun",
     title: "Orange Sweater Sun",
-    subtitle: "K-pop sunshine — Evelyn's second single",
+    subtitle: "K-pop sunshine — Tia Evelyn's second single",
     authorSlug: "evelyn",
     dateCreated: "2026-06-21",
     audioSrc: "/assets/evelyn/orange-sweater-sun.mp3",
     coverSrc: "/assets/evelyn/orange-sweater-sun.jpg",
     story:
-      "Evelyn's K-pop styled single — bright hooks, orange-sweater warmth, and the second chapter of her growing album.",
+      "Tia Evelyn's K-pop styled single — bright hooks, orange-sweater warmth, and the second chapter of her growing album.",
     lyrics: songLyrics["orange-sweater-sun"],
     tags: ["single", "kpop", "pop", "evelyn", "featured"],
     featured: true,
@@ -185,7 +185,7 @@ export const songs: Song[] = [
   {
     slug: "silver-pan-morning",
     title: "Silver Pan Morning",
-    subtitle: "Sunday pancakes and coffee steam — Evelyn's latest",
+    subtitle: "Sunday pancakes and coffee steam — Tia Evelyn's latest",
     authorSlug: "evelyn",
     dateCreated: "2026-06-21",
     audioSrc: "/assets/evelyn/silver-pan-morning.mp3",
@@ -219,7 +219,7 @@ export const songs: Song[] = [
     audioSrc: "/assets/sam-and-josh/legacy-in-the-lane.mp3",
     coverSrc: "/assets/sam-and-josh/legacy-in-the-lane.png",
     story:
-      "Sam & Josh's Father's Day release — a hip-hop love letter to dads on the court, in the lane, and at home.",
+      "Tio Sam & Tio Josh's Father's Day release — a hip-hop love letter to dads on the court, in the lane, and at home.",
     lyrics: songLyrics["legacy-in-the-lane"],
     tags: ["fathers-day", "single", "hip-hop", "celebration", "sam-and-josh", "featured"],
     featured: true,
