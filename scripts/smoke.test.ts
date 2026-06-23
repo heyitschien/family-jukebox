@@ -209,6 +209,7 @@ describe("album catalog", () => {
       "miracle-in-the-sand",
       "tap-on-the-glass",
       "morning-sun-neon-light",
+      "the-city-breathing",
     ]);
   });
 

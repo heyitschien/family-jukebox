@@ -224,6 +224,20 @@ export const songs: Song[] = [
     tags: ["fathers-day", "single", "hip-hop", "celebration", "sam-and-josh", "featured"],
     featured: true,
   },
+  {
+    slug: "the-city-breathing",
+    title: "The City Breathing",
+    subtitle: "Track four · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-23",
+    audioSrc: "/assets/tio-chien/the-city-breathing.mp3",
+    coverSrc: "/assets/tio-chien/the-city-breathing.jpg",
+    story:
+      "The fourth single from Printing Intelligence on Sand — the city wakes, circuits hum, and the sand keeps printing intelligence into the night.",
+    lyrics: songLyrics["the-city-breathing"],
+    tags: ["single", "indie", "tio-chien", "series", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

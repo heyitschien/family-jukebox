@@ -502,6 +502,38 @@ We're just breathing it in
 Where do we end, where does it begin
 No, no, no, no, no, no, it's all domain
 My love is Papords`,
+  "the-city-breathing": `When I ask, yeah Miracle hidden behind the glass
+A car tap, a blue map, yeah The world is in a snap
+Several rooms are glowing bright Cables on the oceans in the night
+Hidden lights
+Hidden lights
+Hidden lights
+Look at it go
+Under the concrete
+A secret show
+The city is breathing
+A city
+Hidden power inside the walls
+We don't see it but it carries us
+Before the sun, the trucks are moving fast
+Lights in the wires
+Horses in the street
+Invisible city
+Under my feet
+Everything moves, moves when I tap the tap
+When I ask, yeah Miracle hidden behind the glass
+Under the ordinary day
+A quiet machine is leading the way
+Under the ordinary day
+We are never alone in the grey
+Lights in the wires
+Horses in the street
+Invisible city
+Under my feet
+Everything moves, moves when I tap the tap
+When I ask, yeah Miracle hidden behind the glass
+Invisible city
+We carry the light`,
   "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
 Ico is your very best friend Happy times that never end
 One and two and now you're three Happy birthday Marceline

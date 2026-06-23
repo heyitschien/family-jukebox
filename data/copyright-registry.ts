@@ -380,5 +380,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/sam-and-josh/legacy-in-the-lane.png",
     "audioSha256": "41443ce9a7be4ab9cdd6806f79364e267e8bf9d25e9b25e5ccc6a05263af2679",
     "coverSha256": "ad434bbca3df2b5c2ce87c118e08b8ee105bc6e88add04983eeafbcb7515c365"
+  },
+  {
+    "registryId": "CR-2026-the-city-breathing",
+    "songSlug": "the-city-breathing",
+    "title": "The City Breathing",
+    "workType": "family-original",
+    "createdDate": "2026-06-23",
+    "registeredAt": "2026-06-23T00:48:58.922Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The City Breathing\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/the-city-breathing.mp3",
+    "coverAssetPath": "/assets/tio-chien/the-city-breathing.jpg",
+    "audioSha256": "f170fd098564e85e7e08f1fca7fc8719f5146e7c2e779b40ab8e57f68249894b",
+    "coverSha256": "a4ad82622cc686a7b9ec05769d2c1d5d76b4ebea6c2f6ab464e3428c62b7c59a"
   }
 ];
