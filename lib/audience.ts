@@ -20,7 +20,7 @@ export const LISTENER_AGE_PRESETS: ListenerAgePreset[] = [
   { age: 8, label: "Solene", emoji: "🎨", memberSlug: "solene" },
   { age: 10, label: "Ocean", emoji: "🌊", memberSlug: "ocean" },
   { age: 35, label: "Grown-up", emoji: "✨", memberSlug: "tio-chien" },
-  { age: 40, label: "Sam & Josh", emoji: "🏀", memberSlug: "sam-and-josh" },
+  { age: 40, label: "Tio Sam & Tio Josh", emoji: "🏀", memberSlug: "sam-and-josh" },
 ];
 
 export function getSubjectMembers(song: Song): FamilyMember[] {

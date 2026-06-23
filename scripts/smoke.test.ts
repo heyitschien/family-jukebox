@@ -176,7 +176,7 @@ describe("album catalog", () => {
     assert.equal(getAlbumForSong(tap).slug, "miracle-in-the-sand-album");
   });
 
-  it("keeps Sam & Josh as the artists for Legacy in the Lane", () => {
+  it("keeps Tio Sam & Tio Josh as the artists for Legacy in the Lane", () => {
     const legacy = songs.find((song) => song.slug === "legacy-in-the-lane");
     assert.ok(legacy, "legacy-in-the-lane should exist");
     assert.equal(legacy.authorSlug, "sam-and-josh");
@@ -186,7 +186,7 @@ describe("album catalog", () => {
 
     const samAndJosh = getMemberBySlug("sam-and-josh");
     assert.ok(samAndJosh, "sam-and-josh member should exist");
-    assert.equal(samAndJosh.name, "Sam & Josh");
+    assert.equal(samAndJosh.name, "Tio Sam & Tio Josh");
 
     const album = getAlbumBySlug("legacy-in-the-lane-album");
     assert.ok(album, "legacy album should exist");

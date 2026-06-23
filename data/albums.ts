@@ -34,8 +34,8 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   solene: "Solene's Painted Garden",
   ocean: "Ocean's Adventures",
   "tio-chien": "Tio Chien's Magic Studio",
-  evelyn: "Evelyn",
-  "sam-and-josh": "Sam & Josh",
+  evelyn: "Tia Evelyn",
+  "sam-and-josh": "Tio Sam & Tio Josh",
 };
 
 /** Manual config for growing / themed albums — assign song slugs here as singles drop. */
@@ -64,20 +64,20 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     songSlugs: ["legacy-in-the-lane"],
     dateCreated: "2026-06-21",
     story:
-      "Sam & Josh's Father's Day series — hip-hop tributes to real superheroes who lace up sneakers, not capes.",
+      "Tio Sam & Tio Josh's Father's Day series — hip-hop tributes to real superheroes who lace up sneakers, not capes.",
     accentColor: "#5eead4",
     featured: true,
   },
   {
     slug: "gold-in-the-tile-album",
-    title: "Evelyn",
+    title: "Tia Evelyn",
     subtitle: "Silver Pan Morning · Orange Sweater Sun · Gold in the Tile · more coming",
     authorSlug: "evelyn",
     coverSrc: "/assets/evelyn/silver-pan-morning.jpg",
     songSlugs: ["gold-in-the-tile", "orange-sweater-sun", "silver-pan-morning"],
     dateCreated: "2026-06-21",
     story:
-      "A growing album for Evelyn — indie warmth, K-pop sparkle, and new songs joining the collection as they release.",
+      "A growing album for Tia Evelyn — indie warmth, K-pop sparkle, and new songs joining the collection as they release.",
     accentColor: "#ff8c42",
     featured: true,
   },
