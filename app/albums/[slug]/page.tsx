@@ -128,7 +128,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
         </div>
       </section>
 
-      <section className="mt-6 overflow-hidden rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="mt-6 overflow-hidden jb-float-panel p-4 sm:p-5">
         <h2 className="mb-4 text-xl font-bold">Tracklist</h2>
         {albumSongs.length > 0 ? (
           <div className="grid min-w-0 gap-1">
@@ -172,7 +172,7 @@ export default async function AlbumPage({ params }: AlbumPageProps) {
       <DiscoverMembersShelf members={discoverMembers} />
 
       {album.story ? (
-        <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+        <section className="mt-4 jb-float-panel p-4 sm:p-5">
           <h2 className="text-lg font-bold">About this album</h2>
           <p className="mt-3 leading-relaxed text-[var(--jb-muted)]">{album.story}</p>
           {author ? (

@@ -25,7 +25,7 @@ export default function FamilyPage() {
         <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Family artists on Cousin Radio</p>
       </header>
 
-      <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="jb-float-panel p-4 sm:p-5">
         <h2 className="text-xl font-bold">Our girls</h2>
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
           {girls.map((member) => (
@@ -34,7 +34,7 @@ export default function FamilyPage() {
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="jb-float-panel p-4 sm:p-5">
         <h2 className="text-xl font-bold">Evelyn</h2>
         <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Gold in the Tile — new album, more songs coming</p>
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
@@ -46,7 +46,7 @@ export default function FamilyPage() {
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="jb-float-panel p-4 sm:p-5">
         <h2 className="text-xl font-bold">Ocean & Tio Chien</h2>
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
           {others.map((member) => (
@@ -55,7 +55,7 @@ export default function FamilyPage() {
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-2 sm:p-3">
+      <section className="jb-float-panel p-2 sm:p-3">
         <h2 className="px-2 pt-2 text-xl font-bold">Everyone</h2>
         {members.map((member) => {
           const count = getSongsByAuthor(member.slug).length;

@@ -117,7 +117,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
         </section>
       ) : null}
 
-      <section className="mt-6 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="mt-6 jb-float-panel p-4 sm:p-5">
         <h2 className="mb-4 text-xl font-bold">Popular</h2>
         {memberSongs.length > 0 ? (
           <MemberSongList songs={memberSongs} />
@@ -126,7 +126,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
         )}
       </section>
 
-      <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+      <section className="mt-4 jb-float-panel p-4 sm:p-5">
         <h2 className="text-lg font-bold">About {member.name}</h2>
         <p className="mt-3 leading-relaxed text-[var(--jb-muted)]">{member.description}</p>
       </section>
