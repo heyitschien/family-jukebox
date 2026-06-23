@@ -6,20 +6,23 @@
  *   npm run song:ship -- \
  *     --author tio-chien \
  *     --input ../family-music-asset-june-19/.../song.mp4 \
- *     --slug morning-sun-neon-light \
- *     --title "Morning Sun Neon Light" \
- *     --subtitle "심장을 잊지 마 · track three · Printing Intelligence on Sand" \
- *     --story "Third single from Printing Intelligence on Sand." \
+ *     --slug the-future-in-my-palm \
+ *     --title "The Future in My Palm" \
+ *     --subtitle "Track five · Printing Intelligence on Sand" \
+ *     --story "Fifth single from the series." \
  *     --tags single,indie,tio-chien,series,featured \
  *     --series miracle-in-the-sand-album \
- *     --featured
+ *     --featured \
+ *     --push
  *
+ * Cover art: extracted from video @ 3s (Gemini MP4 → ffmpeg). No separate cover flag.
  * Omit --series when the song belongs only to the artist discography.
- * Add --push to commit and push after CI passes (requires clean metadata args).
  */
 import { execSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import path from "node:path";
+
+import { buildSeriesAlbumSubtitle } from "../lib/series-album-subtitle";
 
 type ShipArgs = {
   author: string;
@@ -34,6 +37,14 @@ type ShipArgs = {
   push: boolean;
   skipCi: boolean;
 };
+
+const SHIP_ARTIFACTS = [
+  "data/songs.ts",
+  "data/albums.ts",
+  "data/lyrics.ts",
+  "data/copyright-registry.ts",
+  "scripts/transcripts.json",
+] as const;
 
 function parseArgs(argv: string[]): ShipArgs {
   const get = (flag: string): string | undefined => {
@@ -114,29 +125,46 @@ function insertSongEntry(args: ShipArgs): void {
   console.log(`Added ${args.slug} → data/songs.ts`);
 }
 
-function appendToSeriesAlbum(seriesSlug: string, songSlug: string): void {
-  const albumsPath = path.join(process.cwd(), "data/albums.ts");
-  const contents = readFileSync(albumsPath, "utf8");
-  const albumBlock = contents.match(
+function readSeriesSongSlugs(albumsContents: string, seriesSlug: string): string[] {
+  const match = albumsContents.match(
     new RegExp(`slug: "${seriesSlug}"[\\s\\S]*?songSlugs: \\[([^\\]]*)\\]`),
   );
-  if (!albumBlock) {
+  if (!match?.[1]) return [];
+  return [...match[1].matchAll(/"([^"]+)"/g)].map((part) => part[1] ?? "").filter(Boolean);
+}
+
+function appendToSeriesAlbum(seriesSlug: string, songSlug: string, songTitle: string): void {
+  const albumsPath = path.join(process.cwd(), "data/albums.ts");
+  let contents = readFileSync(albumsPath, "utf8");
+  const existingSlugs = readSeriesSongSlugs(contents, seriesSlug);
+
+  if (existingSlugs.length === 0) {
     throw new Error(`Series album not found: ${seriesSlug}`);
   }
-  if (albumBlock[1]?.includes(`"${songSlug}"`)) {
+  if (existingSlugs.includes(songSlug)) {
     console.log(`Already on album ${seriesSlug}: ${songSlug}`);
     return;
   }
 
-  const updated = contents.replace(
+  const nextSlugs = [...existingSlugs, songSlug];
+
+  contents = contents.replace(
     new RegExp(`(slug: "${seriesSlug}"[\\s\\S]*?songSlugs: \\[[^\\]]*)\\]`),
     `$1, "${songSlug}"]`,
   );
-  if (updated === contents) {
-    throw new Error(`Could not append ${songSlug} to ${seriesSlug}`);
+
+  const subtitle = buildSeriesAlbumSubtitle(nextSlugs, { [songSlug]: songTitle });
+  const subtitlePattern = new RegExp(
+    `(slug: "${seriesSlug}"[\\s\\S]*?subtitle: )"[^"]*"`,
+  );
+  if (!subtitlePattern.test(contents)) {
+    throw new Error(`Could not find subtitle for series album: ${seriesSlug}`);
   }
-  writeFileSync(albumsPath, updated, "utf8");
-  console.log(`Appended ${songSlug} → ${seriesSlug} in data/albums.ts`);
+  contents = contents.replace(subtitlePattern, `$1"${subtitle.replace(/"/g, '\\"')}"`);
+
+  writeFileSync(albumsPath, contents, "utf8");
+  console.log(`Appended ${songSlug} → ${seriesSlug}`);
+  console.log(`Updated subtitle → ${subtitle}`);
 }
 
 function main(): void {
@@ -148,7 +176,10 @@ function main(): void {
 
   const venvPython = path.join(root, ".venv-transcribe/bin/python3");
   if (!existsSync(venvPython)) {
-    run("python3 -m venv .venv-transcribe && .venv-transcribe/bin/pip install -q faster-whisper", "Create transcription venv");
+    run(
+      "python3 -m venv .venv-transcribe && .venv-transcribe/bin/pip install -q faster-whisper",
+      "Create transcription venv",
+    );
   }
 
   run(
@@ -158,7 +189,7 @@ function main(): void {
 
   insertSongEntry(args);
   if (args.series) {
-    appendToSeriesAlbum(args.series, args.slug);
+    appendToSeriesAlbum(args.series, args.slug, args.title);
   }
 
   run(`npm run copyright:register -- --slug ${args.slug}`, "Copyright registry");
@@ -168,8 +199,10 @@ function main(): void {
   }
 
   if (args.push) {
+    const assetGlob = `public/assets/${args.author}/${args.slug}.*`;
+    const staged = [assetGlob, ...SHIP_ARTIFACTS].join(" ");
     run(
-      `git add public/assets/${args.author}/${args.slug}.* data/songs.ts data/albums.ts data/lyrics.ts data/copyright-registry.ts scripts/transcripts.json && git commit -m "Add ${args.title} to catalog and deploy pipeline." && git push origin main`,
+      `git add ${staged} && git commit -m "Add ${args.title} to catalog and deploy pipeline." && git push origin main`,
       "Commit and push",
     );
   } else {

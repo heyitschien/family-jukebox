@@ -53,7 +53,7 @@ Then you:
 | ✅ Assets | `./scripts/add-song.sh` (or `./scripts/process-video.sh` + transcribe) |
 | ✅ Lyrics | Auto → `data/lyrics.ts` |
 | ☐ Catalog | `data/songs.ts` — song entry with `lyrics: songLyrics["slug"]` |
-| ☐ Series album | `data/albums.ts` — add slug to `SERIES_ALBUM_DEFS[].songSlugs` (if applicable) |
+| ☐ Series album | `data/albums.ts` — add slug to `SERIES_ALBUM_DEFS[].songSlugs` (or use `--series`; subtitle auto-updates) |
 | ☐ **Copyright** | `npm run copyright:register -- --slug <slug>` → `data/copyright-registry.ts` |
 | ☐ New person | `data/members.ts` (only for a new family member) |
 | ☐ Ship | `npm run ci` → commit → `git push origin main` |

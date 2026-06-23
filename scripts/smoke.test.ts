@@ -195,22 +195,21 @@ describe("album catalog", () => {
     assert.equal(getAlbumAuthor(album)?.slug, "sam-and-josh");
   });
 
-  it("keeps Printing Intelligence on Sand series tracklist in order", () => {
-    const morning = songs.find((song) => song.slug === "morning-sun-neon-light");
-    assert.ok(morning, "morning-sun-neon-light should exist");
-    assert.equal(morning.authorSlug, "tio-chien");
-    assertPublicAssetExists(morning.coverSrc, "morning-sun-neon-light cover");
-    assertPublicAssetExists(morning.audioSrc, "morning-sun-neon-light audio");
-
+  it("keeps Printing Intelligence on Sand series consistent", () => {
     const series = getAlbumBySlug("miracle-in-the-sand-album");
     assert.ok(series, "Printing Intelligence on Sand album should exist");
     assert.equal(series.title, "Printing Intelligence on Sand");
-    assert.deepEqual(series.songSlugs, [
-      "miracle-in-the-sand",
-      "tap-on-the-glass",
-      "morning-sun-neon-light",
-      "the-city-breathing",
-    ]);
+    assert.equal(new Set(series.songSlugs).size, series.songSlugs.length, "no duplicate slugs");
+    assert.equal(series.songSlugs[0], "miracle-in-the-sand");
+
+    for (const slug of series.songSlugs) {
+      const song = songs.find((entry) => entry.slug === slug);
+      assert.ok(song, `${slug} should exist in catalog`);
+      assert.equal(song.authorSlug, "tio-chien");
+      assert.equal(getAlbumForSong(song!)?.slug, series.slug);
+      assertPublicAssetExists(song!.coverSrc, `${slug} cover`);
+      assertPublicAssetExists(song!.audioSrc, `${slug} audio`);
+    }
   });
 
   it("groups browse sections with series before discography", () => {
