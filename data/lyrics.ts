@@ -193,6 +193,45 @@ Feel the flow
 Our endless story
 Keep the circuit alive
 Stay alive`,
+  "morning-sun-neon-light": `It's been a while since the last time I went on a trip
+It's a great feeling to be in the sky
+It's been a while since I went on a trip
+I had a great time
+I'm sure this trip will be great
+I'm here to go to a place that I've been waiting for
+This place is so beautiful
+It's so nice to be here
+I'm going to stay here for a bit longer
+I'm sure the day will come soon
+I'm going to go to a place where I can stay
+I'm going to stay here for a bit longer
+Come alive, breathe in the light, breathe in the light
+Yuri's answer, cool light on my skin
+Endless scroll, answer from the machine
+Blue glow, I'm sinking in the hands of the future
+In the cold sunset, my heart is blinking
+The only blinking, my heart is blinking
+Raise your head, touch me with light
+I'm still here, don't forget my heart
+The warm air, breathe in the light
+Come alive again, feel the flow
+Morning sun, neon light
+I got the future in my hand tonight
+But I look up, I call my life
+Breathe in the light, I call my life
+Breathe in the light, breathe in the light
+The warm food, I tremble at the tip of my tongue
+The wind, my skin, my heart beats
+I'm not a glitch, I'm here
+I'm not a glitch, I'm here
+Breathe in the light, breathe in the light
+Breathe in the morning
+Breathe out the neon
+Morning sun, neon light
+I got the future in my hand tonight
+But I look up, I call my life
+Breathe in the light, breathe in the light
+Morning sun, neon light`,
   "mountains-to-the-shore": `Oceans on the move today
 Marceline leads the way
 We're walking through a forest of tall green trees

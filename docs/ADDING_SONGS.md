@@ -1,12 +1,26 @@
 # Adding a New Song
 
-**One command** extracts assets and transcribes lyrics. You finish two small data edits, then push.
-
-## Quick start (recommended)
+**Full pipeline (recommended)** — extract, transcribe, catalog, series album, copyright, CI:
 
 ```bash
 cd family-jukebox
 
+npm run song:ship -- \
+  --author tio-chien \
+  --input ../family-music-asset-june-19/Tio-chien-11/printing-intelligent-on-sand/song.mp4 \
+  --slug morning-sun-neon-light \
+  --title "Morning Sun Neon Light" \
+  --subtitle "Track three · Printing Intelligence on Sand" \
+  --story "Third single from the series." \
+  --tags single,indie,tio-chien,series,featured \
+  --series miracle-in-the-sand-album \
+  --featured \
+  --push
+```
+
+**Manual steps** — extract + transcribe only, then edit files by hand:
+
+```bash
 ./scripts/add-song.sh <author-slug> <path-to.mp4> <song-slug>
 ```
 
