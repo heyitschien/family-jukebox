@@ -55,6 +55,7 @@ Then you:
 | ☐ Catalog | `data/songs.ts` — song entry with `lyrics: songLyrics["slug"]` |
 | ☐ Series album | `data/albums.ts` — add slug to `SERIES_ALBUM_DEFS[].songSlugs` (or use `--series`; subtitle auto-updates) |
 | ☐ **Copyright** | `npm run copyright:register -- --slug <slug>` → `data/copyright-registry.ts` |
+| ☐ **Custom cover** (optional) | `npm run song:cover -- <author> <slug> <art.png>` — or `--cover` on `song:ship` |
 | ☐ New person | `data/members.ts` (only for a new family member) |
 | ☐ Ship | `npm run ci` → commit → `git push origin main` |
 

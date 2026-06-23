@@ -40,9 +40,12 @@ npm run song:ship -- \
   --story "..." \
   --tags single,indie,tio-chien,series,featured \
   --series miracle-in-the-sand-album \
+  --cover ../path/to/sand-to-signal.png \
   --featured \
   --push
 ```
+
+`--push` deploys from the **current git branch** — use a feature branch + PR for review; merge to `main` for production.
 
 ---
 
@@ -69,9 +72,9 @@ npm run song:ship -- \
 | New growing album series | `SERIES_ALBUM_DEFS` block in `data/albums.ts` |
 | Song about multiple people | `SUBJECT_MEMBER_OVERRIDES` in `lib/copyright-constants.ts` |
 | 10-track album songbook prompts | `docs/printing-intelligence-on-sand-kpop-album.md` |
-| Official cover art (when not from video) | Replace JPG manually, then `copyright:register --slug …` |
+| Official cover art (custom design) | `npm run song:cover -- <author> <slug> <art.png>` then `copyright:register` — or pass `--cover` on `song:ship` |
 
-**Not planned:** custom cover flags in `song:ship` — current Gemini → MP4 → ffmpeg cover path works well.
+**Default cover:** video frame @ 3s (Gemini MP4 → ffmpeg). **`--cover`** overwrites with your PNG/JPG when you have custom art.
 
 ---
 

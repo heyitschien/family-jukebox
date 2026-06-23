@@ -11,6 +11,7 @@
     "smoke": "tsx --test scripts/smoke.test.ts",
     "smoke:production": "node scripts/production-smoke.mjs",
     "song:ship": "tsx scripts/ship-song.ts",
+    "song:cover": "bash scripts/install-cover.sh",
     "copyright:register": "tsx scripts/register-copyright.ts",
     "copyright:verify": "tsx scripts/verify-copyright-registry.ts",
     "ci": "npm run lint && npm run smoke && npm run copyright:verify && npm run build && npm run smoke:production",

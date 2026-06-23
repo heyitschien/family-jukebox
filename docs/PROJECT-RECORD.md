@@ -1,6 +1,6 @@
 # Family Jukebox — Project Record
 
-**Last validated:** 2026-06-21 (against `main` @ `6c95669`)  
+**Last validated:** 2026-06-23 (against `main` @ `e21ce0c`)  
 **Live:** [cousinradio.com](https://cousinradio.com) · **Staging:** [staging.cousinradio.com](https://staging.cousinradio.com)  
 **Domains doc:** [docs/DOMAINS-AND-ENVIRONMENTS.md](./DOMAINS-AND-ENVIRONMENTS.md)  
 **Repo:** `heyitschien/family-jukebox`
@@ -19,8 +19,22 @@ A **family music jukebox**: Spotify-inspired UX, warm cousin/family branding, st
 
 ## 2. Work log (recent shipped history)
 
-| Commit | What shipped |
-|--------|----------------|
+| Commit / PR | What shipped |
+|-------------|--------------|
+| `e21ce0c` | **The Future in My Palm** — Tio Chien single + Sand to Signal cover art |
+| `b15a541` | Song ship pipeline hardening — auto series subtitles, data-driven smoke tests |
+| `726d65d` | Song ship CLI (`npm run song:ship`) + pipeline spec |
+| **#18** | CD production smoke check → Cousin Radio branding (fixes false CD failures) |
+| **#17** | Tia Evelyn / Tio Sam & Josh display names |
+| **#14** | Seamless ambient gradient + floating glass panels (`jb-float-panel`) |
+| `07eb12f`–`2bfa660` | Printing Intelligence on Sand — Morning Sun Neon Light, The City Breathing |
+| **#13** | Cousin Radio branding unification (shell, share surfaces, icons) |
+| **#11** | Age-based content curation + remembered listener preference |
+| **#12** | PWA install-sized Cousin Radio app icons |
+| **#9** | Music intelligence — Cousin Radio radio, smart shuffle, session-aware queues |
+| **#8** | 3D album carousel — per-album song rotation, unlimited family scaling |
+| **#7** | Link previews for iMessage/social (cousinradio.com OG metadata) |
+| **#5–#6** | Celebration song 404 fixes, mobile tracklist overflow |
 | `6c95669` | Album phases 2–4: browse sections (series vs collection), member page grouping, unified hero badges, supplementary series shelf on home, album detail “more from artist”, smoke tests |
 | `ab52efb` | Album catalog dedup, 3D carousel spacing (6 primary albums, side scale-down) |
 | `b622e14` | Evelyn — **Silver Pan Morning** |

@@ -5,18 +5,16 @@
  * Usage:
  *   npm run song:ship -- \
  *     --author tio-chien \
- *     --input ../family-music-asset-june-19/.../song.mp4 \
+ *     --input ../path/to/song.mp4 \
  *     --slug the-future-in-my-palm \
  *     --title "The Future in My Palm" \
- *     --subtitle "Track five · Printing Intelligence on Sand" \
- *     --story "Fifth single from the series." \
- *     --tags single,indie,tio-chien,series,featured \
  *     --series miracle-in-the-sand-album \
- *     --featured \
- *     --push
+ *     --cover ../path/to/sand-to-signal.png \
+ *     --featured --push
  *
- * Cover art: extracted from video @ 3s (Gemini MP4 → ffmpeg). No separate cover flag.
- * Omit --series when the song belongs only to the artist discography.
+ * Default cover: video frame @ 3s (Gemini MP4 → ffmpeg).
+ * Optional --cover: official PNG/JPG → 1024 JPG (overwrites video frame).
+ * --push commits to the current branch (use a feature branch + PR for review).
  */
 import { execSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
@@ -33,6 +31,7 @@ type ShipArgs = {
   story: string;
   tags: string[];
   series?: string;
+  cover?: string;
   featured: boolean;
   push: boolean;
   skipCi: boolean;
@@ -63,11 +62,13 @@ function parseArgs(argv: string[]): ShipArgs {
     .map((tag) => tag.trim())
     .filter(Boolean);
   const series = get("--series");
+  const cover = get("--cover");
 
   if (!author || !input || !slug || !title) {
     console.error(`Usage: npm run song:ship -- \\
   --author <slug> --input <path.mp4> --slug <song-slug> --title "Title" \\
-  [--subtitle "..."] [--story "..."] [--tags a,b,c] [--series album-slug] [--featured] [--push] [--skip-ci]`);
+  [--cover <art.png>] [--subtitle "..."] [--story "..."] [--tags a,b,c] \\
+  [--series album-slug] [--featured] [--push] [--skip-ci]`);
     process.exit(1);
   }
 
@@ -80,6 +81,7 @@ function parseArgs(argv: string[]): ShipArgs {
     story,
     tags,
     series,
+    cover: cover ? path.resolve(cover) : undefined,
     featured: argv.includes("--featured"),
     push: argv.includes("--push"),
     skipCi: argv.includes("--skip-ci"),
@@ -89,6 +91,14 @@ function parseArgs(argv: string[]): ShipArgs {
 function run(command: string, label: string): void {
   console.log(`\n==> ${label}`);
   execSync(command, { stdio: "inherit", cwd: process.cwd() });
+}
+
+function installCover(author: string, slug: string, coverPath: string): void {
+  if (!existsSync(coverPath)) {
+    throw new Error(`Cover image not found: ${coverPath}`);
+  }
+  const coverRel = path.relative(process.cwd(), coverPath);
+  run(`./scripts/install-cover.sh ${author} ${slug} "${coverRel}"`, "Install custom cover art");
 }
 
 function insertSongEntry(args: ShipArgs): void {
@@ -174,6 +184,10 @@ function main(): void {
 
   run(`./scripts/process-video.sh ${args.author} "${inputRel}" ${args.slug}`, "Extract MP3 + cover");
 
+  if (args.cover) {
+    installCover(args.author, args.slug, args.cover);
+  }
+
   const venvPython = path.join(root, ".venv-transcribe/bin/python3");
   if (!existsSync(venvPython)) {
     run(
@@ -202,8 +216,8 @@ function main(): void {
     const assetGlob = `public/assets/${args.author}/${args.slug}.*`;
     const staged = [assetGlob, ...SHIP_ARTIFACTS].join(" ");
     run(
-      `git add ${staged} && git commit -m "Add ${args.title} to catalog and deploy pipeline." && git push origin main`,
-      "Commit and push",
+      `git add ${staged} && git commit -m "Add ${args.title} to catalog and deploy pipeline." && git push -u origin HEAD`,
+      "Commit and push current branch",
     );
   } else {
     console.log("\n✅ Pipeline complete. Review changes, then commit and push to deploy.");
