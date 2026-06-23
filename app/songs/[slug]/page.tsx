@@ -133,7 +133,7 @@ export default async function SongPage({ params }: SongPageProps) {
       </section>
 
       {song.videoSrc ? (
-        <section className="mx-auto mt-8 max-w-lg rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4">
+        <section className="mx-auto mt-8 max-w-lg jb-float-panel p-4">
           <h2 className="mb-3 text-lg font-bold">Music video</h2>
           <SongVideo videoSrc={song.videoSrc} title={song.title} />
         </section>
@@ -141,19 +141,19 @@ export default async function SongPage({ params }: SongPageProps) {
 
       <div className="mx-auto mt-6 max-w-lg space-y-4">
         {song.story ? (
-          <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-5">
+          <section className="jb-float-panel p-5">
             <h2 className="text-lg font-bold">Family memory</h2>
             <p className="mt-2 leading-relaxed text-[var(--jb-muted)]">{song.story}</p>
           </section>
         ) : null}
         {song.prompt ? (
-          <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-5">
+          <section className="jb-float-panel p-5">
             <h2 className="text-lg font-bold">Prompt</h2>
             <p className="mt-2 leading-relaxed text-[var(--jb-muted)]">{song.prompt}</p>
           </section>
         ) : null}
         {song.lyrics ? (
-          <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-5">
+          <section className="jb-float-panel p-5">
             <h2 className="text-lg font-bold">Lyrics</h2>
             <p className="mt-1 text-xs text-[var(--jb-muted)]">
               Transcribed from the recording — close to the song, but not always word-perfect.

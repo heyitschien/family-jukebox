@@ -109,7 +109,7 @@ export function RecentQueue({
   const spotlightSet = new Set(spotlightSlugs);
 
   return (
-    <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
+    <section className="jb-float-panel mt-4 p-4 sm:p-[22px] lg:mt-6">
       <div className="grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
           <div className="mb-4 flex flex-wrap items-end justify-between gap-3">

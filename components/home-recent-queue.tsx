@@ -9,7 +9,7 @@ const RecentQueue = dynamic(
   {
     ssr: false,
     loading: () => (
-      <section className="mt-4 min-h-[320px] animate-pulse rounded-[28px] border border-white/[0.07] bg-white/[0.04] lg:mt-6" />
+      <section className="jb-float-panel mt-4 min-h-[320px] animate-pulse lg:mt-6" />
     ),
   },
 );

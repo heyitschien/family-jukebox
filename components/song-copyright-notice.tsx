@@ -16,7 +16,7 @@ function formatMemberNames(slugs: string[]): string {
 
 export function SongCopyrightNotice({ record }: SongCopyrightNoticeProps) {
   return (
-    <section className="rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-5 text-left">
+    <section className="jb-float-panel p-5 text-left">
       <h2 className="text-lg font-bold">Family rights &amp; catalog</h2>
       <p className="mt-2 text-xs leading-relaxed text-[var(--jb-muted)]">
         Part of the Cousin Radio family legacy on {PLATFORM_DOMAIN}. All rights reserved unless

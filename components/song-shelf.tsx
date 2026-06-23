@@ -28,7 +28,7 @@ export function SongShelf({
   if (songs.length === 0) return null;
 
   return (
-    <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-5">
+    <section className="jb-float-panel mt-4 p-4 sm:p-5">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-lg font-bold sm:text-xl">{title}</h2>

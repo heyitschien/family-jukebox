@@ -87,7 +87,7 @@ export function FeaturedShelf({ songs, tags, listenerAge = null }: FeaturedShelf
   const chips = ["All", ...tags.slice(0, 8)];
 
   return (
-    <section className="mt-4 rounded-[28px] border border-white/[0.07] bg-[rgba(17,24,33,0.58)] p-4 sm:p-[22px] lg:mt-6">
+    <section className="jb-float-panel mt-4 p-4 sm:p-[22px] lg:mt-6">
       <div className="mb-4 flex flex-wrap items-end justify-between gap-4">
         <div>
           <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">

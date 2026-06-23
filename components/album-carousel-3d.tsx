@@ -121,7 +121,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   return (
     <section
-      className="relative -mx-3 overflow-hidden rounded-b-[34px] border border-white/[0.08] shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:mx-0 sm:rounded-[32px]"
+      className="relative -mx-3 overflow-hidden rounded-b-[34px] border border-white/[0.05] shadow-[0_20px_60px_rgba(0,0,0,0.22)] sm:mx-0 sm:rounded-[32px]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
@@ -132,12 +132,13 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
       </div>
 
       <div
-        className="absolute inset-0"
-        style={{
-          background: `radial-gradient(ellipse at 30% 20%, ${activeAlbum.accentColor}33 0%, transparent 50%),
-            radial-gradient(ellipse at 80% 80%, rgba(108,183,255,0.12) 0%, transparent 40%),
-            linear-gradient(180deg, #070c10 0%, #0b0f14 60%, #07090c 100%)`,
-        }}
+        className="jb-hero-glow pointer-events-none absolute inset-0"
+        style={
+          {
+            "--hero-accent-glow": `radial-gradient(ellipse at 30% 20%, ${activeAlbum.accentColor}33 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 80%, rgba(108,183,255,0.12) 0%, transparent 40%)`,
+          } as React.CSSProperties
+        }
       />
 
       <div className="relative z-10 grid gap-6 p-6 sm:grid-cols-[1fr_1.1fr] sm:items-center sm:gap-8 sm:p-[34px] lg:min-h-[400px]">
