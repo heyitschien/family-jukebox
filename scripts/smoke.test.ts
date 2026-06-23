@@ -195,17 +195,21 @@ describe("album catalog", () => {
     assert.equal(getAlbumAuthor(album)?.slug, "sam-and-josh");
   });
 
-  it("keeps Tap on the Glass under Tio Chien's Printing Intelligence on Sand series", () => {
-    const tap = songs.find((song) => song.slug === "tap-on-the-glass");
-    assert.ok(tap, "tap-on-the-glass should exist");
-    assert.equal(tap.authorSlug, "tio-chien");
-    assertPublicAssetExists(tap.coverSrc, "tap-on-the-glass cover");
-    assertPublicAssetExists(tap.audioSrc, "tap-on-the-glass audio");
+  it("keeps Printing Intelligence on Sand series tracklist in order", () => {
+    const morning = songs.find((song) => song.slug === "morning-sun-neon-light");
+    assert.ok(morning, "morning-sun-neon-light should exist");
+    assert.equal(morning.authorSlug, "tio-chien");
+    assertPublicAssetExists(morning.coverSrc, "morning-sun-neon-light cover");
+    assertPublicAssetExists(morning.audioSrc, "morning-sun-neon-light audio");
 
     const series = getAlbumBySlug("miracle-in-the-sand-album");
     assert.ok(series, "Printing Intelligence on Sand album should exist");
     assert.equal(series.title, "Printing Intelligence on Sand");
-    assert.deepEqual(series.songSlugs, ["miracle-in-the-sand", "tap-on-the-glass"]);
+    assert.deepEqual(series.songSlugs, [
+      "miracle-in-the-sand",
+      "tap-on-the-glass",
+      "morning-sun-neon-light",
+    ]);
   });
 
   it("groups browse sections with series before discography", () => {
@@ -217,9 +221,11 @@ describe("album catalog", () => {
 
   it("surfaces non-carousel series albums for home shelf", () => {
     const supplementary = getSupplementarySeriesAlbums();
+    const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
     assert.ok(
-      supplementary.some((album) => album.slug === "miracle-in-the-sand-album"),
-      "Miracle in the Sand should appear when studio album is carousel primary",
+      !primarySlugs.has("miracle-in-the-sand-album") ||
+        supplementary.every((album) => !primarySlugs.has(album.slug)),
+      "supplementary shelf should only list series albums not in the hero carousel",
     );
   });
 });

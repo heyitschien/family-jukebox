@@ -141,6 +141,20 @@ export const songs: Song[] = [
     featured: true,
   },
   {
+    slug: "morning-sun-neon-light",
+    title: "Morning Sun Neon Light",
+    subtitle: "심장을 잊지 마 · track three · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-22",
+    audioSrc: "/assets/tio-chien/morning-sun-neon-light.mp3",
+    coverSrc: "/assets/tio-chien/morning-sun-neon-light.jpg",
+    story:
+      "The third single from Printing Intelligence on Sand — morning sun, neon light, and a reminder not to forget the heart while the silicon keeps printing.",
+    lyrics: songLyrics["morning-sun-neon-light"],
+    tags: ["single", "indie", "korean", "sand", "tio-chien", "series", "featured"],
+    featured: true,
+  },
+  {
     slug: "gold-in-the-tile",
     title: "Gold in the Tile",
     subtitle: "The first single from Evelyn's growing album",

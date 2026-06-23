@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Add a new song to Family Jukebox — extract assets, transcribe lyrics, print checklist.
 #
+# For the full automated pipeline (catalog + album + copyright + CI), use:
+#   npm run song:ship -- --author ... --input ... --slug ... --title "..." [--series album-slug] [--featured] [--push]
+#
 # Usage:
 #   ./scripts/add-song.sh <author-slug> <input.mp4> <song-slug>
 #

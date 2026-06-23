@@ -244,6 +244,29 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverSha256": "dee58cc21392241eff7c52be09fba3c151487372c0d014a7408d435cd1737083"
   },
   {
+    "registryId": "CR-2026-morning-sun-neon-light",
+    "songSlug": "morning-sun-neon-light",
+    "title": "Morning Sun Neon Light",
+    "workType": "family-original",
+    "createdDate": "2026-06-22",
+    "registeredAt": "2026-06-23T00:23:28.455Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Morning Sun Neon Light\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/morning-sun-neon-light.mp3",
+    "coverAssetPath": "/assets/tio-chien/morning-sun-neon-light.jpg",
+    "audioSha256": "4c19f2ae14adc1c3a32fb4bc9230f7ccd708ce1381eee4bca2f2fffb8f1dc6b1",
+    "coverSha256": "5d51fb6e8ac29f1a139c59a734f94d1b72dcad67dd83d4e4b29dcd6c4f9d943b"
+  },
+  {
     "registryId": "CR-2026-gold-in-the-tile",
     "songSlug": "gold-in-the-tile",
     "title": "Gold in the Tile",
