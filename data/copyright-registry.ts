@@ -410,7 +410,7 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "title": "The Future in My Palm",
     "workType": "family-original",
     "createdDate": "2026-06-23",
-    "registeredAt": "2026-06-23T20:18:13.805Z",
+    "registeredAt": "2026-06-23T20:21:24.087Z",
     "primaryArtistSlug": "tio-chien",
     "subjectMemberSlugs": [
       "tio-chien"
@@ -425,6 +425,6 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "audioAssetPath": "/assets/tio-chien/the-future-in-my-palm.mp3",
     "coverAssetPath": "/assets/tio-chien/the-future-in-my-palm.jpg",
     "audioSha256": "7be01b80dd89672caff90612f0646e8ca1b6012f79c529f51f45e08a6c1c26aa",
-    "coverSha256": "7bb684e0aef698a1e562b7ec39a70a47a5d268981062d4aea37de16c99ebebfc"
+    "coverSha256": "b33214a5b1a75a68740a3168cab5b5bf67fb9207a730c302ef8b46ddd81eb9c2"
   }
 ];
