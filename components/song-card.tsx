@@ -20,7 +20,8 @@ export function SongCard({ song }: SongCardProps) {
       <SongFavoriteButton
         songSlug={song.slug}
         songTitle={song.title}
-        className="absolute right-3 top-3 z-20 bg-white/95 text-amber-950 hover:border-amber-300 hover:text-amber-950"
+        variant="overlay"
+        className="absolute right-3 top-3 z-20"
       />
       <Link href={`/songs/${song.slug}`} className="flex flex-1 flex-col">
         <div className="relative aspect-square overflow-hidden">

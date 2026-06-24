@@ -17,6 +17,8 @@ type SongRowProps = {
   index?: number;
   showIndex?: boolean;
   playlist?: Song[];
+  compact?: boolean;
+  showChevron?: boolean;
 };
 
 function buildRowSubtitle(song: Song, authorName?: string): string {
@@ -24,53 +26,83 @@ function buildRowSubtitle(song: Song, authorName?: string): string {
   return [authorName, ...tags].filter(Boolean).join(" · ");
 }
 
-export function SongRow({ song, index, showIndex = false, playlist }: SongRowProps) {
+export function SongRow({
+  song,
+  index,
+  showIndex = false,
+  playlist,
+  compact = false,
+  showChevron = true,
+}: SongRowProps) {
   const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist, source: "shelf" });
   const author = getMemberBySlug(song.authorSlug);
 
   return (
     <div
       className={cn(
-        "flex min-w-0 items-center gap-2 overflow-hidden rounded-2xl border p-2 transition hover:bg-white/[0.08] sm:gap-3",
-        isCurrent
-          ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
-          : "border-white/[0.045] bg-white/[0.045]",
+        "group flex min-w-0 items-center overflow-hidden transition",
+        compact
+          ? "gap-2 rounded-xl px-2 py-1.5 hover:bg-white/[0.06]"
+          : "gap-2 rounded-2xl border p-2 hover:bg-white/[0.08] sm:gap-3",
+        !compact &&
+          (isCurrent
+            ? "border-[rgba(255,111,177,0.35)] bg-white/[0.07]"
+            : "border-white/[0.045] bg-white/[0.045]"),
+        compact && isCurrent && "bg-white/[0.06]",
       )}
     >
       {showIndex && index !== undefined ? (
-        <span className="w-5 shrink-0 text-center text-sm text-[var(--jb-muted)]">{index + 1}</span>
+        <span
+          className={cn(
+            "w-5 shrink-0 text-center tabular-nums",
+            compact ? "text-xs text-[var(--jb-muted-2)]" : "text-sm text-[var(--jb-muted)]",
+            isCurrent && "font-bold text-[var(--cr-pink)]",
+          )}
+        >
+          {index + 1}
+        </span>
       ) : null}
       <PlayIconButton
         size="sm"
         playing={playing}
         label={playing ? `Pause ${song.title}` : `Play ${song.title}`}
         onClick={toggle}
+        className={cn(compact && "size-9 min-h-9 min-w-9 opacity-90 sm:opacity-100")}
       />
       <Link
         href={`/songs/${song.slug}`}
         className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden sm:gap-3"
       >
-        <CoverImage src={song.coverSrc} alt="" className="size-11 shrink-0 rounded-xl" />
+        <CoverImage
+          src={song.coverSrc}
+          alt=""
+          className={cn("shrink-0 rounded-lg", compact ? "size-9" : "size-11 rounded-xl")}
+        />
         <div className="min-w-0 flex-1 overflow-hidden">
           <div className="flex min-w-0 items-center gap-2">
             <strong
               className={cn(
-                "min-w-0 truncate text-sm",
-                isCurrent && "text-[var(--family-pink)]",
+                "min-w-0 truncate",
+                compact ? "text-[13px] font-semibold" : "text-sm",
+                isCurrent && "text-[var(--cr-pink)]",
               )}
             >
               {song.title}
             </strong>
-            <NewReleaseBadge song={song} />
+            {!compact ? <NewReleaseBadge song={song} /> : null}
           </div>
-          <span className="block truncate text-xs text-[var(--jb-muted)]">
+          <span
+            className={cn(
+              "block truncate text-[var(--jb-muted)]",
+              compact ? "text-[11px]" : "text-xs",
+            )}
+          >
             {buildRowSubtitle(song, author?.name)}
           </span>
         </div>
-        <ChevronRight
-          className="size-4 shrink-0 text-[var(--jb-muted)]"
-          aria-hidden
-        />
+        {showChevron ? (
+          <ChevronRight className="size-4 shrink-0 text-[var(--jb-muted)]" aria-hidden />
+        ) : null}
       </Link>
       <SongFavoriteButton songSlug={song.slug} songTitle={song.title} size="sm" />
     </div>

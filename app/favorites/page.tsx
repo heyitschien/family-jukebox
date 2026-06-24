@@ -15,7 +15,7 @@ export default function FavoritesPage() {
       <header className="mb-4 px-1">
         <h1 className="text-3xl font-extrabold tracking-tight">Your favorites</h1>
         <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">
-          Saved only on this browser. Tap a heart on any song to add or remove it.
+          A compact playlist saved on this browser — heart any song to add it.
         </p>
       </header>
       <FavoritesBrowser />
