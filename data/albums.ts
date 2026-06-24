@@ -27,6 +27,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
   evelyn: "#d4af37",
   maria: "#c9956b",
   "sam-and-josh": "#f59e0b",
+  "chilling-with-cousin": "#8b9dc3",
 };
 
 const CREATOR_ALBUM_TITLES: Record<string, string> = {
@@ -38,6 +39,7 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   evelyn: "Tia Evelyn",
   maria: "Mama",
   "sam-and-josh": "Tio Sam & Tio Josh",
+  "chilling-with-cousin": "Chilling with Cousin",
 };
 
 /** Manual config for growing / themed albums — assign song slugs here as singles drop. */
@@ -120,6 +122,18 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
       "Celebrating our friendship — egg rolls, epiphanies, and new songs joining the collection as they release. Featuring Paul Savage.",
     accentColor: "#d4a574",
     featured: true,
+  },
+  {
+    slug: "study-lofi-album",
+    title: "Study Lo-Fi",
+    subtitle: "More tracks coming",
+    authorSlug: "chilling-with-cousin",
+    coverSrc: "/assets/chilling-with-cousin/slow-turning-pages.jpg",
+    songSlugs: [],
+    dateCreated: "2026-06-24",
+    story:
+      "Instrumental study lo-fi from Chilling with Cousin — calm beats for focus, reading, and background listening.",
+    accentColor: "#8b9dc3",
   },
 ];
 
