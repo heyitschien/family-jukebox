@@ -496,6 +496,51 @@ Oh, Solene our golden fox, opening all the heavy locks.
 Heavy learning, fast and growing tall, hearing wisdom when they call.
 A clever mind and a tale that sweeps while the rest of the forest sleeps.
 Grow and learn, little fox.`,
+  "steady-light-in-your-eye": `We met at the mountain's foot seeking the light
+Trading the shadows for something more bright
+Teachers and maps in our hands we took hold
+Turning the lead of the past into gold
+From that first gathering a rhythm took root
+A harvest of kindness a beautiful fruit Hannah your grace
+In the way that you stand
+With a world of devotion held tight in your hand
+A finnish grown boy you've built a whole skynest
+As steady as the light in your eye
+Oh keep dancing through town
+Keep the circle alive
+God bless the spirit
+Where the friendships all cry
+The town square is pulsing
+We move as a whole
+Finding the cadence
+Speaks to the soul
+Your growth is a beacon
+That leads through the grave
+Supporting the weary
+And guiding the way
+Through every teacher and every new door
+Our connection is deeper than it was before
+Hannah your grace
+In the way that you stand
+With a world of devotion held tight in your hand
+A finnish grown boy you've built a whole skynest
+As steady as the light in your eye
+Oh keep dancing through town
+Keep the circle alive
+God bless the spirit
+Where the friendships all cry
+Where the friendships all cry
+God bless the path that you walk every day
+In every small choice and in all that you say
+In every small choice and in all that you say
+In every small choice and in all that you say
+Bless the devotion
+Bless the sweet growth
+Bless the journey for fit and for us both
+May this dance go on
+Long after the day is done
+For you my friend
+Celebrating life with you`,
   "tap-on-the-glass": `Dinosaur bones in the red desert sun Long way to the race that we finally won
 Printing intelligence on sands, feel the shift Semin' ton of kits, a divine kind of gift
 Our fingertips say I think it tips the neuroglow

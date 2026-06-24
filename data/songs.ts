@@ -332,6 +332,20 @@ export const songs: Song[] = [
     lyrics: songLyrics["where-the-garden-sleeps"],
     tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
   },
+  {
+    slug: "steady-light-in-your-eye",
+    title: "Steady Light in Your Eye",
+    subtitle: "Track two · Egg Rolls & Epiphanies",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-24",
+    audioSrc: "/assets/tio-chien/steady-light-in-your-eye.mp3",
+    coverSrc: "/assets/tio-chien/steady-light-in-your-eye.jpg",
+    story:
+      "The second single from Egg Rolls & Epiphanies — celebrating friendship, featuring Paul Savage.",
+    lyrics: songLyrics["steady-light-in-your-eye"],
+    tags: ["single", "indie", "tio-chien", "series", "featured", "friendship"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
