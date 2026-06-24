@@ -435,6 +435,7 @@ Look at the picture, figured it out
 Cool stuff, yeah, we made it cool
 Solene and Eliana, Marceline, Ocean
 Digital family, just the beginning`,
+  "rain-on-the-glass": `[Instrumental]`,
   "silver-pan-morning": `Smile
 Sunday Morning let the coffee steam
 Watching how you blow a quiet dream
@@ -658,4 +659,25 @@ One, two, three Marceline is turning three
 Happy birthday Marceline Our beautiful clever queen
 We love you so much
 Happy birthday`,
+  "where-the-garden-sleeps": `The rustle of the tall blade
+A slow sway against the blue
+Against the blue
+No rush to reach the valley
+Only the light drifting through
+Where the emerald meets the sky
+In the stillness of the sun
+Breathe the verdant horizon
+Now the journey has begun
+Now the journey has begun
+Find the internal peace
+Found in slow deliberate steps
+The world is loud and fast
+The world is loud and fast
+But the heart is where the garden sleeps
+Into the wind
+Into the emerald
+The world is loud and fast
+But the heart is where the garden sleeps
+Into the wind
+Into the wind`,
 } as const satisfies Record<string, string>;
