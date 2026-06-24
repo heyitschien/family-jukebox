@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import type { ReactElement } from "react";
 
-import { getBrandLogoDataUrl } from "@/lib/brand-logo";
+import { getBrandAppIconDataUrl } from "@/lib/brand-logo";
 import { getAppEnvironment, getSiteDescription, getSiteName } from "@/lib/site-env";
 
 export const APP_ICON_BACKGROUND = "#071015";
@@ -9,12 +9,12 @@ export const APP_ICON_BACKGROUND = "#071015";
 const APP_ICON_192_PATH = "/icon-192.png";
 const APP_ICON_512_PATH = "/icon-512.png";
 
-/** Legacy OG icon renderer — uses the official Cousin Radio logo asset. */
+/** PWA / install icon renderer — uses the dedicated app-icon asset. */
 export function renderAppIconMarkup(size: number): ReactElement {
   return (
     // eslint-disable-next-line @next/next/no-img-element -- ImageResponse / Satori
     <img
-      src={getBrandLogoDataUrl()}
+      src={getBrandAppIconDataUrl()}
       alt=""
       width={size}
       height={size}

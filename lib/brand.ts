@@ -10,6 +10,9 @@ export const BRAND_LOGO_UI_PATH = "/brand/logo-44.png";
 /** Full square logo for large surfaces. */
 export const BRAND_LOGO_PATH = "/brand/logo.png";
 
+/** Rounded square app icon for install, favicon, and lock-screen artwork. */
+export const BRAND_APP_ICON_PATH = "/brand/app-icon.png";
+
 /** Future logo asset paths — checked in order by BrandWordmark. */
 export const BRAND_LOGO_PATHS = {
   horizontal: ["/brand/cousin-radio-logo.svg", "/brand/cousin-radio-logo.png", BRAND_LOGO_PATH],

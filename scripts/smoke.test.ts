@@ -856,6 +856,7 @@ describe("web app manifest", () => {
   it("ships official Cousin Radio logo assets", () => {
     for (const asset of [
       "/brand/logo.png",
+      "/brand/app-icon.png",
       "/brand/logo-44.png",
       "/icon-192.png",
       "/icon-512.png",

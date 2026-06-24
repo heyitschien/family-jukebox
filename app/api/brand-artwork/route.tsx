@@ -3,10 +3,14 @@ import path from "node:path";
 
 import { NextResponse } from "next/server";
 
-const LOGO_BYTES = readFileSync(path.join(process.cwd(), "public/brand/logo.png"));
+import { BRAND_APP_ICON_PATH } from "@/lib/brand";
+
+const APP_ICON_BYTES = readFileSync(
+  path.join(process.cwd(), "public", BRAND_APP_ICON_PATH.replace(/^\//, "")),
+);
 
 export function GET() {
-  return new NextResponse(LOGO_BYTES, {
+  return new NextResponse(APP_ICON_BYTES, {
     headers: {
       "Content-Type": "image/png",
       "Cache-Control": "public, max-age=31536000, immutable",
