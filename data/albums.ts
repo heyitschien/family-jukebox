@@ -108,6 +108,19 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
       "A growing album series from Tio Chien — semiconductor dreams, silicon hearts, and indie-pop built one single at a time.",
     accentColor: "#f4c784",
   },
+  {
+    slug: "friendship-album",
+    title: "Egg Rolls & Epiphanies",
+    subtitle: "Teachers on the Wall · more coming",
+    authorSlug: "tio-chien",
+    coverSrc: "/assets/tio-chien/teachers-on-the-wall.jpg",
+    songSlugs: ["teachers-on-the-wall"],
+    dateCreated: "2026-06-24",
+    story:
+      "Celebrating our friendship — egg rolls, epiphanies, and new songs joining the collection as they release. Featuring Paul Savage.",
+    accentColor: "#d4a574",
+    featured: true,
+  },
 ];
 
 function sortSongsByTrackOrder(items: Song[]): Song[] {
