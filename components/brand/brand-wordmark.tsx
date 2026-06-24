@@ -59,7 +59,12 @@ export function BrandWordmark({
   const showLogoImage = showLogo && !logoFailed;
 
   const content = (
-    <span className={cn("inline-flex items-center gap-3", className)}>
+    <span
+      className={cn(
+        variant === "hero" ? "flex w-full flex-col" : "inline-flex items-center gap-3",
+        className,
+      )}
+    >
       {showLogoImage ? (
         <Image
           key={logoPath}

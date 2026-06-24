@@ -94,7 +94,7 @@ export function HeroSection({ featured, playlist, familyQueue }: HeroSectionProp
           <div className="max-w-3xl">
             {isLive ? (
               <>
-                <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-[rgba(255,111,177,0.35)] bg-[rgba(255,111,177,0.14)] px-3 py-2 text-[13px] font-extrabold text-[var(--family-pink)]">
+                <span className="mb-3.5 flex w-fit max-w-full items-center gap-2 rounded-full border border-[rgba(255,111,177,0.35)] bg-[rgba(255,111,177,0.14)] px-3 py-2 text-[13px] font-extrabold text-[var(--family-pink)]">
                   <StatusDot playing={isPlaying} />
                   {isPlaying ? "Now playing" : "Paused"} · {displayAuthor?.name ?? "Family"}
                 </span>
@@ -124,7 +124,7 @@ export function HeroSection({ featured, playlist, familyQueue }: HeroSectionProp
               </>
             ) : (
               <>
-                <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
+                <span className="mb-3.5 flex w-fit max-w-full items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
                   ✨ Today&apos;s spotlight · {displayAuthor?.name ?? "Family"}
                 </span>
                 <h1 className="text-[clamp(48px,12vw,92px)] leading-[0.88] font-extrabold tracking-[-0.075em]">
