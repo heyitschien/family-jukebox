@@ -14,7 +14,7 @@ export const BRAND_LOGO_PATH = "/brand/logo.png";
 export const BRAND_LOGO_PATHS = {
   horizontal: ["/brand/cousin-radio-logo.svg", "/brand/cousin-radio-logo.png", BRAND_LOGO_PATH],
   icon: ["/brand/cousin-radio-icon.svg", "/brand/cousin-radio-icon.png", BRAND_LOGO_UI_PATH],
-  favicon: ["/brand/cousin-radio-favicon.svg", "/brand/favicon.ico"],
+  favicon: ["/brand/cousin-radio-favicon.svg", "/favicon.ico"],
 } as const;
 
 export const BRAND_CONCEPTS = [

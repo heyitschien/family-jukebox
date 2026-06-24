@@ -7,6 +7,7 @@ import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
+import { BRAND_NAME } from "@/lib/brand";
 import type { RadioMode, RepeatMode, ShuffleMode } from "@/lib/player-queue";
 import { cn } from "@/lib/utils";
 import { getMemberBySlug } from "@/data/members";
@@ -71,7 +72,8 @@ export function MiniPlayer() {
               ) : (
                 "Family"
               )}
-              {" · Cousin Radio"}
+              {" · "}
+              {BRAND_NAME}
             </span>
           </div>
           <div className="shrink-0 text-right text-[11px] tabular-nums text-[var(--jb-muted-2)]">
@@ -112,7 +114,8 @@ export function MiniPlayer() {
               ) : (
                 "Family"
               )}
-              {" · Cousin Radio"}
+              {" · "}
+              {BRAND_NAME}
             </span>
           </div>
         </div>
@@ -185,7 +188,7 @@ function PlayerTransportControls({
     <div className="flex items-center justify-center gap-1 text-[var(--jb-muted)] sm:gap-2">
       <ModeButton
         active={radioMode === "on"}
-        label={radioMode === "on" ? "Cousin Radio on" : "Cousin Radio off"}
+        label={radioMode === "on" ? `${BRAND_NAME} on` : `${BRAND_NAME} off`}
         onClick={onToggleRadio}
       >
         <RadioIcon active={radioMode === "on"} />
