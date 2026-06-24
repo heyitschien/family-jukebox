@@ -1,3 +1,4 @@
+import { BrandAccentIcon } from "@/components/brand/brand-accent-icon";
 import { FeaturedShelf } from "@/components/featured-shelf";
 import { Topbar } from "@/components/topbar";
 import { getAllTags } from "@/data/songs";
@@ -16,7 +17,8 @@ export default function SongsPage() {
       <Topbar />
       <header className="mb-4 px-1">
         <h1 className="text-3xl font-extrabold tracking-tight">All songs</h1>
-        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">
+        <p className="mt-1 flex items-center gap-1.5 text-sm font-bold text-[var(--jb-muted)]">
+          <BrandAccentIcon icon="music" />
           Spotlight picks from each family member up front — rotates daily.
         </p>
       </header>

@@ -55,7 +55,15 @@ Four concepts (see `BRAND_CONCEPTS`):
 3. **Music & Joy** — notes / soundtrack
 4. **Play Together** — play triangle
 
-Use via `BrandConceptStrip` sparingly (hero, footer). Lucide: `UsersRound`, `Radio`, `Music2`, `Play`, `Heart`.
+Use via `BrandAccentIcon` in context — family page, songs page, sidebar, player subtitle. Do not cluster icons in the home hero.
+
+| Icon | Typical placement |
+| --- | --- |
+| `users` | Family page, sidebar, album spotlight line |
+| `radio` | Mini-player now-playing line |
+| `music` | Songs browse header |
+| `play` | Play buttons (existing) |
+| `heart` | Favorites page, player, song rows |
 
 ## Logo assets
 
