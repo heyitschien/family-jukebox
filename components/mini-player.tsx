@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { ArtistLink } from "@/components/artist-link";
+import { BrandAccentIcon } from "@/components/brand/brand-accent-icon";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
@@ -67,13 +68,13 @@ export function MiniPlayer() {
             <Link href={`/songs/${currentSong.slug}`} className="block truncate text-[15px] font-semibold leading-tight">
               {currentSong.title}
             </Link>
-            <span className="mt-0.5 block truncate text-[13px] text-[var(--jb-muted)]">
+            <span className="mt-0.5 flex items-center gap-1 truncate text-[13px] text-[var(--jb-muted)]">
               {author ? (
                 <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
               ) : (
                 "Family"
               )}
-              {" · "}
+              <BrandAccentIcon icon="radio" className="size-3 opacity-80" />
               {BRAND_NAME}
             </span>
           </div>
@@ -111,13 +112,13 @@ export function MiniPlayer() {
             <Link href={`/songs/${currentSong.slug}`} className="block truncate text-sm font-semibold">
               {currentSong.title}
             </Link>
-            <span className="text-[13px] text-[var(--jb-muted)]">
+            <span className="flex items-center gap-1 text-[13px] text-[var(--jb-muted)]">
               {author ? (
                 <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
               ) : (
                 "Family"
               )}
-              {" · "}
+              <BrandAccentIcon icon="radio" className="size-3 opacity-80" />
               {BRAND_NAME}
             </span>
           </div>

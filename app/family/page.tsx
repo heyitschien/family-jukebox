@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { BrandAccentIcon } from "@/components/brand/brand-accent-icon";
 import { MemberCircle } from "@/components/member-circle";
 import { Topbar } from "@/components/topbar";
 import { getRoleLabel, members, shouldShowMemberAge } from "@/data/members";
@@ -22,7 +23,10 @@ export default function FamilyPage() {
       <Topbar />
       <header className="px-1">
         <h1 className="text-3xl font-extrabold tracking-tight">Cousin Radio</h1>
-        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Family artists on Cousin Radio</p>
+        <p className="mt-1 flex items-center gap-1.5 text-sm font-bold text-[var(--jb-muted)]">
+          <BrandAccentIcon icon="users" />
+          Family artists on Cousin Radio
+        </p>
       </header>
 
       <section className="jb-float-panel p-4 sm:p-5">

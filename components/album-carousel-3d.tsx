@@ -20,8 +20,8 @@ import {
   getAlbumSpotlightSongIndex,
   getSpotlightAlbumAuthorNames,
 } from "@/lib/album-rotation";
-import { BrandConceptStrip } from "@/components/brand/brand-concept-strip";
 import { BrandWordmark } from "@/components/brand/brand-wordmark";
+import { BrandAccentIcon } from "@/components/brand/brand-accent-icon";
 import { cn } from "@/lib/utils";
 
 type AlbumCarousel3DProps = {
@@ -360,12 +360,12 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               </>
             ) : null}
           </p>
-          <BrandConceptStrip compact className="mt-3" />
           <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
             Spin through cousin albums — silly fox trails, gravity shifts, pink glasses, and every
             family anthem in one place. Multi-song albums rotate their latest tracks in 3D.
           </p>
-          <p className="mt-2 text-xs font-bold text-[var(--family-ocean)]">
+          <p className="mt-2 flex items-center gap-1.5 text-xs font-bold text-[var(--family-ocean)]">
+            <BrandAccentIcon icon="users" className="text-[var(--family-ocean)]" />
             {count} family albums · rotating spotlight: {spotlightNames}
           </p>
 
