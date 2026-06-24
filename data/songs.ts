@@ -280,6 +280,19 @@ export const songs: Song[] = [
     tags: ["single", "indie", "tio-chien", "series", "featured", "friendship"],
     featured: true,
   },
+  {
+    slug: "slow-turning-pages",
+    title: "Slow Turning Pages",
+    subtitle: "Track one · Study Lo-Fi",
+    authorSlug: "chilling-with-cousin",
+    dateCreated: "2026-06-24",
+    audioSrc: "/assets/chilling-with-cousin/slow-turning-pages.mp3",
+    coverSrc: "/assets/chilling-with-cousin/slow-turning-pages.jpg",
+    story:
+      "Instrumental study lo-fi — calm background music for focus, reading, and sharing.",
+    lyrics: songLyrics["slow-turning-pages"],
+    tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
