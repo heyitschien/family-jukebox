@@ -9,7 +9,7 @@ import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
 export const metadata = buildShareMetadata({
   title: formatPageTitle("Family artists"),
   description:
-    "Meet the cousins who make the music — Eliana, Solene, Ocean, Marceline, Tia Evelyn, Tia Maria, and the whole crew.",
+    "Meet the cousins who make the music — Eliana, Solene, Ocean, Marceline, Tia Evelyn, Mama, and the whole crew.",
   path: "/family",
 });
 
@@ -47,7 +47,7 @@ export default function FamilyPage() {
       </section>
 
       <section className="jb-float-panel p-4 sm:p-5">
-        <h2 className="text-xl font-bold">Tia Maria</h2>
+        <h2 className="text-xl font-bold">Mama</h2>
         <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Cornerstone at the Kitchen Table — new album, more songs coming</p>
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
           {members

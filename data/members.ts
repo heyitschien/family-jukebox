@@ -66,12 +66,12 @@ export const members: FamilyMember[] = [
   },
   {
     slug: "maria",
-    name: "Tia Maria",
+    name: "Mama",
     age: 55,
     role: "family",
     emoji: "🏡",
     description:
-      "Tia Maria — warmth at the kitchen table, love in every meal, and songs that feel like home. Her growing album starts with Cornerstone at the Kitchen Table.",
+      "Mama — warmth at the kitchen table, love in every meal, and songs that feel like home. Her growing album starts with Cornerstone at the Kitchen Table.",
   },
   {
     slug: "sam-and-josh",

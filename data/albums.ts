@@ -36,7 +36,7 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   ocean: "Ocean's Adventures",
   "tio-chien": "Tio Chien's Magic Studio",
   evelyn: "Tia Evelyn",
-  maria: "Tia Maria",
+  maria: "Mama",
   "sam-and-josh": "Tio Sam & Tio Josh",
 };
 
@@ -85,14 +85,14 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   },
   {
     slug: "tia-maria-album",
-    title: "Tia Maria",
+    title: "Mama",
     subtitle: "Cornerstone at the Kitchen Table · more coming",
     authorSlug: "maria",
     coverSrc: "/assets/maria/cornerstone-at-the-kitchen-table.jpg",
     songSlugs: ["cornerstone-at-the-kitchen-table"],
     dateCreated: "2026-06-24",
     story:
-      "A growing album for Tia Maria — kitchen-table warmth, family cornerstone energy, and new songs joining the collection as they release.",
+      "A growing album for Mama — kitchen-table warmth, family cornerstone energy, and new songs joining the collection as they release.",
     accentColor: "#c9956b",
     featured: true,
   },
