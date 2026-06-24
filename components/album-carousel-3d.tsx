@@ -20,7 +20,8 @@ import {
   getAlbumSpotlightSongIndex,
   getSpotlightAlbumAuthorNames,
 } from "@/lib/album-rotation";
-import { BRAND_NAME } from "@/lib/brand";
+import { BrandConceptStrip } from "@/components/brand/brand-concept-strip";
+import { BrandWordmark } from "@/components/brand/brand-wordmark";
 import { cn } from "@/lib/utils";
 
 type AlbumCarousel3DProps = {
@@ -306,7 +307,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                     "shrink-0 rounded-full transition-all",
                     dotSizeClass,
                     i === activeIndex
-                      ? cn(activeDotWidthClass, "bg-[var(--family-pink)]")
+                      ? cn(activeDotWidthClass, "cr-dot-active")
                       : "bg-white/25 hover:bg-white/40",
                   )}
                   aria-label={`Go to ${album.title}`}
@@ -330,9 +331,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               "Family"
             )}
           </span>
-          <h1 className="text-[clamp(40px,10vw,72px)] leading-[0.9] font-extrabold tracking-[-0.06em]">
-            {BRAND_NAME}
-          </h1>
+          <BrandWordmark variant="hero" showLogo={false} showSignature className="gap-0" />
           <Link
             href={`/albums/${activeAlbum.slug}`}
             className="mt-3 block text-lg font-bold transition hover:underline"
@@ -361,6 +360,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               </>
             ) : null}
           </p>
+          <BrandConceptStrip compact className="mt-3" />
           <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
             Spin through cousin albums — silly fox trails, gravity shifts, pink glasses, and every
             family anthem in one place. Multi-song albums rotate their latest tracks in 3D.
@@ -379,7 +379,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
             <button
               type="button"
               onClick={() => playQueue(familyQueue, 0, "hero")}
-              className="inline-flex min-h-11 items-center rounded-full bg-[var(--jb-text)] px-5 py-3 text-sm font-black text-[#050608] [-webkit-tap-highlight-color:transparent]"
+              className="inline-flex min-h-11 items-center rounded-full bg-family-accent px-5 py-3 text-sm font-black text-[#1a0812] shadow-family [-webkit-tap-highlight-color:transparent]"
             >
               Play family mix
             </button>
@@ -393,7 +393,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
           <Link
             href="/albums"
-            className="mt-4 inline-block text-xs font-bold text-[var(--jb-muted)] hover:text-[var(--family-pink)]"
+            className="mt-4 inline-block text-xs font-bold text-[var(--jb-muted)] hover:text-cr-gradient"
           >
             Browse all albums →
           </Link>

@@ -1,7 +1,5 @@
-import Image from "next/image";
-
-import { BRAND_NAME, BRAND_TAGLINE, BRAND_LOGO_UI_PATH } from "@/lib/brand";
-import { cn } from "@/lib/utils";
+import { BrandWordmark } from "@/components/brand/brand-wordmark";
+import { BRAND_TAGLINE } from "@/lib/brand";
 
 type BrandBadgeProps = {
   className?: string;
@@ -18,24 +16,17 @@ export function BrandBadge({
   showSubtitle = true,
   subtitle = BRAND_TAGLINE,
 }: BrandBadgeProps) {
+  const isCustomSubtitle = subtitle !== BRAND_TAGLINE;
+
   return (
-    <span className={cn("flex items-center gap-3", className)}>
-      <Image
-        src={BRAND_LOGO_UI_PATH}
-        alt=""
-        width={44}
-        height={44}
-        className="size-11 shrink-0 rounded-2xl shadow-[0_12px_34px_rgba(0,0,0,0.28)]"
-        priority
-      />
-      <span className="leading-tight">
-        <span className={cn("block text-xl font-extrabold tracking-tight", titleClassName)}>
-          {BRAND_NAME}
-        </span>
-        {showSubtitle ? (
-          <span className={cn("block text-xs text-[var(--jb-muted)]", subtitleClassName)}>{subtitle}</span>
-        ) : null}
-      </span>
-    </span>
+    <BrandWordmark
+      className={className}
+      variant="full"
+      showTagline={showSubtitle}
+      tagline={subtitle}
+      titleClassName={titleClassName}
+      taglineClassName={subtitleClassName}
+      useGradientTagline={!isCustomSubtitle}
+    />
   );
 }

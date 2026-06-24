@@ -16,15 +16,39 @@
   --jb-bg: #0b0f14;
   --jb-panel: #111821;
   --jb-text: #f7fbff;
-  --jb-muted: #a7b3c2;
-  --jb-muted-2: #7d8b9b;
+  --jb-muted: #b9add6;
+  --jb-muted-2: #8f84b0;
 
-  /* Family palette — from design mock + cover vibes (pink kids, ocean blue) */
-  --family-pink: #ff6fb1;
-  --family-ocean: #6cb7ff;
-  --family-lilac: #c4b5fd;
+  /* Cousin Radio gradient identity — canonical tokens */
+  --cr-pink: #ff6fb1;
+  --cr-rose: #ff8ac8;
+  --cr-lilac: #b68cff;
+  --cr-violet: #8f7cff;
+  --cr-ocean: #6cb7ff;
+  --cr-ink: #060a12;
+  --cr-panel: rgba(255, 255, 255, 0.055);
+  --cr-muted-lavender: #b9add6;
+  --cr-gradient: linear-gradient(135deg, var(--cr-pink) 0%, var(--cr-lilac) 48%, var(--cr-ocean) 100%);
+  --cr-gradient-soft: linear-gradient(
+    135deg,
+    rgba(255, 111, 177, 0.22),
+    rgba(182, 140, 255, 0.16),
+    rgba(108, 183, 255, 0.18)
+  );
+  --cr-ring-gradient: conic-gradient(
+    from 210deg,
+    var(--cr-pink),
+    var(--cr-lilac),
+    var(--cr-ocean),
+    var(--cr-pink)
+  );
+
+  /* Family palette — compat aliases mapped to CR tokens */
+  --family-pink: var(--cr-pink);
+  --family-ocean: var(--cr-ocean);
+  --family-lilac: var(--cr-lilac);
   --family-glow: #ffb8d9;
-  --family-accent: #ff7eb9;
+  --family-accent: var(--cr-rose);
   --family-accent-deep: #e85a9a;
 
   --background: var(--jb-bg);
@@ -105,29 +129,50 @@ html[data-env="staging"] {
     display: none;
   }
 
+  .bg-cr-gradient,
   .bg-family-accent {
-    background-color: var(--family-pink);
-    background-image: linear-gradient(135deg, var(--family-pink) 0%, var(--family-ocean) 100%);
+    background-color: var(--cr-pink);
+    background-image: var(--cr-gradient);
+  }
+
+  .bg-cr-gradient-soft {
+    background: var(--cr-gradient-soft);
+  }
+
+  .text-cr-gradient,
+  .text-family-gradient {
+    background-image: var(--cr-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
   .text-family-glow {
     color: var(--family-glow);
   }
 
-  .shadow-family {
+  .shadow-family,
+  .shadow-cr {
     box-shadow: 0 18px 40px rgba(255, 111, 177, 0.28);
   }
 
-  .border-family-soft {
+  .border-family-soft,
+  .border-cr-soft {
     border-color: rgba(255, 111, 177, 0.28);
   }
 
-  .bg-family-soft {
+  .bg-family-soft,
+  .bg-cr-soft {
     background: rgba(255, 111, 177, 0.12);
   }
 
-  .family-progress {
-    background: linear-gradient(90deg, var(--family-pink), var(--family-ocean));
+  .family-progress,
+  .cr-progress {
+    background: var(--cr-gradient);
+  }
+
+  .cr-dot-active {
+    background: var(--cr-gradient);
   }
 
   .jb-float-panel {
