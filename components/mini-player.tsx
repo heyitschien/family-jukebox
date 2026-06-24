@@ -92,12 +92,6 @@ export function MiniPlayer() {
               </Link>
             ) : null}
           </div>
-          <SongFavoriteButton
-            songSlug={currentSong.slug}
-            songTitle={currentSong.title}
-            size="sm"
-            className="shrink-0"
-          />
           <div className="shrink-0 text-right text-[11px] tabular-nums text-[var(--jb-muted-2)]">
             <span>{formatTime(currentTime)}</span>
             <span className="mx-0.5 opacity-50">/</span>
@@ -150,12 +144,6 @@ export function MiniPlayer() {
               </Link>
             ) : null}
           </div>
-          <SongFavoriteButton
-            songSlug={currentSong.slug}
-            songTitle={currentSong.title}
-            size="sm"
-            className="shrink-0"
-          />
         </div>
 
         <div className="grid gap-2">
