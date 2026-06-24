@@ -495,5 +495,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/chilling-with-cousin/slow-turning-pages.jpg",
     "audioSha256": "416f52b8059258a19f98eadeb8486363891790ad57ec9fc60fc25f384e358aa7",
     "coverSha256": "c4d9c20e81ad10f4eba3180064fa86eab04f54bc6c224cd40c567f984a77e50b"
+  },
+  {
+    "registryId": "CR-2026-the-margin-notes",
+    "songSlug": "the-margin-notes",
+    "title": "The Margin Notes",
+    "workType": "family-original",
+    "createdDate": "2026-06-24",
+    "registeredAt": "2026-06-24T22:21:12.329Z",
+    "primaryArtistSlug": "chilling-with-cousin",
+    "subjectMemberSlugs": [
+      "chilling-with-cousin"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The Margin Notes\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/chilling-with-cousin/the-margin-notes.mp3",
+    "coverAssetPath": "/assets/chilling-with-cousin/the-margin-notes.jpg",
+    "audioSha256": "8c71e3167a5f343d3dd69b5e2a2b175e15bc4dbee16f613da56ffb28ef4a4cc1",
+    "coverSha256": "979e457201309e20fcc41d1923158f6f597f0dc4a768945060d910c0fa859823"
   }
 ];

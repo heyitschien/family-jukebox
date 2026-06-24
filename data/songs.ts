@@ -293,6 +293,19 @@ export const songs: Song[] = [
     lyrics: songLyrics["slow-turning-pages"],
     tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
   },
+  {
+    slug: "the-margin-notes",
+    title: "The Margin Notes",
+    subtitle: "Track two · Study Lo-Fi",
+    authorSlug: "chilling-with-cousin",
+    dateCreated: "2026-06-24",
+    audioSrc: "/assets/chilling-with-cousin/the-margin-notes.mp3",
+    coverSrc: "/assets/chilling-with-cousin/the-margin-notes.jpg",
+    story:
+      "Instrumental study lo-fi — quiet beats for focus, notes in the margin, and background listening.",
+    lyrics: songLyrics["the-margin-notes"],
+    tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
