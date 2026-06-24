@@ -1,26 +1,15 @@
-import { ImageResponse } from "next/og";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 
-import { BrandMark } from "@/lib/brand-image";
+import { NextResponse } from "next/server";
 
-const DEFAULT_SIZE = 512;
-const MIN_SIZE = 128;
-const MAX_SIZE = 1024;
+const LOGO_BYTES = readFileSync(path.join(process.cwd(), "public/brand/logo.png"));
 
-function resolveSize(request: Request): number {
-  const value = new URL(request.url).searchParams.get("size");
-  const parsed = Number.parseInt(value ?? "", 10);
-
-  if (!Number.isFinite(parsed)) return DEFAULT_SIZE;
-  if (parsed < MIN_SIZE) return MIN_SIZE;
-  if (parsed > MAX_SIZE) return MAX_SIZE;
-  return parsed;
-}
-
-export function GET(request: Request) {
-  const size = resolveSize(request);
-
-  return new ImageResponse(<BrandMark size={size} />, {
-    width: size,
-    height: size,
+export function GET() {
+  return new NextResponse(LOGO_BYTES, {
+    headers: {
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=31536000, immutable",
+    },
   });
 }

@@ -853,6 +853,17 @@ describe("link preview metadata", () => {
 });
 
 describe("web app manifest", () => {
+  it("ships official Cousin Radio logo assets", () => {
+    for (const asset of [
+      "/brand/logo.png",
+      "/brand/logo-44.png",
+      "/icon-192.png",
+      "/icon-512.png",
+    ]) {
+      assertPublicAssetExists(asset, `brand asset ${asset}`);
+    }
+  });
+
   it("publishes install-sized square icons for saved web apps", () => {
     const manifest = buildWebManifest();
 

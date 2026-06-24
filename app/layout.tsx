@@ -15,10 +15,6 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(getRuntimeSiteUrl()),
   applicationName: getSiteName(),
-  icons: {
-    icon: "/icon",
-    apple: "/apple-icon",
-  },
   title: {
     default: getSiteName(),
     template: `%s · ${getSiteName()}`,
