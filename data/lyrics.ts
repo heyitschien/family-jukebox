@@ -528,6 +528,43 @@ We're just breathing it in
 Where do we end, where does it begin
 No, no, no, no, no, no, it's all domain
 My love is Papords`,
+  "teachers-on-the-wall": `Looking for a passive play on a digital shelf
+Paul was the guide that the algorithm dealt
+Just a face in a stream talking systems and flow
+Until a wooden clock caught a light I should know
+Allen on the dial a secret little sign
+Realizing the logic wasn't the only design
+FBA brands fade but the spirit start to align
+Efficiency and beauty a very different vibe
+It's the savage integration the way you hold the line
+In the books you share that keep my spirit in its prime
+From the teachers on the wall to the wisdom in the coding
+In the AI era where the future start to spin
+It's a beautiful friendship that we're still living in
+It's a beautiful friendship we're living in
+I remember that trip to the city in the rain
+Flying over mountains just to break the digital chain
+Sitting down for lunch and the joke began to grow
+About those egg rolls in Seattle a savory kind of low
+It's the humor in the mundane the way the joke is stuck
+A friendship built on meaning not just business or luck
+I keep those lessons close like the book you put in hand
+The kind of light that helps a 35 you understand
+Now the gears are turning in a world that's brand new
+AI and calibration back in the same view
+Still sharing the teachers still honoring the past
+A bond that was sudden but built for the long lies
+Efficiency and beauty pile the living proof
+And integration of the spirit a search for the truth
+It's the savage integration the way you hold the line
+In the books you share that keep my spirit in its prime
+From the teachers on the wall to the wisdom in the coding
+Found the AI era where the future start to spin
+It's a beautiful friendship that we're still living in
+It's a beautiful friendship we're living in
+Just a couple of guys talking egg rolls and light Paul Savage
+My brother everything is alright catch you in the code
+Stay beautiful`,
   "the-city-breathing": `When I ask, yeah Miracle hidden behind the glass
 A car tap, a blue map, yeah The world is in a snap
 Several rooms are glowing bright Cables on the oceans in the night

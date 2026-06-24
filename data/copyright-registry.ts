@@ -449,5 +449,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/maria/cornerstone-at-the-kitchen-table.jpg",
     "audioSha256": "fff80dd36698cc3b91b84640c6192263da511a07e93b4fb4ceec278a311288a4",
     "coverSha256": "b85a44874cefcbe3aa9505727b2581881407739fd9175939a44cd8978fe30195"
+  },
+  {
+    "registryId": "CR-2026-teachers-on-the-wall",
+    "songSlug": "teachers-on-the-wall",
+    "title": "Teachers on the Wall",
+    "workType": "family-original",
+    "createdDate": "2026-06-24",
+    "registeredAt": "2026-06-24T20:52:05.311Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Teachers on the Wall\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/teachers-on-the-wall.mp3",
+    "coverAssetPath": "/assets/tio-chien/teachers-on-the-wall.jpg",
+    "audioSha256": "e213e11820e85e45281128f4c091c725d66c4f97456e0a5d0e0bd245dbc438ed",
+    "coverSha256": "0916296e7e066c5bb93d77e80071208ba7713075528ca0b13eafb77b4d4be2ae"
   }
 ];

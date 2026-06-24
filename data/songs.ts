@@ -266,6 +266,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "family", "maria", "featured"],
     featured: true,
   },
+  {
+    slug: "teachers-on-the-wall",
+    title: "Teachers on the Wall",
+    subtitle: "Track one · Egg Rolls & Epiphanies",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-24",
+    audioSrc: "/assets/tio-chien/teachers-on-the-wall.mp3",
+    coverSrc: "/assets/tio-chien/teachers-on-the-wall.jpg",
+    story:
+      "The opening single from Egg Rolls & Epiphanies — celebrating friendship, featuring Paul Savage.",
+    lyrics: songLyrics["teachers-on-the-wall"],
+    tags: ["single", "indie", "tio-chien", "series", "featured", "friendship"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
