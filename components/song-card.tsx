@@ -4,6 +4,7 @@ import { CalendarDays, Play, UserRound } from "lucide-react";
 import { CoverImage } from "@/components/cover-image";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { Badge } from "@/components/ui/badge";
+import { NewReleaseBadge } from "@/components/new-release-badge";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 
@@ -37,6 +38,10 @@ export function SongCard({ song }: SongCardProps) {
               Featured
             </Badge>
           ) : null}
+          <NewReleaseBadge
+            song={song}
+            className="absolute right-3 top-3 bg-amber-400 text-amber-950"
+          />
         </div>
 
         <div className="flex flex-1 flex-col gap-3 p-4">

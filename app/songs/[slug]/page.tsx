@@ -29,6 +29,7 @@ import {
 } from "@/lib/site-metadata";
 import { getCopyrightRecordBySlug } from "@/lib/copyright-registry";
 import { SongCopyrightNotice } from "@/components/song-copyright-notice";
+import { NewReleaseBadge } from "@/components/new-release-badge";
 
 type SongPageProps = {
   params: Promise<{ slug: string }>;
@@ -91,6 +92,9 @@ export default async function SongPage({ params }: SongPageProps) {
           {isSpotlightSong(song) ? "Today’s spotlight · " : ""}Family song
         </p>
         <h1 className="mt-2 text-3xl font-extrabold tracking-tight sm:text-4xl">{song.title}</h1>
+        <div className="mt-3 flex justify-center">
+          <NewReleaseBadge song={song} className="px-3 py-1 text-xs" />
+        </div>
         {parentAlbum ? (
           <Link
             href={`/albums/${parentAlbum.slug}`}

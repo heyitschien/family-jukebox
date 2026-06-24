@@ -5,6 +5,7 @@ import { useMemo, useState } from "react";
 
 import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
+import { NewReleaseBadge } from "@/components/new-release-badge";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { usePlayer } from "@/contexts/player-context";
@@ -41,6 +42,7 @@ function FeaturedAlbumCard({ song, playlist }: { song: Song; playlist: Song[] })
           size="sm"
           className="absolute left-2 top-2 bg-black/55"
         />
+        <NewReleaseBadge song={song} className="absolute right-2 top-2" />
         <PlayIconButton
           size="sm"
           playing={playing}

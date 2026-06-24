@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { NewReleaseBadge } from "@/components/new-release-badge";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { useSongPlayback } from "@/hooks/use-song-playback";
@@ -51,14 +52,17 @@ export function SongRow({ song, index, showIndex = false, playlist }: SongRowPro
       >
         <CoverImage src={song.coverSrc} alt="" className="size-11 shrink-0 rounded-xl" />
         <div className="min-w-0 flex-1 overflow-hidden">
-          <strong
-            className={cn(
-              "block truncate text-sm",
-              isCurrent && "text-[var(--family-pink)]",
-            )}
-          >
-            {song.title}
-          </strong>
+          <div className="flex min-w-0 items-center gap-2">
+            <strong
+              className={cn(
+                "min-w-0 truncate text-sm",
+                isCurrent && "text-[var(--family-pink)]",
+              )}
+            >
+              {song.title}
+            </strong>
+            <NewReleaseBadge song={song} />
+          </div>
           <span className="block truncate text-xs text-[var(--jb-muted)]">
             {buildRowSubtitle(song, author?.name)}
           </span>

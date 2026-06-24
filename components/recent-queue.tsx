@@ -12,6 +12,7 @@ import { members } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { songs as allSongs } from "@/data/songs";
 import { getListenerCurationSubtitle } from "@/lib/audience";
+import { isNewRelease } from "@/lib/new-releases";
 import { cn } from "@/lib/utils";
 
 type RecentQueueProps = {
@@ -42,11 +43,14 @@ function QueueBadge({
       </span>
     );
   }
-  return (
-    <span className="rounded-full bg-white/10 px-2 py-1.5 text-[11px] font-black text-[var(--jb-muted)]">
-      New
-    </span>
-  );
+  if (isNewRelease(song)) {
+    return (
+      <span className="rounded-full bg-family-accent px-2 py-1.5 text-[11px] font-black text-[#1a0812]">
+        New release
+      </span>
+    );
+  }
+  return null;
 }
 
 function QueueRow({

@@ -40,6 +40,7 @@ import {
   getCelebrationSongSlugs,
   getFathersDayDate,
 } from "../lib/celebrations";
+import { getNewReleaseLabel, isNewRelease } from "../lib/new-releases";
 import {
   buildShuffledQueue,
   cycleRepeatMode,
@@ -358,6 +359,21 @@ describe("search catalog", () => {
     assert.ok(grouped.songs.length <= 6);
     assert.ok(grouped.albums.length <= 3);
     assert.ok(grouped.members.length <= 3);
+  });
+});
+
+describe("new releases", () => {
+  it("flags songs within the first 3 family-calendar days after dateCreated", () => {
+    const mama = songs.find((song) => song.slug === "cornerstone-at-the-kitchen-table");
+    assert.ok(mama, "cornerstone-at-the-kitchen-table should exist");
+    assert.equal(mama.dateCreated, "2026-06-24");
+
+    assert.equal(isNewRelease(mama, new Date("2026-06-24T18:00:00Z")), true);
+    assert.equal(getNewReleaseLabel(mama, new Date("2026-06-24T18:00:00Z")), "New today");
+    assert.equal(isNewRelease(mama, new Date("2026-06-25T18:00:00Z")), true);
+    assert.equal(getNewReleaseLabel(mama, new Date("2026-06-25T18:00:00Z")), "New yesterday");
+    assert.equal(isNewRelease(mama, new Date("2026-06-26T18:00:00Z")), true);
+    assert.equal(isNewRelease(mama, new Date("2026-06-27T18:00:00Z")), false);
   });
 });
 
