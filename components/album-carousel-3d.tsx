@@ -9,8 +9,8 @@ import { ArtistLink } from "@/components/artist-link";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { Topbar } from "@/components/topbar";
 import { usePlayer } from "@/contexts/player-context";
-import { getAlbumSongs, type Album } from "@/data/albums";
-import { getAlbumAuthor } from "@/data/albums";
+import { getAlbumAuthor, getAlbumForSong, getAlbumSongs, type Album } from "@/data/albums";
+import { useInteractionGuard } from "@/hooks/use-interaction-guard";
 import { getCarouselRingLayout } from "@/lib/carousel-layout";
 import { getFairRotationQueue } from "@/lib/featured-rotation";
 import {
@@ -30,9 +30,12 @@ type AlbumCarousel3DProps = {
   refreshSeed: number;
 };
 
+const PLAYBACK_SYNC_DEBOUNCE_MS = 400;
+
 export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCarousel3DProps) {
   const router = useRouter();
   const { playQueue, currentSong, isPlaying, queue, togglePlay } = usePlayer();
+  const { canAutoSync, markInteraction } = useInteractionGuard();
   const [activeIndex, setActiveIndex] = useState(() =>
     Math.max(
       0,
@@ -70,11 +73,47 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   const rotateNext = useCallback(() => rotateTo(activeIndex + 1), [activeIndex, rotateTo]);
   const rotatePrev = useCallback(() => rotateTo(activeIndex - 1), [activeIndex, rotateTo]);
 
+  const rotateToUser = useCallback(
+    (index: number) => {
+      markInteraction();
+      rotateTo(index);
+    },
+    [markInteraction, rotateTo],
+  );
+
+  const playbackAlbum = currentSong ? getAlbumForSong(currentSong) : undefined;
+  const playbackAlbumIndex = playbackAlbum
+    ? albums.findIndex((album) => album.slug === playbackAlbum.slug)
+    : -1;
+  const isPlaybackSyncing =
+    isPlaying &&
+    currentSong !== null &&
+    playbackAlbumIndex >= 0 &&
+    activeIndex === playbackAlbumIndex;
+  const shouldPauseAutoRotate = isPaused || isPlaybackSyncing;
+
   useEffect(() => {
-    if (isPaused || albums.length <= 1) return;
+    const song = currentSong;
+    if (!isPlaying || !song || !canAutoSync) return;
+
+    const timer = window.setTimeout(() => {
+      const album = getAlbumForSong(song);
+      if (!album) return;
+
+      const index = albums.findIndex((entry) => entry.slug === album.slug);
+      if (index < 0 || index === activeIndex) return;
+
+      rotateTo(index);
+    }, PLAYBACK_SYNC_DEBOUNCE_MS);
+
+    return () => window.clearTimeout(timer);
+  }, [activeIndex, albums, canAutoSync, currentSong, isPlaying, rotateTo]);
+
+  useEffect(() => {
+    if (shouldPauseAutoRotate || albums.length <= 1) return;
     const timer = setInterval(rotateNext, 6000);
     return () => clearInterval(timer);
-  }, [isPaused, albums.length, rotateNext]);
+  }, [shouldPauseAutoRotate, albums.length, rotateNext]);
 
   const playAlbum = useCallback(
     (album: Album, displaySong = getAlbumSpotlightSong(album, refreshSeed)) => {
@@ -105,6 +144,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   const handleTouchEnd = (e: React.TouchEvent) => {
     const delta = (e.changedTouches[0]?.clientX ?? 0) - touchStartX.current;
     if (Math.abs(delta) < 40) return;
+    markInteraction();
     if (delta < 0) rotateNext();
     else rotatePrev();
   };
@@ -123,7 +163,10 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
   return (
     <section
       className="relative -mx-3 overflow-hidden rounded-b-[34px] border border-white/[0.05] shadow-[0_20px_60px_rgba(0,0,0,0.22)] sm:mx-0 sm:rounded-[32px]"
-      onMouseEnter={() => setIsPaused(true)}
+      onMouseEnter={() => {
+        setIsPaused(true);
+        markInteraction();
+      }}
       onMouseLeave={() => setIsPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
@@ -201,7 +244,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                     songs={recencySongs}
                     initialSongIndex={spotlightSongIndex}
                     isFront={isFront}
-                    isPaused={isPaused}
+                    isPaused={shouldPauseAutoRotate}
                     className="size-full"
                   />
                   {isFront ? (
@@ -219,7 +262,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                             if (i === activeIndex) {
                               handlePlayToggle();
                             } else {
-                              rotateTo(i);
+                              rotateToUser(i);
                               playAlbum(album, spotlightSong);
                             }
                           }}
@@ -279,7 +322,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                 <button
                   key={album.slug}
                   type="button"
-                  onClick={() => rotateTo(i)}
+                  onClick={() => rotateToUser(i)}
                   className="absolute top-1/2 left-1/2 cursor-pointer border-0 bg-transparent p-0 [-webkit-tap-highlight-color:transparent]"
                   style={coverStyle}
                   aria-label={`View ${album.title}`}
@@ -302,7 +345,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                 <button
                   key={album.slug}
                   type="button"
-                  onClick={() => rotateTo(i)}
+                  onClick={() => rotateToUser(i)}
                   className={cn(
                     "shrink-0 rounded-full transition-all",
                     dotSizeClass,
