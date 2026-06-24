@@ -75,4 +75,8 @@ jobs:
       - name: Trigger production deploy
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh workflow run Deploy --ref main
+        run: |
+          gh workflow run Deploy --ref main
+          deploy_run_id="$(gh run list --workflow=Deploy --branch=main --limit=1 --json databaseId -q '.[0].databaseId')"
+          gh run watch "$deploy_run_id" --exit-status
+          gh workflow run CD --ref main
