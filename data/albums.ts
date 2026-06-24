@@ -126,10 +126,10 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   {
     slug: "study-lofi-album",
     title: "Study Lo-Fi",
-    subtitle: "Slow Turning Pages · more coming",
+    subtitle: "Slow Turning Pages · The Margin Notes · more coming",
     authorSlug: "chilling-with-cousin",
     coverSrc: "/assets/chilling-with-cousin/slow-turning-pages.jpg",
-    songSlugs: ["slow-turning-pages"],
+    songSlugs: ["slow-turning-pages", "the-margin-notes"],
     dateCreated: "2026-06-24",
     story:
       "Instrumental study lo-fi from Chilling with Cousin — calm beats for focus, reading, and background listening.",

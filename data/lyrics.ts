@@ -634,6 +634,8 @@ From the ground to the sky 🎵
 Sand to signal, sand to signal 🎵
 The future talks in my hand 🎵
 From the dream, yeah 🎵`,
+  "the-margin-notes": `You
+You`,
   "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
 Ico is your very best friend Happy times that never end
 One and two and now you're three Happy birthday Marceline
