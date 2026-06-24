@@ -1,7 +1,7 @@
 import { albums, getAlbumAuthor, type Album } from "@/data/albums";
-import { members, type FamilyMember } from "@/data/members";
+import { getMemberBySlug, members, type FamilyMember, isAdultFamilyMember } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
-import { scoreAlbumForListener, scoreSongForListener } from "@/lib/audience";
+import { ADULT_LISTENER_THRESHOLD, memberMatchesAgeFilter, scoreAlbumForListener, scoreSongForListener } from "@/lib/audience";
 
 export type SearchResultKind = "member" | "album" | "song";
 
@@ -61,11 +61,11 @@ function memberFields(member: FamilyMember): string[] {
 function passesFilters(
   authorSlug: string | undefined,
   tags: string[] | undefined,
-  authorAge: number | undefined,
+  author: FamilyMember | undefined,
   filters: SearchFilters,
 ): boolean {
   if (filters.memberSlug && authorSlug !== filters.memberSlug) return false;
-  if (filters.age != null && authorAge !== filters.age) return false;
+  if (filters.age != null && !memberMatchesAgeFilter(author, filters.age)) return false;
   if (filters.tag && tags && !tags.includes(filters.tag)) return false;
   return true;
 }
@@ -80,6 +80,9 @@ function listenerAgeBoost(
   switch (kind) {
     case "member": {
       const member = item as FamilyMember;
+      if (listenerAge >= ADULT_LISTENER_THRESHOLD && isAdultFamilyMember(member)) {
+        return 25;
+      }
       return Math.max(0, 30 - Math.abs(member.age - listenerAge) * 2);
     }
     case "album":
@@ -98,7 +101,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
   const results: SearchResult[] = [];
 
   for (const member of members) {
-    if (!passesFilters(member.slug, undefined, member.age, filters)) continue;
+    if (!passesFilters(member.slug, undefined, member, filters)) continue;
     const score = trimmed ? bestScore(memberFields(member), trimmed) : 40;
     if (score > 0 || !trimmed) {
       results.push({
@@ -112,7 +115,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
 
   for (const album of albums) {
     const author = getAlbumAuthor(album);
-    if (!passesFilters(album.authorSlug, undefined, author?.age, filters)) continue;
+    if (!passesFilters(album.authorSlug, undefined, author, filters)) continue;
     const score = trimmed ? bestScore(albumFields(album), trimmed) : 35;
     if (score > 0 || !trimmed) {
       results.push({
@@ -126,7 +129,7 @@ export function searchCatalog(query: string, filters: SearchFilters = {}): Searc
 
   for (const song of songs) {
     const author = members.find((member) => member.slug === song.authorSlug);
-    if (!passesFilters(song.authorSlug, song.tags, author?.age, filters)) continue;
+    if (!passesFilters(song.authorSlug, song.tags, author, filters)) continue;
     const score = trimmed ? bestScore(songFields(song), trimmed) : 30;
     if (score > 0 || !trimmed) {
       results.push({

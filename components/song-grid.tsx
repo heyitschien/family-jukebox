@@ -12,6 +12,7 @@ import { TagFilter } from "@/components/tag-filter";
 import { Input } from "@/components/ui/input";
 import type { FamilyMember } from "@/data/members";
 import { getMemberBySlug } from "@/data/members";
+import { memberMatchesAgeFilter } from "@/lib/audience";
 import type { Song } from "@/data/songs";
 
 type SongGridProps = {
@@ -58,7 +59,7 @@ export function SongGrid({
       const author = getMemberBySlug(song.authorSlug);
       const matchesTag = activeTag ? song.tags.includes(activeTag) : true;
       const matchesMember = activeMember ? song.authorSlug === activeMember : true;
-      const matchesAge = activeAge ? author?.age === activeAge : true;
+      const matchesAge = memberMatchesAgeFilter(author, activeAge);
       const matchesSearch = normalizedQuery ? matchesQuery(song, normalizedQuery) : true;
       return matchesTag && matchesMember && matchesAge && matchesSearch;
     });

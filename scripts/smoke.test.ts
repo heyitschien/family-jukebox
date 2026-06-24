@@ -620,6 +620,29 @@ describe("age-based audience curation", () => {
     assert.ok(author && author.age >= 10, "top search pick for adults should lean mature");
   });
 
+  it("treats Mama as grown-up content for adult listeners", () => {
+    const mama = songs.find((song) => song.slug === "cornerstone-at-the-kitchen-table");
+    const dash = songs.find((song) => song.slug === "dash-and-go");
+    assert.ok(mama && dash);
+
+    assert.ok(
+      scoreSongForListener(mama, 35) > scoreSongForListener(dash, 35),
+      "adults should prefer Mama over toddler songs",
+    );
+    assert.ok(
+      scoreSongForListener(dash, 3) > scoreSongForListener(mama, 3),
+      "young listeners should prefer kid songs over Mama",
+    );
+  });
+
+  it("includes Mama when filtering grown-up age buckets", () => {
+    const grownUpSongs = filterSongs("", { age: 35 });
+    assert.ok(
+      grownUpSongs.some((song) => song.slug === "cornerstone-at-the-kitchen-table"),
+      "Mama should appear in grown-up age filter",
+    );
+  });
+
   it("validates listener ages and persists snapshots", () => {
     assert.equal(isValidListenerAge(35), true);
     assert.equal(isValidListenerAge(0), false);

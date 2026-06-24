@@ -5,7 +5,7 @@ import { useMemo } from "react";
 import { EmptyState } from "@/components/empty-state";
 import { SongGrid } from "@/components/song-grid";
 import { usePlayer } from "@/contexts/player-context";
-import { members } from "@/data/members";
+import { members, isAdultFamilyMember, shouldShowMemberAge } from "@/data/members";
 import { songs } from "@/data/songs";
 import { useFavoriteSongs } from "@/hooks/use-favorite-songs";
 import { buildSmartShuffledQueue } from "@/lib/smart-shuffle";
@@ -13,7 +13,15 @@ import { buildSmartShuffledQueue } from "@/lib/smart-shuffle";
 function getFavoriteFilters(favoriteSongs: typeof songs) {
   const memberSlugs = new Set(favoriteSongs.map((song) => song.authorSlug));
   const favoriteMembers = members.filter((member) => memberSlugs.has(member.slug));
-  const favoriteAges = [...new Set(favoriteMembers.map((member) => member.age))].sort((a, b) => a - b);
+  const favoriteAges = [
+    ...new Set(
+      favoriteMembers.map((member) => {
+        if (shouldShowMemberAge(member)) return member.age;
+        if (isAdultFamilyMember(member)) return 35;
+        return member.age;
+      }),
+    ),
+  ].sort((a, b) => a - b);
 
   const favoriteTags = Array.from(
     new Set(favoriteSongs.flatMap((song) => song.tags)),

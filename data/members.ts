@@ -93,6 +93,11 @@ export function shouldShowMemberAge(member: FamilyMember): boolean {
   return member.role === "girl" || member.role === "boy";
 }
 
+/** Family and tio artists count as grown-up catalog (Mama, Evelyn, Tio Chien, etc.). */
+export function isAdultFamilyMember(member: FamilyMember): boolean {
+  return member.role === "family" || member.role === "tio";
+}
+
 export function getMemberLabel(member: FamilyMember): string {
   if (shouldShowMemberAge(member)) {
     return `${member.name}, ${member.age}`;
@@ -101,7 +106,20 @@ export function getMemberLabel(member: FamilyMember): string {
 }
 
 export function getAllAges(): number[] {
-  return [...new Set(members.map((member) => member.age))].sort((a, b) => a - b);
+  return getFilterableAges();
+}
+
+/** Age chips for search — kid ages plus grown-up buckets (35, 40), never private adult ages like 55. */
+export function getFilterableAges(): number[] {
+  const ages = new Set<number>();
+  for (const member of members) {
+    if (shouldShowMemberAge(member)) {
+      ages.add(member.age);
+    }
+  }
+  ages.add(35);
+  ages.add(40);
+  return [...ages].sort((a, b) => a - b);
 }
 
 export function getRoleLabel(role: MemberRole): string {
