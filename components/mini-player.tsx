@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
 import { PlayIconButton } from "@/components/play-icon-button";
+import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
 import { BRAND_NAME } from "@/lib/brand";
 import type { RadioMode, RepeatMode, ShuffleMode } from "@/lib/player-queue";
@@ -89,6 +90,8 @@ export function MiniPlayer() {
           repeatMode={repeatMode}
           radioMode={radioMode}
           playSize="md"
+          songSlug={currentSong.slug}
+          songTitle={currentSong.title}
           onTogglePlay={togglePlay}
           onSkipPrev={skipPrev}
           onSkipNext={skipNext}
@@ -127,6 +130,8 @@ export function MiniPlayer() {
             repeatMode={repeatMode}
             radioMode={radioMode}
             playSize="md"
+            songSlug={currentSong.slug}
+            songTitle={currentSong.title}
             onTogglePlay={togglePlay}
             onSkipPrev={skipPrev}
             onSkipNext={skipNext}
@@ -163,6 +168,8 @@ type PlayerTransportControlsProps = {
   repeatMode: RepeatMode;
   radioMode: RadioMode;
   playSize: "sm" | "md";
+  songSlug: string;
+  songTitle: string;
   onTogglePlay: () => void;
   onSkipPrev: () => void;
   onSkipNext: () => void;
@@ -177,6 +184,8 @@ function PlayerTransportControls({
   repeatMode,
   radioMode,
   playSize,
+  songSlug,
+  songTitle,
   onTogglePlay,
   onSkipPrev,
   onSkipNext,
@@ -233,6 +242,14 @@ function PlayerTransportControls({
       >
         <RepeatIcon />
       </ModeButton>
+
+      <SongFavoriteButton
+        songSlug={songSlug}
+        songTitle={songTitle}
+        size="md"
+        variant="player"
+        className="ml-0.5"
+      />
     </div>
   );
 }
