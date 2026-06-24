@@ -322,8 +322,8 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
           </div>
         </div>
 
-        <div className="relative z-10 min-w-0">
-          <span className="mb-3.5 inline-flex items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
+        <div className="relative z-10 flex min-w-0 flex-col">
+          <span className="mb-3.5 flex w-fit max-w-full items-center gap-2 rounded-full border border-family-soft bg-family-soft px-3 py-2 text-[13px] font-extrabold text-family-glow">
             {heroBadge.emoji} {heroBadge.prefix}
             {author ? (
               <ArtistLink member={author} className="text-family-glow" />
@@ -331,7 +331,12 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
               "Family"
             )}
           </span>
-          <BrandWordmark variant="hero" showLogo={false} showSignature className="gap-0" />
+          <BrandWordmark
+            variant="hero"
+            showLogo={false}
+            showSignature
+            className="w-full gap-0"
+          />
           <Link
             href={`/albums/${activeAlbum.slug}`}
             className="mt-3 block text-lg font-bold transition hover:underline"
