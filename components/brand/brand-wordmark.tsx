@@ -77,9 +77,9 @@ export function BrandWordmark({
           }}
           priority={variant === "hero"}
         />
-      ) : (
+      ) : showLogo && logoFailed ? (
         <CRMark size={variant === "compact" ? "sm" : "md"} />
-      )}
+      ) : null}
       <span className="min-w-0 leading-tight">
         <span
           className={cn(
