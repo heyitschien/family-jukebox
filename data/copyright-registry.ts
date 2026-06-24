@@ -564,5 +564,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/chilling-with-cousin/where-the-garden-sleeps.jpg",
     "audioSha256": "9b41b1a9b694e0bf45acc99ab85d6a7fed418761828eec1a4d3fe4725faefef4",
     "coverSha256": "674b46216959029396a765ee650843d422ad724e4af9344eb999bb80d7084234"
+  },
+  {
+    "registryId": "CR-2026-steady-light-in-your-eye",
+    "songSlug": "steady-light-in-your-eye",
+    "title": "Steady Light in Your Eye",
+    "workType": "family-original",
+    "createdDate": "2026-06-24",
+    "registeredAt": "2026-06-24T23:54:59.700Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Steady Light in Your Eye\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/steady-light-in-your-eye.mp3",
+    "coverAssetPath": "/assets/tio-chien/steady-light-in-your-eye.jpg",
+    "audioSha256": "08e4514ad67abbb89d0d3885799a511ef8b8bd2f93c79fd0b69625ca8a49f9ed",
+    "coverSha256": "23cd1207e2cfb7edd227bcb1bde0bdd9ed873e2d210cd01b6d7fd2822c628424"
   }
 ];

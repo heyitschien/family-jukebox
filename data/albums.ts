@@ -113,10 +113,10 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   {
     slug: "friendship-album",
     title: "Egg Rolls & Epiphanies",
-    subtitle: "Teachers on the Wall · more coming",
+    subtitle: "Teachers on the Wall · Steady Light in Your Eye · more coming",
     authorSlug: "tio-chien",
     coverSrc: "/assets/tio-chien/teachers-on-the-wall.jpg",
-    songSlugs: ["teachers-on-the-wall"],
+    songSlugs: ["teachers-on-the-wall", "steady-light-in-your-eye"],
     dateCreated: "2026-06-24",
     story:
       "Celebrating our friendship — egg rolls, epiphanies, and new songs joining the collection as they release. Featuring Paul Savage.",
