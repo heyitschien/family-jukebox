@@ -1,0 +1,318 @@
+# Cousin Radio — Directional Record
+
+**Stamped by:** GPT-5.5 Thinking, with Chien Escalera Duong  
+**Date:** 2026-06-24  
+**Repo:** `heyitschien/family-jukebox`  
+**Live:** https://cousinradio.com  
+**Status:** Directional source-of-truth for future product, design, content, and agent work.
+
+---
+
+## 1. Core realization
+
+Cousin Radio is no longer just a family music app.
+
+It is becoming a **family cultural system**: a place where songs, stories, voices, photos, artwork, memories, and family identity can live together.
+
+The original product idea was a warm family jukebox: a simple place to collect and play songs from the kids and family members. The deeper direction that emerged is much larger:
+
+> **Cousin Radio is a digital kitchen table.**
+>
+> A place where cousins, children, parents, grandparents, aunties, uncles, stories, songs, and memories gather.
+
+This direction was validated emotionally when Maria / Mama listened to the family content, responded with amazement, and encouraged the rest of the family to listen. Her reaction showed that the product crossed from software into family experience.
+
+---
+
+## 2. Mission
+
+**Cousin Radio preserves and deepens family connection through personalized music, story, memory, and beautiful digital presentation.**
+
+The technology is the vehicle.  
+Family is the mission.
+
+The app should optimize not just for plays, clicks, or catalog size, but for:
+
+- affection
+- belonging
+- gratitude
+- memory
+- multi-generational connection
+- family participation
+- emotional truth
+- beautiful presentation
+
+Most social platforms optimize for attention. Cousin Radio should optimize for affection.
+
+---
+
+## 3. Product framing
+
+### What Cousin Radio is
+
+Cousin Radio is a private/public family radio station and memory archive where each family member can have:
+
+- a musical identity
+- songs or albums made for them
+- songs or albums made by them
+- artwork / cover images
+- lyrics
+- family notes
+- voice messages
+- age-appropriate listening experiences
+- shareable links for family group chats
+- future memory capsules
+
+### What Cousin Radio is not
+
+It is not trying to compete with Spotify, Apple Music, or YouTube Music.
+
+Those platforms distribute music to millions of strangers.
+
+Cousin Radio distributes meaning to the people who matter most.
+
+---
+
+## 4. The emotional proof point: Mama / Maria
+
+Maria is a foundational figure in the family:
+
+- raised four daughters
+- loves the grandchildren deeply
+- prefers to be called **Mama** rather than Abuelita because she carries a youthful spirit
+- continues learning and growing
+- is curious about new things, including AI and stocks
+- represents warmth, openness, home, and family continuity
+
+The song direction for her showed the deeper power of the system:
+
+> A family memory can become a conversation, then a prompt, then lyrics, then a song, then artwork, then a radio entry, then a family heirloom.
+
+That is the full creative cycle.
+
+Cousin Radio should make this cycle repeatable for every meaningful family story.
+
+---
+
+## 5. Creative pipeline
+
+The current and future Cousin Radio creation pipeline should be treated as a complete family media system:
+
+1. **Family story / emotional insight**
+   - Who is this person?
+   - What do they mean to the family?
+   - What details make them specific and real?
+
+2. **Song direction**
+   - emotional tone
+   - genre
+   - instrumentation
+   - tempo
+   - vocal style
+   - lyrical anchors
+
+3. **AI-assisted music generation**
+   - Gemini / AI music tools
+   - multiple generations
+   - select the version that feels emotionally true, not merely polished
+
+4. **Lyrics preservation**
+   - clean lyrics page
+   - optional family explanation: why this song exists
+   - preserve original prompt / generation notes when useful
+
+5. **Artwork**
+   - cover image tied to the emotional meaning
+   - not random decoration
+   - should feel like a family artifact
+
+6. **Publishing**
+   - add to catalog
+   - assign artist/person/collection
+   - ensure mobile and share previews look beautiful
+
+7. **Family sharing**
+   - iMessage / WhatsApp / family group chat friendly
+   - clear title, cover, short note
+
+8. **Archive**
+   - future generations should understand the context
+   - each major song should have enough metadata to explain why it mattered
+
+---
+
+## 6. Music direction principles
+
+Cousin Radio songs should feel personal, specific, and emotionally honest.
+
+Avoid:
+
+- generic “best mom ever” lyrics
+- overly dramatic sadness
+- cheesy Hallmark-style language
+- vague praise without details
+- AI-sounding abstraction
+
+Prefer:
+
+- vivid family imagery
+- real names when appropriate
+- roles in the family
+- small domestic details
+- specific history
+- warmth and gratitude
+- a sense of home
+- singable choruses
+- emotional restraint
+
+Good guiding phrase:
+
+> **Make the person feel seen.**
+
+The strongest songs will not be the most technically complex. They will be the ones where a family member says, “That is really them.”
+
+---
+
+## 7. The “musical portrait” model
+
+A major future direction is that every family member may eventually have a **musical portrait**.
+
+A musical portrait answers:
+
+- Who is this person?
+- What do they love?
+- What have they given to the family?
+- What stories should future generations remember?
+- What is their emotional signature?
+
+Examples of future portrait categories:
+
+- Mama / grandparent tribute songs
+- cousin theme songs
+- birthday songs
+- anniversary songs
+- childhood albums
+- family trip songs
+- ancestor / immigration story songs
+- holiday songs
+- songs from the children’s imagination
+- songs about funny family moments
+
+---
+
+## 8. Future feature directions
+
+### Near-term
+
+- Add Maria / Mama as an artist or featured family member.
+- Add her tribute song and cover art.
+- Create a “Family Portraits” or “Legacy Songs” collection.
+- Preserve lyrics and a short note explaining why the song was created.
+- Improve share cards so family members immediately understand what they are opening.
+- Keep the first-click experience simple: open link → see song → tap play.
+
+### Mid-term
+
+- Add a dedicated “Cousin Radio” brand pass across README, docs, metadata, UI copy, and repo naming.
+- Consider renaming repo from `family-jukebox` to `cousin-radio` once deployment, GitHub Actions, Vercel, and local scripts are checked.
+- Add a content model for `dedication`, `story`, `familyRole`, `generation`, and `occasion`.
+- Add optional voice note support.
+- Add family-safe submission flow for new songs.
+- Add “featured family story” modules on song / album pages.
+
+### Long-term
+
+- Musical portraits for every family member.
+- Birthday radio specials.
+- Holiday stations.
+- Family history albums.
+- Memory capsules.
+- Grandparent interviews or family podcasts.
+- Multi-generational duet experiments.
+- Private family-only sections if needed.
+- Exportable archive so the family owns the creative assets long-term.
+
+---
+
+## 9. Design direction
+
+The design should feel like:
+
+- Spotify-level clarity
+- warm family archive
+- playful but premium
+- mobile-first
+- emotionally rich without clutter
+- simple enough for grandparents and kids
+
+Core design metaphor:
+
+> **A digital kitchen table.**
+
+Visual language may include:
+
+- warm gradients
+- glass panels
+- album cards
+- family portraits
+- soft motion
+- big readable typography
+- clear play controls
+- nostalgic but modern cover art
+
+The product should feel easy for a child, meaningful for a parent, and touching for a grandparent.
+
+---
+
+## 10. Repo and agent guidance
+
+Current repo confirmed:
+
+- `heyitschien/family-jukebox`
+- public repo
+- default branch: `main`
+- production domain: `cousinradio.com`
+- staging domain: `staging.cousinradio.com`
+
+Future agents should treat this document as a directional north star. Before adding features, they should preserve the core habit:
+
+> Open link → see music → tap → hear it.
+
+Do not overcomplicate the experience. Every new feature should increase family connection or preserve family memory.
+
+---
+
+## 11. Suggested next implementation issue
+
+Title:
+
+> Product direction: evolve Family Jukebox into Cousin Radio family cultural archive
+
+Scope:
+
+- Add Maria / Mama as family member or artist.
+- Add first “musical portrait” / tribute song entry.
+- Create or extend collection type for Family Portraits / Legacy Songs.
+- Add story/dedication metadata to songs.
+- Add UI treatment for “Why this song exists.”
+- Add docs note for future repo rename from `family-jukebox` to `cousin-radio`.
+
+Acceptance criteria:
+
+- Maria / Mama can appear as a featured person/artist.
+- Her song can be played from home and member/collection pages.
+- Lyrics and dedication/story can be viewed clearly on mobile.
+- Share preview looks beautiful in family chat.
+- Existing kids/family music experience remains simple and intact.
+
+---
+
+## 12. Closing principle
+
+AI did not create the meaning.
+
+The family created the meaning.
+
+AI helped give it form.
+
+Cousin Radio should continue to honor that distinction.
