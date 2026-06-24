@@ -82,6 +82,15 @@ export const members: FamilyMember[] = [
     description:
       "Real superheroes who lace up sneakers, not capes — coaches on the court, dads in the lane, and the heart behind Legacy in the Lane.",
   },
+  {
+    slug: "chilling-with-cousin",
+    name: "Chilling with Cousin",
+    age: 35,
+    role: "family",
+    emoji: "☕",
+    description:
+      "Calm lo-fi for study, focus, and late-night background — pull up a chair and chill with the cousins.",
+  },
 ];
 
 export function getMemberBySlug(slug: string): FamilyMember | undefined {

@@ -472,5 +472,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/teachers-on-the-wall.jpg",
     "audioSha256": "e213e11820e85e45281128f4c091c725d66c4f97456e0a5d0e0bd245dbc438ed",
     "coverSha256": "0916296e7e066c5bb93d77e80071208ba7713075528ca0b13eafb77b4d4be2ae"
+  },
+  {
+    "registryId": "CR-2026-slow-turning-pages",
+    "songSlug": "slow-turning-pages",
+    "title": "Slow Turning Pages",
+    "workType": "family-original",
+    "createdDate": "2026-06-24",
+    "registeredAt": "2026-06-24T22:12:48.543Z",
+    "primaryArtistSlug": "chilling-with-cousin",
+    "subjectMemberSlugs": [
+      "chilling-with-cousin"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Slow Turning Pages\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/chilling-with-cousin/slow-turning-pages.mp3",
+    "coverAssetPath": "/assets/chilling-with-cousin/slow-turning-pages.jpg",
+    "audioSha256": "416f52b8059258a19f98eadeb8486363891790ad57ec9fc60fc25f384e358aa7",
+    "coverSha256": "c4d9c20e81ad10f4eba3180064fa86eab04f54bc6c224cd40c567f984a77e50b"
   }
 ];
