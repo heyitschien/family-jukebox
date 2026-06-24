@@ -518,5 +518,51 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/chilling-with-cousin/the-margin-notes.jpg",
     "audioSha256": "8c71e3167a5f343d3dd69b5e2a2b175e15bc4dbee16f613da56ffb28ef4a4cc1",
     "coverSha256": "979e457201309e20fcc41d1923158f6f597f0dc4a768945060d910c0fa859823"
+  },
+  {
+    "registryId": "CR-2026-rain-on-the-glass",
+    "songSlug": "rain-on-the-glass",
+    "title": "Rain on the Glass",
+    "workType": "family-original",
+    "createdDate": "2026-06-24",
+    "registeredAt": "2026-06-24T22:37:15.705Z",
+    "primaryArtistSlug": "chilling-with-cousin",
+    "subjectMemberSlugs": [
+      "chilling-with-cousin"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Rain on the Glass\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/chilling-with-cousin/rain-on-the-glass.mp3",
+    "coverAssetPath": "/assets/chilling-with-cousin/rain-on-the-glass.jpg",
+    "audioSha256": "8d821ab9159607434024f97ef095472ba83e14ab4ab6575c5351d5686efccb8f",
+    "coverSha256": "5834061d1c70a69794fe2e8f85eb09453b4948542b81119660ea89a3557ca0ec"
+  },
+  {
+    "registryId": "CR-2026-where-the-garden-sleeps",
+    "songSlug": "where-the-garden-sleeps",
+    "title": "Where the Garden Sleeps",
+    "workType": "family-original",
+    "createdDate": "2026-06-24",
+    "registeredAt": "2026-06-24T22:37:28.082Z",
+    "primaryArtistSlug": "chilling-with-cousin",
+    "subjectMemberSlugs": [
+      "chilling-with-cousin"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Where the Garden Sleeps\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/chilling-with-cousin/where-the-garden-sleeps.mp3",
+    "coverAssetPath": "/assets/chilling-with-cousin/where-the-garden-sleeps.jpg",
+    "audioSha256": "9b41b1a9b694e0bf45acc99ab85d6a7fed418761828eec1a4d3fe4725faefef4",
+    "coverSha256": "674b46216959029396a765ee650843d422ad724e4af9344eb999bb80d7084234"
   }
 ];

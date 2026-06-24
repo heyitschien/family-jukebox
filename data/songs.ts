@@ -306,6 +306,32 @@ export const songs: Song[] = [
     lyrics: songLyrics["the-margin-notes"],
     tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
   },
+  {
+    slug: "rain-on-the-glass",
+    title: "Rain on the Glass",
+    subtitle: "Track three · Study Lo-Fi",
+    authorSlug: "chilling-with-cousin",
+    dateCreated: "2026-06-24",
+    audioSrc: "/assets/chilling-with-cousin/rain-on-the-glass.mp3",
+    coverSrc: "/assets/chilling-with-cousin/rain-on-the-glass.jpg",
+    story:
+      "Instrumental study lo-fi — rain on the window, calm focus, background listening.",
+    lyrics: songLyrics["rain-on-the-glass"],
+    tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
+  },
+  {
+    slug: "where-the-garden-sleeps",
+    title: "Where the Garden Sleeps",
+    subtitle: "Track four · Study Lo-Fi",
+    authorSlug: "chilling-with-cousin",
+    dateCreated: "2026-06-24",
+    audioSrc: "/assets/chilling-with-cousin/where-the-garden-sleeps.mp3",
+    coverSrc: "/assets/chilling-with-cousin/where-the-garden-sleeps.jpg",
+    story:
+      "Instrumental study lo-fi — quiet garden dusk, soft beats for focus and background listening.",
+    lyrics: songLyrics["where-the-garden-sleeps"],
+    tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
