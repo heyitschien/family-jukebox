@@ -8,6 +8,7 @@ import { SongRow } from "@/components/song-row";
 import { usePlayer } from "@/contexts/player-context";
 import { songs } from "@/data/songs";
 import { useFavoriteSongs } from "@/hooks/use-favorite-songs";
+import { FAVORITES_QUEUE_CONTEXT } from "@/lib/queue-context";
 import { buildSmartShuffledQueue } from "@/lib/smart-shuffle";
 import { cn } from "@/lib/utils";
 
@@ -33,11 +34,11 @@ export function FavoritesBrowser() {
 
   const playFavoritesShuffled = () => {
     const shuffled = buildSmartShuffledQueue(favoriteSongs, 0);
-    playQueue(shuffled, 0, "shelf");
+    playQueue(shuffled, 0, "shelf", FAVORITES_QUEUE_CONTEXT);
   };
 
   const playFavoritesInOrder = () => {
-    playQueue(favoriteSongs, 0, "shelf");
+    playQueue(favoriteSongs, 0, "shelf", FAVORITES_QUEUE_CONTEXT);
   };
 
   return (
@@ -87,6 +88,7 @@ export function FavoritesBrowser() {
               compact
               showChevron={false}
               playlist={favoriteSongs}
+              queueContext={FAVORITES_QUEUE_CONTEXT}
             />
           </li>
         ))}

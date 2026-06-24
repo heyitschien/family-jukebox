@@ -82,7 +82,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
             {shouldShowMemberAge(member) ? ` · age ${member.age}` : ""}
           </p>
           <div className="mt-6">
-            <MemberPlayHeader songs={memberSongs} memberName={member.name} />
+            <MemberPlayHeader songs={memberSongs} memberName={member.name} memberSlug={member.slug} />
           </div>
         </div>
       </section>
@@ -120,7 +120,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
       <section className="mt-6 jb-float-panel p-4 sm:p-5">
         <h2 className="mb-4 text-xl font-bold">Popular</h2>
         {memberSongs.length > 0 ? (
-          <MemberSongList songs={memberSongs} />
+          <MemberSongList songs={memberSongs} memberSlug={member.slug} memberName={member.name} />
         ) : (
           <p className="text-[var(--jb-muted)]">No songs yet — check back after the next music day.</p>
         )}

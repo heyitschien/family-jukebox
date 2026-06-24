@@ -49,3 +49,8 @@ export function buildBrandArtworkUrl(origin: string, size: number): string {
   const safeOrigin = origin.replace(/\/$/, "");
   return `${safeOrigin}/api/brand-artwork?size=${size}`;
 }
+
+export function buildNowPlayingArtworkUrl(origin: string, songSlug: string, size: number): string {
+  const safeOrigin = origin.replace(/\/$/, "");
+  return `${safeOrigin}/api/now-playing-artwork?song=${encodeURIComponent(songSlug)}&size=${size}`;
+}

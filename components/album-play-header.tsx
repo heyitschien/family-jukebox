@@ -3,6 +3,7 @@
 import { PlayButton } from "@/components/play-button";
 import { usePlayer } from "@/contexts/player-context";
 import { getAlbumSongs, type Album } from "@/data/albums";
+import { buildAlbumQueueContext } from "@/lib/queue-context";
 
 type AlbumPlayHeaderProps = {
   album: Album;
@@ -18,7 +19,7 @@ export function AlbumPlayHeader({ album }: AlbumPlayHeaderProps) {
     <PlayButton
       size="lg"
       label={`Play album`}
-      onClick={() => playQueue(songs, 0, "shelf")}
+      onClick={() => playQueue(songs, 0, "shelf", buildAlbumQueueContext(album.slug, album.title))}
     />
   );
 }

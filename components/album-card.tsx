@@ -9,6 +9,7 @@ import { usePlayer } from "@/contexts/player-context";
 import { useSongPlayback } from "@/hooks/use-song-playback";
 import { getAlbumAuthor, getAlbumKindLabel, getAlbumSongs, type Album } from "@/data/albums";
 import { songs } from "@/data/songs";
+import { buildAlbumQueueContext } from "@/lib/queue-context";
 import { cn } from "@/lib/utils";
 
 type AlbumCardProps = {
@@ -31,9 +32,12 @@ export function AlbumCard({ album, className, size = "md", showKind = false }: A
     queue.length === albumSongs.length &&
     queue.every((q, i) => albumSongs[i]?.slug === q.slug);
 
+  const albumContext = buildAlbumQueueContext(album.slug, album.title);
+
   const { toggle } = useSongPlayback(firstSong ?? songs[0], {
     playlist: albumSongs.length > 0 ? albumSongs : undefined,
     source: "shelf",
+    queueContext: albumContext,
   });
 
   if (!firstSong) return null;
@@ -43,7 +47,7 @@ export function AlbumCard({ album, className, size = "md", showKind = false }: A
       toggle();
       return;
     }
-    playQueue(albumSongs, 0, "shelf");
+    playQueue(albumSongs, 0, "shelf", albumContext);
   };
 
   const widthClass = size === "sm" ? "w-32" : "w-40 sm:w-44";

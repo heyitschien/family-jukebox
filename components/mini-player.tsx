@@ -29,12 +29,15 @@ export function MiniPlayer() {
     radioMode,
     currentTime,
     duration,
+    queueContext,
+    queue,
   } = usePlayer();
 
   if (!currentSong) return null;
 
   const author = getMemberBySlug(currentSong.authorSlug);
   const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+  const showQueueLink = queue.length > 1;
 
   return (
     <aside
@@ -55,9 +58,9 @@ export function MiniPlayer() {
       />
 
       {/* Mobile — stacked, full transport row */}
-      <div className="flex flex-col gap-3 px-3.5 pb-3.5 pt-3 sm:hidden">
+      <div className="flex flex-col gap-2.5 px-3.5 pb-3.5 pt-3 sm:hidden">
         <div className="flex min-w-0 items-center gap-3">
-          <Link href={`/songs/${currentSong.slug}`} className="shrink-0">
+          <Link href="/now-playing" className="shrink-0" aria-label="Open now playing">
             <CoverImage
               src={currentSong.coverSrc}
               alt=""
@@ -65,7 +68,10 @@ export function MiniPlayer() {
             />
           </Link>
           <div className="min-w-0 flex-1">
-            <Link href={`/songs/${currentSong.slug}`} className="block truncate text-[15px] font-semibold leading-tight">
+            <Link
+              href={`/songs/${currentSong.slug}`}
+              className="block truncate text-[15px] font-semibold leading-tight"
+            >
               {currentSong.title}
             </Link>
             <span className="mt-0.5 flex items-center gap-1 truncate text-[13px] text-[var(--jb-muted)]">
@@ -77,7 +83,21 @@ export function MiniPlayer() {
               <BrandAccentIcon icon="radio" className="size-3 opacity-80" />
               {BRAND_NAME}
             </span>
+            {queueContext ? (
+              <Link
+                href={showQueueLink ? "/now-playing" : queueContext.href}
+                className="mt-0.5 block truncate text-[11px] font-semibold text-family-glow hover:text-white"
+              >
+                From {queueContext.label}
+              </Link>
+            ) : null}
           </div>
+          <SongFavoriteButton
+            songSlug={currentSong.slug}
+            songTitle={currentSong.title}
+            size="sm"
+            className="shrink-0"
+          />
           <div className="shrink-0 text-right text-[11px] tabular-nums text-[var(--jb-muted-2)]">
             <span>{formatTime(currentTime)}</span>
             <span className="mx-0.5 opacity-50">/</span>
@@ -105,7 +125,7 @@ export function MiniPlayer() {
       {/* Desktop — three-column bar */}
       <div className="hidden min-h-[74px] grid-cols-[1fr_minmax(260px,560px)_1fr] items-center gap-4 px-4 py-3 sm:grid">
         <div className="flex min-w-0 items-center gap-3">
-          <Link href={`/songs/${currentSong.slug}`} className="shrink-0">
+          <Link href="/now-playing" className="shrink-0">
             <CoverImage src={currentSong.coverSrc} alt="" className="size-[54px] shrink-0 rounded-[14px]" />
           </Link>
           <div className="min-w-0">
@@ -121,7 +141,21 @@ export function MiniPlayer() {
               <BrandAccentIcon icon="radio" className="size-3 opacity-80" />
               {BRAND_NAME}
             </span>
+            {queueContext ? (
+              <Link
+                href={showQueueLink ? "/now-playing" : queueContext.href}
+                className="mt-0.5 block truncate text-[11px] font-semibold text-family-glow hover:text-white"
+              >
+                From {queueContext.label}
+              </Link>
+            ) : null}
           </div>
+          <SongFavoriteButton
+            songSlug={currentSong.slug}
+            songTitle={currentSong.title}
+            size="sm"
+            className="shrink-0"
+          />
         </div>
 
         <div className="grid gap-2">
@@ -195,7 +229,7 @@ function PlayerTransportControls({
   onToggleRadio,
 }: PlayerTransportControlsProps) {
   return (
-    <div className="flex items-center justify-center gap-1 text-[var(--jb-muted)] sm:gap-2">
+    <div className="flex items-center justify-center gap-0.5 text-[var(--jb-muted)] sm:gap-2">
       <ModeButton
         active={radioMode === "on"}
         label={radioMode === "on" ? `${BRAND_NAME} on` : `${BRAND_NAME} off`}

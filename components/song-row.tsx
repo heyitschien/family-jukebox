@@ -12,6 +12,8 @@ import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
 import { cn } from "@/lib/utils";
 
+import type { QueueContext } from "@/lib/queue-context";
+
 type SongRowProps = {
   song: Song;
   index?: number;
@@ -19,6 +21,7 @@ type SongRowProps = {
   playlist?: Song[];
   compact?: boolean;
   showChevron?: boolean;
+  queueContext?: QueueContext;
 };
 
 function buildRowSubtitle(song: Song, authorName?: string): string {
@@ -33,8 +36,13 @@ export function SongRow({
   playlist,
   compact = false,
   showChevron = true,
+  queueContext,
 }: SongRowProps) {
-  const { playing, toggle, isCurrent } = useSongPlayback(song, { playlist, source: "shelf" });
+  const { playing, toggle, isCurrent } = useSongPlayback(song, {
+    playlist,
+    source: "shelf",
+    queueContext,
+  });
   const author = getMemberBySlug(song.authorSlug);
 
   return (
