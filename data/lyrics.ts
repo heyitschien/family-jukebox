@@ -477,8 +477,7 @@ Best kind of lucky, yeah, just like I said
 Yeah, so lucky, man
 Evil in, keep shining bright
 You're the light`,
-  "slow-turning-pages": `Let me know what you think about this video, and I'll see you in the next one.
-You`,
+  "slow-turning-pages": `[Instrumental]`,
   "solene-s-painted-trail": `Orange fur against the green, a clever fox is rarely seen.
 Through the hall and past the door, she tracks her paws across the floor.
 Eight years of sun inside her eyes, watching how the numbers rise.
