@@ -25,6 +25,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
   ocean: "#6cb7ff",
   "tio-chien": "#7dd3fc",
   evelyn: "#d4af37",
+  maria: "#c9956b",
   "sam-and-josh": "#f59e0b",
 };
 
@@ -35,6 +36,7 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   ocean: "Ocean's Adventures",
   "tio-chien": "Tio Chien's Magic Studio",
   evelyn: "Tia Evelyn",
+  maria: "Tia Maria",
   "sam-and-josh": "Tio Sam & Tio Josh",
 };
 
@@ -79,6 +81,19 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "A growing album for Tia Evelyn — indie warmth, K-pop sparkle, and new songs joining the collection as they release.",
     accentColor: "#ff8c42",
+    featured: true,
+  },
+  {
+    slug: "tia-maria-album",
+    title: "Tia Maria",
+    subtitle: "Cornerstone at the Kitchen Table · more coming",
+    authorSlug: "maria",
+    coverSrc: "/assets/maria/cornerstone-at-the-kitchen-table.jpg",
+    songSlugs: ["cornerstone-at-the-kitchen-table"],
+    dateCreated: "2026-06-24",
+    story:
+      "A growing album for Tia Maria — kitchen-table warmth, family cornerstone energy, and new songs joining the collection as they release.",
+    accentColor: "#c9956b",
     featured: true,
   },
   {

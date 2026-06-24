@@ -252,6 +252,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
     featured: true,
   },
+  {
+    slug: "cornerstone-at-the-kitchen-table",
+    title: "Cornerstone at the Kitchen Table",
+    subtitle: "The first single from Tia Maria's growing album",
+    authorSlug: "maria",
+    dateCreated: "2026-06-24",
+    audioSrc: "/assets/maria/cornerstone-at-the-kitchen-table.mp3",
+    coverSrc: "/assets/maria/cornerstone-at-the-kitchen-table.jpg",
+    story:
+      "Tia Maria's opening single — warmth at the kitchen table, love in every meal, and the feeling of home that holds a family together.",
+    lyrics: songLyrics["cornerstone-at-the-kitchen-table"],
+    tags: ["single", "indie", "family", "maria", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

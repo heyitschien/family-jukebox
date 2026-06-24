@@ -426,5 +426,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/the-future-in-my-palm.jpg",
     "audioSha256": "7be01b80dd89672caff90612f0646e8ca1b6012f79c529f51f45e08a6c1c26aa",
     "coverSha256": "b33214a5b1a75a68740a3168cab5b5bf67fb9207a730c302ef8b46ddd81eb9c2"
+  },
+  {
+    "registryId": "CR-2026-cornerstone-at-the-kitchen-table",
+    "songSlug": "cornerstone-at-the-kitchen-table",
+    "title": "Cornerstone at the Kitchen Table",
+    "workType": "family-original",
+    "createdDate": "2026-06-24",
+    "registeredAt": "2026-06-24T17:11:24.965Z",
+    "primaryArtistSlug": "maria",
+    "subjectMemberSlugs": [
+      "maria"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Cornerstone at the Kitchen Table\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/maria/cornerstone-at-the-kitchen-table.mp3",
+    "coverAssetPath": "/assets/maria/cornerstone-at-the-kitchen-table.jpg",
+    "audioSha256": "fff80dd36698cc3b91b84640c6192263da511a07e93b4fb4ceec278a311288a4",
+    "coverSha256": "b85a44874cefcbe3aa9505727b2581881407739fd9175939a44cd8978fe30195"
   }
 ];

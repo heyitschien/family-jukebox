@@ -2,6 +2,7 @@ import Link from "next/link";
 
 import { getSongsByAuthor } from "@/data/songs";
 import type { FamilyMember } from "@/data/members";
+import { shouldShowMemberAge } from "@/data/members";
 
 type MemberCircleProps = {
   member: FamilyMember;
@@ -22,7 +23,11 @@ export function MemberCircle({ member }: MemberCircleProps) {
         )}
       </div>
       <p className="mt-3 truncate text-sm font-bold">{member.name}</p>
-      <p className="truncate text-xs text-[var(--jb-muted)]">Age {member.age}</p>
+      {shouldShowMemberAge(member) ? (
+        <p className="truncate text-xs text-[var(--jb-muted)]">Age {member.age}</p>
+      ) : (
+        <p className="truncate text-xs text-[var(--jb-muted)]">Family artist</p>
+      )}
     </Link>
   );
 }

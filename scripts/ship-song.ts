@@ -143,12 +143,16 @@ function readSeriesSongSlugs(albumsContents: string, seriesSlug: string): string
   return [...match[1].matchAll(/"([^"]+)"/g)].map((part) => part[1] ?? "").filter(Boolean);
 }
 
+function seriesAlbumExists(albumsContents: string, seriesSlug: string): boolean {
+  return albumsContents.includes(`slug: "${seriesSlug}"`);
+}
+
 function appendToSeriesAlbum(seriesSlug: string, songSlug: string, songTitle: string): void {
   const albumsPath = path.join(process.cwd(), "data/albums.ts");
   let contents = readFileSync(albumsPath, "utf8");
   const existingSlugs = readSeriesSongSlugs(contents, seriesSlug);
 
-  if (existingSlugs.length === 0) {
+  if (!seriesAlbumExists(contents, seriesSlug)) {
     throw new Error(`Series album not found: ${seriesSlug}`);
   }
   if (existingSlugs.includes(songSlug)) {
@@ -158,10 +162,17 @@ function appendToSeriesAlbum(seriesSlug: string, songSlug: string, songTitle: st
 
   const nextSlugs = [...existingSlugs, songSlug];
 
-  contents = contents.replace(
-    new RegExp(`(slug: "${seriesSlug}"[\\s\\S]*?songSlugs: \\[[^\\]]*)\\]`),
-    `$1, "${songSlug}"]`,
-  );
+  if (existingSlugs.length === 0) {
+    contents = contents.replace(
+      new RegExp(`(slug: "${seriesSlug}"[\\s\\S]*?songSlugs: \\[)\\]`),
+      `$1"${songSlug}"]`,
+    );
+  } else {
+    contents = contents.replace(
+      new RegExp(`(slug: "${seriesSlug}"[\\s\\S]*?songSlugs: \\[[^\\]]*)\\]`),
+      `$1, "${songSlug}"]`,
+    );
+  }
 
   const subtitle = buildSeriesAlbumSubtitle(nextSlugs, { [songSlug]: songTitle });
   const subtitlePattern = new RegExp(

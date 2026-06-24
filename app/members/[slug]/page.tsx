@@ -9,7 +9,7 @@ import { MemberPlayHeader, MemberSongList } from "@/components/member-play-heade
 import { SongShelf } from "@/components/song-shelf";
 import { Topbar } from "@/components/topbar";
 import { getAlbumsByAuthor, groupAlbumsByKind } from "@/data/albums";
-import { getMemberBySlug, getRoleLabel, members } from "@/data/members";
+import { getMemberBySlug, getRoleLabel, members, shouldShowMemberAge } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
 import { getDiscoverAlbums, getDiscoverMembers, getDiscoverSongs } from "@/lib/music-discovery";
 
@@ -79,7 +79,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
           <h1 className="mt-2 text-5xl font-extrabold tracking-tight sm:text-7xl">{member.name}</h1>
           <p className="mt-2 text-sm font-bold text-[var(--jb-muted)]">
             {memberSongs.length} {memberSongs.length === 1 ? "song" : "songs"}
-            {member.role === "girl" || member.role === "boy" ? ` · age ${member.age}` : ""}
+            {shouldShowMemberAge(member) ? ` · age ${member.age}` : ""}
           </p>
           <div className="mt-6">
             <MemberPlayHeader songs={memberSongs} memberName={member.name} />

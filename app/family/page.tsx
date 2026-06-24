@@ -2,14 +2,14 @@ import Link from "next/link";
 
 import { MemberCircle } from "@/components/member-circle";
 import { Topbar } from "@/components/topbar";
-import { getRoleLabel, members } from "@/data/members";
+import { getRoleLabel, members, shouldShowMemberAge } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
 import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
 
 export const metadata = buildShareMetadata({
   title: formatPageTitle("Family artists"),
   description:
-    "Meet the cousins who make the music — Eliana, Solene, Ocean, Marceline, Tia Evelyn, and the whole crew.",
+    "Meet the cousins who make the music — Eliana, Solene, Ocean, Marceline, Tia Evelyn, Tia Maria, and the whole crew.",
   path: "/family",
 });
 
@@ -47,6 +47,18 @@ export default function FamilyPage() {
       </section>
 
       <section className="jb-float-panel p-4 sm:p-5">
+        <h2 className="text-xl font-bold">Tia Maria</h2>
+        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Cornerstone at the Kitchen Table — new album, more songs coming</p>
+        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
+          {members
+            .filter((m) => m.slug === "maria")
+            .map((member) => (
+              <MemberCircle key={member.slug} member={member} />
+            ))}
+        </div>
+      </section>
+
+      <section className="jb-float-panel p-4 sm:p-5">
         <h2 className="text-xl font-bold">Ocean & Tio Chien</h2>
         <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
           {others.map((member) => (
@@ -71,7 +83,8 @@ export default function FamilyPage() {
               <div className="min-w-0 flex-1">
                 <p className="font-bold">{member.name}</p>
                 <p className="text-sm text-[var(--jb-muted)]">
-                  {getRoleLabel(member.role)} · age {member.age} · {count}{" "}
+                  {getRoleLabel(member.role)}
+                  {shouldShowMemberAge(member) ? ` · age ${member.age}` : ""} · {count}{" "}
                   {count === 1 ? "song" : "songs"}
                 </p>
               </div>

@@ -65,6 +65,15 @@ export const members: FamilyMember[] = [
       "Tia Evelyn — heart of the home. Her album Gold in the Tile is a growing collection of songs made with love, one release at a time.",
   },
   {
+    slug: "maria",
+    name: "Tia Maria",
+    age: 55,
+    role: "family",
+    emoji: "🏡",
+    description:
+      "Tia Maria — warmth at the kitchen table, love in every meal, and songs that feel like home. Her growing album starts with Cornerstone at the Kitchen Table.",
+  },
+  {
     slug: "sam-and-josh",
     name: "Tio Sam & Tio Josh",
     age: 40,
@@ -79,11 +88,16 @@ export function getMemberBySlug(slug: string): FamilyMember | undefined {
   return members.find((member) => member.slug === slug);
 }
 
+/** Kids show age in UI; family and tio artists are featured by name only. */
+export function shouldShowMemberAge(member: FamilyMember): boolean {
+  return member.role === "girl" || member.role === "boy";
+}
+
 export function getMemberLabel(member: FamilyMember): string {
-  if (member.role === "tio" || member.role === "family") {
-    return member.name;
+  if (shouldShowMemberAge(member)) {
+    return `${member.name}, ${member.age}`;
   }
-  return `${member.name}, ${member.age}`;
+  return member.name;
 }
 
 export function getAllAges(): number[] {

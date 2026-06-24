@@ -1,6 +1,32 @@
 // Auto-generated from scripts/transcripts.json — re-run scripts/transcribe-songs.py to refresh.
 
 export const songLyrics = {
+  "cornerstone-at-the-kitchen-table": `For beautiful daughters, you paved every road
+Lifting the weight and the heaviest load
+Maria, your kitchen is where we all start
+A house made of sunshine, a home for the heart
+Now the laughter of grandchildren rings through the halls
+Love is the language that speaks from these walls
+Mama, you are the heart that keeps us together
+In every season and every kind of weather
+Mama, your love is the light that won't fade
+The beautiful home that your sacrifice made
+You don't want the title that makes you feel old
+You're chasing the future, you're brave and you're bold
+From AI and stocks to the screens that we hold
+You're writing a story that's yet to be told
+You're learning the code and you're making a scene
+That growth never ends, whatever your age might be
+Mama, you are the heart that keeps us together
+In every season and every kind of weather
+Mama, your love is the light that won't fade
+The beautiful home that your sacrifice made
+You are the foundation, the cornerstone stone
+The strongest of pillars that we've ever known
+We're rooted in you and we're starting to grow
+The seeds that you planted are starting to show
+Oh, Mama, thank you, Maria
+We love you, Mama`,
   "crayon-planets": `The table is a planet made of crayon light, tiny hands are drafting blueprints for the night
 I'm just the witness holding shadows by the door Counting all the wonders scattered on the floor
 It isn't just the drawing or the rhythmic beat It's seeing how the world can be so incomplete
