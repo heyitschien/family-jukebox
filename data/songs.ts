@@ -402,6 +402,48 @@ export const songs: Song[] = [
     tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
     featured: true,
   },
+  {
+    slug: "coherence",
+    title: "Coherence",
+    subtitle: "하나의 심장 · track nine · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-25",
+    audioSrc: "/assets/tio-chien/coherence.mp3",
+    coverSrc: "/assets/tio-chien/coherence.jpg",
+    story:
+      "The ninth single — infinite answers and noisy screens, choosing one clear heart to stay whole in the AI age.",
+    lyrics: songLyrics["coherence"],
+    tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
+    featured: true,
+  },
+  {
+    slug: "children-of-continuous-miracles",
+    title: "Children of Continuous Miracles",
+    subtitle: "기적을 마셔 · track ten · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-25",
+    audioSrc: "/assets/tio-chien/children-of-continuous-miracles.mp3",
+    coverSrc: "/assets/tio-chien/children-of-continuous-miracles.jpg",
+    story:
+      "The tenth single — kids growing up where AI and glass feel normal as air; a family anthem that wonder never has to die.",
+    lyrics: songLyrics["children-of-continuous-miracles"],
+    tags: ["single", "indie", "kpop", "tio-chien", "series", "featured", "family"],
+    featured: true,
+  },
+  {
+    slug: "return-to-the-morning-sun",
+    title: "Return to the Morning Sun",
+    subtitle: "눈부신 아침의 온도 · track eleven · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-25",
+    audioSrc: "/assets/tio-chien/return-to-the-morning-sun.mp3",
+    coverSrc: "/assets/tio-chien/return-to-the-morning-sun.jpg",
+    story:
+      "The album finale — after glass, signals, and infinite answers, return to breath, sunlight, family, and the human center.",
+    lyrics: songLyrics["return-to-the-morning-sun"],
+    tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

@@ -25,6 +25,54 @@ Round and round, we make it clear I hear my own mind, we reappear
 Ask one more time
 Clear mind, real power Yeah, we got it
 Ask again, hey`,
+  "children-of-continuous-miracles": `Flash, neon light in the palm of your hand
+The world we dreamed of is now your playground
+We are the children of continuous miracles, may it
+The miracle is now covered in water like air
+Flying higher through the silver screen
+Live in a magic that doesn't stop
+Live in a magic that doesn't stop
+AI flows through my veins digital rhythm in the rain
+The songs of the moment, the dance of creation that doesn't stop
+Glass screens are windows to the soul
+At the end of our hands, the world is finished
+At the end of our hands, the world is finished
+The song that came out of the grandmother's radio
+Now it's made with my hands, calling
+Passing the torch through the data stream
+We are the dream of the miracle
+We are the children of continuous miracles, may it
+The miracle is now covered in water like air
+Flying higher through the silver screen
+Live in a magic that doesn't stop
+Live in a magic that doesn't stop
+Everything is possible, everything is real
+I feel that this is not a dream
+Wonder is the air we breathe
+The miracle is singing
+Continuous miracles just like air
+Let it begin`,
+  "coherence": `I'm losing my shadow, can you feel the polka bar inside the static, we're choosing one heart
+Coherence is my blood, in the age of too much information
+Coherence is the truth inside me, fragmented soul, now goodbye
+We don't need the answers, we just need the heart
+Pixels dancing in my eyes, we don't need the answers
+AI mirror reflections, they find my direction
+Stay coherent, keep the rhythm of your own
+No more overload, we're taking control
+Coherence is my blood, in the age of too much information
+Coherence is the truth inside me, fragmented soul, now goodbye
+We don't need the answers, we just need the heart
+Even if everything disappears, there's only one trembling
+It's nice to die, it's who we are
+Oh feel the heartbeat now
+Coherence is my blood, in the age of too much information
+Coherence is the truth inside me, fragmented soul, now goodbye
+We don't need the answers, we just need the heart
+Coherence, Coherence, we don't die
+One heart, Coherence
+Clearly, clearly
+One heart, One heart, goodbye noise`,
   "cornerstone-at-the-kitchen-table": `For beautiful daughters, you paved every road
 Lifting the weight and the heaviest load
 Maria, your kitchen is where we all start
@@ -521,6 +569,53 @@ Cool stuff, yeah, we made it cool
 Solene and Eliana, Marceline, Ocean
 Digital family, just the beginning`,
   "rain-on-the-glass": `[Instrumental]`,
+  "return-to-the-morning-sun": `Yeah
+Breathe out
+In the warm air of the sun
+In the morning sun
+Beyond the glass and the signal
+In the real world where my heart is beating
+Return to the morning sun
+Let the love begin
+Hold our hands
+Feel the depth of our country
+Oh
+I love you
+Feel the miracle
+Endless questions
+Cold answers
+I'm deleting the logic
+I'm deleting the fear
+I'm finally here
+Breathe out
+In the warm air of the sun
+In the morning sun
+Beyond the glass and the signal
+In the real world where my heart is beating
+Return to the morning sun
+Let the love begin
+Hold our hands
+Feel the depth of our country
+Oh
+I love you
+Feel the miracle
+The signal
+Endless questions
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+I'm deleting the logic
+Welcome back.`,
   "silver-pan-morning": `Smile
 Sunday Morning let the coffee steam
 Watching how you blow a quiet dream

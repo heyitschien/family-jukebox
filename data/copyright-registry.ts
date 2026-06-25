@@ -679,5 +679,74 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/cutting-through-the-dark.jpg",
     "audioSha256": "edf20c050572e3d5adf7cae7092c90ca515ea8acd90bd37da83a9bcab62fa2fa",
     "coverSha256": "4363c4a07b680daf02fb55f54b4313f4ae0ef97310d04ff7439b459a3db6c7d3"
+  },
+  {
+    "registryId": "CR-2026-coherence",
+    "songSlug": "coherence",
+    "title": "Coherence",
+    "workType": "family-original",
+    "createdDate": "2026-06-25",
+    "registeredAt": "2026-06-25T06:18:00.157Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Coherence\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/coherence.mp3",
+    "coverAssetPath": "/assets/tio-chien/coherence.jpg",
+    "audioSha256": "a4db6632a2a2f1a39e3c2e99a6b8b552fb9729824d7df910938002193ebd5784",
+    "coverSha256": "38aba9d5957baaa6c34ba059be51c622f01a802ebb40b488f31dcc7178878006"
+  },
+  {
+    "registryId": "CR-2026-children-of-continuous-miracles",
+    "songSlug": "children-of-continuous-miracles",
+    "title": "Children of Continuous Miracles",
+    "workType": "family-original",
+    "createdDate": "2026-06-25",
+    "registeredAt": "2026-06-25T06:18:19.893Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Children of Continuous Miracles\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/children-of-continuous-miracles.mp3",
+    "coverAssetPath": "/assets/tio-chien/children-of-continuous-miracles.jpg",
+    "audioSha256": "8531e4b11699e66024e77214f3279d6fc71438e0b849ee6e6d281c45dc8597e9",
+    "coverSha256": "0087f58e205e17dd5a3525b4b0c300ee1ffdfdd09b0736a27a5370aabf403479"
+  },
+  {
+    "registryId": "CR-2026-return-to-the-morning-sun",
+    "songSlug": "return-to-the-morning-sun",
+    "title": "Return to the Morning Sun",
+    "workType": "family-original",
+    "createdDate": "2026-06-25",
+    "registeredAt": "2026-06-25T06:19:15.280Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Return to the Morning Sun\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/return-to-the-morning-sun.mp3",
+    "coverAssetPath": "/assets/tio-chien/return-to-the-morning-sun.jpg",
+    "audioSha256": "2a9a8d051d82c03ddee8ddf50b58f3b5aac0ffcea978530fa381e34087cd130c",
+    "coverSha256": "792cf2229ef751037bf657924a841c17aa3cf1ad58b2f5721404519f6a945553"
   }
 ];
