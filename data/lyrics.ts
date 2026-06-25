@@ -731,6 +731,51 @@ In the valley we rise
 Building the future with love on our side
 Yeah, we're building the future with love on our side
 No other lights, yeah, love on our side`,
+  "the-room-changes-the-mind": `But now we're going to work on a title track
+Pumpbells beating in the morning
+Morning sounds beyond the window
+My heart is on a different level
+My heart changes
+And it keeps me quiet
+The theme speaks quietly
+I return to myself
+Deep in the light
+Deep in the light
+The room changes the mind
+The life changes the night
+One screen, one sound, one sign
+Pulse me left, pulse me right
+Pulse me left, pulse me right
+When I come into the darkness
+There's a glass screen in the dark
+It drags me down
+Find me out
+The city noise
+The sound of footsteps
+Sound of footsteps
+I leave me alone
+Notifications ring
+Pulse me left, pulse me right
+The room changes the mind
+The life changes the night
+One screen, one sound, one sign
+Pulse me left, pulse me right
+Pulse me left, pulse me right
+So I choose the light
+I choose the air
+I choose the play
+That brings me back there
+Back to the play
+The room changes the mind
+The life changes the night
+One screen, one sound, one sign
+Pulse me left, pulse me right
+Pulse me left, pulse me right
+Pulse me left, pulse me right
+I return to myself
+I choose the light
+I choose the light
+Choose the light`,
   "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
 Ico is your very best friend Happy times that never end
 One and two and now you're three Happy birthday Marceline

@@ -360,6 +360,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "tio-chien", "series", "featured", "friendship"],
     featured: true,
   },
+  {
+    slug: "the-room-changes-the-mind",
+    title: "The Room Changes the Mind",
+    subtitle: "빛을 선택해 · track six · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-25",
+    audioSrc: "/assets/tio-chien/the-room-changes-the-mind.mp3",
+    coverSrc: "/assets/tio-chien/the-room-changes-the-mind.jpg",
+    story:
+      "The sixth single from Printing Intelligence on Sand — rooms, screens, and light shape how we think; choose the place that brings you back.",
+    lyrics: songLyrics["the-room-changes-the-mind"],
+    tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

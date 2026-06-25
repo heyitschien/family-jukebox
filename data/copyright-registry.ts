@@ -610,5 +610,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/the-porch-light-glow.jpg",
     "audioSha256": "52ad08a009843ecd5ed908868cb49de96817c313e2afd2f93a8e40a644075021",
     "coverSha256": "2f3ab9b4c74cfe9978a537aa3a90293a829b0bdb790b421d8c7fa128ce9a3aaf"
+  },
+  {
+    "registryId": "CR-2026-the-room-changes-the-mind",
+    "songSlug": "the-room-changes-the-mind",
+    "title": "The Room Changes the Mind",
+    "workType": "family-original",
+    "createdDate": "2026-06-25",
+    "registeredAt": "2026-06-25T05:21:53.024Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The Room Changes the Mind\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/the-room-changes-the-mind.mp3",
+    "coverAssetPath": "/assets/tio-chien/the-room-changes-the-mind.jpg",
+    "audioSha256": "c1c32ce867801f6a8ebb067e35b34ee39da4d4f6b845bbfaf38d516a2d899507",
+    "coverSha256": "494639c1711885a984a34822e7dd11ecfb5bafd6590798a728871e68c17c1dab"
   }
 ];
