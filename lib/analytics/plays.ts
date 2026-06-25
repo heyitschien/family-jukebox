@@ -48,15 +48,21 @@ export async function isSessionRateLimited(sessionId: string): Promise<boolean> 
   return Number(row?.total ?? 0) >= MAX_EVENTS_PER_SESSION_PER_MINUTE;
 }
 
-export async function recordPlayEvent(input: RecordPlayInput): Promise<boolean> {
-  if (!isDatabaseConfigured()) return false;
-  if (!isValidSlug(input.songSlug)) return false;
+export type RecordPlayResult =
+  | { status: "recorded" }
+  | { status: "rate_limited" }
+  | { status: "invalid_slug" }
+  | { status: "unavailable" };
+
+export async function recordPlayEvent(input: RecordPlayInput): Promise<RecordPlayResult> {
+  if (!isDatabaseConfigured()) return { status: "unavailable" };
+  if (!isValidSlug(input.songSlug)) return { status: "invalid_slug" };
 
   const db = getDb();
-  if (!db) return false;
+  if (!db) return { status: "unavailable" };
 
   if (await isSessionRateLimited(input.sessionId)) {
-    return false;
+    return { status: "rate_limited" };
   }
 
   await db.insert(playEvents).values({
@@ -67,7 +73,7 @@ export async function recordPlayEvent(input: RecordPlayInput): Promise<boolean> 
     durationMs: input.durationMs ?? null,
   });
 
-  return true;
+  return { status: "recorded" };
 }
 
 export async function getSongPlayStats(songSlug: string): Promise<SongPlayStats | null> {

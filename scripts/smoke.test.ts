@@ -34,6 +34,9 @@ import {
 } from "../lib/album-rotation";
 import { getCarouselRingLayout } from "../lib/carousel-layout";
 import { parsePlayEventBody } from "../lib/security/api";
+import { API_RATE_LIMITS, buildIpBucket } from "../lib/security/rate-limit";
+import { isSameSiteApiRequest } from "../lib/security/origin";
+import type { NextRequest } from "next/server";
 import {
   getActiveCelebrations,
   getCelebrationAlbumSlugs,
@@ -425,8 +428,59 @@ describe("play tracking validation", () => {
 
   it("rejects unknown slugs and malformed events", () => {
     assert.equal(parsePlayEventBody({ songSlug: "", event: "start" }).ok, false);
-    assert.equal(parsePlayEventBody({ songSlug: "nope", event: "start" }).ok, true);
+    assert.equal(parsePlayEventBody({ songSlug: "nope", event: "start" }).ok, false);
     assert.equal(parsePlayEventBody({ songSlug: songs[0]?.slug, event: "hack" }).ok, false);
+  });
+});
+
+function mockApiRequest(headers: Record<string, string>): NextRequest {
+  return {
+    headers: {
+      get: (key: string) => headers[key.toLowerCase()] ?? null,
+    },
+  } as NextRequest;
+}
+
+describe("API origin guard", () => {
+  it("allows same-site Origin and Referer", () => {
+    assert.equal(
+      isSameSiteApiRequest(
+        mockApiRequest({
+          host: "cousinradio.com",
+          origin: "https://cousinradio.com",
+        }),
+      ),
+      true,
+    );
+    assert.equal(
+      isSameSiteApiRequest(
+        mockApiRequest({
+          host: "cousinradio.com",
+          referer: "https://cousinradio.com/songs/pink-glasses-everywhere",
+        }),
+      ),
+      true,
+    );
+  });
+
+  it("blocks cross-site and headerless mutating traffic", () => {
+    assert.equal(
+      isSameSiteApiRequest(
+        mockApiRequest({
+          host: "cousinradio.com",
+          origin: "https://evil.example",
+        }),
+      ),
+      false,
+    );
+    assert.equal(isSameSiteApiRequest(mockApiRequest({ host: "cousinradio.com" })), false);
+  });
+});
+
+describe("API rate limit buckets", () => {
+  it("builds stable per-route IP buckets", () => {
+    assert.equal(buildIpBucket("plays", "1.2.3.4"), "plays:ip:1.2.3.4");
+    assert.equal(API_RATE_LIMITS.statsPerIpPerMinute, 30);
   });
 });
 
