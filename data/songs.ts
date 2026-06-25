@@ -388,6 +388,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
     featured: true,
   },
+  {
+    slug: "cutting-through-the-dark",
+    title: "Cutting Through the Dark",
+    subtitle: "Track eight · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-25",
+    audioSrc: "/assets/tio-chien/cutting-through-the-dark.mp3",
+    coverSrc: "/assets/tio-chien/cutting-through-the-dark.jpg",
+    story:
+      "The eighth single from Printing Intelligence on Sand — too much noise, too many answers, and choosing one clear light to stay whole.",
+    lyrics: songLyrics["cutting-through-the-dark"],
+    tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

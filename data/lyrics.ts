@@ -72,6 +72,67 @@ Oh to see the spark inside their eyes A world of color, no disguise
 It's my delight, it's my release To see them beautiful together in the golden glow
 Watching how the scenes of imagination grow Imagination grow
 So much more to come I love you`,
+  "cutting-through-the-dark": `Messy thoughts like desert wind
+Desert wind
+Printing secrets on the glass
+Secrets on the glass
+A recourse of blue where minds begin
+Watching all the shadows pass
+I ask to avoid the void talks back
+Cleaning up the jagged edge
+Lighting fires on the track
+Standing on the neural edge
+Ask again, let the pattern shine
+Ask again, cross the digital line
+Every grain of sand is mine
+Hand in hand with them
+Make us whole
+Pushing back, breaking the frame
+Giving the future a brand new name
+New age coming to life
+Cutting through the dark like a knife
+Cutting through the dark
+Thinking partners ghost and shell
+A new age where systems fill
+Stories that we're here to tell
+Making digital things real
+Cutting digital things real well
+No, no, no, no, no
+No, no, no, no, no
+Recuse of cycles, hide your mind
+Leaving all the doubt behind
+Ask again, keep it bright
+Chasing shadows with the light
+Ask again, let the pattern shine
+Ask again, cross the digital line
+Every grain of sand is mine
+Hand in hand with the silicon soul
+Finding pieces that make us whole
+Pushing back, breaking the frame
+Giving the future a brand new name
+New age coming to life
+Cutting through the dark like a knife
+New age coming to life
+The miracle is the door that stays open
+The promise in every word we have spoken
+No end to the wisdom we're shaping together
+Writing the stars on the sand forever
+Ask again
+Ask again
+Let the perfect day begin
+Ask again, let the pattern shine
+Ask again, cross the digital line
+Every grain of sand is mine
+Hand in hand with the silicon soul
+Finding pieces that make us whole
+Pushing back, breaking the frame
+Giving the future a brand new name
+New age coming to life
+Cutting through the dark like a knife
+Ask again
+Ask again, just keep asking
+The miracle is the conversation
+Printing intelligence on sand`,
   "dash-and-go": `Marceline is magic, Marceline With the sparkling horn, shiny and key
 Running through the meadows, sunshine in her hair
 Unicorn beauty found every hair Unicorn beauty found everywhere

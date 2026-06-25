@@ -656,5 +656,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/ask-again.jpg",
     "audioSha256": "cfd899868af6fc88c658bddda0426f0eb7d1b1f91619382ed5ebd72d753feff5",
     "coverSha256": "1cdbecf39a66cda8fcaa3aeed3f390938ce038259092c8aa11bc1477a7d10596"
+  },
+  {
+    "registryId": "CR-2026-cutting-through-the-dark",
+    "songSlug": "cutting-through-the-dark",
+    "title": "Cutting Through the Dark",
+    "workType": "family-original",
+    "createdDate": "2026-06-25",
+    "registeredAt": "2026-06-25T06:00:28.494Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Cutting Through the Dark\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/cutting-through-the-dark.mp3",
+    "coverAssetPath": "/assets/tio-chien/cutting-through-the-dark.jpg",
+    "audioSha256": "edf20c050572e3d5adf7cae7092c90ca515ea8acd90bd37da83a9bcab62fa2fa",
+    "coverSha256": "4363c4a07b680daf02fb55f54b4313f4ae0ef97310d04ff7439b459a3db6c7d3"
   }
 ];
