@@ -587,5 +587,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/steady-light-in-your-eye.jpg",
     "audioSha256": "08e4514ad67abbb89d0d3885799a511ef8b8bd2f93c79fd0b69625ca8a49f9ed",
     "coverSha256": "23cd1207e2cfb7edd227bcb1bde0bdd9ed873e2d210cd01b6d7fd2822c628424"
+  },
+  {
+    "registryId": "CR-2026-the-porch-light-glow",
+    "songSlug": "the-porch-light-glow",
+    "title": "The Porch Light Glow",
+    "workType": "family-original",
+    "createdDate": "2026-06-25",
+    "registeredAt": "2026-06-25T00:23:13.258Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The Porch Light Glow\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/the-porch-light-glow.mp3",
+    "coverAssetPath": "/assets/tio-chien/the-porch-light-glow.jpg",
+    "audioSha256": "52ad08a009843ecd5ed908868cb49de96817c313e2afd2f93a8e40a644075021",
+    "coverSha256": "2f3ab9b4c74cfe9978a537aa3a90293a829b0bdb790b421d8c7fa128ce9a3aaf"
   }
 ];

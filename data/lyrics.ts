@@ -681,6 +681,56 @@ Sand to signal, sand to signal 🎵
 The future talks in my hand 🎵
 From the dream, yeah 🎵`,
   "the-margin-notes": `[Instrumental]`,
+  "the-porch-light-glow": `Start it with a sister's word and a porch light glow a Stanford heart in a pace that
+the city don't gentle with the insight Never had to shout the lead
+You were just open-minded planning every single seed through the late night pixels
+and the silicon haze You remained the anchor in the end let's
+show a maze Didn't need a map or a predetermined plan
+Just a patient presence from a genuinely kind man
+I'm the one who's talking, taking up the oxygen space
+You're the rare listener with the ground and steady grace
+Posing every question that could help the vision grow
+More than just a colleague, you're the only one I know
+With the gift full-connected breaking through the white noise
+Finding all the truth inside the noise of all my choice
+Max, my brother, you've been there on the line
+You've been there on the line listening close while I'm chasing the signs
+No other lights in the valley we rise
+Building the future with love on our side
+Yeah, we're building the future with love on our side
+Watching how the shadows of the old worries pass
+Not just staying present, you're the one who makes me pass
+Not just staying present, spirit leading the way
+We aren't just growing, leading the way
+We aren't just growing, we are forming the core
+Opening the hinges to a much bigger door
+Opening the hinges to a much bigger door
+Trust is the currency, the only thing we trade
+In the high stakes valley where the legends are made
+From the Stanford campus to the global reach
+You're the kind of brother that a textbook couldn't teach
+Loyalty is more than just a word on the screen
+It's the steady quiet power and the spaces in between
+Max, my brother, you've been there on the line
+You've been there on the line listening close while I'm chasing the signs
+Chasing the signs
+No other lights in the valley we rise
+Building the future with love on our side
+Yeah, we're building the future with love on our side
+I talk a lot, I know the rhythm of the soul
+But you're the one who keeps the narrative whole
+You hear the parts that I never even say
+You light the spark when the colors fade to gray
+It's the silence where the understanding grows
+Between the logic that everybody knows
+Max, my brother, you've been there on the line
+You've been there on the line listening close while I'm chasing the signs
+Chasing the signs
+No other lights in the valley we rise
+In the valley we rise
+Building the future with love on our side
+Yeah, we're building the future with love on our side
+No other lights, yeah, love on our side`,
   "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
 Ico is your very best friend Happy times that never end
 One and two and now you're three Happy birthday Marceline

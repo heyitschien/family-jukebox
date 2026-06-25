@@ -346,6 +346,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "tio-chien", "series", "featured", "friendship"],
     featured: true,
   },
+  {
+    slug: "the-porch-light-glow",
+    title: "The Porch Light Glow",
+    subtitle: "Track three · Egg Rolls & Epiphanies",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-25",
+    audioSrc: "/assets/tio-chien/the-porch-light-glow.mp3",
+    coverSrc: "/assets/tio-chien/the-porch-light-glow.jpg",
+    story:
+      "The third single from Egg Rolls & Epiphanies — celebrating friendship, featuring Paul Savage.",
+    lyrics: songLyrics["the-porch-light-glow"],
+    tags: ["single", "indie", "tio-chien", "series", "featured", "friendship"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
