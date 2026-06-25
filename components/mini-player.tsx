@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { ArtistLink } from "@/components/artist-link";
 import { BrandAccentIcon } from "@/components/brand/brand-accent-icon";
 import { CoverImage } from "@/components/cover-image";
+import { PlaybackProgressBar } from "@/components/playback-progress-bar";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
@@ -29,6 +30,7 @@ export function MiniPlayer() {
     radioMode,
     currentTime,
     duration,
+    seek,
     queueContext,
     queue,
   } = usePlayer();
@@ -36,7 +38,6 @@ export function MiniPlayer() {
   if (!currentSong) return null;
 
   const author = getMemberBySlug(currentSong.authorSlug);
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
   const showQueueLink = queue.length > 1;
 
   return (
@@ -47,14 +48,13 @@ export function MiniPlayer() {
         "bottom-[calc(66px+env(safe-area-inset-bottom))] sm:inset-x-[18px] sm:bottom-[18px] sm:rounded-[24px] lg:bottom-[18px]",
       )}
     >
-      <div
-        className="family-progress h-[3px] origin-left transition-[width] duration-150 ease-linear"
-        style={{ width: `${progress}%` }}
-        role="progressbar"
-        aria-valuenow={Math.round(progress)}
-        aria-valuemin={0}
-        aria-valuemax={100}
-        aria-label="Playback progress"
+      <PlaybackProgressBar
+        currentTime={currentTime}
+        duration={duration}
+        onSeek={seek}
+        className="h-[3px]"
+        trackClassName="rounded-none bg-transparent"
+        barClassName="rounded-none"
       />
 
       {/* Mobile — stacked, full transport row */}
@@ -164,12 +164,12 @@ export function MiniPlayer() {
           />
           <div className="flex w-full items-center gap-2.5 text-[11px] text-[var(--jb-muted-2)]">
             <span>{formatTime(currentTime)}</span>
-            <div className="h-[5px] flex-1 overflow-hidden rounded-full bg-white/15">
-              <div
-                className="family-progress h-full transition-[width] duration-150 ease-linear"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
+            <PlaybackProgressBar
+              currentTime={currentTime}
+              duration={duration}
+              onSeek={seek}
+              className="h-[5px] flex-1 py-2"
+            />
             <span>{formatTime(duration)}</span>
           </div>
         </div>

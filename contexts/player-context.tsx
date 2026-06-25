@@ -65,6 +65,7 @@ type PlayerContextValue = {
   cycleRepeat: () => void;
   toggleShuffle: () => void;
   toggleRadio: () => void;
+  seek: (time: number) => void;
   queue: Song[];
   queueContext: QueueContext | null;
 };
@@ -401,6 +402,19 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
     setRadioMode((mode) => toggleRadioMode(mode));
   }, []);
 
+  const seek = useCallback((time: number) => {
+    const audio = audioRef.current;
+    if (!audio || !Number.isFinite(time)) return;
+
+    const max = Number.isFinite(audio.duration) && audio.duration > 0 ? audio.duration : time;
+    const clamped = Math.max(0, Math.min(time, max));
+    audio.currentTime = clamped;
+    setCurrentTime(clamped);
+
+    const slug = currentSongRef.current?.slug;
+    if (slug) savePlaybackPosition(slug, clamped);
+  }, []);
+
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -542,6 +556,7 @@ export function PlayerProvider({ children }: { children: ReactNode }) {
         cycleRepeat,
         toggleShuffle,
         toggleRadio,
+        seek,
         queue,
         queueContext,
       }}

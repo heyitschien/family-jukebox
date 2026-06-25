@@ -5,6 +5,7 @@ import { ListMusic } from "lucide-react";
 
 import { ArtistLink } from "@/components/artist-link";
 import { CoverImage } from "@/components/cover-image";
+import { PlaybackProgressBar } from "@/components/playback-progress-bar";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
@@ -22,6 +23,7 @@ export function NowPlayingScreen() {
     queueContext,
     currentTime,
     duration,
+    seek,
     playQueue,
   } = usePlayer();
 
@@ -43,7 +45,6 @@ export function NowPlayingScreen() {
   }
 
   const author = getMemberBySlug(currentSong.authorSlug);
-  const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
   const jumpToTrack = (index: number) => {
     playQueue(queue, index, "mini-player", queueContext ?? undefined);
@@ -100,12 +101,12 @@ export function NowPlayingScreen() {
 
         <div className="mt-5 flex items-center gap-2.5 text-[11px] tabular-nums text-[var(--jb-muted-2)]">
           <span>{formatTime(currentTime)}</span>
-          <div className="h-[5px] flex-1 overflow-hidden rounded-full bg-white/15">
-            <div
-              className="family-progress h-full transition-[width] duration-150 ease-linear"
-              style={{ width: `${progress}%` }}
-            />
-          </div>
+          <PlaybackProgressBar
+            currentTime={currentTime}
+            duration={duration}
+            onSeek={seek}
+            className="h-[5px] flex-1 py-3"
+          />
           <span>{formatTime(duration)}</span>
         </div>
       </section>
