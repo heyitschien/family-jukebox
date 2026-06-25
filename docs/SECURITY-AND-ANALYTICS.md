@@ -2,11 +2,13 @@
 
 Lightweight protections and play tracking for the public Family Jukebox link. Designed for daily development: nothing blocks local work when Neon is not configured yet.
 
+**Posture & changelog:** see **`docs/SECURITY-POSTURE.md`** (what we protect, music-asset model, verification checklist).
+
 ## What is protected today
 
 | Layer | What it does |
 |-------|----------------|
-| **Security headers** | `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, frame protection, CSP, CORP/COOP via middleware + Next config |
+| **Security headers** | `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, frame protection, CSP, COOP via middleware + Next config |
 | **Anonymous sessions** | HttpOnly `fj_session` cookie — used for listener counts, not login |
 | **API origin guard** | Mutating `/api/*` requires matching `Origin` or `Referer` (blocks curl/bots without same-site headers) |
 | **Input validation** | Song slugs must exist in `data/songs.ts` at parse time; event types and sources are allow-listed |
