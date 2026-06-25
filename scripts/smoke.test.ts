@@ -83,6 +83,7 @@ import {
   MIN_RESUME_SECONDS,
   shouldResumeFrom,
 } from "../lib/playback-position";
+import { clampSeekTime } from "../components/playback-progress-bar";
 import {
   buildAlbumQueueContext,
   buildArtistQueueContext,
@@ -975,6 +976,14 @@ describe("playback position memory", () => {
     assert.equal(shouldResumeFrom(MIN_RESUME_SECONDS - 1, 180), false);
     assert.equal(shouldResumeFrom(45, 180), true);
     assert.equal(shouldResumeFrom(175, 180), false);
+  });
+
+  it("clampSeekTime bounds seek targets to track duration", () => {
+    assert.equal(clampSeekTime(-5, 180), 0);
+    assert.equal(clampSeekTime(45, 180), 45);
+    assert.equal(clampSeekTime(220, 180), 180);
+    assert.equal(clampSeekTime(10, 0), 0);
+    assert.equal(clampSeekTime(Number.NaN, 180), 0);
   });
 });
 
