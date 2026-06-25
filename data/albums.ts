@@ -103,7 +103,7 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     title: "Printing Intelligence on Sand",
     subtitle: "Miracle in the Sand · Tap on the Glass · Morning Sun Neon Light · The City Breathing · The Future in My Palm · The Room Changes the Mind · Ask Again · Cutting Through the Dark · more coming",
     authorSlug: "tio-chien",
-    coverSrc: "/assets/tio-chien/the-room-changes-the-mind.jpg",
+    coverSrc: "/assets/tio-chien/miracle-in-the-sand.jpg",
     songSlugs: ["miracle-in-the-sand", "tap-on-the-glass", "morning-sun-neon-light", "the-city-breathing", "the-future-in-my-palm", "the-room-changes-the-mind", "ask-again", "cutting-through-the-dark"],
     dateCreated: "2026-06-21",
     story:
