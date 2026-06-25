@@ -1,4 +1,5 @@
 import { PLAY_EVENT_TYPES, PLAY_SOURCES } from "@/lib/analytics/constants";
+import { getSongBySlug } from "@/data/songs";
 
 export function isPlayTrackingEnabled(): boolean {
   return process.env.PLAY_TRACKING_ENABLED !== "false";
@@ -21,6 +22,10 @@ export function parsePlayEventBody(
 
   if (typeof songSlug !== "string" || songSlug.length === 0 || songSlug.length > 120) {
     return { ok: false, error: "Invalid song slug" };
+  }
+
+  if (!getSongBySlug(songSlug)) {
+    return { ok: false, error: "Unknown song" };
   }
 
   if (typeof event !== "string" || !PLAY_EVENT_TYPES.includes(event as (typeof PLAY_EVENT_TYPES)[number])) {

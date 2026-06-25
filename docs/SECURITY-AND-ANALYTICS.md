@@ -6,12 +6,15 @@ Lightweight protections and play tracking for the public Family Jukebox link. De
 
 | Layer | What it does |
 |-------|----------------|
-| **Security headers** | `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, frame protection via middleware + Next config |
+| **Security headers** | `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, frame protection, CSP, CORP/COOP via middleware + Next config |
 | **Anonymous sessions** | HttpOnly `fj_session` cookie — used for listener counts, not login |
-| **API origin check** | `POST /api/plays` rejects cross-site writes from other origins |
-| **Input validation** | Song slugs must exist in `data/songs.ts`; event types and sources are allow-listed |
-| **Rate limiting** | Max 40 play events per session per minute (stored in Neon) |
-| **Privacy** | No names, emails, or IPs stored — only song slug, event type, anonymous session id, optional duration |
+| **API origin guard** | Mutating `/api/*` requires matching `Origin` or `Referer` (blocks curl/bots without same-site headers) |
+| **Input validation** | Song slugs must exist in `data/songs.ts` at parse time; event types and sources are allow-listed |
+| **Rate limiting** | 40 play events per session per minute; IP limits on `/api/plays`, `/api/stats`, and artwork generation |
+| **HTTP 429** | Rate-limited clients receive `Retry-After` instead of silent drops |
+| **Staging privacy** | `robots.txt` disallows all crawlers; pages emit `noindex` metadata |
+| **Asset headers** | `/assets/*` gets long-cache + `nosniff` (keeps OG/social previews working) |
+| **Privacy** | No names, emails, or IPs stored in play events — only song slug, event type, anonymous session id, optional duration |
 
 ## What we track (KPIs)
 
@@ -33,14 +36,14 @@ Play counts also appear on individual song pages once data exists.
 | Neon project | `family-jukebox` |
 | Project ID | `cold-snow-21143676` |
 | Branch | `main` |
-| Table | `play_events` (see `drizzle/0000_init.sql`) |
+| Tables | `play_events`, `rate_limit_hits` (see `drizzle/`) |
 
 ### First-time / new machine
 
 ```bash
 cp .env.example .env.local
 # Paste DATABASE_URL from Neon console or run: ./scripts/setup-neon.sh
-npm run db:push    # optional if schema already applied
+npm run db:push    # applies play_events + rate_limit_hits
 ./scripts/setup-neon.sh   # sync .env.local → Vercel
 ```
 
@@ -66,6 +69,7 @@ Or apply manually in Vercel → Project → Settings → Environment Variables.
 The app builds and runs normally without `DATABASE_URL`.
 
 - Play tracking API returns `{ tracked: false }` and does nothing harmful
+- IP rate limits are skipped when the database is unavailable
 - Song pages simply hide play counts until data exists
 - CI does not require a database
 
@@ -92,23 +96,26 @@ Records a play event. Called automatically by the global player.
 }
 ```
 
+Returns `429` when session or IP limits are exceeded.
+
 ### `GET /api/stats`
 
-Returns site-wide stats, or pass `?slug=` for a single song.
+Returns site-wide stats, or pass `?slug=` for a single song. Rate-limited per IP (30/min).
 
-## Intentionally light touch
+## When traffic grows
 
-We are **not** adding auth, CAPTCHA, or heavy WAF rules yet — that would slow down family sharing and daily pushes. When traffic grows, consider:
+Consider adding:
 
 - Vercel WAF / bot protection on `/api/*`
-- Upstash Redis rate limiting (cross-instance)
+- Upstash Redis for cross-region rate limiting (Neon buckets work today)
 - Optional shared family PIN for admin stats only
 
 ## Files
 
 | Path | Role |
 |------|------|
-| `db/schema.ts` | Drizzle `play_events` table |
+| `db/schema.ts` | Drizzle `play_events` + `rate_limit_hits` tables |
+| `lib/security/` | Origin guard, headers, CSP, IP rate limits |
 | `lib/analytics/plays.ts` | Record + query helpers |
 | `lib/analytics/track-play.ts` | Client beacon from the player |
 | `app/api/plays/route.ts` | Write API |

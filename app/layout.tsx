@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
 import { AppShell } from "@/components/app-shell";
-import { getAppEnvironment, getRuntimeSiteUrl, getSiteDescription, getSiteName } from "@/lib/site-env";
+import { getAppEnvironment, getRuntimeSiteUrl, getSiteDescription, getSiteName, isStagingEnvironment } from "@/lib/site-env";
 
 import "./globals.css";
 
@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     template: `%s · ${getSiteName()}`,
   },
   description: getSiteDescription(),
+  ...(isStagingEnvironment()
+    ? { robots: { index: false, follow: false, nocache: true } }
+    : {}),
   appleWebApp: {
     capable: true,
     title: getSiteName(),

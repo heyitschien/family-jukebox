@@ -20,3 +20,19 @@ export const playEvents = pgTable(
 
 export type PlayEvent = typeof playEvents.$inferSelect;
 export type NewPlayEvent = typeof playEvents.$inferInsert;
+
+/** Sliding-window API rate limit buckets (IP + route). */
+export const rateLimitHits = pgTable(
+  "rate_limit_hits",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    bucketKey: text("bucket_key").notNull(),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+  },
+  (table) => [
+    index("rate_limit_hits_bucket_key_idx").on(table.bucketKey),
+    index("rate_limit_hits_created_at_idx").on(table.createdAt),
+  ],
+);
+
+export type RateLimitHit = typeof rateLimitHits.$inferSelect;

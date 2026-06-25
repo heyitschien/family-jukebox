@@ -5,6 +5,8 @@ import { ImageResponse } from "next/og";
 
 import { getSongBySlug } from "@/data/songs";
 import { BRAND_COLORS, BRAND_SHORT_NAME } from "@/lib/brand";
+import { getClientIp } from "@/lib/security/client-ip";
+import { API_RATE_LIMITS, buildIpBucket, checkRateLimit } from "@/lib/security/rate-limit";
 
 const DEFAULT_SIZE = 512;
 const MIN_SIZE = 128;
@@ -36,6 +38,19 @@ async function loadCoverDataUrl(coverSrc: string): Promise<string | null> {
 }
 
 export async function GET(request: Request) {
+  const ipLimit = await checkRateLimit({
+    bucketKey: buildIpBucket("artwork", getClientIp(request)),
+    limit: API_RATE_LIMITS.artworkPerIpPerMinute,
+    windowMs: 60_000,
+  });
+
+  if (ipLimit.limited) {
+    return new Response("Too many requests", {
+      status: 429,
+      headers: { "Retry-After": String(ipLimit.retryAfterSeconds) },
+    });
+  }
+
   const { searchParams } = new URL(request.url);
   const slug = searchParams.get("song");
   const size = resolveSize(request);

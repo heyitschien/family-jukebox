@@ -2,24 +2,24 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
 import { SESSION_COOKIE } from "@/lib/analytics/constants";
+import { applySecurityHeaders } from "@/lib/security/headers";
+import { isSameSiteApiRequest } from "@/lib/security/origin";
 
-const SECURITY_HEADERS: Record<string, string> = {
-  "X-Content-Type-Options": "nosniff",
-  "X-Frame-Options": "SAMEORIGIN",
-  "Referrer-Policy": "strict-origin-when-cross-origin",
-  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
-  "X-DNS-Prefetch-Control": "on",
-};
-
-function applySecurityHeaders(response: NextResponse): NextResponse {
-  for (const [key, value] of Object.entries(SECURITY_HEADERS)) {
-    response.headers.set(key, value);
-  }
+function withSecurityHeaders(response: NextResponse): NextResponse {
+  applySecurityHeaders(response.headers);
   return response;
 }
 
+function jsonError(status: number, error: string, retryAfterSeconds?: number): NextResponse {
+  const response = NextResponse.json({ ok: false, error }, { status });
+  if (retryAfterSeconds !== undefined) {
+    response.headers.set("Retry-After", String(retryAfterSeconds));
+  }
+  return withSecurityHeaders(response);
+}
+
 export function middleware(request: NextRequest) {
-  const response = applySecurityHeaders(NextResponse.next());
+  const response = withSecurityHeaders(NextResponse.next());
 
   if (!request.cookies.get(SESSION_COOKIE)?.value) {
     response.cookies.set(SESSION_COOKIE, crypto.randomUUID(), {
@@ -32,22 +32,9 @@ export function middleware(request: NextRequest) {
   }
 
   if (request.nextUrl.pathname.startsWith("/api/")) {
-    const origin = request.headers.get("origin");
-    const host = request.headers.get("host");
-
-    if (request.method !== "GET" && request.method !== "HEAD" && origin && host) {
-      try {
-        const originHost = new URL(origin).host;
-        if (originHost !== host) {
-          return applySecurityHeaders(
-            NextResponse.json({ ok: false, error: "Forbidden origin" }, { status: 403 }),
-          );
-        }
-      } catch {
-        return applySecurityHeaders(
-          NextResponse.json({ ok: false, error: "Forbidden origin" }, { status: 403 }),
-        );
-      }
+    const method = request.method;
+    if (method !== "GET" && method !== "HEAD" && !isSameSiteApiRequest(request)) {
+      return jsonError(403, "Forbidden origin");
     }
   }
 
