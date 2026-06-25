@@ -258,17 +258,18 @@ Two parallel systems — **albums** (hero/carousel) and **songs** (shelves/queue
 
 ## 9. Analytics & security
 
-**Full detail:** `docs/SECURITY-AND-ANALYTICS.md`
+**Posture (tracking):** `docs/SECURITY-POSTURE.md`  
+**Setup & API:** `docs/SECURITY-AND-ANALYTICS.md`
 
 | Layer | Status |
 |-------|--------|
 | Neon project | `family-jukebox` (`cold-snow-21143676`) |
-| Table | `play_events` |
+| Tables | `play_events`, `rate_limit_hits` |
 | Vercel env | `DATABASE_URL`, `PLAY_TRACKING_ENABLED` synced |
-| Privacy | No names, emails, IPs — slug + anonymous session cookie only |
+| Privacy | No names, emails, IPs in play events — slug + anonymous session cookie only |
 | Local without DB | App works; tracking returns `{ tracked: false }` |
 
-**Security:** HttpOnly session cookie, security headers in middleware + `next.config.ts`, origin check on POST `/api/*`, input validation, 40 events/session/minute rate limit.
+**Security (2026-06-25):** CSP + security headers, same-site API origin guard, IP + session rate limits with HTTP 429, staging noindex, slug validation at parse time. Music MP3s are public static files (not DRM) — see posture doc.
 
 ---
 
@@ -369,7 +370,8 @@ Smoke tests cover: catalog integrity, album assignment rules, carousel dedup, ro
 | `docs/ADDING_SONGS.md` | Add-song checklist |
 | `docs/ALBUMS-SPEC.md` | Original album feature spec (some IA evolved) |
 | `docs/DESIGN-SPOTIFY.md` | Original Spotify UX target (partially superseded) |
-| `docs/SECURITY-AND-ANALYTICS.md` | Neon + security |
+| `docs/SECURITY-POSTURE.md` | Security posture, threat model, changelog |
+| `docs/SECURITY-AND-ANALYTICS.md` | Neon setup + analytics API |
 | `docs/CI-CD.md` | GitHub Actions + Vercel |
 | **`docs/PROJECT-RECORD.md`** | **This file — living architecture record** |
 
