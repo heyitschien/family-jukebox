@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation";
 
 import { CopyPublicLinkButton } from "@/components/copy-public-link-button";
 import { InlineSearch } from "@/components/inline-search";
-import { ListenerAgeSelector } from "@/components/listener-age-selector";
 import { cn } from "@/lib/utils";
 
 type TopbarProps = {
@@ -26,7 +25,6 @@ export function Topbar({ className, variant = "default" }: TopbarProps) {
     >
       <div className="flex items-center gap-3">
         <InlineSearch variant="embedded" className="min-w-0 flex-1" />
-        <ListenerAgeSelector variant="compact" className="lg:hidden" />
         {!embedded && pathname === "/" ? <CopyPublicLinkButton /> : null}
       </div>
     </header>

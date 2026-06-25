@@ -15,6 +15,7 @@ import {
 import { Search, X } from "lucide-react";
 
 import { CoverImage } from "@/components/cover-image";
+import { ListenerAgeSelector } from "@/components/listener-age-selector";
 import { useListenerAgeContext } from "@/contexts/listener-age-context";
 import { getAlbumAuthor } from "@/data/albums";
 import { getMemberBySlug } from "@/data/members";
@@ -199,6 +200,7 @@ export function InlineSearch({
             <X className="size-4" />
           </button>
         ) : null}
+        {embedded ? <ListenerAgeSelector variant="icon" className="lg:hidden" /> : null}
       </form>
 
       {showPanel ? (
