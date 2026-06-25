@@ -374,6 +374,20 @@ export const songs: Song[] = [
     tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
     featured: true,
   },
+  {
+    slug: "ask-again",
+    title: "Ask Again",
+    subtitle: "유리 위 선명한 답 · track seven · Printing Intelligence on Sand",
+    authorSlug: "tio-chien",
+    dateCreated: "2026-06-25",
+    audioSrc: "/assets/tio-chien/ask-again.mp3",
+    coverSrc: "/assets/tio-chien/ask-again.jpg",
+    story:
+      "The seventh single from Printing Intelligence on Sand — messy thoughts, answers on glass, and the magic of asking again until your own mind becomes clear.",
+    lyrics: songLyrics["ask-again"],
+    tags: ["single", "indie", "kpop", "tio-chien", "series", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

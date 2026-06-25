@@ -633,5 +633,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/the-room-changes-the-mind.jpg",
     "audioSha256": "c1c32ce867801f6a8ebb067e35b34ee39da4d4f6b845bbfaf38d516a2d899507",
     "coverSha256": "494639c1711885a984a34822e7dd11ecfb5bafd6590798a728871e68c17c1dab"
+  },
+  {
+    "registryId": "CR-2026-ask-again",
+    "songSlug": "ask-again",
+    "title": "Ask Again",
+    "workType": "family-original",
+    "createdDate": "2026-06-25",
+    "registeredAt": "2026-06-25T05:58:26.581Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Ask Again\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/ask-again.mp3",
+    "coverAssetPath": "/assets/tio-chien/ask-again.jpg",
+    "audioSha256": "cfd899868af6fc88c658bddda0426f0eb7d1b1f91619382ed5ebd72d753feff5",
+    "coverSha256": "1cdbecf39a66cda8fcaa3aeed3f390938ce038259092c8aa11bc1477a7d10596"
   }
 ];

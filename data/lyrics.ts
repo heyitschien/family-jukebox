@@ -1,6 +1,30 @@
 // Auto-generated from scripts/transcripts.json — re-run scripts/transcribe-songs.py to refresh.
 
 export const songLyrics = {
+  "ask-again": `Messy nose spread out, Aesthetic blur, what am I searching for?
+My thoughts are lost in the ink and the smudges, a question in my chest, a heavy burden
+The light comes in, the window lights turn on, lights on, chat window glows
+Ask again, ask again The answer is not the end
+The answer is not the end
+Round and round, we make it clear I hear my own mind, we reappear
+Ask again, ask again The answer is not the end
+The answer is not the end
+The answer is not the end
+The answer is not the end
+Pushing back until the vision's met
+Pushing back until the vision's met
+Ask again, ask again The answer is not the end
+Round and round, we make it clear Round and round, we make it clear
+I hear my own mind, we reappear Ask again, ask again
+Ask one more time
+My thoughts are lost in the ink and the smudges, a question in my chest, a heavy burden
+I'm looking for my voice
+Now it's action, watch me run
+Ask again, ask again The answer is not the end
+Round and round, we make it clear I hear my own mind, we reappear
+Ask one more time
+Clear mind, real power Yeah, we got it
+Ask again, hey`,
   "cornerstone-at-the-kitchen-table": `For beautiful daughters, you paved every road
 Lifting the weight and the heaviest load
 Maria, your kitchen is where we all start
