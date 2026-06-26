@@ -3,83 +3,59 @@
 import { useMemo } from "react";
 
 import { HomeAlbumShelf } from "@/components/home-album-shelf";
-import { HomeFeaturedShelf } from "@/components/home-featured-shelf";
+import { HomeFamilyPicks } from "@/components/home-family-picks";
 import { HomeHeroCarousel } from "@/components/home-hero-carousel";
-import { HomeRecentQueue } from "@/components/home-recent-queue";
+import { HomeNewAtTheTable } from "@/components/home-new-at-table";
+import { HomePlayFamily } from "@/components/home-play-family";
 import { useListenerAgeContext } from "@/contexts/listener-age-context";
-import type { Album } from "@/data/albums";
-import type { Song } from "@/data/songs";
 import { curateAlbumsForListener, curateSongsForListener } from "@/lib/audience";
+import type { HomeFeed } from "@/lib/home-feed";
 
 type HomeCuratedContentProps = {
   refreshSeed: number;
-  featuredAlbum: Album;
-  carouselAlbums: Album[];
-  growingSeriesAlbums: Album[];
-  shelfSongs: Song[];
-  familyQueue: Song[];
-  spotlightSlugs: string[];
-  tags: string[];
+  feed: HomeFeed;
 };
 
-export function HomeCuratedContent({
-  refreshSeed,
-  featuredAlbum,
-  carouselAlbums,
-  growingSeriesAlbums,
-  shelfSongs,
-  familyQueue,
-  spotlightSlugs,
-  tags,
-}: HomeCuratedContentProps) {
+export function HomeCuratedContent({ refreshSeed, feed }: HomeCuratedContentProps) {
   const { listenerAge } = useListenerAgeContext();
 
   const curated = useMemo(() => {
     if (listenerAge === null) {
-      return {
-        carouselAlbums,
-        growingSeriesAlbums,
-        shelfSongs,
-        familyQueue,
-        featuredAlbum,
-      };
+      return feed;
     }
 
+    const carouselAlbums = curateAlbumsForListener(feed.hero.carouselAlbums, listenerAge);
     return {
-      carouselAlbums: curateAlbumsForListener(carouselAlbums, listenerAge),
-      growingSeriesAlbums: curateAlbumsForListener(growingSeriesAlbums, listenerAge),
-      shelfSongs: curateSongsForListener(shelfSongs, listenerAge),
-      familyQueue: curateSongsForListener(familyQueue, listenerAge),
-      featuredAlbum: curateAlbumsForListener(carouselAlbums, listenerAge)[0] ?? featuredAlbum,
+      hero: {
+        featuredAlbum: carouselAlbums[0] ?? feed.hero.featuredAlbum,
+        carouselAlbums,
+        spotlightTrack: feed.hero.spotlightTrack,
+      },
+      newAtTheTable: curateSongsForListener(feed.newAtTheTable, listenerAge),
+      todaysFamilyPicks: curateSongsForListener(feed.todaysFamilyPicks, listenerAge),
+      growingWorlds: curateAlbumsForListener(feed.growingWorlds, listenerAge),
+      familyQueue: curateSongsForListener(feed.familyQueue, listenerAge),
     };
-  }, [carouselAlbums, familyQueue, featuredAlbum, growingSeriesAlbums, listenerAge, shelfSongs]);
+  }, [feed, listenerAge]);
 
   return (
     <>
       <HomeHeroCarousel
-        albums={curated.carouselAlbums}
-        featuredAlbum={curated.featuredAlbum}
+        albums={curated.hero.carouselAlbums}
+        featuredAlbum={curated.hero.featuredAlbum}
         refreshSeed={refreshSeed}
       />
-      <HomeAlbumShelf
-        albums={curated.carouselAlbums}
-        subtitle="One album per family member — tap to explore or play"
-      />
-      {curated.growingSeriesAlbums.length > 0 ? (
+      <HomeNewAtTheTable songs={curated.newAtTheTable} />
+      <HomeFamilyPicks songs={curated.todaysFamilyPicks} listenerAge={listenerAge} />
+      {curated.growingWorlds.length > 0 ? (
         <HomeAlbumShelf
-          albums={curated.growingSeriesAlbums}
-          title="Growing series"
-          subtitle="Every cousin's growing albums — themed releases that gain new singles over time"
+          albums={curated.growingWorlds}
+          title="Growing worlds"
+          subtitle="Themed album worlds to explore — each cousin's growing music universe"
           showViewAll
         />
       ) : null}
-      <HomeFeaturedShelf songs={curated.shelfSongs} tags={tags} listenerAge={listenerAge} />
-      <HomeRecentQueue
-        songs={curated.shelfSongs}
-        familyQueue={curated.familyQueue}
-        spotlightSlugs={spotlightSlugs}
-        listenerAge={listenerAge}
-      />
+      <HomePlayFamily familyQueue={curated.familyQueue} listenerAge={listenerAge} />
     </>
   );
 }
