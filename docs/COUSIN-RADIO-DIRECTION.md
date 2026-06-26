@@ -46,7 +46,42 @@ Most social platforms optimize for attention. Cousin Radio should optimize for a
 
 ---
 
-## 3. Product framing
+## 3. Design principles — all-inclusive family culture
+
+Cousin Radio is an **all-inclusive family creative music culture** — a love-preserving space. Every product, layout, and release decision should reinforce that.
+
+### Core values
+
+| Principle | What it means in practice |
+| --- | --- |
+| **Everyone belongs** | Every cousin with songs appears in growing series, hero rotation, and browse — no silent exclusion. |
+| **Love over hierarchy** | Kids, parents, tios, and grandparents share the same dignity in the UI. No “main character” cousin at the expense of others. |
+| **Celebration, not comparison** | Birthdays, Father's Day, new albums, and first singles are spotlight moments — not rankings or winner/loser framing. |
+| **Latest love, not forgotten love** | When someone has multiple growing albums, their **newest** series leads the hero; older themed albums stay visible on the growing shelf. |
+| **Preserve the story** | Songs carry story, dedication, and context so future generations understand *why* this mattered — not just that it played. |
+| **Open the kitchen table** | Share links, play buttons, and warm previews should feel like an invitation home — not a gate. |
+
+### What we avoid
+
+- Hiding a family member because they have fewer tracks or a quieter release cadence
+- Burying cousins who only have a solo collection while themed series get all the surface area
+- Cold, anonymous platform energy — this is **our** radio, **our** archive
+- Features that optimize engagement at the cost of warmth, safety, or belonging
+
+### Agent & builder checklist
+
+Before shipping UI or catalog changes, ask:
+
+1. Does **every** family member with music still get fair visibility?
+2. Does this increase **joy, connection, or preserved memory**?
+3. Would a grandparent and a kid both feel welcome opening this screen?
+4. Is the simplest path still **open link → see music → tap play**?
+
+If yes: ship with love. If no: simplify until it does.
+
+---
+
+## 4. Product framing
 
 ### What Cousin Radio is
 
@@ -73,7 +108,7 @@ Cousin Radio distributes meaning to the people who matter most.
 
 ---
 
-## 4. The emotional proof point: Mama / Maria
+## 5. The emotional proof point: Mama / Maria
 
 Maria is a foundational figure in the family:
 
@@ -94,7 +129,7 @@ Cousin Radio should make this cycle repeatable for every meaningful family story
 
 ---
 
-## 5. Creative pipeline
+## 6. Creative pipeline
 
 The current and future Cousin Radio creation pipeline should be treated as a complete family media system:
 
@@ -141,7 +176,7 @@ The current and future Cousin Radio creation pipeline should be treated as a com
 
 ---
 
-## 6. Music direction principles
+## 7. Music direction principles
 
 Cousin Radio songs should feel personal, specific, and emotionally honest.
 
@@ -173,7 +208,7 @@ The strongest songs will not be the most technically complex. They will be the o
 
 ---
 
-## 7. The “musical portrait” model
+## 8. The “musical portrait” model
 
 A major future direction is that every family member may eventually have a **musical portrait**.
 
@@ -200,7 +235,7 @@ Examples of future portrait categories:
 
 ---
 
-## 8. Future feature directions
+## 9. Future feature directions
 
 ### Near-term
 
@@ -234,7 +269,9 @@ Examples of future portrait categories:
 
 ---
 
-## 9. Design direction
+## 10. Design direction
+
+All visual and interaction design must uphold **§3 Design principles — all-inclusive family culture**. If a screen celebrates one cousin but hides another, revise it.
 
 The design should feel like:
 
@@ -264,7 +301,7 @@ The product should feel easy for a child, meaningful for a parent, and touching 
 
 ---
 
-## 10. Repo and agent guidance
+## 11. Repo and agent guidance
 
 Current repo confirmed:
 
@@ -282,7 +319,7 @@ Do not overcomplicate the experience. Every new feature should increase family c
 
 ---
 
-## 11. Suggested next implementation issue
+## 12. Suggested next implementation issue
 
 Title:
 
@@ -307,7 +344,7 @@ Acceptance criteria:
 
 ---
 
-## 12. Closing principle
+## 13. Closing principle
 
 AI did not create the meaning.
 

@@ -4,6 +4,41 @@ export const BRAND_TAGLINE = "Little Anthems";
 export const BRAND_SIGNATURE = "Little songs. Big connections.";
 export const BRAND_PLAYBACK_LABEL = "Now playing on Cousin Radio";
 
+/**
+ * North-star design principles — all-inclusive family creative culture.
+ * @see docs/COUSIN-RADIO-DIRECTION.md §3
+ */
+export const BRAND_DESIGN_PRINCIPLES = [
+  {
+    id: "everyone-belongs",
+    title: "Everyone belongs",
+    summary:
+      "Every family member with music gets visibility in growing series, hero rotation, and browse — no exclusion.",
+  },
+  {
+    id: "love-and-celebration",
+    title: "Love & celebration",
+    summary:
+      "Spotlight moments honor people and releases; never rank cousins against each other.",
+  },
+  {
+    id: "latest-without-forgetting",
+    title: "Latest without forgetting",
+    summary:
+      "When someone has multiple growing albums, the newest leads the hero; older series stay discoverable.",
+  },
+  {
+    id: "preserve-the-story",
+    title: "Preserve the story",
+    summary: "Songs carry story, dedication, and memory — not just audio files.",
+  },
+  {
+    id: "open-the-table",
+    title: "Open the kitchen table",
+    summary: "Share links and play paths should feel like an invitation home: open → see → tap play.",
+  },
+] as const;
+
 /** UI mark in sidebar / header. */
 export const BRAND_LOGO_UI_PATH = "/brand/logo-44.png";
 

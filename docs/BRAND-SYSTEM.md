@@ -9,6 +9,22 @@ Family Jukebox ships as **Cousin Radio** — a dark, family-first music archive 
 - **Signature:** Little songs. Big connections.
 - **Tone:** Dark premium app energy, family warmth, pink → lilac → ocean gradients, music/player symbols.
 
+## Design principles — all-inclusive family culture
+
+Cousin Radio is a **love-preserving, all-inclusive** family creative space. Visual and product choices should feel like celebration — never exclusion.
+
+| Principle | In the product |
+| --- | --- |
+| **Everyone belongs** | Every cousin with music gets hero rotation, growing series visibility, and fair shelf space. |
+| **Love & celebration** | Spotlight birthdays, new releases, and portraits — not rankings or favorites-only cliques. |
+| **Latest without forgetting** | Newest growing album leads; older series stay on the growing shelf. |
+| **Warm invitation** | Share cards, play buttons, and copy should feel like opening the kitchen table — not a cold app. |
+| **Preserve meaning** | Story, dedication, and lyrics matter as much as the beat. |
+
+Full north star: `docs/COUSIN-RADIO-DIRECTION.md` §3. Code constants: `BRAND_DESIGN_PRINCIPLES` in `lib/brand.ts`.
+
+**Do not:** hide quieter cousins, over-index on one artist, or ship UI that feels anonymous or competitive.
+
 ## Palette tokens
 
 Canonical CSS variables live in `app/globals.css`:
