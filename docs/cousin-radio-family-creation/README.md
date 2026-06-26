@@ -45,8 +45,16 @@ This turns Cousin Radio into:
 - [AI Generation Pipeline](./03-ai-generation-pipeline.md)
 - [Data Model](./04-data-model.md)
 - [Legal, Safety, and Moderation Checklist](./05-legal-safety-moderation.md)
-- [Growth Loops](./06-growth-loops.md)
+- [Risk Register](./06-risk-register.md)
 - [Cursor Build Prompt](./07-cursor-build-prompt.md)
+- [AI Provider Evaluation Checklist](./08-provider-evaluation.md)
+- [Privacy and Consent Playbook](./09-privacy-consent-playbook.md)
+- [Moderation SOP](./10-moderation-sop.md)
+- [MVP Product Requirements](./11-mvp-product-requirements.md)
+- [Architecture Readiness](./12-architecture-readiness.md)
+- [Launch Readiness Checklists](./13-launch-checklists.md)
+- [Business Model and Cost Model Notes](./14-business-model.md)
+- [Founder Guardrails](./15-founder-guardrails.md)
 
 ## First Build Principle
 
