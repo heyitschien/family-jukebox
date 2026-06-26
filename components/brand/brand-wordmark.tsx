@@ -122,9 +122,7 @@ export function BrandWordmark({
           )
         ) : null}
         {showSignature && variant === "hero" ? (
-          <p className="mt-2 text-sm font-semibold text-[var(--jb-muted)]">
-            Little songs. <span className="text-cr-gradient">♥</span> Big connections.
-          </p>
+          <p className="mt-2 text-sm font-semibold text-[var(--jb-muted)]">{BRAND_SIGNATURE}</p>
         ) : showSignature ? (
           <p className="mt-0.5 text-[11px] font-semibold text-[var(--jb-muted)]">{BRAND_SIGNATURE}</p>
         ) : null}

@@ -1,7 +1,8 @@
 export const BRAND_NAME = "Cousin Radio";
 export const BRAND_SHORT_NAME = "CR";
-export const BRAND_TAGLINE = "Little Anthems";
-export const BRAND_SIGNATURE = "Little songs. Big connections.";
+export const BRAND_TAGLINE = "Songs for the People We Love";
+export const BRAND_SIGNATURE =
+  "A family radio station made of love, memories, and tiny anthems.";
 export const BRAND_PLAYBACK_LABEL = "Now playing on Cousin Radio";
 
 /**
