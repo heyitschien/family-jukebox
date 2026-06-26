@@ -24,6 +24,12 @@
 .DS_Store
 *.pem
 
+# Raw source videos — process with scripts/process-video.sh; sources live in
+# ../family-music-asset-june-19/ (outside this repo). Only MP3 + JPG ship in git.
+*.mp4
+*.mov
+*.webm
+
 # debug
 npm-debug.log*
 yarn-debug.log*

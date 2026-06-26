@@ -748,5 +748,143 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/return-to-the-morning-sun.jpg",
     "audioSha256": "2a9a8d051d82c03ddee8ddf50b58f3b5aac0ffcea978530fa381e34087cd130c",
     "coverSha256": "792cf2229ef751037bf657924a841c17aa3cf1ad58b2f5721404519f6a945553"
+  },
+  {
+    "registryId": "CR-2026-sweet-potato-soul",
+    "songSlug": "sweet-potato-soul",
+    "title": "Sweet Potato Soul",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T00:19:16.188Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Sweet Potato Soul\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/sweet-potato-soul.mp3",
+    "coverAssetPath": "/assets/tio-chien/sweet-potato-soul.jpg",
+    "audioSha256": "f667abc8b5c296af634d0ced7bf9d2cec249e449e679663e7a2fff6731a1173f",
+    "coverSha256": "adbd7ce3c0f529f1c28a73496c26eb1b9d234ffb159119f4ae07d5a8d9d6e2c2"
+  },
+  {
+    "registryId": "CR-2026-the-mycelial-loom",
+    "songSlug": "the-mycelial-loom",
+    "title": "The Mycelial Loom",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T00:19:39.852Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The Mycelial Loom\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/the-mycelial-loom.mp3",
+    "coverAssetPath": "/assets/tio-chien/the-mycelial-loom.jpg",
+    "audioSha256": "dff2befa7453d6ec207c0fe9502bfff94490659fecc5a3851220f5c45e208f7d",
+    "coverSha256": "f5b6bc8e0bb259a4f15230925b054f40d993e6f4183a755def1de8fa0f0366c7"
+  },
+  {
+    "registryId": "CR-2026-karat-crunch",
+    "songSlug": "karat-crunch",
+    "title": "24 Karat Crunch",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T00:20:07.319Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"24 Karat Crunch\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/karat-crunch.mp3",
+    "coverAssetPath": "/assets/tio-chien/karat-crunch.jpg",
+    "audioSha256": "e1ea19426dff0189f41591ede7c2000baf32c3a503eb2a033d4f2dd1f13847a2",
+    "coverSha256": "1267e5e28f3dc1442a03a11e192fa09524384c9894fb91970df2a39b03631989"
+  },
+  {
+    "registryId": "CR-2026-spinach-spin",
+    "songSlug": "spinach-spin",
+    "title": "Spinach Spin",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T00:20:26.411Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Spinach Spin\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/spinach-spin.mp3",
+    "coverAssetPath": "/assets/tio-chien/spinach-spin.jpg",
+    "audioSha256": "fe433d7b4da7466d803044ecd4a01755631a2da7dcd77d3b882f3d99c3169af2",
+    "coverSha256": "21ae43af306110571285759979dc107e015792c9f81457a3d8a2065bf646d95e"
+  },
+  {
+    "registryId": "CR-2026-watermelon-wave",
+    "songSlug": "watermelon-wave",
+    "title": "Watermelon Wave",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T00:20:43.384Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Watermelon Wave\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/watermelon-wave.mp3",
+    "coverAssetPath": "/assets/tio-chien/watermelon-wave.jpg",
+    "audioSha256": "6d1c32811dadacdddbf35b2f4df86a28dfac2e3aca15b1f22db4332e3ed03290",
+    "coverSha256": "ab7302c4e436a1003a74502318f1ca507ec8bd0d3d64e998ff57f03d76d29368"
+  },
+  {
+    "registryId": "CR-2026-berry-brainiacs-level-up",
+    "songSlug": "berry-brainiacs-level-up",
+    "title": "Berry Brainiacs: Level Up!",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T00:21:00.099Z",
+    "primaryArtistSlug": "tio-chien",
+    "subjectMemberSlugs": [
+      "tio-chien"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Berry Brainiacs: Level Up!\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/tio-chien/berry-brainiacs-level-up.mp3",
+    "coverAssetPath": "/assets/tio-chien/berry-brainiacs-level-up.jpg",
+    "audioSha256": "b3c2280ef2b2aad759253c2967f959fa04c5de2a880be4f29291d0831cce5046",
+    "coverSha256": "cbefa50e73a4dab5e74cfeab21450b7e11a21f32f5101ff830f92b6d3c088870"
   }
 ];

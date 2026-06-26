@@ -25,6 +25,47 @@ Round and round, we make it clear I hear my own mind, we reappear
 Ask one more time
 Clear mind, real power Yeah, we got it
 Ask again, hey`,
+  "berry-brainiacs-level-up": `Blueberry power, let's go!
+Strawberry magic, you know
+I feel like my hair is getting brighter
+I feel like my hair is getting brighter
+Keep on with the very brainy acts
+Watch us grow
+Blueberry blue, shining so bright
+I'm tear-otten, they clean up the night
+I feel like I've become a genius
+Level up your memory, everything's right
+Strawberry red, so sweet and so cool
+Clearing the bad stuff, breaking the rule
+Test, gaming, we're the best
+Top of the class and king of the school
+Blueberry power, let's go!
+Strawberry magic, you know
+I feel like my hair is getting brighter
+I feel like my hair is getting brighter
+We're the very brainy acts
+Watch us grow
+Check it, check it
+Blueberry speed, whatever the challenge
+We got what we need
+Strawberry rhythm, feel the flow
+One, two, three, let the genius show
+One, two, three, let the genius show
+One, two, three, let the genius show
+Brain, brain, brainiac, we don't stop
+From the library to the mountaintop
+Deep inside the powers waking up
+Clear than the morning
+Blueberry power, let's go!
+Strawberry magic, you know
+I feel like my hair is getting brighter
+I feel like my hair is getting brighter
+We're the very brainy acts
+Watch us grow
+Blueberry, strawberry
+We are the very brainy acts
+Game over
+Perfect, perfect`,
   "children-of-continuous-miracles": `Flash, neon light in the palm of your hand
 The world we dreamed of is now your playground
 We are the children of continuous miracles, may it
@@ -277,6 +318,39 @@ I'm trying hard every single day Clearing all the obstacles out of my way
 Ocean is a star, yeah it's finally my turn Watching all the bridges that I used to have to burn
 Yeah I made it to the peak Ocean, ocean star power Best in the world, yeah
 Ocean, ocean becoming a star`,
+  "karat-crunch": `It's been a while since the last time I saw you, so I'm going to show you how to do it.
+I'm going to show you how to do it.
+Orange energy burning so clean
+I'm the brightest glow you've ever seen
+Crunch, crunch, feel the rhythm in my soul
+Tanggeunhae magic, taking full control
+Glowing up high, brighter than the sun
+Sumyeoji carrot, now the game is won
+24 carat energy, neon orange glow
+Everywhere I walk, I'm the main show
+I'm the main show, why?
+Step in the light, can't handle the shine
+Vitamin upgrade, everything is fine
+Supervision, check the map of my mind
+Don't look back, leave the rest behind
+Orange energy, pulse in my veins
+Breaking all the locks, cutting all the chains
+Breaking all the locks, cutting all the chains
+Crunch, crunch, feel the rhythm in my soul
+Tanggeunhae magic, taking full control
+Glowing up high, brighter than the sun
+Sumyeoji carrot, now the game is won
+24 carat energy, neon orange glow
+Everywhere I walk, I'm the main show
+I'm the main show, why?
+Even if it's autumn, I'm not afraid
+Orange soul inside, it's a beautiful star
+Close your eyes, feel the crunch, the spark
+We're leaving a trail of light in the dark
+Crunch, crunch, 24 carat, we're glowing
+Orange energy, don't forget the vibe
+Perfect vision, yeah, we're out of sight
+Out of sight`,
   "legacy-in-the-lane": `Yo, Sam on the perimeter, coach with the vision, three queens on the court, making every decision, open-minded, connected, the hip threats stay fresh, teaching them the game, put the legacy to the test,
 it's a father's day miracle, no cap in the message, he's a superman standing, counting all of his blessings, from the baseline to the bleachers, the wisdom he drops, a king in the sight for where the realness never stops,
 Superman flying, Sam and Josh in the booth, father's day cipher, we just telling the truth, three girls, five girls, the strength of the father's reflected in their eyes, we appreciate the moves, we appreciate the love,
@@ -676,6 +750,26 @@ Oh, Solene our golden fox, opening all the heavy locks.
 Heavy learning, fast and growing tall, hearing wisdom when they call.
 A clever mind and a tale that sweeps while the rest of the forest sleeps.
 Grow and learn, little fox.`,
+  "spinach-spin": `The Plate is Green, the morning's gold, a story that is never old, old.
+Fuel for the fire, light in the soul, green leaf rhythm takes control.
+I feel the surge beneath my feet, a natural pulse, a steady heat, no slowing down, no checking time,
+climbing up the mountain line.
+I'll feel the spin, the green machine, the brightest life you've ever seen.
+Spin it, spin, we're off the floor, dance until we want some more.
+No walls can hold us, no day is long, leafy energy, green and strong.
+Spin it, spin, the world is bright, moving through the neon light.
+The shadows dancing, light as air, sunlight shining in my hair.
+The leafy secret kept in store, bringing me back for something more.
+I'm in the zone, I'm in the flow, watching all the vibrant colors grow.
+Spin it, magic deep inside, taking us for a wild ride.
+I'll feel the spin, the green machine, the brightest life you've ever seen.
+Spin it, spin, we're off the floor, dance until we want some more.
+No walls can hold us, no day is long, leafy energy, green and strong.
+Spin it, spin, the world is bright, moving through the neon light.
+Riding round the emerald light, the emerald light, everything's fine, everything's right.
+Just a leaf and a bead in the heat, watch the shadows all melt away.
+Watch them melt away, spinning away, keep that energy leafy and bright.
+Yeah, that's the sheen rolling on.`,
   "steady-light-in-your-eye": `We met at the mountain's foot seeking the light
 Trading the shadows for something more bright
 Teachers and maps in our hands we took hold
@@ -721,6 +815,25 @@ May this dance go on
 Long after the day is done
 For you my friend
 Celebrating life with you`,
+  "sweet-potato-soul": `Felt the ground, golden hue Slow burn light, I drift to you
+No sudden rush, no jagged edge Just a quiet, steady pledge
+Wrapped in warmth, earthen spice Natural sugar, sweet and wise
+Mellow mood, heavy head Finding peace in what is fed
+Oh, keep it smooth, keep it slow Let the golden currents flow
+Sweet like velvet, deep like stone Now I'm never on my own
+Energy that hurts Life and holds its branch in breath
+Life and sweetness, starch and death Sweet potato, soul you see
+Sustained and sweet just being me Sustained and sweet just being me
+Through the noise, through the race You're the rhythm, you're the space
+Slow digesting, complex soul Keeping every fragment whole
+Sin and dust, amber light Guiding me through every night
+Smoother skin, smoother mind Leaving all the rush behind
+Oh, keep it smooth, keep it slow Let the golden currents flow
+Sweet like velvet, deep like stone Now I'm never on my own
+Energy that hurts Life and holds its branch in breath
+Life and sweetness, starch and death Sweet potato, soul you see
+Sustained and sweet just being me Sustained and sweet just being me
+Smooth, so smooth Just stay sweet`,
   "tap-on-the-glass": `Dinosaur bones in the red desert sun Long way to the race that we finally won
 Printing intelligence on sands, feel the shift Semin' ton of kits, a divine kind of gift
 Our fingertips say I think it tips the neuroglow
@@ -861,6 +974,18 @@ Sand to signal, sand to signal 🎵
 The future talks in my hand 🎵
 From the dream, yeah 🎵`,
   "the-margin-notes": `[Instrumental]`,
+  "the-mycelial-loom": `Under the moss, a secret pulse, invisible roots, a silent fault, earth's hidden loom
+on my cellulose, weaving the strength for the coming days
+Mind heave, must your magic light in the dark, in the pneumonies fire from a cellular spark
+Earth's secret power and invisible shield, to the weight of the shadows, we never will yield
+Through the dark soil where the sunlight ends, life finds a way as the network extends
+Ancient and wise in a world of their own, building the kingdom that can't be dethroned
+Mind heave, must your magic light in the dark, in the pneumonies fire from a cellular spark
+Earth's secret power and invisible shield, to the weight of the shadows, we never will yield
+Invisible, shielding the cold, my cellulose, power of dark, power in the dark
+Mind heave, must your magic light in the dark, in the pneumonies fire from a cellular spark
+Earth's secret power and invisible shield, to the weight of the shadows, we never will yield
+In the dark, we hold the shield, power of field, power of field`,
   "the-porch-light-glow": `Start it with a sister's word and a porch light glow a Stanford heart in a pace that
 the city don't gentle with the insight Never had to shout the lead
 You were just open-minded planning every single seed through the late night pixels
@@ -979,6 +1104,20 @@ One, two, three Marceline is turning three
 Happy birthday Marceline Our beautiful clever queen
 We love you so much
 Happy birthday`,
+  "watermelon-wave": `As for humming under a heavy haze Watching the mercury rise through the summer days
+92% of a neon dream Flowing like a tide, moving like a stream
+Nature's nectar, a ruby red glow Cooling down the frequency, keeping it slow
+Watermelon wave, wave, cooling down the soul Let the natural nectar take full control
+Watermelon wave, washing out the heat Making every heartbeat taste so sweet
+Stay fresh in the haze, let the flow begin Feel the cold hydration from the outside in
+Let it dry, it's humming like a lo-fi song Where the shadows are short, and the days are long
+Sugar on the vine, water in the core Quenting in the thirst, then we ask for more
+Every slice is a secret in the shade Best kind of magic that was ever made
+Watermelon wave, wave, cooling down the soul Let the natural nectar take full control
+Watermelon wave, washing out the heat Making every heartbeat taste so sweet
+Stay fresh in the haze, let the flow begin Feel the cold hydration from the outside in
+92% just drifting Cooling down, cooling down nature's nectar
+Yeah, stay cool, watermelon wave Just keep it flowing`,
   "where-the-garden-sleeps": `The rustle of the tall blade
 A slow sway against the blue
 Against the blue
