@@ -1081,6 +1081,23 @@ I return to myself
 I choose the light
 I choose the light
 Choose the light`,
+  "the-smallest-heart": `The smallest heart in a room so wide, a quiet wisdom tucked inside
+Just a flash of white when you start to grin, a story waiting for the world to begin
+We don't need the words to find our way, I hear the things that you don't say
+An old soul living in a baby frame, we speak a language without a name
+Oh Kaia, a little piece of light, you make the heavy world world feel right
+Dancing circles in the grass, watching all the shadows pass
+Everyone is cheering loud, you're the sun behind the cloud
+Kaia, Kaia, wise and free, the smallest heart for the family
+The cousins chase the leatherball, you're the bravest runner of them all
+Tagging heels with a joyful leap, a kind of magic that we want to keep
+In the park when the light grows gold, I'm watching how your heart unfolds
+Every little word and every single step are the memories that will be kept
+Oh Kaia, a little piece of light, you make the heavy world world feel right
+Dancing circles in the grass, watching all the shadows pass
+Everyone is cheering loud, you're the sun behind the cloud
+Kaia, Kaia, wise and free, the smallest heart for the family
+Kaia, our little light, just being you, everything is right`,
   "three-candles-for-marceline": `Look at the sun, Marceline You're the smartest girl we've seen
 Ico is your very best friend Happy times that never end
 One and two and now you're three Happy birthday Marceline

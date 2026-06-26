@@ -11,13 +11,22 @@ export type FamilyMember = {
 
 export const members: FamilyMember[] = [
   {
+    slug: "kaia",
+    name: "Kaia",
+    age: 2,
+    role: "girl",
+    emoji: "💗",
+    description:
+      "Kaia is two — soft wonder, big feelings, and a heart that fills the room. Her growing album starts with The Smallest Heart.",
+  },
+  {
     slug: "marceline",
     name: "Marceline",
     age: 3,
     role: "girl",
     emoji: "🌸",
     description:
-      "Our littlest cousin and the youngest in the jukebox. Marceline brings pure silly energy — fast feet, big laughs, and songs that feel like a game you never want to stop.",
+      "Marceline brings pure silly energy — fast feet, big laughs, and songs that feel like a game you never want to stop.",
   },
   {
     slug: "eliana",

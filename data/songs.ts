@@ -522,6 +522,20 @@ export const songs: Song[] = [
     lyrics: songLyrics["berry-brainiacs-level-up"],
     tags: ["garden-radio", "fruit", "kids", "earth", "bilingual", "family-friendly", "tio-chien"],
   },
+  {
+    slug: "the-smallest-heart",
+    title: "The Smallest Heart",
+    subtitle: "Track one · The Smallest Heart",
+    authorSlug: "kaia",
+    dateCreated: "2026-06-26",
+    audioSrc: "/assets/kaia/the-smallest-heart.mp3",
+    coverSrc: "/assets/kaia/the-smallest-heart.jpg",
+    story:
+      "A tender song for Kaia at two — small hands, big love, and a heart that holds the whole family.",
+    lyrics: songLyrics["the-smallest-heart"],
+    tags: ["kaia", "toddler", "heart", "family", "love", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
