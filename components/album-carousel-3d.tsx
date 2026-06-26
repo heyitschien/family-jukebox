@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { AlbumCoverRotator, getPlayStartIndex } from "@/components/album-cover-rotator";
 import { ArtistLink } from "@/components/artist-link";
@@ -20,6 +20,7 @@ import {
   getAlbumSpotlightSongIndex,
   getSpotlightAlbumAuthorNames,
 } from "@/lib/album-rotation";
+import { getHeroAlbumDescription, getHeroStatsLine, HERO_WANDER_COPY } from "@/lib/hero-copy";
 import { BrandWordmark } from "@/components/brand/brand-wordmark";
 import { BrandAccentIcon } from "@/components/brand/brand-accent-icon";
 import { cn } from "@/lib/utils";
@@ -48,7 +49,6 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
 
   const activeAlbum = albums[activeIndex] ?? featuredAlbum;
   const activeSongs = getAlbumSongs(activeAlbum);
-  const activeRecencySongs = useMemo(() => getAlbumSongsByRecency(activeAlbum), [activeAlbum]);
   const activeSpotlightSong = getAlbumSpotlightSong(activeAlbum, refreshSeed);
   const author = getAlbumAuthor(activeAlbum);
   const spotlightNames = getSpotlightAlbumAuthorNames();
@@ -281,7 +281,7 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
                         )}
                         {recencySongs.length > 1 ? (
                           <p className="truncate text-[10px] text-white/75">
-                            {recencySongs.length} songs · rotating covers
+                            {recencySongs.length} songs · latest tracks
                           </p>
                         ) : null}
                       </div>
@@ -382,40 +382,29 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
           />
           <Link
             href={`/albums/${activeAlbum.slug}`}
-            className="mt-3 block text-lg font-bold transition hover:underline"
-            style={{ color: activeAlbum.accentColor }}
+            className="mt-3 block transition hover:opacity-90"
           >
-            {activeAlbum.title}
+            <span className="text-sm font-bold uppercase tracking-[0.08em] text-[var(--jb-muted)]">
+              Now spinning
+            </span>
+            <span
+              className="mt-0.5 block text-lg font-bold hover:underline"
+              style={{ color: activeAlbum.accentColor }}
+            >
+              {activeAlbum.title}
+            </span>
           </Link>
-          {activeRecencySongs.length > 1 && activeSpotlightSong ? (
-            <p className="mt-1 text-sm font-semibold text-white/90">
-              Featuring{" "}
-              <Link
-                href={`/songs/${activeSpotlightSong.slug}`}
-                className="transition hover:underline"
-                style={{ color: activeAlbum.accentColor }}
-              >
-                {activeSpotlightSong.title}
-              </Link>
-            </p>
-          ) : null}
-          <p className="mt-1 text-sm text-[var(--jb-muted)]">
-            {activeAlbum.subtitle ?? `${activeSongs.length} songs`}
-            {author ? (
-              <>
-                {" · "}
-                <ArtistLink member={author} className="text-[var(--jb-muted)] hover:text-white" />
-              </>
-            ) : null}
+          <p className="mt-2 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
+            {getHeroAlbumDescription(activeAlbum, author ?? undefined)}
           </p>
           <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
-            Spin through cousin albums — silly fox trails, gravity shifts, pink glasses, and every
-            family anthem in one place. Multi-song albums rotate their latest tracks in 3D.
+            {HERO_WANDER_COPY}
           </p>
           <p className="mt-2 flex items-center gap-1.5 text-xs font-bold text-[var(--family-ocean)]">
             <BrandAccentIcon icon="users" className="text-[var(--family-ocean)]" />
-            {count} family albums · rotating spotlight: {spotlightNames}
+            {getHeroStatsLine(count)}
           </p>
+          <span className="sr-only">Today&apos;s family spotlights: {spotlightNames}</span>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <PlayIconButton

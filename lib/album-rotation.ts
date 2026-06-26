@@ -149,12 +149,12 @@ export function getAlbumHeroBadge(album: Album, heroAlbum: Album): AlbumHeroBadg
     return celebrationBadge;
   }
   if (album.featured) {
-    return { emoji: "💛", prefix: "Featured release · " };
+    return { emoji: "💛", prefix: "Now spinning · " };
   }
   if (album.slug === heroAlbum.slug) {
-    return { emoji: "✨", prefix: "Today's spotlight · " };
+    return { emoji: "✨", prefix: "Now spinning · " };
   }
-  return { emoji: "🎵", prefix: "From the collection · " };
+  return { emoji: "🎵", prefix: "From the family table · " };
 }
 
 export function isTodayHeroAlbum(album: Album, refreshSeed = 0): boolean {

@@ -25,6 +25,7 @@ import {
   getSpotlightSongPerMember,
 } from "../lib/featured-rotation";
 import { buildHomeFeed, getFamilyPickMemberCount } from "../lib/home-feed";
+import { getHeroAlbumDescription, getHeroStatsLine, HERO_WANDER_COPY } from "../lib/hero-copy";
 import {
   getAlbumHeroBadge,
   getAlbumSongsByRecency,
@@ -369,6 +370,25 @@ describe("carousel layout", () => {
     assert.ok(medium.coverSize >= large.coverSize);
     assert.ok(large.coverSize >= 128, "large family rings should not shrink below legibility");
     assert.ok(large.radius >= medium.radius);
+  });
+});
+
+describe("hero copy", () => {
+  it("uses love-first brand language without catalog mechanics", () => {
+    assert.match(HERO_WANDER_COPY, /Press play and wander through the family/i);
+    assert.doesNotMatch(HERO_WANDER_COPY, /3D|rotating|shelf|catalog/i);
+
+    const stats = getHeroStatsLine(11);
+    assert.match(stats, /everyone gets a turn at the table/i);
+    assert.doesNotMatch(stats, /rotating spotlight/i);
+  });
+
+  it("prefers album story for hero blurbs", () => {
+    const album = getAlbumBySlug("vegetable-grooves-album");
+    assert.ok(album?.story, "vegetable grooves album should have a story");
+    const blurb = getHeroAlbumDescription(album!, getAlbumAuthor(album!));
+    assert.match(blurb, /garden|vegetable/i);
+    assert.doesNotMatch(blurb, /rotating covers/i);
   });
 });
 
