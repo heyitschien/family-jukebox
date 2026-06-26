@@ -1,22 +1,22 @@
 import Link from "next/link";
 
 import { BrandAccentIcon } from "@/components/brand/brand-accent-icon";
-import { MemberCircle } from "@/components/member-circle";
+import { FamilyCircleSection } from "@/components/family-circle-section";
 import { Topbar } from "@/components/topbar";
-import { getRoleLabel, members, shouldShowMemberAge } from "@/data/members";
+import { members, shouldShowMemberAge } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
+import { getFamilyDirectorySections, getMemberCircleLabel } from "@/lib/family-directory";
 import { buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
 
 export const metadata = buildShareMetadata({
-  title: formatPageTitle("Family artists"),
+  title: formatPageTitle("Family"),
   description:
-    "Meet the cousins who make the music — Eliana, Solene, Ocean, Marceline, Tia Evelyn, Mama, and the whole crew.",
+    "Meet the kitchen table — the cousins, the Tias, the Tios, and Mama who make Cousin Radio.",
   path: "/family",
 });
 
 export default function FamilyPage() {
-  const girls = members.filter((m) => m.role === "girl");
-  const others = members.filter((m) => m.role !== "girl");
+  const sections = getFamilyDirectorySections();
 
   return (
     <main className="min-w-0 space-y-6 px-3 pb-4 lg:px-0">
@@ -25,54 +25,19 @@ export default function FamilyPage() {
         <h1 className="text-3xl font-extrabold tracking-tight">Cousin Radio</h1>
         <p className="mt-1 flex items-center gap-1.5 text-sm font-bold text-[var(--jb-muted)]">
           <BrandAccentIcon icon="users" />
-          Family artists on Cousin Radio
+          Cousins, Tias, Tios, and Mama — everyone at the table
         </p>
       </header>
 
-      <section className="jb-float-panel p-4 sm:p-5">
-        <h2 className="text-xl font-bold">Our girls</h2>
-        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {girls.map((member) => (
-            <MemberCircle key={member.slug} member={member} />
-          ))}
-        </div>
-      </section>
-
-      <section className="jb-float-panel p-4 sm:p-5">
-        <h2 className="text-xl font-bold">Tia Evelyn</h2>
-        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Gold in the Tile — new album, more songs coming</p>
-        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {members
-            .filter((m) => m.slug === "evelyn")
-            .map((member) => (
-              <MemberCircle key={member.slug} member={member} />
-            ))}
-        </div>
-      </section>
-
-      <section className="jb-float-panel p-4 sm:p-5">
-        <h2 className="text-xl font-bold">Mama</h2>
-        <p className="mt-1 text-sm font-bold text-[var(--jb-muted)]">Cornerstone at the Kitchen Table — new album, more songs coming</p>
-        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {members
-            .filter((m) => m.slug === "maria")
-            .map((member) => (
-              <MemberCircle key={member.slug} member={member} />
-            ))}
-        </div>
-      </section>
-
-      <section className="jb-float-panel p-4 sm:p-5">
-        <h2 className="text-xl font-bold">Ocean & Tio Chien</h2>
-        <div className="mt-4 flex gap-4 overflow-x-auto pb-2 scrollbar-none">
-          {others.map((member) => (
-            <MemberCircle key={member.slug} member={member} />
-          ))}
-        </div>
-      </section>
+      {sections.map((section) => (
+        <FamilyCircleSection key={section.id} section={section} />
+      ))}
 
       <section className="jb-float-panel p-2 sm:p-3">
         <h2 className="px-2 pt-2 text-xl font-bold">Everyone</h2>
+        <p className="px-2 pb-1 text-sm font-bold text-[var(--jb-muted)]">
+          Tap anyone to hear their songs
+        </p>
         {members.map((member) => {
           const count = getSongsByAuthor(member.slug).length;
           return (
@@ -87,7 +52,7 @@ export default function FamilyPage() {
               <div className="min-w-0 flex-1">
                 <p className="font-bold">{member.name}</p>
                 <p className="text-sm text-[var(--jb-muted)]">
-                  {getRoleLabel(member.role)}
+                  {getMemberCircleLabel(member)}
                   {shouldShowMemberAge(member) ? ` · age ${member.age}` : ""} · {count}{" "}
                   {count === 1 ? "song" : "songs"}
                 </p>

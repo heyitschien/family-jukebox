@@ -2,7 +2,8 @@ import Link from "next/link";
 
 import { getSongsByAuthor } from "@/data/songs";
 import type { FamilyMember } from "@/data/members";
-import { getRoleLabel, shouldShowMemberAge } from "@/data/members";
+import { shouldShowMemberAge } from "@/data/members";
+import { getMemberCircleLabel } from "@/lib/family-directory";
 import { cn } from "@/lib/utils";
 
 type MemberCardProps = {
@@ -41,7 +42,7 @@ export function MemberCard({ member, compact = false }: MemberCardProps) {
             ) : null}
           </div>
           <p className="mt-0.5 text-xs font-medium uppercase tracking-wide text-amber-700/80">
-            {getRoleLabel(member.role)}
+            {getMemberCircleLabel(member)}
           </p>
           {!compact ? (
             <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-amber-900/70">

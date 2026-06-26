@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getSongsByAuthor } from "@/data/songs";
 import type { FamilyMember } from "@/data/members";
 import { shouldShowMemberAge } from "@/data/members";
+import { getMemberCircleLabel } from "@/lib/family-directory";
 
 type MemberCircleProps = {
   member: FamilyMember;
@@ -26,7 +27,7 @@ export function MemberCircle({ member }: MemberCircleProps) {
       {shouldShowMemberAge(member) ? (
         <p className="truncate text-xs text-[var(--jb-muted)]">Age {member.age}</p>
       ) : (
-        <p className="truncate text-xs text-[var(--jb-muted)]">Family artist</p>
+        <p className="truncate text-xs text-[var(--jb-muted)]">{getMemberCircleLabel(member)}</p>
       )}
     </Link>
   );
