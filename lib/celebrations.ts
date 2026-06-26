@@ -41,7 +41,7 @@ export const celebrationHighlights: CelebrationHighlight[] = [
     badgePrefix: "Happy birthday · ",
     songSlugs: ["smallest-of-deeds"],
     albumSlugs: ["smallest-of-deeds-album"],
-    matchesDate: (date) => isWithinCelebrationWindow(date, 6, 25),
+    matchesDate: (date) => isWithinCelebrationWindow(date, 6, 19),
   },
   {
     id: "marceline-birthday",

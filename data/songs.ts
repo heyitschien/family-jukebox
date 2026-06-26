@@ -539,9 +539,9 @@ export const songs: Song[] = [
   {
     slug: "smallest-of-deeds",
     title: "Smallest of Deeds",
-    subtitle: "Happy birthday · June 25",
+    subtitle: "Happy birthday · June 19",
     authorSlug: "rachel",
-    dateCreated: "2026-06-25",
+    dateCreated: "2026-06-19",
     audioSrc: "/assets/rachel/smallest-of-deeds.mp3",
     coverSrc: "/assets/rachel/smallest-of-deeds.jpg",
     story:
