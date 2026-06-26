@@ -30,6 +30,12 @@ import {
   scoreAlbumForListener,
 } from "../lib/audience";
 import { buildHomeFeed, getFamilyPickMemberCount } from "../lib/home-feed";
+import {
+  FAMILY_DIRECTORY_SECTIONS,
+  getFamilyDirectorySections,
+  getMemberCircleLabel,
+  getUnassignedFamilyMemberSlugs,
+} from "../lib/family-directory";
 import { getHeroAlbumDescription, getHeroStatsLine, HERO_WANDER_COPY } from "../lib/hero-copy";
 import {
   getAlbumHeroBadge,
@@ -439,6 +445,38 @@ describe("age-aware album sourcing", () => {
     const primary = getPrimaryAlbums();
     const picked = pickAudienceAwareAlbum(primary, 6, 12);
     assert.ok(primary.some((album) => album.slug === picked.slug));
+  });
+});
+
+describe("family directory", () => {
+  it("assigns every member to a kitchen-table circle", () => {
+    assert.deepEqual(getUnassignedFamilyMemberSlugs(), []);
+  });
+
+  it("groups cousins, tias, tios, and mama separately", () => {
+    const sections = getFamilyDirectorySections();
+    const ids = sections.map((section) => section.id);
+    assert.ok(ids.includes("cousins"));
+    assert.ok(ids.includes("tias"));
+    assert.ok(ids.includes("tios"));
+    assert.ok(ids.includes("mama"));
+
+    const cousinSection = sections.find((section) => section.id === "cousins");
+    assert.ok(cousinSection?.members.some((member) => member.slug === "ocean"));
+    assert.ok(cousinSection?.members.some((member) => member.slug === "eliana"));
+
+    const tiaSection = sections.find((section) => section.id === "tias");
+    assert.equal(tiaSection?.members.length, 3);
+    assert.ok(tiaSection?.members.every((member) => getMemberCircleLabel(member) === "Tia"));
+
+    const mamaSection = sections.find((section) => section.id === "mama");
+    assert.equal(mamaSection?.members[0]?.slug, "maria");
+  });
+
+  it("covers roster exactly once across sections", () => {
+    const slugs = FAMILY_DIRECTORY_SECTIONS.flatMap((section) => section.memberSlugs);
+    assert.equal(slugs.length, members.length);
+    assert.equal(new Set(slugs).size, members.length);
   });
 });
 

@@ -9,8 +9,9 @@ import { MemberPlayHeader, MemberSongList } from "@/components/member-play-heade
 import { SongShelf } from "@/components/song-shelf";
 import { Topbar } from "@/components/topbar";
 import { getAlbumsByAuthor, groupAlbumsByKind } from "@/data/albums";
-import { getMemberBySlug, getRoleLabel, members, shouldShowMemberAge } from "@/data/members";
+import { getMemberBySlug, members, shouldShowMemberAge } from "@/data/members";
 import { getSongsByAuthor } from "@/data/songs";
+import { getMemberCircleLabel } from "@/lib/family-directory";
 import { getDiscoverAlbums, getDiscoverMembers, getDiscoverSongs } from "@/lib/music-discovery";
 
 import { buildCoverShareImage, buildShareMetadata, formatPageTitle } from "@/lib/site-metadata";
@@ -74,7 +75,7 @@ export default async function MemberPage({ params }: MemberPageProps) {
       >
         <div className="relative z-10 pt-24 sm:pt-32">
           <p className="text-xs font-extrabold uppercase tracking-wider text-[var(--jb-muted)]">
-            {getRoleLabel(member.role)}
+            {getMemberCircleLabel(member)}
           </p>
           <h1 className="mt-2 text-5xl font-extrabold tracking-tight sm:text-7xl">{member.name}</h1>
           <p className="mt-2 text-sm font-bold text-[var(--jb-muted)]">
