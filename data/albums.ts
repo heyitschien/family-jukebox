@@ -26,6 +26,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
   ocean: "#6cb7ff",
   "tio-chien": "#7dd3fc",
   evelyn: "#d4af37",
+  rachel: "#f4a261",
   maria: "#c9956b",
   "sam-and-josh": "#f59e0b",
   "chilling-with-cousin": "#8b9dc3",
@@ -39,6 +40,7 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   ocean: "Ocean's Adventures",
   "tio-chien": "Tio Chien's Magic Studio",
   evelyn: "Tia Evelyn",
+  rachel: "Tia Rachel",
   maria: "Mama",
   "sam-and-josh": "Tio Sam & Tio Josh",
   "chilling-with-cousin": "Chilling with Cousin",
@@ -95,6 +97,18 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "A growing album for Tia Evelyn — indie warmth, K-pop sparkle, and new songs joining the collection as they release.",
     accentColor: "#ff8c42",
+  },
+  {
+    slug: "sunday-kitchen-light-album",
+    title: "Sunday Kitchen Light",
+    subtitle: "Sunday Kitchen Light · more coming",
+    authorSlug: "rachel",
+    coverSrc: "/assets/rachel/sunday-kitchen-light.jpg",
+    songSlugs: ["sunday-kitchen-light"],
+    dateCreated: "2026-06-25",
+    story:
+      "A growing album for Tia Rachel — Sunday morning warmth, kitchen-table light, and new songs joining the collection as they release.",
+    accentColor: "#f4a261",
   },
   {
     slug: "tia-maria-album",

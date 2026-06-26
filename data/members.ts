@@ -74,6 +74,15 @@ export const members: FamilyMember[] = [
       "Tia Evelyn — heart of the home. Her album Gold in the Tile is a growing collection of songs made with love, one release at a time.",
   },
   {
+    slug: "rachel",
+    name: "Tia Rachel",
+    age: 35,
+    role: "family",
+    emoji: "☀️",
+    description:
+      "Tia Rachel — Sunday kitchen light, warmth at the table, and songs that feel like home on a quiet morning.",
+  },
+  {
     slug: "maria",
     name: "Mama",
     age: 55,

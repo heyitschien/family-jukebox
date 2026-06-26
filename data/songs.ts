@@ -536,6 +536,20 @@ export const songs: Song[] = [
     tags: ["kaia", "toddler", "heart", "family", "love", "featured"],
     featured: true,
   },
+  {
+    slug: "sunday-kitchen-light",
+    title: "Sunday Kitchen Light",
+    subtitle: "Track one · Sunday Kitchen Light",
+    authorSlug: "rachel",
+    dateCreated: "2026-06-26",
+    audioSrc: "/assets/rachel/sunday-kitchen-light.mp3",
+    coverSrc: "/assets/rachel/sunday-kitchen-light.jpg",
+    story:
+      "A warm Sunday morning song for Tia Rachel — kitchen light, quiet joy, and family gathered at the table.",
+    lyrics: songLyrics["sunday-kitchen-light"],
+    tags: ["rachel", "family", "kitchen", "sunday", "warmth", "love", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
