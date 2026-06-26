@@ -955,5 +955,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/huyen/planting-every-gift.jpg",
     "audioSha256": "78a83ef39e574725814f9cb9376326b2864b2cd4242fe7598857685a145ce98a",
     "coverSha256": "746ac8070985459eb91652926a6109728b265a2cca8cc303f9261ef3438f3767"
+  },
+  {
+    "registryId": "CR-2026-the-anchor-in-the-wild",
+    "songSlug": "the-anchor-in-the-wild",
+    "title": "The Anchor in the Wild",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T17:19:27.877Z",
+    "primaryArtistSlug": "dieu",
+    "subjectMemberSlugs": [
+      "dieu"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The Anchor in the Wild\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/dieu/the-anchor-in-the-wild.mp3",
+    "coverAssetPath": "/assets/dieu/the-anchor-in-the-wild.jpg",
+    "audioSha256": "c974338235b9cc855ffec8bc1de5f68afb26a2f4900f2a0bf018f454cd7c51bc",
+    "coverSha256": "0eac9058744623210bd276f27d86de86037134946903bc718a2063abea6114c4"
   }
 ];

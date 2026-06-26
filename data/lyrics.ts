@@ -983,6 +983,39 @@ It's a beautiful friendship we're living in
 Just a couple of guys talking egg rolls and light Paul Savage
 My brother everything is alright catch you in the code
 Stay beautiful`,
+  "the-anchor-in-the-wild": `After the roof was set and the foundation dried
+The well-ranced shallow underling grey sky
+Little child of the house, you got the hardest end of the stick
+Sent to great grandma's care while the air was thick
+With the dust of a family trying just to survive
+Just trying to keep the flickering candlelight alive
+I saw you coming home, lunch on my plate
+Across the street, just a child heading for the gate
+Then the world went white, the sound of the steel on bone
+A motorcycle crash on a road you walked along
+Persisted through the burn, persisted the burn
+Persit through the fall, you learned to stand up right
+After answering the call
+Oh Joe, you were the anchor in the wild
+Toughest heart and a beautiful middle child
+You took the weight and you turned it into gold
+The story of a sister, the brave and bright and bold
+You are dope
+We huddled in the dark, the radio our guide
+Scary stories from Wing-Oct-Man side by side
+Paris by Night MC, spinning ghost in the night
+We laughed at the shadows and we dreamed of the light of Wayne
+20 years gone by, now we're in free, still dreaming of who we were always meant to be
+Oh Joe, you were the anchor in the wild
+Toughest heart and a beautiful middle child
+You took the weight and you turned it into gold
+The story of a sister, the brave and bright and bold
+You are dope
+You shine bright wherever your two feet land
+A loyal friend with a healing hand
+Founded and growing, committed to the truth
+You're the blossom that grew from the struggles of youth to our death
+To live in life, may your wishes come true`,
   "the-city-breathing": `When I ask, yeah Miracle hidden behind the glass
 A car tap, a blue map, yeah The world is in a snap
 Several rooms are glowing bright Cables on the oceans in the night

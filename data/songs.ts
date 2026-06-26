@@ -564,6 +564,20 @@ export const songs: Song[] = [
     tags: ["huyen", "family", "gift", "love", "growth", "planting", "featured"],
     featured: true,
   },
+  {
+    slug: "the-anchor-in-the-wild",
+    title: "The Anchor in the Wild",
+    subtitle: "",
+    authorSlug: "dieu",
+    dateCreated: "2026-06-26",
+    audioSrc: "/assets/dieu/the-anchor-in-the-wild.mp3",
+    coverSrc: "/assets/dieu/the-anchor-in-the-wild.jpg",
+    story:
+      "A song for Tia Dieu — steady as an anchor, holding love firm while the family roams the wild.",
+    lyrics: songLyrics["the-anchor-in-the-wild"],
+    tags: ["dieu", "family", "anchor", "love", "strength", "wild", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {

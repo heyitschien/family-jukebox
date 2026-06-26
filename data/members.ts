@@ -92,6 +92,15 @@ export const members: FamilyMember[] = [
       "Tia Huyen — planting every gift with care, turning love into something that grows for the whole family.",
   },
   {
+    slug: "dieu",
+    name: "Tia Dieu",
+    age: 35,
+    role: "family",
+    emoji: "⚓",
+    description:
+      "Tia Dieu — steady as an anchor in the wild, holding love firm while the family finds its way.",
+  },
+  {
     slug: "maria",
     name: "Mama",
     age: 55,
