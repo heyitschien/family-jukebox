@@ -146,7 +146,7 @@ Run `npx tsx -e "..."` or inspect `data/songs.ts` / `data/albums.ts` to refresh 
 
 | Route | Type | Purpose | Key data / logic |
 |-------|------|---------|------------------|
-| `/` | dynamic (`force-dynamic`) | **Home** — 3D album hero, album shelf, song shelf, family queue | `getHeroFeaturedAlbum`, `getRotatedAlbumCarousel`, `getRotatedFeaturedShelf`, `getFairRotationQueue`, `getSupplementarySeriesAlbums` |
+| `/` | dynamic (`force-dynamic`) | **Home** — 3D album hero, album shelf, song shelf, family queue | `getHeroFeaturedAlbum`, `getRotatedAlbumCarousel`, `getRotatedFeaturedShelf`, `getFairRotationQueue`, `getGrowingSeriesAlbums` |
 | `/songs` | static | All songs shelf | `getRotatedFeaturedShelf` |
 | `/songs/[slug]` | SSG | Track detail — cover, lyrics, story, album link, play count | `getAlbumForSong`, `isSpotlightSong`, `SongPlayCount` |
 | `/albums` | static | Browse — **series** then **discography** sections | `getBrowseAlbumSections` |
@@ -194,8 +194,8 @@ Run `npx tsx -e "..."` or inspect `data/songs.ts` / `data/albums.ts` to refresh 
 |----------|-----|
 | `getPrimaryAlbums()` | 3D carousel + spotlight names |
 | `getBrowseAlbumSections()` | `/albums` page sections |
-| `getGrowingSeriesAlbums()` | Browse + inclusive growing-series set (every artist with songs) |
-| `getSupplementarySeriesAlbums()` | Home “Growing series” shelf — extra themed albums, newest first |
+| `getGrowingSeriesAlbums()` | Browse + **home Growing series shelf** (every artist with songs) |
+| `getSupplementarySeriesAlbums()` | Extra themed albums beyond each artist's primary hero slot |
 | `groupAlbumsByKind()` | Member pages |
 | `getAlbumHeroBadge(album, hero)` | Carousel badge copy |
 

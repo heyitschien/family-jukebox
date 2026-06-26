@@ -404,7 +404,7 @@ export function getBrowseAlbumSections(): BrowseAlbumSection[] {
   ].filter((section) => section.albums.length > 0);
 }
 
-/** Growing albums not in the hero carousel — older series and extra themed drops. */
+/** Extra growing albums beyond each artist's primary hero slot (e.g. older Tio Chien series). */
 export function getSupplementarySeriesAlbums(): Album[] {
   const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
   return sortAlbumsByRecency(getGrowingSeriesAlbums().filter((album) => !primarySlugs.has(album.slug)));

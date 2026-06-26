@@ -1,5 +1,5 @@
 import { HomeCuratedContent } from "@/components/home-curated-content";
-import { getSupplementarySeriesAlbums } from "@/data/albums";
+import { getGrowingSeriesAlbums } from "@/data/albums";
 import { getAllTags } from "@/data/songs";
 import {
   createRefreshSeed,
@@ -21,7 +21,7 @@ export default function HomePage() {
   const refreshSeed = createRefreshSeed();
   const featuredAlbum = getHeroFeaturedAlbum(refreshSeed);
   const carouselAlbums = getRotatedAlbumCarousel(refreshSeed);
-  const supplementarySeries = getSupplementarySeriesAlbums();
+  const growingSeriesAlbums = getGrowingSeriesAlbums();
   const shelfSongs = getRotatedFeaturedShelf(refreshSeed);
   const familyQueue = getFairRotationQueue(refreshSeed);
   const spotlightSlugs = getSpotlightSongPerMember().map((song) => song.slug);
@@ -32,7 +32,7 @@ export default function HomePage() {
         refreshSeed={refreshSeed}
         featuredAlbum={featuredAlbum}
         carouselAlbums={carouselAlbums}
-        supplementarySeries={supplementarySeries}
+        growingSeriesAlbums={growingSeriesAlbums}
         shelfSongs={shelfSongs}
         familyQueue={familyQueue}
         spotlightSlugs={spotlightSlugs}
