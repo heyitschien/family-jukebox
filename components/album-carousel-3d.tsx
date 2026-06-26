@@ -29,11 +29,18 @@ type AlbumCarousel3DProps = {
   albums: Album[];
   featuredAlbum: Album;
   refreshSeed: number;
+  listenerAge?: number | null;
+  audienceMicrocopy?: string;
 };
 
 const PLAYBACK_SYNC_DEBOUNCE_MS = 400;
 
-export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCarousel3DProps) {
+export function AlbumCarousel3D({
+  albums,
+  featuredAlbum,
+  refreshSeed,
+  audienceMicrocopy,
+}: AlbumCarousel3DProps) {
   const router = useRouter();
   const { playQueue, currentSong, isPlaying, queue, togglePlay } = usePlayer();
   const { canAutoSync, markInteraction } = useInteractionGuard();
@@ -400,9 +407,14 @@ export function AlbumCarousel3D({ albums, featuredAlbum, refreshSeed }: AlbumCar
           <p className="mt-3 max-w-[480px] text-sm leading-relaxed text-[var(--jb-muted)]">
             {HERO_WANDER_COPY}
           </p>
-          <p className="mt-2 flex items-center gap-1.5 text-xs font-bold text-[var(--family-ocean)]">
+          <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-xs font-bold text-[var(--family-ocean)]">
             <BrandAccentIcon icon="users" className="text-[var(--family-ocean)]" />
-            {getHeroStatsLine(count)}
+            {audienceMicrocopy ? (
+              <span className="rounded-full bg-white/[0.08] px-2 py-0.5 text-[11px] text-[var(--jb-text)]">
+                {audienceMicrocopy}
+              </span>
+            ) : null}
+            <span>{getHeroStatsLine(count)}</span>
           </p>
           <span className="sr-only">Today&apos;s family spotlights: {spotlightNames}</span>
 

@@ -18,6 +18,8 @@ type HomeHeroCarouselProps = {
   albums: Album[];
   featuredAlbum: Album;
   refreshSeed: number;
+  listenerAge?: number | null;
+  audienceMicrocopy?: string;
 };
 
 export function HomeHeroCarousel(props: HomeHeroCarouselProps) {

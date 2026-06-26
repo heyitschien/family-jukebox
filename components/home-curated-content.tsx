@@ -8,54 +8,48 @@ import { HomeHeroCarousel } from "@/components/home-hero-carousel";
 import { HomeNewAtTheTable } from "@/components/home-new-at-table";
 import { HomePlayFamily } from "@/components/home-play-family";
 import { useListenerAgeContext } from "@/contexts/listener-age-context";
-import { curateAlbumsForListener, curateSongsForListener } from "@/lib/audience";
-import type { HomeFeed } from "@/lib/home-feed";
+import { getAudienceCurationMicrocopy } from "@/lib/audience";
+import { buildHomeFeed } from "@/lib/home-feed";
 
 type HomeCuratedContentProps = {
   refreshSeed: number;
-  feed: HomeFeed;
 };
 
-export function HomeCuratedContent({ refreshSeed, feed }: HomeCuratedContentProps) {
+export function HomeCuratedContent({ refreshSeed }: HomeCuratedContentProps) {
   const { listenerAge } = useListenerAgeContext();
 
-  const curated = useMemo(() => {
-    if (listenerAge === null) {
-      return feed;
-    }
+  const feed = useMemo(
+    () => buildHomeFeed(refreshSeed, listenerAge),
+    [listenerAge, refreshSeed],
+  );
 
-    const carouselAlbums = curateAlbumsForListener(feed.hero.carouselAlbums, listenerAge);
-    return {
-      hero: {
-        featuredAlbum: carouselAlbums[0] ?? feed.hero.featuredAlbum,
-        carouselAlbums,
-        spotlightTrack: feed.hero.spotlightTrack,
-      },
-      newAtTheTable: curateSongsForListener(feed.newAtTheTable, listenerAge),
-      todaysFamilyPicks: curateSongsForListener(feed.todaysFamilyPicks, listenerAge),
-      growingWorlds: curateAlbumsForListener(feed.growingWorlds, listenerAge),
-      familyQueue: curateSongsForListener(feed.familyQueue, listenerAge),
-    };
-  }, [feed, listenerAge]);
+  const audienceMicrocopy =
+    listenerAge !== null ? getAudienceCurationMicrocopy(listenerAge) : undefined;
 
   return (
     <>
       <HomeHeroCarousel
-        albums={curated.hero.carouselAlbums}
-        featuredAlbum={curated.hero.featuredAlbum}
+        albums={feed.hero.carouselAlbums}
+        featuredAlbum={feed.hero.featuredAlbum}
         refreshSeed={refreshSeed}
+        listenerAge={listenerAge}
+        audienceMicrocopy={audienceMicrocopy}
       />
-      <HomeNewAtTheTable songs={curated.newAtTheTable} />
-      <HomeFamilyPicks songs={curated.todaysFamilyPicks} listenerAge={listenerAge} />
-      {curated.growingWorlds.length > 0 ? (
+      <HomeNewAtTheTable songs={feed.newAtTheTable} />
+      <HomeFamilyPicks songs={feed.todaysFamilyPicks} listenerAge={listenerAge} />
+      {feed.growingWorlds.length > 0 ? (
         <HomeAlbumShelf
-          albums={curated.growingWorlds}
+          albums={feed.growingWorlds}
           title="Growing worlds"
-          subtitle="Themed album worlds to explore — each cousin's growing music universe"
+          subtitle={
+            audienceMicrocopy
+              ? `${audienceMicrocopy} — themed album worlds from every cousin`
+              : "Themed album worlds to explore — each cousin's growing music universe"
+          }
           showViewAll
         />
       ) : null}
-      <HomePlayFamily familyQueue={curated.familyQueue} listenerAge={listenerAge} />
+      <HomePlayFamily familyQueue={feed.familyQueue} listenerAge={listenerAge} />
     </>
   );
 }

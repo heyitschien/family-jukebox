@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
 
 import { isValidListenerAge } from "@/lib/audience";
 import {
@@ -14,6 +14,15 @@ import {
 } from "@/lib/audience-storage";
 
 const listenerAgeCache: { current: ListenerAgeSnapshotCache } = { current: null };
+
+function readAgeFromUrl(): number | null {
+  if (typeof window === "undefined") return null;
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get("age") ?? params.get("listenerAge");
+  if (!raw) return null;
+  const age = Number(raw);
+  return isValidListenerAge(age) ? age : null;
+}
 
 function getStoredListenerAge(): ReturnType<typeof readListenerAgeFromRaw> {
   if (typeof window === "undefined") return null;
@@ -81,6 +90,14 @@ export function useListenerAge() {
   const markPrompted = useCallback(() => {
     writeHasPromptedForAge();
   }, []);
+
+  useEffect(() => {
+    const urlAge = readAgeFromUrl();
+    if (urlAge === null) return;
+    if (snapshot?.age === urlAge) return;
+    writeListenerAge(urlAge);
+    writeHasPromptedForAge();
+  }, [snapshot?.age]);
 
   return {
     listenerAge: hydrated ? snapshot?.age ?? null : null,
