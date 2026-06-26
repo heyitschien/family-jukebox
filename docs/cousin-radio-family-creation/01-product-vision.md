@@ -1,5 +1,11 @@
 # 01 — Product Vision
 
+## Product Direction
+
+> **Cousin Radio turns love, jokes, memories, and tiny everyday moments into songs worth sharing.**
+
+This sentence is the product compass. It keeps Cousin Radio bigger than birthdays, but still intimate and human. The platform is not only for major life events; it is also for sweet potatoes, garden songs, family jokes, friendship, ordinary days, and the small moments that make people laugh, remember, and feel loved.
+
 ## One-Line Vision
 
 Cousin Radio helps families turn memories, love, and spoken stories into beautiful songs they can save, share, and return to for years.
@@ -50,6 +56,10 @@ A friend celebrates another friend.
 
 A family turns a dish, garden, or kitchen memory into a playful track.
 
+### Tiny Everyday Anthem
+
+A person turns a funny everyday moment, like sweet potatoes, grocery carts, gardens, pets, or inside jokes, into a song worth sharing.
+
 ### Baby / Graduation Song
 
 A family marks a life milestone.
@@ -84,6 +94,7 @@ Friendship
 For Grandma / Grandpa
 For Kids
 Garden / Food / Home
+Tiny Everyday Anthem
 Custom
 ```
 
@@ -108,6 +119,7 @@ Public discovery should feel curated and safe:
 - Grandma Radio
 - Garden Radio
 - Friendship Radio
+- Tiny Everyday Anthems
 - New Baby Radio
 - Immigration Stories Radio
 - Songs for the People We Love
@@ -122,10 +134,14 @@ It is not a fame machine.
 
 It is a memory-and-love machine.
 
+It is also a tiny-joy machine: a place where ordinary moments become playful songs that friends and family can actually send to each other.
+
 ## Success Definition
 
 The product is working when someone hears a song made for them and says:
 
 > “I can’t believe you made this for me.”
+
+It is also working when someone sends a silly personal song to a friend and both people laugh.
 
 That moment is the core product metric.
