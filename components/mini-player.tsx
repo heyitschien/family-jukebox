@@ -9,9 +9,10 @@ import { CoverImage } from "@/components/cover-image";
 import { PlaybackProgressBar } from "@/components/playback-progress-bar";
 import { PlayIconButton } from "@/components/play-icon-button";
 import { SongFavoriteButton } from "@/components/song-favorite-button";
+import { SongShareButton } from "@/components/song-share-button";
 import { formatTime, usePlayer } from "@/contexts/player-context";
 import { BRAND_NAME } from "@/lib/brand";
-import type { RadioMode, RepeatMode, ShuffleMode } from "@/lib/player-queue";
+import type { RepeatMode, ShuffleMode } from "@/lib/player-queue";
 import { cn } from "@/lib/utils";
 import { getMemberBySlug } from "@/data/members";
 
@@ -24,10 +25,8 @@ export function MiniPlayer() {
     skipPrev,
     cycleRepeat,
     toggleShuffle,
-    toggleRadio,
     repeatMode,
     shuffleMode,
-    radioMode,
     currentTime,
     duration,
     seek,
@@ -103,16 +102,15 @@ export function MiniPlayer() {
           isPlaying={isPlaying}
           shuffleMode={shuffleMode}
           repeatMode={repeatMode}
-          radioMode={radioMode}
           playSize="md"
           songSlug={currentSong.slug}
           songTitle={currentSong.title}
+          songShareText={currentSong.subtitle ?? currentSong.story}
           onTogglePlay={togglePlay}
           onSkipPrev={skipPrev}
           onSkipNext={skipNext}
           onToggleShuffle={toggleShuffle}
           onCycleRepeat={cycleRepeat}
-          onToggleRadio={toggleRadio}
         />
       </div>
 
@@ -151,16 +149,15 @@ export function MiniPlayer() {
             isPlaying={isPlaying}
             shuffleMode={shuffleMode}
             repeatMode={repeatMode}
-            radioMode={radioMode}
             playSize="md"
             songSlug={currentSong.slug}
             songTitle={currentSong.title}
+            songShareText={currentSong.subtitle ?? currentSong.story}
             onTogglePlay={togglePlay}
             onSkipPrev={skipPrev}
             onSkipNext={skipNext}
             onToggleShuffle={toggleShuffle}
             onCycleRepeat={cycleRepeat}
-            onToggleRadio={toggleRadio}
           />
           <div className="flex w-full items-center gap-2.5 text-[11px] text-[var(--jb-muted-2)]">
             <span>{formatTime(currentTime)}</span>
@@ -189,42 +186,40 @@ type PlayerTransportControlsProps = {
   isPlaying: boolean;
   shuffleMode: ShuffleMode;
   repeatMode: RepeatMode;
-  radioMode: RadioMode;
   playSize: "sm" | "md";
   songSlug: string;
   songTitle: string;
+  songShareText?: string;
   onTogglePlay: () => void;
   onSkipPrev: () => void;
   onSkipNext: () => void;
   onToggleShuffle: () => void;
   onCycleRepeat: () => void;
-  onToggleRadio: () => void;
 };
 
 function PlayerTransportControls({
   isPlaying,
   shuffleMode,
   repeatMode,
-  radioMode,
   playSize,
   songSlug,
   songTitle,
+  songShareText,
   onTogglePlay,
   onSkipPrev,
   onSkipNext,
   onToggleShuffle,
   onCycleRepeat,
-  onToggleRadio,
 }: PlayerTransportControlsProps) {
   return (
     <div className="flex items-center justify-center gap-0.5 text-[var(--jb-muted)] sm:gap-2">
-      <ModeButton
-        active={radioMode === "on"}
-        label={radioMode === "on" ? `${BRAND_NAME} on` : `${BRAND_NAME} off`}
-        onClick={onToggleRadio}
-      >
-        <RadioIcon active={radioMode === "on"} />
-      </ModeButton>
+      <SongShareButton
+        songSlug={songSlug}
+        songTitle={songTitle}
+        shareText={songShareText}
+        size="md"
+        variant="player"
+      />
 
       <ModeButton
         active={shuffleMode === "on"}
@@ -346,17 +341,6 @@ function ShuffleIcon({ active }: { active: boolean }) {
       <path
         d="M10.59 9.17 5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z"
         opacity={active ? 1 : 0.85}
-      />
-    </svg>
-  );
-}
-
-function RadioIcon({ active }: { active: boolean }) {
-  return (
-    <svg viewBox="0 0 24 24" className="size-[18px] fill-current" aria-hidden>
-      <path
-        d="M3.24 6.15C2.51 6.43 2 7.17 2 8v12c0 1.1.89 2 2 2h16c1.11 0 2-.9 2-2V8c0-1.11-.89-2-2-2H8.3l8.26-3.43L16.88 1 3.24 6.15zM7 20c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm13-8h-2v-2h-2v2H4V8h16v4z"
-        opacity={active ? 1 : 0.75}
       />
     </svg>
   );
