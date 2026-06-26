@@ -83,6 +83,15 @@ export const members: FamilyMember[] = [
       "Tia Rachel — warmth, quiet strength, and songs that celebrate the smallest deeds of love in our family.",
   },
   {
+    slug: "huyen",
+    name: "Tia Huyen",
+    age: 35,
+    role: "family",
+    emoji: "🌱",
+    description:
+      "Tia Huyen — planting every gift with care, turning love into something that grows for the whole family.",
+  },
+  {
     slug: "maria",
     name: "Mama",
     age: 55,

@@ -27,6 +27,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
   "tio-chien": "#7dd3fc",
   evelyn: "#d4af37",
   rachel: "#f4a261",
+  huyen: "#7cb342",
   maria: "#c9956b",
   "sam-and-josh": "#f59e0b",
   "chilling-with-cousin": "#8b9dc3",
@@ -41,6 +42,7 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   "tio-chien": "Tio Chien's Magic Studio",
   evelyn: "Tia Evelyn",
   rachel: "Tia Rachel",
+  huyen: "Tia Huyen",
   maria: "Mama",
   "sam-and-josh": "Tio Sam & Tio Josh",
   "chilling-with-cousin": "Chilling with Cousin",
@@ -109,6 +111,18 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "A birthday release for Tia Rachel — quiet kindness, small acts of love, and the light our family gathers around.",
     accentColor: "#f4a261",
+  },
+  {
+    slug: "planting-every-gift-album",
+    title: "Planting Every Gift",
+    subtitle: "Planting Every Gift · more coming",
+    authorSlug: "huyen",
+    coverSrc: "/assets/huyen/planting-every-gift.jpg",
+    songSlugs: ["planting-every-gift"],
+    dateCreated: "2026-06-26",
+    story:
+      "A growing album for Tia Huyen — planting love, nurturing gifts, and new songs joining the collection as they release.",
+    accentColor: "#7cb342",
   },
   {
     slug: "tia-maria-album",

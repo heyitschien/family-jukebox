@@ -642,6 +642,55 @@ Look at the picture, figured it out
 Cool stuff, yeah, we made it cool
 Solene and Eliana, Marceline, Ocean
 Digital family, just the beginning`,
+  "planting-every-gift": `Who ya, Poocha? From a tiny baby to a titan, yeah
+Remember teasing you, those little tantrums were a riot
+Now the world is looking at you, high speed, shining bright
+In a blink, you're mid-twenties, winning every single fight
+You're exploring global maps while I'm watching the screen
+Building up your empire, yeah, you're the main scene
+Gorgeous inside out, handling the challenges like a pro
+Every lesson that you learn and helps your spirit grow
+When you're the glow, let the light in
+Every evolution is a story worth writing
+Mid-twenties, energy, yeah, you're taking the lead
+Planting all your gifts like a futuristic seed
+We celebrate you, we stay connected, always true
+No one in world does it quite like you, too
+Unembrace all that you are, shine on who you can embrace
+All that you are, my youngest sister, you're the brightest star
+My brightest star
+Working out a sunrise, you're so fit and looking fly
+Taking care of yourself, yeah, you're reaching for the sky
+Inspiration in the mirror, yeah, you're doing your thing
+From a playful little toddler to a woman on the wing
+Learning what it means to be human, to feel it all
+Standing up so bravely, every time you hear the call
+I see you growing stronger, it's my favorite view
+God bless your journey, who you and everything you do
+When you're the glow, let the light in
+Every evolution is a story worth writing
+Mid-twenties, energy, yeah, you're taking the lead
+Planting all your gifts like a futuristic seed
+We celebrate you, we stay connected, always true
+No one in world does it quite like you, too
+Unembrace all that you are, shine on who you can embrace
+All that you are, my youngest sister, you're the brightest star
+Stay connected through the distance, you're the gift I prize
+I see the future shining clearly right behind your eyes
+Support is a promise through the lows and through the peaks
+You're in a strength is exactly what the family seeks
+God bless your little sister in every single way
+Who you and we're celebrating you today
+When you're the glow, let the light in
+Every evolution is a story worth writing
+Mid-twenties, energy, yeah, you're taking the lead
+Planting all your gifts like a futuristic seed
+We celebrate you, we stay connected, always true
+No one in world does it quite like you, too
+My youngest sister, you're the brightest star
+My brightest star
+When, go get it, we're right behind you
+God bless little sis, shine on evolution baby`,
   "rain-on-the-glass": `[Instrumental]`,
   "return-to-the-morning-sun": `Yeah
 Breathe out
