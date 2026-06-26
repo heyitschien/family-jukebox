@@ -1,7 +1,8 @@
-import { getAlbumAuthor, type Album } from "@/data/albums";
+import { getAlbumAuthor, getAlbumSongs, type Album } from "@/data/albums";
 import { getMemberBySlug, members, type FamilyMember, isAdultFamilyMember } from "@/data/members";
 import { getSongAuthor, type Song } from "@/data/songs";
 import { defaultSubjectMemberSlugs } from "@/lib/copyright-constants";
+import { getDayIndex } from "@/lib/featured-rotation";
 
 /** Teens and up hear adult-leaning curations; younger listeners get kid-leaning picks. */
 export const ADULT_LISTENER_THRESHOLD = 13;
@@ -94,20 +95,76 @@ export function scoreSongForListener(song: Song, listenerAge: number): number {
 }
 
 export function scoreAlbumForListener(album: Album, listenerAge: number): number {
-  const author = getAlbumAuthor(album);
-  if (!author) return 0;
-  return scoreSongForListener(
-    {
-      slug: album.slug,
-      title: album.title,
-      authorSlug: album.authorSlug,
-      dateCreated: album.dateCreated,
-      audioSrc: "",
-      coverSrc: album.coverSrc,
-      tags: [],
-    },
-    listenerAge,
+  const albumSongs = getAlbumSongs(album);
+  if (albumSongs.length === 0) {
+    const author = getAlbumAuthor(album);
+    if (!author) return 0;
+    return scoreSongForListener(
+      {
+        slug: album.slug,
+        title: album.title,
+        authorSlug: album.authorSlug,
+        dateCreated: album.dateCreated,
+        audioSrc: "",
+        coverSrc: album.coverSrc,
+        tags: [],
+      },
+      listenerAge,
+    );
+  }
+
+  const songScores = albumSongs.map((song) => scoreSongForListener(song, listenerAge));
+  const peak = Math.max(...songScores);
+  const average = songScores.reduce((sum, score) => sum + score, 0) / songScores.length;
+  return peak * 0.65 + average * 0.35;
+}
+
+/**
+ * Pick one album from candidates using soft audience scoring.
+ * Seed + day index break ties so rotation stays fair over time.
+ */
+export function pickAudienceAwareAlbum(
+  candidates: Album[],
+  listenerAge: number,
+  refreshSeed = 0,
+  fallback?: Album,
+): Album {
+  if (candidates.length === 0) {
+    return fallback ?? candidates[0]!;
+  }
+  if (candidates.length === 1) {
+    return candidates[0]!;
+  }
+
+  const scored = candidates.map((album) => ({
+    album,
+    score: scoreAlbumForListener(album, listenerAge),
+  }));
+  scored.sort(
+    (a, b) => b.score - a.score || a.album.title.localeCompare(b.album.title),
   );
+
+  const topScore = scored[0]?.score ?? 0;
+  const softTier = scored.filter((entry) => entry.score >= topScore - 12);
+  const index = (getDayIndex() + refreshSeed) % softTier.length;
+  return softTier[index]?.album ?? scored[0]?.album ?? fallback ?? candidates[0]!;
+}
+
+/** Warm microcopy for age-aware surfaces — never algorithm-speak. */
+export function getAudienceCurationMicrocopy(listenerAge: number): string {
+  if (listenerAge >= ADULT_LISTENER_THRESHOLD) {
+    return "For grown-up listening";
+  }
+  if (listenerAge <= 6) {
+    return "Made for little listeners";
+  }
+  return "Picked for today's listener";
+}
+
+export function getAudienceFamilyPicksTitle(listenerAge: number): string {
+  const preset = LISTENER_AGE_PRESETS.find((entry) => entry.age === listenerAge);
+  if (preset) return `Today's picks for ${preset.label}`;
+  return `Picked for age ${listenerAge}`;
 }
 
 /** Reorder items for curation — every item stays in the list. */

@@ -7,6 +7,7 @@ import {
   getRotatedAlbumCarousel,
 } from "@/lib/album-rotation";
 import { isCelebrationSong } from "@/lib/celebrations";
+import { curateAlbumsForListener, curateSongsForListener } from "@/lib/audience";
 import {
   createRefreshSeed,
   getFairRotationQueue,
@@ -43,14 +44,20 @@ function sortSongsByRecency(songList: Song[]): Song[] {
   );
 }
 
-function getNewAtTheTableSongs(refreshSeed: number, consumedSongSlugs: Set<string>): Song[] {
+function getNewAtTheTableSongs(
+  refreshSeed: number,
+  consumedSongSlugs: Set<string>,
+  listenerAge: number | null,
+): Song[] {
   const candidates = sortSongsByRecency(
     songs.filter((song) => isNewRelease(song) || isCelebrationSong(song)),
   );
 
   if (candidates.length === 0) return [];
 
-  const rotated = rotateArray(candidates, refreshSeed % candidates.length);
+  const pool =
+    listenerAge !== null ? curateSongsForListener(candidates, listenerAge) : candidates;
+  const rotated = rotateArray(pool, refreshSeed % pool.length);
   const picked: Song[] = [];
 
   for (const song of rotated) {
@@ -68,8 +75,12 @@ function getTodaysFamilyPicks(
   consumedSongSlugs: Set<string>,
   heroSpotlightSlug: string | undefined,
   heroAlbumSongSlugs: Set<string>,
+  listenerAge: number | null,
 ): Song[] {
-  const spotlight = getRotatedSpotlightSongs(refreshSeed);
+  const spotlight =
+    listenerAge !== null
+      ? curateSongsForListener(getRotatedSpotlightSongs(refreshSeed), listenerAge)
+      : getRotatedSpotlightSongs(refreshSeed);
   const picked: Song[] = [];
   const pickedAuthors = new Set<string>();
 
@@ -115,13 +126,17 @@ function applyGrowingWorldsAuthorCap(albumList: Album[], max: number, cap: numbe
 function getGrowingWorldsAlbums(
   heroAlbumSlugs: Set<string>,
   consumedAlbumSlugs: Set<string>,
+  listenerAge: number | null,
 ): Album[] {
   const candidates = getGrowingSeriesAlbums().filter(
     (album) => !heroAlbumSlugs.has(album.slug) && !consumedAlbumSlugs.has(album.slug),
   );
 
+  const ordered =
+    listenerAge !== null ? curateAlbumsForListener(candidates, listenerAge) : candidates;
+
   const capped = applyGrowingWorldsAuthorCap(
-    candidates,
+    ordered,
     GROWING_WORLDS_MAX,
     GROWING_WORLDS_AUTHOR_CAP,
   );
@@ -134,9 +149,12 @@ function getGrowingWorldsAlbums(
 }
 
 /** Coordinates homepage sections so each row has one job and content stays deduped. */
-export function buildHomeFeed(refreshSeed = createRefreshSeed()): HomeFeed {
-  const featuredAlbum = getHeroFeaturedAlbum(refreshSeed);
-  const carouselAlbums = getRotatedAlbumCarousel(refreshSeed);
+export function buildHomeFeed(
+  refreshSeed = createRefreshSeed(),
+  listenerAge: number | null = null,
+): HomeFeed {
+  const featuredAlbum = getHeroFeaturedAlbum(refreshSeed, listenerAge);
+  const carouselAlbums = getRotatedAlbumCarousel(refreshSeed, listenerAge);
   const spotlightTrack = getAlbumSpotlightSong(featuredAlbum, refreshSeed);
 
   const heroAlbumSlugs = new Set(carouselAlbums.map((album) => album.slug));
@@ -148,15 +166,19 @@ export function buildHomeFeed(refreshSeed = createRefreshSeed()): HomeFeed {
     consumedSongSlugs.add(spotlightTrack.slug);
   }
 
-  const newAtTheTable = getNewAtTheTableSongs(refreshSeed, consumedSongSlugs);
+  const newAtTheTable = getNewAtTheTableSongs(refreshSeed, consumedSongSlugs, listenerAge);
   const todaysFamilyPicks = getTodaysFamilyPicks(
     refreshSeed,
     consumedSongSlugs,
     spotlightTrack?.slug,
     heroAlbumSongSlugs,
+    listenerAge,
   );
-  const growingWorlds = getGrowingWorldsAlbums(heroAlbumSlugs, consumedAlbumSlugs);
-  const familyQueue = getFairRotationQueue(refreshSeed);
+  const growingWorlds = getGrowingWorldsAlbums(heroAlbumSlugs, consumedAlbumSlugs, listenerAge);
+  const familyQueue =
+    listenerAge !== null
+      ? curateSongsForListener(getFairRotationQueue(refreshSeed), listenerAge)
+      : getFairRotationQueue(refreshSeed);
 
   return {
     hero: {

@@ -6,6 +6,7 @@ import {
 } from "@/data/albums";
 import { members } from "@/data/members";
 import { songs, type Song } from "@/data/songs";
+import { curateAlbumsForListener, pickAudienceAwareAlbum } from "@/lib/audience";
 import {
   getCelebrationAlbumSlugs,
   getCelebrationHeroBadge,
@@ -79,40 +80,81 @@ function getCelebrationAlbums(): Album[] {
   return getAllAlbums().filter((album) => slugs.has(album.slug));
 }
 
-/** Hero spotlight album — today's celebrations first, then featured releases, then daily rotation. */
-export function getHeroFeaturedAlbum(refreshSeed = 0): Album {
+/** Hero spotlight album — celebrations first, then featured, then daily rotation. */
+export function getHeroFeaturedAlbum(
+  refreshSeed = 0,
+  listenerAge: number | null = null,
+): Album {
   const celebrations = getCelebrationAlbums();
   if (celebrations.length > 0) {
+    if (listenerAge !== null) {
+      return pickAudienceAwareAlbum(
+        celebrations,
+        listenerAge,
+        refreshSeed,
+        celebrations[refreshSeed % celebrations.length] ?? celebrations[0],
+      );
+    }
     const index = refreshSeed % celebrations.length;
     return celebrations[index] ?? celebrations[0] ?? buildFallbackAlbum();
   }
 
   const featured = getFeaturedAlbums();
   if (featured.length > 0) {
+    if (listenerAge !== null) {
+      return pickAudienceAwareAlbum(
+        featured,
+        listenerAge,
+        refreshSeed,
+        featured[refreshSeed % featured.length] ?? featured[0],
+      );
+    }
     const index = refreshSeed % featured.length;
     return featured[index] ?? featured[0] ?? buildFallbackAlbum();
   }
 
   const primary = getPrimaryAlbums();
   if (primary.length === 0) return buildFallbackAlbum();
+  if (listenerAge !== null) {
+    return pickAudienceAwareAlbum(
+      primary,
+      listenerAge,
+      refreshSeed,
+      primary[(getDayIndex() + refreshSeed) % primary.length] ?? primary[0],
+    );
+  }
   const index = (getDayIndex() + refreshSeed) % primary.length;
   return primary[index] ?? primary[0] ?? buildFallbackAlbum();
 }
 
+function orderCarouselRest(
+  rest: Album[],
+  refreshSeed: number,
+  listenerAge: number | null,
+): Album[] {
+  if (listenerAge !== null) {
+    return rotateArray(curateAlbumsForListener(rest, listenerAge), getDayIndex() + refreshSeed);
+  }
+  return rotateArray(rest, getDayIndex() + refreshSeed);
+}
+
 /** 3D carousel — celebration albums first, then one primary album per artist. */
-export function getRotatedAlbumCarousel(refreshSeed = 0): Album[] {
+export function getRotatedAlbumCarousel(
+  refreshSeed = 0,
+  listenerAge: number | null = null,
+): Album[] {
   const primary = getPrimaryAlbums();
   if (primary.length === 0) return [];
 
   const celebrationSlugs = new Set(getCelebrationAlbumSlugs());
-  const hero = getHeroFeaturedAlbum(refreshSeed);
+  const hero = getHeroFeaturedAlbum(refreshSeed, listenerAge);
 
   if (celebrationSlugs.size > 0) {
     const celebrationPrimary = primary.filter((album) => celebrationSlugs.has(album.slug));
     const rest = primary.filter(
       (album) => album.slug !== hero.slug && !celebrationSlugs.has(album.slug),
     );
-    const rotatedRest = rotateArray(rest, getDayIndex() + refreshSeed);
+    const rotatedRest = orderCarouselRest(rest, refreshSeed, listenerAge);
     const otherCelebrations = celebrationPrimary.filter((album) => album.slug !== hero.slug);
     return [hero, ...otherCelebrations, ...rotatedRest];
   }
@@ -121,10 +163,20 @@ export function getRotatedAlbumCarousel(refreshSeed = 0): Album[] {
   const featuredSlugs = new Set(featured.map((album) => album.slug));
 
   const rest = primary.filter((album) => album.slug !== hero.slug);
-  const rotatedRest = rotateArray(rest, getDayIndex() + refreshSeed);
+  const rotatedRest = orderCarouselRest(rest, refreshSeed, listenerAge);
 
   if (featuredSlugs.has(hero.slug)) {
     return [hero, ...rotatedRest];
+  }
+
+  if (listenerAge !== null) {
+    const ordered = curateAlbumsForListener(primary, listenerAge);
+    const heroIndex = ordered.findIndex((album) => album.slug === hero.slug);
+    if (heroIndex > 0) {
+      const withoutHero = ordered.filter((album) => album.slug !== hero.slug);
+      return [hero, ...rotateArray(withoutHero, getDayIndex() + refreshSeed)];
+    }
+    return rotateArray(ordered, getDayIndex() + refreshSeed);
   }
 
   return rotateArray(primary, getDayIndex() + refreshSeed);

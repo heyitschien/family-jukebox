@@ -3,7 +3,7 @@
 import { HomeSongStrip } from "@/components/home-song-strip";
 import { getMemberBySlug } from "@/data/members";
 import type { Song } from "@/data/songs";
-import { getListenerCurationSubtitle } from "@/lib/audience";
+import { getAudienceCurationMicrocopy, getAudienceFamilyPicksTitle, getListenerCurationSubtitle } from "@/lib/audience";
 
 type HomeFamilyPicksProps = {
   songs: Song[];
@@ -17,11 +17,13 @@ export function HomeFamilyPicks({ songs, listenerAge = null }: HomeFamilyPicksPr
     <section className="jb-float-panel mt-4 p-4 sm:p-[22px] lg:mt-6">
       <div className="mb-4">
         <h2 className="text-[22px] font-bold tracking-tight sm:text-[26px]">
-          {listenerAge !== null ? `Today's picks for age ${listenerAge}` : "Today's family picks"}
+          {listenerAge !== null
+            ? getAudienceFamilyPicksTitle(listenerAge)
+            : "Today's family picks"}
         </h2>
         <p className="text-sm font-bold text-[var(--jb-muted)]">
           {listenerAge !== null
-            ? getListenerCurationSubtitle(listenerAge)
+            ? `${getAudienceCurationMicrocopy(listenerAge)} · ${getListenerCurationSubtitle(listenerAge)}`
             : "One spotlight song per cousin — who should you hear from today?"}
         </p>
       </div>

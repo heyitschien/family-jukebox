@@ -24,6 +24,11 @@ import {
   getRotatedFeaturedShelf,
   getSpotlightSongPerMember,
 } from "../lib/featured-rotation";
+import {
+  getAudienceCurationMicrocopy,
+  pickAudienceAwareAlbum,
+  scoreAlbumForListener,
+} from "../lib/audience";
 import { buildHomeFeed, getFamilyPickMemberCount } from "../lib/home-feed";
 import { getHeroAlbumDescription, getHeroStatsLine, HERO_WANDER_COPY } from "../lib/hero-copy";
 import {
@@ -377,6 +382,63 @@ describe("carousel layout", () => {
     assert.ok(medium.coverSize >= large.coverSize);
     assert.ok(large.coverSize >= 128, "large family rings should not shrink below legibility");
     assert.ok(large.radius >= medium.radius);
+  });
+});
+
+describe("age-aware album sourcing", () => {
+  it("scores albums using song-level metadata rollup", () => {
+    const kidAlbum = getAlbumBySlug("ocean-album");
+    const adultAlbum = getAlbumBySlug("legacy-in-the-lane-album");
+    assert.ok(kidAlbum && adultAlbum);
+
+    const kidScore = scoreAlbumForListener(kidAlbum, 6);
+    const adultScoreOnKid = scoreAlbumForListener(adultAlbum, 6);
+    assert.ok(kidScore > adultScoreOnKid, "kid album should score higher for young listeners");
+
+    const grownUpKidScore = scoreAlbumForListener(kidAlbum, 35);
+    const grownUpAdultScore = scoreAlbumForListener(adultAlbum, 35);
+    assert.ok(
+      grownUpAdultScore > grownUpKidScore,
+      "grown-up album should score higher for adult listeners",
+    );
+  });
+
+  it("keeps full carousel length while reordering for listener age", () => {
+    const allAges = getRotatedAlbumCarousel(42);
+    const kidCarousel = getRotatedAlbumCarousel(42, 6);
+    const adultCarousel = getRotatedAlbumCarousel(42, 35);
+
+    assert.equal(kidCarousel.length, allAges.length);
+    assert.equal(adultCarousel.length, allAges.length);
+    assert.deepEqual(
+      new Set(kidCarousel.map((album) => album.slug)),
+      new Set(allAges.map((album) => album.slug)),
+    );
+  });
+
+  it("prefers age-matching hero featured album without dropping celebrations", () => {
+    const seed = 7;
+    const kidHero = getHeroFeaturedAlbum(seed, 6);
+    const adultHero = getHeroFeaturedAlbum(seed, 35);
+    const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
+
+    assert.ok(primarySlugs.has(kidHero.slug));
+    assert.ok(primarySlugs.has(adultHero.slug));
+  });
+
+  it("builds audience-aware home feed with complete family queue", () => {
+    const feed = buildHomeFeed(99, 8);
+    assert.ok(feed.hero.carouselAlbums.length > 0);
+    assert.equal(feed.familyQueue.length, songs.length);
+    assert.equal(getAudienceCurationMicrocopy(8), "Picked for today's listener");
+    assert.equal(getAudienceCurationMicrocopy(3), "Made for little listeners");
+    assert.equal(getAudienceCurationMicrocopy(35), "For grown-up listening");
+  });
+
+  it("pickAudienceAwareAlbum stays within candidate pool", () => {
+    const primary = getPrimaryAlbums();
+    const picked = pickAudienceAwareAlbum(primary, 6, 12);
+    assert.ok(primary.some((album) => album.slug === picked.slug));
   });
 });
 
