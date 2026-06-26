@@ -15,7 +15,7 @@ type HomeCuratedContentProps = {
   refreshSeed: number;
   featuredAlbum: Album;
   carouselAlbums: Album[];
-  supplementarySeries: Album[];
+  growingSeriesAlbums: Album[];
   shelfSongs: Song[];
   familyQueue: Song[];
   spotlightSlugs: string[];
@@ -26,7 +26,7 @@ export function HomeCuratedContent({
   refreshSeed,
   featuredAlbum,
   carouselAlbums,
-  supplementarySeries,
+  growingSeriesAlbums,
   shelfSongs,
   familyQueue,
   spotlightSlugs,
@@ -38,6 +38,7 @@ export function HomeCuratedContent({
     if (listenerAge === null) {
       return {
         carouselAlbums,
+        growingSeriesAlbums,
         shelfSongs,
         familyQueue,
         featuredAlbum,
@@ -46,11 +47,12 @@ export function HomeCuratedContent({
 
     return {
       carouselAlbums: curateAlbumsForListener(carouselAlbums, listenerAge),
+      growingSeriesAlbums: curateAlbumsForListener(growingSeriesAlbums, listenerAge),
       shelfSongs: curateSongsForListener(shelfSongs, listenerAge),
       familyQueue: curateSongsForListener(familyQueue, listenerAge),
       featuredAlbum: curateAlbumsForListener(carouselAlbums, listenerAge)[0] ?? featuredAlbum,
     };
-  }, [carouselAlbums, familyQueue, featuredAlbum, listenerAge, shelfSongs]);
+  }, [carouselAlbums, familyQueue, featuredAlbum, growingSeriesAlbums, listenerAge, shelfSongs]);
 
   return (
     <>
@@ -63,11 +65,11 @@ export function HomeCuratedContent({
         albums={curated.carouselAlbums}
         subtitle="One album per family member — tap to explore or play"
       />
-      {supplementarySeries.length > 0 ? (
+      {curated.growingSeriesAlbums.length > 0 ? (
         <HomeAlbumShelf
-          albums={supplementarySeries}
+          albums={curated.growingSeriesAlbums}
           title="Growing series"
-          subtitle="More growing albums from every cousin — latest drops stay in the hero ring"
+          subtitle="Every cousin's growing albums — themed releases that gain new singles over time"
           showViewAll
         />
       ) : null}

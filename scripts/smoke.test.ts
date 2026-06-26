@@ -235,12 +235,36 @@ describe("album catalog", () => {
     assert.equal(sections[1]?.id, "discography");
   });
 
-  it("surfaces non-carousel series albums for home shelf", () => {
+  it("home growing series shelf includes every artist with songs", () => {
+    const shelf = getGrowingSeriesAlbums();
+    const membersWithSongs = members.filter((member) =>
+      songs.some((song) => song.authorSlug === member.slug),
+    );
+    const shelfAuthors = new Set(shelf.map((album) => album.authorSlug));
+
+    for (const member of membersWithSongs) {
+      assert.ok(
+        shelfAuthors.has(member.slug),
+        `${member.slug} should appear on home growing series shelf`,
+      );
+    }
+
+    assert.ok(
+      shelf.some((album) => album.authorSlug === "kaia"),
+      "Kaia growing album should be on home shelf",
+    );
+    assert.ok(
+      shelf.some((album) => album.authorSlug === "marceline"),
+      "Marceline growing album should be on home shelf",
+    );
+  });
+
+  it("supplementary series excludes primary hero picks only", () => {
     const supplementary = getSupplementarySeriesAlbums();
     const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
     assert.ok(
       supplementary.every((album) => !primarySlugs.has(album.slug)),
-      "supplementary shelf should only list growing albums not in the hero carousel",
+      "supplementary list should only list growing albums not in the hero carousel",
     );
   });
 
