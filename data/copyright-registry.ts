@@ -886,5 +886,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/tio-chien/berry-brainiacs-level-up.jpg",
     "audioSha256": "b3c2280ef2b2aad759253c2967f959fa04c5de2a880be4f29291d0831cce5046",
     "coverSha256": "cbefa50e73a4dab5e74cfeab21450b7e11a21f32f5101ff830f92b6d3c088870"
+  },
+  {
+    "registryId": "CR-2026-the-smallest-heart",
+    "songSlug": "the-smallest-heart",
+    "title": "The Smallest Heart",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T00:41:00.271Z",
+    "primaryArtistSlug": "kaia",
+    "subjectMemberSlugs": [
+      "kaia"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"The Smallest Heart\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/kaia/the-smallest-heart.mp3",
+    "coverAssetPath": "/assets/kaia/the-smallest-heart.jpg",
+    "audioSha256": "e8084ab2b05ac05d35f7c535a222cf42bbf1797f22ee26d1392efef5f65ef295",
+    "coverSha256": "e7981612d7fcd0fb0384b0527438ef6371fe4a33e0a2fe7131343083ad2b79bd"
   }
 ];

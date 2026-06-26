@@ -19,6 +19,7 @@ export type Album = {
 };
 
 const CREATOR_ACCENTS: Record<string, string> = {
+  kaia: "#ffb7c5",
   marceline: "#ff9ec8",
   eliana: "#ff6fb1",
   solene: "#c4b5fd",
@@ -31,6 +32,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
 };
 
 const CREATOR_ALBUM_TITLES: Record<string, string> = {
+  kaia: "Kaia's Little Heart",
   marceline: "Marceline's Silly Sprint",
   eliana: "Eliana's Pink World",
   solene: "Solene's Painted Garden",
@@ -46,6 +48,18 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
 type SeriesAlbumDef = Omit<Album, "kind"> & { kind?: never };
 
 const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
+  {
+    slug: "the-smallest-heart-album",
+    title: "The Smallest Heart",
+    subtitle: "The Smallest Heart · more coming",
+    authorSlug: "kaia",
+    coverSrc: "/assets/kaia/the-smallest-heart.jpg",
+    songSlugs: ["the-smallest-heart"],
+    dateCreated: "2026-06-25",
+    story:
+      "A growing album for Kaia — tender songs for our two-year-old, full of wonder and the biggest little heart.",
+    accentColor: "#ffb7c5",
+  },
   {
     slug: "three-candles-for-marceline-album",
     title: "Three Candles for Marceline",
