@@ -185,9 +185,8 @@ Run `npx tsx -e "..."` or inspect `data/songs.ts` / `data/albums.ts` to refresh 
 1. **Each song → at most one album** (`getSongAlbumAssignmentMap`, test in `smoke.test.ts`)
 2. **Series wins** when resolving parent album for a track (`getAlbumForSong`)
 3. **No duplicate artist in hero carousel** — `getPrimaryAlbums()` returns exactly one per member with songs
-4. **Primary album pick** when artist has both series + discography:
-   - Featured series → series is primary (Evelyn)
-   - Else → whichever has more tracks (Tio → studio album primary, Miracle series supplementary)
+4. **Primary album pick** — latest growing series per artist (newest tracks win); solo collections count as growing series when no themed series exists
+5. **Growing series includes everyone** — `getGrowingSeriesAlbums()` lists all series plus solo full collections; supplementary shelf surfaces extra themed albums without hiding cousins
 
 ### Helpers
 
@@ -195,7 +194,8 @@ Run `npx tsx -e "..."` or inspect `data/songs.ts` / `data/albums.ts` to refresh 
 |----------|-----|
 | `getPrimaryAlbums()` | 3D carousel + spotlight names |
 | `getBrowseAlbumSections()` | `/albums` page sections |
-| `getSupplementarySeriesAlbums()` | Home “Growing series” shelf |
+| `getGrowingSeriesAlbums()` | Browse + inclusive growing-series set (every artist with songs) |
+| `getSupplementarySeriesAlbums()` | Home “Growing series” shelf — extra themed albums, newest first |
 | `groupAlbumsByKind()` | Member pages |
 | `getAlbumHeroBadge(album, hero)` | Carousel badge copy |
 
@@ -279,6 +279,8 @@ Two parallel systems — **albums** (hero/carousel) and **songs** (shelves/queue
 
 | Principle | Where validated |
 |-----------|-----------------|
+| **All-inclusive family culture** | Every artist in growing series + one primary hero slot; fair song queue rotation — `data/albums.ts`, `lib/featured-rotation.ts` |
+| **Love & celebration** | Birthday/Father's Day heroes, featured release badges, musical portraits — `lib/celebrations.ts`, `lib/album-rotation.ts` |
 | **Listen first** | Home leads with 3D album hero + play buttons, not bios |
 | **≤2 taps to play** | Hero play, shelf cards, mini player |
 | **Playback persists** | `PlayerProvider` wraps entire app |
@@ -286,6 +288,8 @@ Two parallel systems — **albums** (hero/carousel) and **songs** (shelves/queue
 | **Fair rotation** | Every member gets spotlight song + primary album slot |
 | **Mobile-first** | Bottom nav, safe-area padding, tap targets ≥44px, play buttons visible on mobile (opacity 100) |
 | **Public link ready** | No auth; lightweight API guards only |
+
+North-star values: `docs/COUSIN-RADIO-DIRECTION.md` §3 · `BRAND_DESIGN_PRINCIPLES` in `lib/brand.ts`.
 
 ### Visual system (actual tokens — `app/globals.css`)
 
