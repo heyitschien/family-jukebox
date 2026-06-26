@@ -932,5 +932,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/rachel/smallest-of-deeds.jpg",
     "audioSha256": "feaf510722845f682db0d7d5f8baaa527123143766fe769722d65e9410a3eb2d",
     "coverSha256": "2d1819172f388cff1fa2032e79c44a09a419d4826a706191364b6fd7d97db1cd"
+  },
+  {
+    "registryId": "CR-2026-planting-every-gift",
+    "songSlug": "planting-every-gift",
+    "title": "Planting Every Gift",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T17:00:13.118Z",
+    "primaryArtistSlug": "huyen",
+    "subjectMemberSlugs": [
+      "huyen"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Planting Every Gift\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/huyen/planting-every-gift.mp3",
+    "coverAssetPath": "/assets/huyen/planting-every-gift.jpg",
+    "audioSha256": "78a83ef39e574725814f9cb9376326b2864b2cd4242fe7598857685a145ce98a",
+    "coverSha256": "746ac8070985459eb91652926a6109728b265a2cca8cc303f9261ef3438f3767"
   }
 ];

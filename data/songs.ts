@@ -550,6 +550,20 @@ export const songs: Song[] = [
     tags: ["birthday", "celebration", "rachel", "family", "kindness", "deeds", "love", "featured"],
     featured: true,
   },
+  {
+    slug: "planting-every-gift",
+    title: "Planting Every Gift",
+    subtitle: "",
+    authorSlug: "huyen",
+    dateCreated: "2026-06-26",
+    audioSrc: "/assets/huyen/planting-every-gift.mp3",
+    coverSrc: "/assets/huyen/planting-every-gift.jpg",
+    story:
+      "A song for Tia Huyen — planting every gift with love and watching what grows in our family.",
+    lyrics: songLyrics["planting-every-gift"],
+    tags: ["huyen", "family", "gift", "love", "growth", "planting", "featured"],
+    featured: true,
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
