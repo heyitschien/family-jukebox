@@ -323,7 +323,7 @@ describe("album rotation", () => {
     const badge = getAlbumHeroBadge(hero, hero);
     const celebrationSlugs = getCelebrationAlbumSlugs();
     if (celebrationSlugs.includes(hero.slug)) {
-      assert.ok(["🎂", "👔"].includes(badge.emoji));
+      assert.ok(["☀️", "🎂", "👔"].includes(badge.emoji));
     } else {
       assert.equal(badge.emoji, hero.featured ? "💛" : "✨");
     }
@@ -497,6 +497,15 @@ describe("new releases", () => {
 });
 
 describe("celebration highlights", () => {
+  it("features Rachel birthday on June 25, 2026", () => {
+    const date = new Date(2026, 5, 25);
+    const active = getActiveCelebrations(date);
+    assert.equal(active.length, 1);
+    assert.equal(active[0]?.id, "rachel-birthday");
+    assert.deepEqual(getCelebrationSongSlugs(date), ["smallest-of-deeds"]);
+    assert.deepEqual(getCelebrationAlbumSlugs(date), ["smallest-of-deeds-album"]);
+  });
+
   it("features Marceline birthday and Father's Day on June 21, 2026", () => {
     const date = new Date(2026, 5, 21);
     const active = getActiveCelebrations(date);
@@ -511,10 +520,11 @@ describe("celebration highlights", () => {
 
   it("keeps celebration releases featured for a few days after launch", () => {
     const dayAfter = new Date(2026, 5, 22);
-    assert.deepEqual(getCelebrationSongSlugs(dayAfter), [
-      "three-candles-for-marceline",
+    assert.deepEqual(getCelebrationSongSlugs(dayAfter).sort(), [
       "legacy-in-the-lane",
-    ]);
+      "smallest-of-deeds",
+      "three-candles-for-marceline",
+    ].sort());
   });
 
   it("computes US Father's Day as the third Sunday in June", () => {

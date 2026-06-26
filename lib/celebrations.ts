@@ -35,6 +35,15 @@ export function isWithinCelebrationWindow(
 
 export const celebrationHighlights: CelebrationHighlight[] = [
   {
+    id: "rachel-birthday",
+    label: "Tia Rachel's birthday",
+    emoji: "☀️",
+    badgePrefix: "Happy birthday · ",
+    songSlugs: ["smallest-of-deeds"],
+    albumSlugs: ["smallest-of-deeds-album"],
+    matchesDate: (date) => isWithinCelebrationWindow(date, 6, 25),
+  },
+  {
     id: "marceline-birthday",
     label: "Marceline's birthday",
     emoji: "🎂",

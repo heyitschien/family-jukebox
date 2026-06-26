@@ -80,7 +80,7 @@ export const members: FamilyMember[] = [
     role: "family",
     emoji: "☀️",
     description:
-      "Tia Rachel — Sunday kitchen light, warmth at the table, and songs that feel like home on a quiet morning.",
+      "Tia Rachel — warmth, quiet strength, and songs that celebrate the smallest deeds of love in our family.",
   },
   {
     slug: "maria",
