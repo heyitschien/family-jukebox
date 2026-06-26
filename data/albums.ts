@@ -57,7 +57,6 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "A birthday release for Marceline — candles, games, and family joy as the littlest cousin turns three.",
     accentColor: "#ff9ec8",
-    featured: true,
   },
   {
     slug: "legacy-in-the-lane-album",
@@ -70,7 +69,6 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "Tio Sam & Tio Josh's Father's Day series — hip-hop tributes to real superheroes who lace up sneakers, not capes.",
     accentColor: "#5eead4",
-    featured: true,
   },
   {
     slug: "gold-in-the-tile-album",
@@ -83,7 +81,6 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "A growing album for Tia Evelyn — indie warmth, K-pop sparkle, and new songs joining the collection as they release.",
     accentColor: "#ff8c42",
-    featured: true,
   },
   {
     slug: "tia-maria-album",
@@ -96,7 +93,6 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "A growing album for Mama — kitchen-table warmth, family cornerstone energy, and new songs joining the collection as they release.",
     accentColor: "#c9956b",
-    featured: true,
   },
   {
     slug: "miracle-in-the-sand-album",
@@ -121,7 +117,6 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "Celebrating our friendship — egg rolls, epiphanies, and new songs joining the collection as they release. Featuring Paul Savage.",
     accentColor: "#d4a574",
-    featured: true,
   },
   {
     slug: "study-lofi-album",
@@ -146,7 +141,6 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "Fresh from the garden and the grocery cart — joyful bilingual songs about vegetables, soil, sunlight, and the strange miracle of being alive.",
     accentColor: "#7cb342",
-    featured: true,
   },
   {
     slug: "fruit-frequency-album",
@@ -159,7 +153,6 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "Fruit-forward Cousin Radio — peel-back-the-sun energy, berry brainiacs, and watermelon waves made with kids, joy, and a little cart-pushing magic.",
     accentColor: "#ff7043",
-    featured: true,
   },
 ];
 
@@ -207,13 +200,74 @@ function buildDiscographyAlbum(member: FamilyMember, memberSongs: Song[]): Album
   };
 }
 
+function getSeriesRecencyDate(album: Album): string {
+  const albumSongs = album.songSlugs
+    .map((slug) => getSongBySlug(slug))
+    .filter((song): song is Song => song !== undefined);
+
+  if (albumSongs.length === 0) return album.dateCreated;
+
+  return albumSongs.reduce(
+    (latest, song) => (song.dateCreated > latest ? song.dateCreated : latest),
+    album.dateCreated,
+  );
+}
+
+function compareSeriesRecency(a: Album, b: Album): number {
+  const dateCmp = getSeriesRecencyDate(b).localeCompare(getSeriesRecencyDate(a));
+  if (dateCmp !== 0) return dateCmp;
+
+  const trackCmp = b.songSlugs.length - a.songSlugs.length;
+  if (trackCmp !== 0) return trackCmp;
+
+  return b.slug.localeCompare(a.slug);
+}
+
+function sortAlbumsByRecency(albumList: Album[]): Album[] {
+  return [...albumList].sort(compareSeriesRecency);
+}
+
+function pickLatestSeriesAlbum(series: Album[]): Album | undefined {
+  if (series.length === 0) return undefined;
+  return sortAlbumsByRecency(series)[0];
+}
+
+function pickPrimaryAlbumForAuthor(authorSlug: string, allAlbums: Album[]): Album | undefined {
+  const memberAlbums = allAlbums.filter((album) => album.authorSlug === authorSlug);
+  if (memberAlbums.length === 0) return undefined;
+  if (memberAlbums.length === 1) return memberAlbums[0];
+
+  const series = memberAlbums.filter((album) => album.kind === "series");
+  const discography = memberAlbums.filter((album) => album.kind === "discography");
+
+  const latestSeries = pickLatestSeriesAlbum(series);
+  if (latestSeries) return latestSeries;
+
+  return discography[0];
+}
+
+function applyFeaturedFlags(allAlbums: Album[]): Album[] {
+  const primaryByAuthor = new Map<string, Album>();
+  for (const member of members) {
+    const primary = pickPrimaryAlbumForAuthor(member.slug, allAlbums);
+    if (primary) {
+      primaryByAuthor.set(member.slug, primary);
+    }
+  }
+
+  return allAlbums.map((album) => ({
+    ...album,
+    featured: primaryByAuthor.get(album.authorSlug)?.slug === album.slug,
+  }));
+}
+
 function buildAlbums(): Album[] {
   const seriesAlbums = buildSeriesAlbums();
   const discographyAlbums = members
     .map((member) => buildDiscographyAlbum(member, getSongsByAuthor(member.slug)))
     .filter((album): album is Album => album !== undefined);
 
-  return [...seriesAlbums, ...discographyAlbums];
+  return applyFeaturedFlags([...seriesAlbums, ...discographyAlbums]);
 }
 
 export const albums: Album[] = buildAlbums();
@@ -236,25 +290,9 @@ export function getAllAlbums(): Album[] {
   return albums;
 }
 
-/** One carousel / hero slot per artist — series when featured or sole album, else discography when fuller. */
+/** One carousel / hero slot per artist — latest growing series, or full collection when that is all they have. */
 export function getPrimaryAlbumForAuthor(authorSlug: string): Album | undefined {
-  const memberAlbums = getAlbumsByAuthor(authorSlug);
-  if (memberAlbums.length === 0) return undefined;
-  if (memberAlbums.length === 1) return memberAlbums[0];
-
-  const series = memberAlbums.filter((album) => album.kind === "series");
-  const discography = memberAlbums.filter((album) => album.kind === "discography");
-
-  const featuredSeries = series.find((album) => album.featured);
-  if (featuredSeries) return featuredSeries;
-
-  const bestDiscography = discography[0];
-  const bestSeries = series[0];
-  if (bestDiscography && bestSeries) {
-    return bestDiscography.songSlugs.length >= bestSeries.songSlugs.length ? bestDiscography : bestSeries;
-  }
-
-  return bestDiscography ?? bestSeries;
+  return pickPrimaryAlbumForAuthor(authorSlug, albums);
 }
 
 /** Exactly one primary album per member with songs — used by the 3D hero carousel. */
@@ -314,17 +352,34 @@ export type BrowseAlbumSection = {
   albums: Album[];
 };
 
-/** Browse page sections — series first, then discography compilations. */
+/**
+ * Growing-series browse set — themed series plus solo full collections for cousins
+ * who do not have a dedicated series yet (so everyone appears in Growing series).
+ */
+export function getGrowingSeriesAlbums(): Album[] {
+  const series = albums.filter((album) => album.kind === "series");
+  const authorsWithSeries = new Set(series.map((album) => album.authorSlug));
+  const soloCollections = albums.filter(
+    (album) => album.kind === "discography" && !authorsWithSeries.has(album.authorSlug),
+  );
+
+  return sortAlbumsByRecency([...series, ...soloCollections]);
+}
+
+/** Browse page sections — growing series first, then extra full collections. */
 export function getBrowseAlbumSections(): BrowseAlbumSection[] {
-  const series = getSeriesAlbums();
-  const discography = getDiscographyAlbums();
+  const growing = getGrowingSeriesAlbums();
+  const authorsWithSeries = new Set(getSeriesAlbums().map((album) => album.authorSlug));
+  const discography = getDiscographyAlbums().filter((album) =>
+    authorsWithSeries.has(album.authorSlug),
+  );
 
   return [
     {
       id: "series" as const,
       title: "Growing series",
-      subtitle: "Themed albums that gain new singles over time",
-      albums: series,
+      subtitle: "Every cousin's latest growing album — new singles drop over time",
+      albums: growing,
     },
     {
       id: "discography" as const,
@@ -335,10 +390,10 @@ export function getBrowseAlbumSections(): BrowseAlbumSection[] {
   ].filter((section) => section.albums.length > 0);
 }
 
-/** Series albums not shown in the hero carousel (e.g. Miracle in the Sand while studio is primary). */
+/** Growing albums not in the hero carousel — older series and extra themed drops. */
 export function getSupplementarySeriesAlbums(): Album[] {
   const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
-  return getSeriesAlbums().filter((album) => !primarySlugs.has(album.slug));
+  return sortAlbumsByRecency(getGrowingSeriesAlbums().filter((album) => !primarySlugs.has(album.slug)));
 }
 
 export function groupAlbumsByKind(authorAlbums: Album[]): {
