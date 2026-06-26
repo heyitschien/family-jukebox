@@ -815,6 +815,23 @@ May this dance go on
 Long after the day is done
 For you my friend
 Celebrating life with you`,
+  "sunday-kitchen-light": `I want wooden foil keeled to this can But want it to the Rogan M.I.S.A.
+There's some terraces want the broken made You wither I'd be wepless enough they'll trade
+Per stay lit the fort is singed or in its dream One year long there's now one use I hate
+Olden's lovin' life I for lovin' life All with just sign and the binding is nigh
+Cume and no coal E for real highs For every every bee of a bar
+Nadeships with chromey Just a weight of framery Long night to be it apart
+Time away hearty flies But run to be from stroke
+Never real and don't need to know it
+Sun's seen what if both the nipples side enough
+Nizz on start unable cum this time
+On shake on the fight I'm waking one in day
+I'm wait the land you care enough use come white
+Oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh, oh
+Olden's lovin' life I for lovin' life
+And the binding is nigh And me every bee of a bar
+Nadeships with chromey Just a weight of framery Long night to be it apart
+Long night to be it apart`,
   "sweet-potato-soul": `Felt the ground, golden hue Slow burn light, I drift to you
 No sudden rush, no jagged edge Just a quiet, steady pledge
 Wrapped in warmth, earthen spice Natural sugar, sweet and wise

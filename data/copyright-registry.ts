@@ -909,5 +909,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/kaia/the-smallest-heart.jpg",
     "audioSha256": "e8084ab2b05ac05d35f7c535a222cf42bbf1797f22ee26d1392efef5f65ef295",
     "coverSha256": "e7981612d7fcd0fb0384b0527438ef6371fe4a33e0a2fe7131343083ad2b79bd"
+  },
+  {
+    "registryId": "CR-2026-sunday-kitchen-light",
+    "songSlug": "sunday-kitchen-light",
+    "title": "Sunday Kitchen Light",
+    "workType": "family-original",
+    "createdDate": "2026-06-26",
+    "registeredAt": "2026-06-26T01:00:03.375Z",
+    "primaryArtistSlug": "rachel",
+    "subjectMemberSlugs": [
+      "rachel"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Sunday Kitchen Light\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/rachel/sunday-kitchen-light.mp3",
+    "coverAssetPath": "/assets/rachel/sunday-kitchen-light.jpg",
+    "audioSha256": "7ea142f327bf552a3ce0df09e2337a326ab47141eafd25a6b96db663b6ca935f",
+    "coverSha256": "252991d2f85b96813875e8f293bd874970c5c1016c45160ee0a8abcd8f64778c"
   }
 ];
