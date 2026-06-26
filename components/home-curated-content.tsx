@@ -67,7 +67,7 @@ export function HomeCuratedContent({
         <HomeAlbumShelf
           albums={supplementarySeries}
           title="Growing series"
-          subtitle="Themed albums gaining new singles — not in the hero ring yet"
+          subtitle="More growing albums from every cousin — latest drops stay in the hero ring"
           showViewAll
         />
       ) : null}

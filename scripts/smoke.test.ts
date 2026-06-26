@@ -8,6 +8,8 @@ import {
   getAlbumBySlug,
   getAlbumForSong,
   getBrowseAlbumSections,
+  getGrowingSeriesAlbums,
+  getPrimaryAlbumForAuthor,
   getPrimaryAlbums,
   getSongAlbumAssignmentMap,
   getSupplementarySeriesAlbums,
@@ -237,10 +239,43 @@ describe("album catalog", () => {
     const supplementary = getSupplementarySeriesAlbums();
     const primarySlugs = new Set(getPrimaryAlbums().map((album) => album.slug));
     assert.ok(
-      !primarySlugs.has("miracle-in-the-sand-album") ||
-        supplementary.every((album) => !primarySlugs.has(album.slug)),
-      "supplementary shelf should only list series albums not in the hero carousel",
+      supplementary.every((album) => !primarySlugs.has(album.slug)),
+      "supplementary shelf should only list growing albums not in the hero carousel",
     );
+  });
+
+  it("includes every artist with songs in growing series browse", () => {
+    const growing = getGrowingSeriesAlbums();
+    const membersWithSongs = members.filter((member) =>
+      songs.some((song) => song.authorSlug === member.slug),
+    );
+    const growingAuthors = new Set(growing.map((album) => album.authorSlug));
+
+    for (const member of membersWithSongs) {
+      assert.ok(
+        growingAuthors.has(member.slug),
+        `${member.slug} should appear in growing series`,
+      );
+    }
+  });
+
+  it("features the latest growing series per artist in the hero carousel", () => {
+    const tioPrimary = getPrimaryAlbumForAuthor("tio-chien");
+    assert.ok(tioPrimary, "tio-chien should have a primary album");
+    assert.equal(
+      tioPrimary.slug,
+      "vegetable-grooves-album",
+      "latest active series should lead the carousel",
+    );
+    assert.equal(tioPrimary.featured, true, "primary growing album should be featured");
+
+    const chillingPrimary = getPrimaryAlbumForAuthor("chilling-with-cousin");
+    assert.equal(chillingPrimary?.slug, "study-lofi-album");
+    assert.equal(chillingPrimary?.featured, true);
+
+    const oceanPrimary = getPrimaryAlbumForAuthor("ocean");
+    assert.equal(oceanPrimary?.slug, "ocean-album");
+    assert.equal(oceanPrimary?.featured, true);
   });
 });
 
