@@ -915,7 +915,7 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "songSlug": "smallest-of-deeds",
     "title": "Smallest of Deeds",
     "workType": "family-original",
-    "createdDate": "2026-06-26",
+    "createdDate": "2026-06-19",
     "registeredAt": "2026-06-26T01:04:19.002Z",
     "primaryArtistSlug": "rachel",
     "subjectMemberSlugs": [

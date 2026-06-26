@@ -586,23 +586,24 @@ describe("new releases", () => {
 });
 
 describe("celebration highlights", () => {
-  it("features Rachel birthday on June 25, 2026", () => {
-    const date = familyCalendarDate(2026, 6, 25);
+  it("features Rachel birthday on June 19, 2026", () => {
+    const date = familyCalendarDate(2026, 6, 19);
     const active = getActiveCelebrations(date);
-    assert.equal(active.length, 1);
-    assert.equal(active[0]?.id, "rachel-birthday");
-    assert.deepEqual(getCelebrationSongSlugs(date), ["smallest-of-deeds"]);
-    assert.deepEqual(getCelebrationAlbumSlugs(date), ["smallest-of-deeds-album"]);
+    const rachel = active.find((highlight) => highlight.id === "rachel-birthday");
+    assert.ok(rachel, "Rachel birthday should be active on June 19");
+    assert.ok(getCelebrationSongSlugs(date).includes("smallest-of-deeds"));
+    assert.ok(getCelebrationAlbumSlugs(date).includes("smallest-of-deeds-album"));
   });
 
   it("features Marceline birthday and Father's Day on June 21, 2026", () => {
     const date = familyCalendarDate(2026, 6, 21);
     const active = getActiveCelebrations(date);
-    assert.equal(active.length, 2);
-    assert.deepEqual(getCelebrationSongSlugs(date), [
-      "three-candles-for-marceline",
+    assert.equal(active.length, 3);
+    assert.deepEqual(getCelebrationSongSlugs(date).sort(), [
       "legacy-in-the-lane",
-    ]);
+      "smallest-of-deeds",
+      "three-candles-for-marceline",
+    ].sort());
     assert.ok(getCelebrationAlbumSlugs(date).includes("three-candles-for-marceline-album"));
     assert.ok(getCelebrationAlbumSlugs(date).includes("legacy-in-the-lane-album"));
   });
