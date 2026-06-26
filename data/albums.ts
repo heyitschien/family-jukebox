@@ -135,6 +135,32 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
       "Instrumental study lo-fi from Chilling with Cousin — calm beats for focus, reading, and background listening.",
     accentColor: "#8b9dc3",
   },
+  {
+    slug: "vegetable-grooves-album",
+    title: "Garden Radio: Vegetable Grooves",
+    subtitle: "Sweet Potato Soul · The Mycelial Loom · 24 Karat Crunch · Spinach Spin · more coming",
+    authorSlug: "tio-chien",
+    coverSrc: "/assets/tio-chien/sweet-potato-soul.jpg",
+    songSlugs: ["sweet-potato-soul", "the-mycelial-loom", "karat-crunch", "spinach-spin"],
+    dateCreated: "2026-06-25",
+    story:
+      "Fresh from the garden and the grocery cart — joyful bilingual songs about vegetables, soil, sunlight, and the strange miracle of being alive.",
+    accentColor: "#7cb342",
+    featured: true,
+  },
+  {
+    slug: "fruit-frequency-album",
+    title: "Garden Radio: Fruit Frequency",
+    subtitle: "Watermelon Wave · Berry Brainiacs: Level Up! · more coming",
+    authorSlug: "tio-chien",
+    coverSrc: "/assets/tio-chien/watermelon-wave.jpg",
+    songSlugs: ["watermelon-wave", "berry-brainiacs-level-up"],
+    dateCreated: "2026-06-25",
+    story:
+      "Fruit-forward Cousin Radio — peel-back-the-sun energy, berry brainiacs, and watermelon waves made with kids, joy, and a little cart-pushing magic.",
+    accentColor: "#ff7043",
+    featured: true,
+  },
 ];
 
 function sortSongsByTrackOrder(items: Song[]): Song[] {
