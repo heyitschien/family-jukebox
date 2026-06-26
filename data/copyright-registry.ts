@@ -911,12 +911,12 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverSha256": "e7981612d7fcd0fb0384b0527438ef6371fe4a33e0a2fe7131343083ad2b79bd"
   },
   {
-    "registryId": "CR-2026-sunday-kitchen-light",
-    "songSlug": "sunday-kitchen-light",
-    "title": "Sunday Kitchen Light",
+    "registryId": "CR-2026-smallest-of-deeds",
+    "songSlug": "smallest-of-deeds",
+    "title": "Smallest of Deeds",
     "workType": "family-original",
     "createdDate": "2026-06-26",
-    "registeredAt": "2026-06-26T01:00:03.375Z",
+    "registeredAt": "2026-06-26T01:04:19.002Z",
     "primaryArtistSlug": "rachel",
     "subjectMemberSlugs": [
       "rachel"
@@ -925,12 +925,12 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "familyProducer": "Chien Family Production",
     "familyCurator": "Tio Chien (HeyITSChien)",
     "productionTool": "google-gemini",
-    "productionNotes": "Family-directed original \"Sunday Kitchen Light\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "productionNotes": "Family-directed original \"Smallest of Deeds\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
     "publicLicense": "all-rights-reserved",
     "familyLicense": "cousin-radio-family-perpetual",
-    "audioAssetPath": "/assets/rachel/sunday-kitchen-light.mp3",
-    "coverAssetPath": "/assets/rachel/sunday-kitchen-light.jpg",
-    "audioSha256": "7ea142f327bf552a3ce0df09e2337a326ab47141eafd25a6b96db663b6ca935f",
-    "coverSha256": "252991d2f85b96813875e8f293bd874970c5c1016c45160ee0a8abcd8f64778c"
+    "audioAssetPath": "/assets/rachel/smallest-of-deeds.mp3",
+    "coverAssetPath": "/assets/rachel/smallest-of-deeds.jpg",
+    "audioSha256": "feaf510722845f682db0d7d5f8baaa527123143766fe769722d65e9410a3eb2d",
+    "coverSha256": "2d1819172f388cff1fa2032e79c44a09a419d4826a706191364b6fd7d97db1cd"
   }
 ];
