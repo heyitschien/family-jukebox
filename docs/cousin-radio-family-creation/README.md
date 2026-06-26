@@ -58,6 +58,7 @@ This turns Cousin Radio into:
 - [Family Company Ownership and Governance Model](./16-family-company-ownership-governance.md)
 - [Family Collaboration Proposal](./17-family-collaboration-proposal.md)
 - [Family Mastermind Meeting Guide](./18-family-mastermind-meeting-guide.md)
+- [Scalable Technology Architecture](./19-scalable-technology-architecture.md)
 
 ## First Build Principle
 
