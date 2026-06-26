@@ -47,6 +47,13 @@ import {
   getFathersDayDate,
 } from "../lib/celebrations";
 import { getNewReleaseLabel, isNewRelease } from "../lib/new-releases";
+
+/** Midday on a family-calendar date — stable in CI (UTC) and local dev. */
+function familyCalendarDate(year: number, month: number, day: number): Date {
+  const mm = String(month).padStart(2, "0");
+  const dd = String(day).padStart(2, "0");
+  return new Date(`${year}-${mm}-${dd}T18:00:00Z`);
+}
 import {
   buildShuffledQueue,
   cycleRepeatMode,
@@ -498,7 +505,7 @@ describe("new releases", () => {
 
 describe("celebration highlights", () => {
   it("features Rachel birthday on June 25, 2026", () => {
-    const date = new Date(2026, 5, 25);
+    const date = familyCalendarDate(2026, 6, 25);
     const active = getActiveCelebrations(date);
     assert.equal(active.length, 1);
     assert.equal(active[0]?.id, "rachel-birthday");
@@ -507,7 +514,7 @@ describe("celebration highlights", () => {
   });
 
   it("features Marceline birthday and Father's Day on June 21, 2026", () => {
-    const date = new Date(2026, 5, 21);
+    const date = familyCalendarDate(2026, 6, 21);
     const active = getActiveCelebrations(date);
     assert.equal(active.length, 2);
     assert.deepEqual(getCelebrationSongSlugs(date), [
@@ -519,7 +526,7 @@ describe("celebration highlights", () => {
   });
 
   it("keeps celebration releases featured for a few days after launch", () => {
-    const dayAfter = new Date(2026, 5, 22);
+    const dayAfter = familyCalendarDate(2026, 6, 22);
     assert.deepEqual(getCelebrationSongSlugs(dayAfter).sort(), [
       "legacy-in-the-lane",
       "smallest-of-deeds",
