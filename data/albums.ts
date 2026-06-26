@@ -101,13 +101,13 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   {
     slug: "smallest-of-deeds-album",
     title: "Smallest of Deeds",
-    subtitle: "Smallest of Deeds · more coming",
+    subtitle: "Tia Rachel's birthday · June 25",
     authorSlug: "rachel",
     coverSrc: "/assets/rachel/smallest-of-deeds.jpg",
     songSlugs: ["smallest-of-deeds"],
     dateCreated: "2026-06-25",
     story:
-      "A growing album for Tia Rachel — quiet kindness, small acts of love, and new songs joining the collection as they release.",
+      "A birthday release for Tia Rachel — quiet kindness, small acts of love, and the light our family gathers around.",
     accentColor: "#f4a261",
   },
   {

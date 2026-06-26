@@ -539,15 +539,15 @@ export const songs: Song[] = [
   {
     slug: "smallest-of-deeds",
     title: "Smallest of Deeds",
-    subtitle: "",
+    subtitle: "Happy birthday · June 25",
     authorSlug: "rachel",
-    dateCreated: "2026-06-26",
+    dateCreated: "2026-06-25",
     audioSrc: "/assets/rachel/smallest-of-deeds.mp3",
     coverSrc: "/assets/rachel/smallest-of-deeds.jpg",
     story:
-      "A gentle song for Tia Rachel — the smallest deeds of love that hold a family together.",
+      "Tia Rachel's birthday song — the smallest deeds of love that hold our family together.",
     lyrics: songLyrics["smallest-of-deeds"],
-    tags: ["rachel", "family", "kindness", "deeds", "love", "featured"],
+    tags: ["birthday", "celebration", "rachel", "family", "kindness", "deeds", "love", "featured"],
     featured: true,
   },
 ];
