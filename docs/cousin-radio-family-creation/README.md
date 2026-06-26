@@ -55,6 +55,9 @@ This turns Cousin Radio into:
 - [Launch Readiness Checklists](./13-launch-checklists.md)
 - [Business Model and Cost Model Notes](./14-business-model.md)
 - [Founder Guardrails](./15-founder-guardrails.md)
+- [Family Company Ownership and Governance Model](./16-family-company-ownership-governance.md)
+- [Family Collaboration Proposal](./17-family-collaboration-proposal.md)
+- [Family Mastermind Meeting Guide](./18-family-mastermind-meeting-guide.md)
 
 ## First Build Principle
 
