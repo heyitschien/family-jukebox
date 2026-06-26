@@ -21,7 +21,7 @@ export const FAMILY_DIRECTORY_SECTIONS: FamilyDirectorySection[] = [
     id: "tias",
     title: "The Tias",
     subtitle: "Auntie warmth, quiet strength, and love planted at the kitchen table.",
-    memberSlugs: ["evelyn", "rachel", "huyen"],
+    memberSlugs: ["evelyn", "rachel", "huyen", "dieu"],
   },
   {
     id: "tios",

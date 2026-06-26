@@ -28,6 +28,7 @@ const CREATOR_ACCENTS: Record<string, string> = {
   evelyn: "#d4af37",
   rachel: "#f4a261",
   huyen: "#7cb342",
+  dieu: "#5d8aa8",
   maria: "#c9956b",
   "sam-and-josh": "#f59e0b",
   "chilling-with-cousin": "#8b9dc3",
@@ -43,6 +44,7 @@ const CREATOR_ALBUM_TITLES: Record<string, string> = {
   evelyn: "Tia Evelyn",
   rachel: "Tia Rachel",
   huyen: "Tia Huyen",
+  dieu: "Tia Dieu",
   maria: "Mama",
   "sam-and-josh": "Tio Sam & Tio Josh",
   "chilling-with-cousin": "Chilling with Cousin",
@@ -123,6 +125,18 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     story:
       "A growing album for Tia Huyen — planting love, nurturing gifts, and new songs joining the collection as they release.",
     accentColor: "#7cb342",
+  },
+  {
+    slug: "the-anchor-in-the-wild-album",
+    title: "The Anchor in the Wild",
+    subtitle: "The Anchor in the Wild · more coming",
+    authorSlug: "dieu",
+    coverSrc: "/assets/dieu/the-anchor-in-the-wild.jpg",
+    songSlugs: ["the-anchor-in-the-wild"],
+    dateCreated: "2026-06-26",
+    story:
+      "A growing album for Tia Dieu — steady love, wild grace, and new songs joining the collection as they release.",
+    accentColor: "#5d8aa8",
   },
   {
     slug: "tia-maria-album",

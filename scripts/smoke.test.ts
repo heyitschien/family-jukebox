@@ -466,7 +466,7 @@ describe("family directory", () => {
     assert.ok(cousinSection?.members.some((member) => member.slug === "eliana"));
 
     const tiaSection = sections.find((section) => section.id === "tias");
-    assert.equal(tiaSection?.members.length, 3);
+    assert.equal(tiaSection?.members.length, 4);
     assert.ok(tiaSection?.members.every((member) => getMemberCircleLabel(member) === "Tia"));
 
     const mamaSection = sections.find((section) => section.id === "mama");
