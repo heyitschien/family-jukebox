@@ -99,15 +99,15 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     accentColor: "#ff8c42",
   },
   {
-    slug: "sunday-kitchen-light-album",
-    title: "Sunday Kitchen Light",
-    subtitle: "Sunday Kitchen Light · more coming",
+    slug: "smallest-of-deeds-album",
+    title: "Smallest of Deeds",
+    subtitle: "Smallest of Deeds · more coming",
     authorSlug: "rachel",
-    coverSrc: "/assets/rachel/sunday-kitchen-light.jpg",
-    songSlugs: ["sunday-kitchen-light"],
+    coverSrc: "/assets/rachel/smallest-of-deeds.jpg",
+    songSlugs: ["smallest-of-deeds"],
     dateCreated: "2026-06-25",
     story:
-      "A growing album for Tia Rachel — Sunday morning warmth, kitchen-table light, and new songs joining the collection as they release.",
+      "A growing album for Tia Rachel — quiet kindness, small acts of love, and new songs joining the collection as they release.",
     accentColor: "#f4a261",
   },
   {
