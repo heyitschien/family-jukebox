@@ -24,6 +24,7 @@ import {
   getRotatedFeaturedShelf,
   getSpotlightSongPerMember,
 } from "../lib/featured-rotation";
+import { buildHomeFeed, getFamilyPickMemberCount } from "../lib/home-feed";
 import {
   getAlbumHeroBadge,
   getAlbumSongsByRecency,
@@ -368,6 +369,52 @@ describe("carousel layout", () => {
     assert.ok(medium.coverSize >= large.coverSize);
     assert.ok(large.coverSize >= 128, "large family rings should not shrink below legibility");
     assert.ok(large.radius >= medium.radius);
+  });
+});
+
+describe("home feed planner", () => {
+  it("builds disjoint homepage sections without repeating hero albums in growing worlds", () => {
+    const feed = buildHomeFeed(42);
+    const heroSlugs = new Set(feed.hero.carouselAlbums.map((album) => album.slug));
+
+    assert.ok(feed.hero.featuredAlbum.slug, "hero should have a featured album");
+    assert.ok(feed.hero.carouselAlbums.length > 0, "hero carousel should not be empty");
+    assert.ok(
+      feed.growingWorlds.every((album) => !heroSlugs.has(album.slug)),
+      "growing worlds should exclude hero carousel albums",
+    );
+    assert.ok(feed.growingWorlds.length <= 8, "growing worlds should cap at 8 albums");
+    assert.ok(feed.newAtTheTable.length <= 6, "new at the table should cap at 6 songs");
+  });
+
+  it("excludes hero spotlight from today's family picks", () => {
+    const feed = buildHomeFeed(7);
+    const spotlightSlug = feed.hero.spotlightTrack?.slug;
+    if (!spotlightSlug) return;
+
+    assert.ok(
+      !feed.todaysFamilyPicks.some((song) => song.slug === spotlightSlug),
+      "hero spotlight should not repeat in family picks",
+    );
+  });
+
+  it("prefers one family pick per member when possible", () => {
+    const feed = buildHomeFeed(99);
+    const authors = feed.todaysFamilyPicks.map((song) => song.authorSlug);
+    assert.equal(
+      new Set(authors).size,
+      authors.length,
+      "family picks should not duplicate authors",
+    );
+    assert.ok(
+      feed.todaysFamilyPicks.length >= Math.min(getFamilyPickMemberCount(), 1),
+      "family picks should surface at least one member spotlight",
+    );
+  });
+
+  it("keeps family queue complete while sections stay deduped", () => {
+    const feed = buildHomeFeed(123);
+    assert.equal(feed.familyQueue.length, songs.length, "family queue should still include every song");
   });
 });
 
