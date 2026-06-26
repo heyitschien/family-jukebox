@@ -8,6 +8,12 @@ This document protects the heart of Cousin Radio as it grows.
 Songs for the people we love.
 ```
 
+## Product Direction
+
+```text
+Cousin Radio turns love, jokes, memories, and tiny everyday moments into songs worth sharing.
+```
+
 If a product decision does not serve this, question it.
 
 ## What Cousin Radio Should Feel Like
@@ -125,3 +131,5 @@ I remember this.
 This mattered.
 This is our song.
 ```
+
+And sometimes it is about helping people laugh together because an ordinary thing became a tiny anthem.
