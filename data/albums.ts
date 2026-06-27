@@ -175,16 +175,28 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
     accentColor: "#d4a574",
   },
   {
-    slug: "study-lofi-album",
-    title: "Study Lo-Fi",
-    subtitle: "Slow Turning Pages · The Margin Notes · Rain on the Glass · Where the Garden Sleeps · more coming",
+    slug: "study-lofi-instrumental-album",
+    title: "Study Lo-Fi · Instrumental",
+    subtitle: "Slow Turning Pages · The Margin Notes · Rain on the Glass · more coming",
     authorSlug: "chilling-with-cousin",
     coverSrc: "/assets/chilling-with-cousin/slow-turning-pages.jpg",
-    songSlugs: ["slow-turning-pages", "the-margin-notes", "rain-on-the-glass", "where-the-garden-sleeps"],
+    songSlugs: ["slow-turning-pages", "the-margin-notes", "rain-on-the-glass"],
     dateCreated: "2026-06-24",
     story:
       "Instrumental study lo-fi from Chilling with Cousin — calm beats for focus, reading, and background listening.",
     accentColor: "#8b9dc3",
+  },
+  {
+    slug: "study-lofi-lyric-album",
+    title: "Study Lo-Fi · With Lyrics",
+    subtitle: "Where the Garden Sleeps · Lavender Wisdom · Let the Light Lean In · more coming",
+    authorSlug: "chilling-with-cousin",
+    coverSrc: "/assets/chilling-with-cousin/where-the-garden-sleeps.jpg",
+    songSlugs: ["where-the-garden-sleeps", "lavender-wisdom", "let-the-light-lean-in"],
+    dateCreated: "2026-06-24",
+    story:
+      "Vocal study lo-fi from Chilling with Cousin — soft lyrics, calm beats, and focus-friendly warmth.",
+    accentColor: "#9b8dc3",
   },
   {
     slug: "vegetable-grooves-album",

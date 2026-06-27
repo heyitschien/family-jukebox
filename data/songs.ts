@@ -283,7 +283,7 @@ export const songs: Song[] = [
   {
     slug: "slow-turning-pages",
     title: "Slow Turning Pages",
-    subtitle: "Track one · Study Lo-Fi",
+    subtitle: "Track one · Study Lo-Fi · Instrumental",
     authorSlug: "chilling-with-cousin",
     dateCreated: "2026-06-24",
     audioSrc: "/assets/chilling-with-cousin/slow-turning-pages.mp3",
@@ -296,7 +296,7 @@ export const songs: Song[] = [
   {
     slug: "the-margin-notes",
     title: "The Margin Notes",
-    subtitle: "Track two · Study Lo-Fi",
+    subtitle: "Track two · Study Lo-Fi · Instrumental",
     authorSlug: "chilling-with-cousin",
     dateCreated: "2026-06-24",
     audioSrc: "/assets/chilling-with-cousin/the-margin-notes.mp3",
@@ -309,7 +309,7 @@ export const songs: Song[] = [
   {
     slug: "rain-on-the-glass",
     title: "Rain on the Glass",
-    subtitle: "Track three · Study Lo-Fi",
+    subtitle: "Track three · Study Lo-Fi · Instrumental",
     authorSlug: "chilling-with-cousin",
     dateCreated: "2026-06-24",
     audioSrc: "/assets/chilling-with-cousin/rain-on-the-glass.mp3",
@@ -322,15 +322,15 @@ export const songs: Song[] = [
   {
     slug: "where-the-garden-sleeps",
     title: "Where the Garden Sleeps",
-    subtitle: "Track four · Study Lo-Fi",
+    subtitle: "Track one · Study Lo-Fi · With Lyrics",
     authorSlug: "chilling-with-cousin",
     dateCreated: "2026-06-24",
     audioSrc: "/assets/chilling-with-cousin/where-the-garden-sleeps.mp3",
     coverSrc: "/assets/chilling-with-cousin/where-the-garden-sleeps.jpg",
     story:
-      "Instrumental study lo-fi — quiet garden dusk, soft beats for focus and background listening.",
+      "Vocal study lo-fi — quiet garden dusk, soft lyrics, and calm beats for focus and background listening.",
     lyrics: songLyrics["where-the-garden-sleeps"],
-    tags: ["lofi", "chill", "study", "instrumental", "background", "chilling-with-cousin"],
+    tags: ["lofi", "chill", "study", "vocal", "lyric", "background", "chilling-with-cousin"],
   },
   {
     slug: "steady-light-in-your-eye",
@@ -577,6 +577,32 @@ export const songs: Song[] = [
     lyrics: songLyrics["the-anchor-in-the-wild"],
     tags: ["dieu", "family", "anchor", "love", "strength", "wild", "featured"],
     featured: true,
+  },
+  {
+    slug: "lavender-wisdom",
+    title: "Lavender Wisdom",
+    subtitle: "Track two · Study Lo-Fi · With Lyrics",
+    authorSlug: "chilling-with-cousin",
+    dateCreated: "2026-06-27",
+    audioSrc: "/assets/chilling-with-cousin/lavender-wisdom.mp3",
+    coverSrc: "/assets/chilling-with-cousin/lavender-wisdom.jpg",
+    story:
+      "Vocal study lo-fi — lavender calm, gentle wisdom, and soft beats for focus and background listening.",
+    lyrics: songLyrics["lavender-wisdom"],
+    tags: ["lofi", "chill", "study", "vocal", "lyric", "background", "chilling-with-cousin"],
+  },
+  {
+    slug: "let-the-light-lean-in",
+    title: "Let the Light Lean In",
+    subtitle: "Track three · Study Lo-Fi · With Lyrics",
+    authorSlug: "chilling-with-cousin",
+    dateCreated: "2026-06-27",
+    audioSrc: "/assets/chilling-with-cousin/let-the-light-lean-in.mp3",
+    coverSrc: "/assets/chilling-with-cousin/let-the-light-lean-in.jpg",
+    story:
+      "Vocal study lo-fi — morning light, soft lyrics, and calm beats for focus and background listening.",
+    lyrics: songLyrics["let-the-light-lean-in"],
+    tags: ["lofi", "chill", "study", "vocal", "lyric", "background", "chilling-with-cousin"],
   },
 ];
 

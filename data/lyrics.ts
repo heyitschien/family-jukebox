@@ -351,12 +351,39 @@ Crunch, crunch, 24 carat, we're glowing
 Orange energy, don't forget the vibe
 Perfect vision, yeah, we're out of sight
 Out of sight`,
+  "lavender-wisdom": `Do on the stands, on the the stands, fire lit blue.
+Fire lit blue, quietude in the hay. Tension leaving the frame.
+Extract the calm, purple vaporizing. A chemical kindness, healing the pause, healing the wisdom.
+Love and a wisdom, healing the wisdom. Love and a wisdom.
+Cordycephate, heart rate descent. Autonomic car, where the morning begins. Stretching on the grass.
+Inside the stillness. Extract the calm, purple vaporizing.
+A chemical kindness, healing the pause, healing the wisdom. Love and a wisdom.
+Morning stillness.`,
   "legacy-in-the-lane": `Yo, Sam on the perimeter, coach with the vision, three queens on the court, making every decision, open-minded, connected, the hip threats stay fresh, teaching them the game, put the legacy to the test,
 it's a father's day miracle, no cap in the message, he's a superman standing, counting all of his blessings, from the baseline to the bleachers, the wisdom he drops, a king in the sight for where the realness never stops,
 Superman flying, Sam and Josh in the booth, father's day cipher, we just telling the truth, three girls, five girls, the strength of the father's reflected in their eyes, we appreciate the moves, we appreciate the love,
 watching over the house, like a blessing from above, Josh at the helm, five daughters in the lane, guiding, guiding the ship through the sun and the rain, no playbook needed, just hard on the sleeve, a bomb so strong, they gotta see it to believe, hit with the flow, but grounded in the roots,
 lace them up tight, yeah he's calling all the shoots, open-minded king, building greatness from the floor, Superman energy, five and some more, Superman flying, Sam and Josh in the booth, father's day cipher, we just telling the truth, three girls, five girls, the strength of the father's reflected in their eyes, we appreciate the moves,
 we appreciate the love, watching over the house, like a blessing from above, happy father's day, Sam, Josh, real superheroes don't wear capes, they lace up sneakers, three girls, five girls, the family tree is looking ill, peace.`,
+  "let-the-light-lean-in": `Dust mode, it's dancing in the gold
+In the gold
+A story the grass has never told
+Never told
+Just stretching out the heavy parts
+Where the morning starts
+Morning starts
+Let the light lean in
+Where the edges meet the skin
+In the silence of the bed
+I'm a lover and a friend
+To the air I'm breathing in
+To the air I'm breathing in
+The city homes beneath the peace
+A temporary sweet release
+Just gravity and blade of green
+Everything between
+Everything between
+Okay, thank you`,
   "miracle-in-the-sand": `The color of the sand in the beginning, the color of the moon
 Dinosaur ghost in the silicon yard
 Before waking up from a dream
