@@ -38,6 +38,15 @@ This turns Cousin Radio into:
 - a family album host,
 - and eventually a public uplifting radio network.
 
+## Direction Decision
+
+```text
+Private creation is the foundation.
+Public celebration is optional.
+```
+
+Cousin Radio should become private-first as soon as practical: public landing page, protected family content, and optional public radio for explicitly approved songs.
+
 ## Document Set
 
 - [Product Vision](./01-product-vision.md)
@@ -59,6 +68,8 @@ This turns Cousin Radio into:
 - [Family Collaboration Proposal](./17-family-collaboration-proposal.md)
 - [Family Mastermind Meeting Guide](./18-family-mastermind-meeting-guide.md)
 - [Scalable Technology Architecture](./19-scalable-technology-architecture.md)
+- [Private-First and Public Radio Model](./20-private-first-public-radio-model.md)
+- [Privacy-First Migration Plan](./21-privacy-first-migration-plan.md)
 
 ## First Build Principle
 
