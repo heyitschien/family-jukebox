@@ -314,7 +314,7 @@ describe("album catalog", () => {
     assert.equal(tioPrimary.featured, true, "primary growing album should be featured");
 
     const chillingPrimary = getPrimaryAlbumForAuthor("chilling-with-cousin");
-    assert.equal(chillingPrimary?.slug, "study-lofi-album");
+    assert.equal(chillingPrimary?.slug, "study-lofi-lyric-album");
     assert.equal(chillingPrimary?.featured, true);
 
     const oceanPrimary = getPrimaryAlbumForAuthor("ocean");

@@ -978,5 +978,51 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/dieu/the-anchor-in-the-wild.jpg",
     "audioSha256": "c974338235b9cc855ffec8bc1de5f68afb26a2f4900f2a0bf018f454cd7c51bc",
     "coverSha256": "0eac9058744623210bd276f27d86de86037134946903bc718a2063abea6114c4"
+  },
+  {
+    "registryId": "CR-2026-lavender-wisdom",
+    "songSlug": "lavender-wisdom",
+    "title": "Lavender Wisdom",
+    "workType": "family-original",
+    "createdDate": "2026-06-27",
+    "registeredAt": "2026-06-27T16:22:40.383Z",
+    "primaryArtistSlug": "chilling-with-cousin",
+    "subjectMemberSlugs": [
+      "chilling-with-cousin"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Lavender Wisdom\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/chilling-with-cousin/lavender-wisdom.mp3",
+    "coverAssetPath": "/assets/chilling-with-cousin/lavender-wisdom.jpg",
+    "audioSha256": "aea25c267279f10ff900f537d035fd673b604890a6e477f9b4e249455f730b88",
+    "coverSha256": "a6cd4975484ec518161c633c1954f6694e1ca1072459b0d0d9803a9c4036919f"
+  },
+  {
+    "registryId": "CR-2026-let-the-light-lean-in",
+    "songSlug": "let-the-light-lean-in",
+    "title": "Let the Light Lean In",
+    "workType": "family-original",
+    "createdDate": "2026-06-27",
+    "registeredAt": "2026-06-27T16:22:53.019Z",
+    "primaryArtistSlug": "chilling-with-cousin",
+    "subjectMemberSlugs": [
+      "chilling-with-cousin"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Let the Light Lean In\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/chilling-with-cousin/let-the-light-lean-in.mp3",
+    "coverAssetPath": "/assets/chilling-with-cousin/let-the-light-lean-in.jpg",
+    "audioSha256": "d500d6d3ccff16e58cad47e624a4cc05659b681d84da2fceeed6d2200d55bc08",
+    "coverSha256": "a65d9cb690c3f4bd74d9d463e9f76062cc4101cf17b609f7e77b4a8aa2a2a64a"
   }
 ];
