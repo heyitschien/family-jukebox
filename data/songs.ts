@@ -604,6 +604,19 @@ export const songs: Song[] = [
     lyrics: songLyrics["let-the-light-lean-in"],
     tags: ["lofi", "chill", "study", "vocal", "lyric", "background", "chilling-with-cousin"],
   },
+  {
+    slug: "sun-and-the-stone",
+    title: "Sun and the Stone",
+    subtitle: "Track four · Study Lo-Fi · With Lyrics",
+    authorSlug: "chilling-with-cousin",
+    dateCreated: "2026-06-27",
+    audioSrc: "/assets/chilling-with-cousin/sun-and-the-stone.mp3",
+    coverSrc: "/assets/chilling-with-cousin/sun-and-the-stone.jpg",
+    story:
+      "Vocal study lo-fi — warm sun on stone, soft lyrics, and calm beats for focus and background listening.",
+    lyrics: songLyrics["sun-and-the-stone"],
+    tags: ["lofi", "chill", "study", "vocal", "lyric", "background", "chilling-with-cousin"],
+  },
 ];
 
 export function getSongBySlug(slug: string): Song | undefined {
