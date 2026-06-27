@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Cousin Radio — Mobile First Landing Mockup</title>
+    <style>
+      :root {
+        --bg: #050914;
+        --bg-2: #09111f;
+        --surface: rgba(14, 21, 39, 0.82);
+        --surface-2: rgba(23, 30, 52, 0.72);
+        --border: rgba(255, 255, 255, 0.1);
+        --border-hot: rgba(255, 106, 169, 0.45);
+        --text: #fff7ff;
+        --muted: #c7bedb;
+        --soft: #8f86a7;
+        --pink: #ff5b9a;
+        --coral: #ff7d6e;
+        --purple: #9d65ff;
+        --blue: #6e8bff;
+        --green: #71f7c4;
+        --shadow: 0 24px 80px rgba(0, 0, 0, 0.42);
+        --radius-lg: 28px;
+        --radius-md: 20px;
+        --radius-sm: 14px;
+        --max: 1180px;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 10% 10%, rgba(255, 91, 154, 0.18), transparent 30%),
+          radial-gradient(circle at 88% 20%, rgba(110, 139, 255, 0.18), transparent 32%),
+          linear-gradient(180deg, #050914 0%, #07101d 52%, #050914 100%);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.36;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+        background-size: 28px 28px;
+        mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
+      }
+
+      a { color: inherit; text-decoration: none; }
+      button { font: inherit; }
+
+      .page { overflow: hidden; padding-bottom: 92px; }
+
+      .shell {
+        width: min(100% - 32px, var(--max));
+        margin: 0 auto;
+      }
+
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        border-bottom: 1px solid var(--border);
+        background: rgba(5, 9, 20, 0.76);
+        backdrop-filter: blur(22px);
+      }
+
+      .topbar-inner {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        font-weight: 900;
+        letter-spacing: -0.04em;
+      }
+
+      .brand-mark {
+        width: 32px;
+        height: 32px;
+        display: grid;
+        place-items: center;
+        color: var(--pink);
+        filter: drop-shadow(0 0 16px rgba(255, 91, 154, 0.35));
+      }
+
+      .brand-mark svg { width: 100%; height: 100%; }
+
+      .desktop-nav {
+        display: none;
+        gap: 32px;
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .desktop-actions { display: none; gap: 12px; }
+
+      .icon-button,
+      .button {
+        border: 1px solid var(--border);
+        color: var(--text);
+        background: rgba(255,255,255,0.04);
+        border-radius: 999px;
+        cursor: pointer;
+      }
+
+      .icon-button {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+      }
+
+      .button {
+        min-height: 48px;
+        padding: 0 22px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-weight: 800;
+      }
+
+      .button-primary {
+        border: 0;
+        background: linear-gradient(135deg, var(--pink), var(--purple) 58%, var(--coral));
+        box-shadow: 0 16px 36px rgba(255, 91, 154, 0.28), inset 0 1px 0 rgba(255,255,255,0.32);
+      }
+
+      .button-secondary {
+        border-color: rgba(255, 91, 154, 0.52);
+        background: rgba(12, 15, 28, 0.72);
+      }
+
+      .hero {
+        padding: 36px 0 28px;
+        display: grid;
+        gap: 28px;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+        padding: 8px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--border-hot);
+        background: rgba(255, 91, 154, 0.12);
+        color: #ffd3e7;
+        font-weight: 800;
+        font-size: 13px;
+      }
+
+      h1 {
+        margin: 18px 0 14px;
+        max-width: 620px;
+        font-size: clamp(44px, 12vw, 72px);
+        line-height: 0.95;
+        letter-spacing: -0.08em;
+      }
+
+      .gradient-text {
+        color: transparent;
+        background: linear-gradient(100deg, var(--pink), #e57bff 45%, var(--blue));
+        -webkit-background-clip: text;
+        background-clip: text;
+      }
+
+      .hero-copy {
+        max-width: 460px;
+        margin: 0 0 22px;
+        color: var(--muted);
+        font-size: 17px;
+        line-height: 1.65;
+      }
+
+      .hero-actions {
+        display: grid;
+        gap: 12px;
+        max-width: 320px;
+      }
+
+      .trust-line {
+        margin-top: 18px;
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .trust-line strong { color: #ff9ac4; }
+
+      .lock {
+        width: 28px;
+        height: 28px;
+        flex: 0 0 auto;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(255,255,255,0.08);
+        color: #f5d4ff;
+      }
+
+      .album-stage {
+        position: relative;
+        min-height: 360px;
+        display: grid;
+        place-items: center;
+        perspective: 1000px;
+      }
+
+      .album-row {
+        width: 100%;
+        height: 320px;
+        position: relative;
+      }
+
+      .album-card {
+        position: absolute;
+        top: 36px;
+        left: 50%;
+        width: 178px;
+        height: 238px;
+        border-radius: 24px;
+        border: 1px solid rgba(255,255,255,0.16);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        background: linear-gradient(160deg, #172236, #080c16);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 16px;
+        transform-style: preserve-3d;
+      }
+
+      .album-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--art, linear-gradient(135deg, var(--pink), var(--purple)));
+        opacity: 0.95;
+      }
+
+      .album-card::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.48));
+      }
+
+      .album-card > * { position: relative; z-index: 2; }
+
+      .album-card.center {
+        z-index: 5;
+        width: 236px;
+        height: 300px;
+        top: 0;
+        margin-left: -118px;
+        border-color: rgba(255, 91, 154, 0.58);
+      }
+
+      .album-card.left-1 { margin-left: -214px; transform: rotateY(32deg) scale(0.78); z-index: 4; }
+      .album-card.left-2 { margin-left: -304px; transform: rotateY(42deg) scale(0.62); z-index: 3; opacity: 0.72; }
+      .album-card.right-1 { margin-left: 54px; transform: rotateY(-32deg) scale(0.78); z-index: 4; }
+      .album-card.right-2 { margin-left: 160px; transform: rotateY(-42deg) scale(0.62); z-index: 3; opacity: 0.72; }
+
+      .album-title { font-size: 24px; line-height: 1.02; font-weight: 950; letter-spacing: -0.06em; text-shadow: 0 2px 16px rgba(0,0,0,0.5); }
+      .album-card.center .album-title { font-size: 26px; margin-top: 48px; }
+      .badge { align-self: flex-start; padding: 8px 10px; border-radius: 999px; background: rgba(0,0,0,0.55); font-size: 13px; font-weight: 800; }
+      .album-meta { text-align: center; color: rgba(255,255,255,0.82); font-size: 14px; }
+
+      .play-circle {
+        width: 82px;
+        height: 82px;
+        border-radius: 50%;
+        margin: 0 auto;
+        display: grid;
+        place-items: center;
+        background: radial-gradient(circle at 35% 25%, #ff8ac0, #8d6cff 58%, #050914 59%);
+        box-shadow: 0 0 48px rgba(169, 94, 255, 0.55);
+      }
+
+      .play-triangle {
+        width: 0;
+        height: 0;
+        margin-left: 6px;
+        border-top: 14px solid transparent;
+        border-bottom: 14px solid transparent;
+        border-left: 21px solid #050914;
+      }
+
+      .dots { display: flex; justify-content: center; gap: 9px; margin-top: -12px; }
+      .dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.22); }
+      .dot.active { width: 26px; border-radius: 999px; background: linear-gradient(90deg, var(--pink), var(--blue)); }
+
+      .section-card {
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        background: linear-gradient(180deg, rgba(18, 25, 43, 0.8), rgba(8, 13, 25, 0.75));
+        box-shadow: var(--shadow);
+      }
+
+      .section-title {
+        margin: 0 0 20px;
+        text-align: center;
+        font-size: 22px;
+        letter-spacing: -0.04em;
+      }
+
+      .how { padding: 22px; }
+      .steps { display: grid; gap: 14px; }
+
+      .step-card {
+        display: grid;
+        grid-template-columns: 1fr 92px;
+        gap: 12px;
+        align-items: center;
+        min-height: 140px;
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255,255,255,0.035);
+        border: 1px solid var(--border);
+      }
+
+      .step-head { display: flex; align-items: center; gap: 12px; color: #ffc0de; font-weight: 900; font-size: 18px; }
+      .step-num { width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, var(--pink), var(--purple)); color: white; font-size: 14px; }
+      .step-card p { color: var(--muted); line-height: 1.55; margin: 10px 0 0; }
+      .mascot { height: 90px; border-radius: 24px; display: grid; place-items: center; font-size: 46px; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.22), transparent 36%), linear-gradient(135deg, rgba(255,91,154,0.34), rgba(110,139,255,0.16)); }
+
+      .grid-two { display: grid; gap: 18px; margin-top: 18px; }
+      .panel { padding: 20px; }
+      .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
+      .panel-head h2 { margin: 0; font-size: 22px; letter-spacing: -0.04em; }
+      .panel-head a { color: #ff9ac4; font-size: 14px; font-weight: 800; }
+
+      .radio-scroll { display: grid; grid-auto-flow: column; grid-auto-columns: 138px; gap: 14px; overflow-x: auto; padding-bottom: 8px; scroll-snap-type: x mandatory; }
+      .radio-item { scroll-snap-align: start; }
+      .cover {
+        aspect-ratio: 1;
+        border-radius: 18px;
+        border: 1px solid rgba(255,255,255,0.14);
+        background: var(--art, linear-gradient(135deg, var(--pink), var(--purple)));
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 14px 32px rgba(0,0,0,0.28);
+      }
+
+      .cover::before { content: attr(data-icon); position: absolute; inset: 0; display: grid; place-items: center; font-size: 48px; }
+      .mini-play { position: absolute; right: 10px; bottom: 10px; width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: rgba(5,9,20,0.82); border: 1px solid rgba(255,255,255,0.2); }
+      .radio-item h3 { margin: 10px 0 3px; font-size: 14px; line-height: 1.2; }
+      .radio-item p { margin: 0; color: var(--soft); font-size: 12px; }
+
+      .mini-player {
+        margin-top: 18px;
+        padding: 12px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid var(--border);
+        display: grid;
+        grid-template-columns: 48px 1fr 54px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .mini-cover { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, #ffb15e, #ff5b9a); display: grid; place-items: center; }
+      .wave { height: 20px; border-radius: 999px; background: repeating-linear-gradient(90deg, #ff6bad 0 3px, transparent 3px 9px); mask-image: linear-gradient(90deg, transparent, black 12%, black 72%, transparent); }
+      .pause { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; border: 1px solid rgba(255,91,154,0.6); box-shadow: 0 0 24px rgba(255,91,154,0.22); }
+
+      .family-card {
+        display: grid;
+        gap: 16px;
+      }
+
+      .family-top { display: flex; align-items: center; gap: 14px; }
+      .avatar { width: 76px; height: 76px; border-radius: 28px; border: 1px solid var(--border-hot); display: grid; place-items: center; font-size: 34px; background: linear-gradient(135deg, rgba(255,91,154,0.38), rgba(110,139,255,0.2)); }
+      .family-name { margin: 0 0 6px; font-size: 21px; font-weight: 900; letter-spacing: -0.04em; }
+      .private-pill { display: inline-flex; padding: 6px 10px; border: 1px solid var(--border-hot); border-radius: 999px; color: #ffd3e7; font-size: 12px; }
+      .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 14px 0; border-block: 1px solid var(--border); text-align: center; }
+      .stat strong { display: block; font-size: 18px; }
+      .stat span { color: var(--soft); font-size: 12px; }
+      .memory-list { display: grid; gap: 10px; }
+      .memory { display: grid; grid-template-columns: 42px 1fr 34px; gap: 10px; align-items: center; padding: 10px; border-radius: 16px; background: rgba(255,255,255,0.035); }
+      .memory-thumb { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(255,91,154,0.5), rgba(112,247,196,0.25)); }
+      .memory h4 { margin: 0; font-size: 13px; }
+      .memory p { margin: 2px 0 0; color: var(--soft); font-size: 12px; }
+      .memory button { width: 34px; height: 34px; border: 0; color: #ff91c5; border-radius: 50%; background: rgba(255,91,154,0.12); }
+
+      .mission {
+        margin-top: 18px;
+        overflow: hidden;
+        display: grid;
+      }
+
+      .mission-copy { padding: 28px; }
+      .heart { font-size: 52px; color: var(--pink); text-shadow: 0 0 28px rgba(255,91,154,0.5); }
+      .mission h2 { margin: 10px 0 20px; font-size: 36px; line-height: 1.02; letter-spacing: -0.07em; }
+      .mission-columns { display: grid; gap: 18px; color: var(--muted); line-height: 1.6; }
+      .campfire {
+        min-height: 260px;
+        display: grid;
+        place-items: end center;
+        padding: 26px;
+        background:
+          radial-gradient(circle at 50% 76%, rgba(255,126,66,0.32), transparent 18%),
+          radial-gradient(circle at 50% 55%, rgba(255,91,154,0.18), transparent 26%),
+          linear-gradient(180deg, rgba(110,139,255,0.08), rgba(5,9,20,0.2)),
+          url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='280' viewBox='0 0 600 280'%3E%3Crect width='600' height='280' fill='%23050a15'/%3E%3Cpath d='M0 210 C140 170 220 230 360 190 C480 155 530 190 600 165 L600 280 L0 280 Z' fill='%230b1728'/%3E%3Cg fill='%23ffd47a'%3E%3Ccircle cx='80' cy='48' r='3'/%3E%3Ccircle cx='145' cy='37' r='3'/%3E%3Ccircle cx='215' cy='44' r='3'/%3E%3Ccircle cx='290' cy='34' r='3'/%3E%3Ccircle cx='362' cy='42' r='3'/%3E%3Ccircle cx='430' cy='35' r='3'/%3E%3Ccircle cx='505' cy='46' r='3'/%3E%3C/g%3E%3Cpath d='M70 55 C190 85 310 20 520 58' stroke='%23ffc15c' stroke-width='2' fill='none' opacity='.75'/%3E%3Cg fill='%23f0c4b4' opacity='.78'%3E%3Ccircle cx='120' cy='210' r='18'/%3E%3Ccircle cx='172' cy='202' r='18'/%3E%3Ccircle cx='224' cy='214' r='18'/%3E%3Ccircle cx='378' cy='214' r='18'/%3E%3Ccircle cx='430' cy='202' r='18'/%3E%3Ccircle cx='482' cy='210' r='18'/%3E%3C/g%3E%3Cpath d='M300 185 C280 210 292 230 300 238 C312 224 326 207 300 185Z' fill='%23ff7d6e'/%3E%3Cpath d='M303 194 C292 214 300 226 306 233 C314 219 320 207 303 194Z' fill='%23ffd47a'/%3E%3C/svg%3E");
+        background-size: cover;
+        background-position: center;
+      }
+
+      .cta-band {
+        margin-top: 20px;
+        padding: 24px;
+        border-radius: 28px;
+        display: grid;
+        gap: 18px;
+        align-items: center;
+        background: linear-gradient(110deg, rgba(255,91,154,0.78), rgba(157,101,255,0.72), rgba(110,139,255,0.78));
+        box-shadow: 0 24px 72px rgba(157,101,255,0.22);
+      }
+      .cta-icon { width: 66px; height: 66px; border-radius: 50%; display: grid; place-items: center; font-size: 32px; background: rgba(255,255,255,0.18); box-shadow: inset 0 1px 0 rgba(255,255,255,0.3); }
+      .cta-band h2 { margin: 0 0 4px; font-size: 26px; letter-spacing: -0.05em; }
+      .cta-band p { margin: 0; color: rgba(255,255,255,0.82); }
+
+      .footer { padding: 32px 0 22px; color: var(--muted); }
+      .footer-grid { display: grid; gap: 20px; }
+      .footer-links, .socials { display: flex; gap: 18px; flex-wrap: wrap; }
+      .socials span { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 12px; border: 1px solid var(--border); }
+
+      .bottom-nav {
+        position: fixed;
+        z-index: 30;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-top: 1px solid var(--border);
+        background: rgba(5, 9, 20, 0.88);
+        backdrop-filter: blur(24px);
+        padding: 9px 18px calc(9px + env(safe-area-inset-bottom));
+      }
+
+      .bottom-nav-inner {
+        max-width: 520px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+      }
+
+      .nav-item { display: grid; place-items: center; gap: 3px; color: #cec6df; font-size: 12px; font-weight: 800; }
+      .nav-item.active { color: var(--pink); }
+      .nav-item svg { width: 22px; height: 22px; }
+
+      .mobile-menu-preview {
+        margin-top: 18px;
+        padding: 20px;
+        border-radius: 26px;
+        border: 1px solid var(--border);
+        background: linear-gradient(180deg, rgba(18,25,43,0.92), rgba(7,11,22,0.94));
+      }
+      .menu-row { display: flex; align-items: center; gap: 12px; min-height: 48px; padding: 0 10px; border-radius: 14px; color: var(--muted); }
+      .menu-row.active { color: #fff; background: rgba(255,255,255,0.06); }
+      .menu-privacy { margin-top: 22px; padding: 24px; text-align: center; color: var(--muted); }
+      .menu-privacy strong { color: #ff9ac4; display: block; font-size: 19px; margin: 10px 0 6px; }
+
+      @media (min-width: 760px) {
+        .page { padding-bottom: 0; }
+        .desktop-nav, .desktop-actions { display: flex; align-items: center; }
+        .menu-button { display: none; }
+        .hero { grid-template-columns: 0.9fr 1.1fr; align-items: center; padding: 72px 0 36px; }
+        .hero-actions { grid-template-columns: 1fr; }
+        .album-card.center { width: 304px; height: 390px; margin-left: -152px; }
+        .album-card { width: 210px; height: 290px; top: 48px; }
+        .album-row { height: 430px; }
+        .album-stage { min-height: 470px; }
+        .album-card.left-1 { margin-left: -304px; }
+        .album-card.left-2 { margin-left: -432px; }
+        .album-card.right-1 { margin-left: 94px; }
+        .album-card.right-2 { margin-left: 238px; }
+        .steps { grid-template-columns: repeat(3, 1fr); }
+        .step-card { grid-template-columns: 1fr; min-height: 190px; }
+        .grid-two { grid-template-columns: 1.3fr 0.87fr; }
+        .mission { grid-template-columns: 1.1fr 0.9fr; }
+        .mission-columns { grid-template-columns: 0.8fr 1fr; }
+        .cta-band { grid-template-columns: 70px 1fr auto; padding: 26px 34px; }
+        .footer-grid { grid-template-columns: 1fr auto auto; align-items: center; }
+        .bottom-nav { display: none; }
+        .mobile-menu-preview { display: none; }
+      }
+
+      @media (max-width: 420px) {
+        .shell { width: min(100% - 24px, var(--max)); }
+        h1 { font-size: 40px; }
+        .album-card.center { width: 218px; height: 286px; margin-left: -109px; }
+        .album-card { width: 156px; height: 222px; }
+        .album-card.left-1 { margin-left: -190px; }
+        .album-card.left-2 { margin-left: -274px; }
+        .album-card.right-1 { margin-left: 40px; }
+        .album-card.right-2 { margin-left: 126px; }
+        .radio-scroll { grid-auto-columns: 118px; }
+        .hero-actions { max-width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <div class="shell topbar-inner">
+          <a class="brand" href="#" aria-label="Cousin Radio home">
+            <span class="brand-mark" aria-hidden="true">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 39s-15-8.8-15-20A8 8 0 0 1 24 14a8 8 0 0 1 15 5c0 11.2-15 20-15 20Z" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/>
+                <path d="M13 24h6l3-7 5 14 3-7h5" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            <span>Cousin Radio</span>
+          </a>
+          <nav class="desktop-nav" aria-label="Public navigation">
+            <a href="#radio">Explore Radio</a>
+            <a href="#how">How It Works</a>
+            <a href="#family">Families</a>
+            <a href="#pricing">Pricing</a>
+          </nav>
+          <div class="desktop-actions">
+            <a class="button" href="#signin">Sign In</a>
+            <a class="button button-primary" href="#create">♫ Create Family Song</a>
+          </div>
+          <button class="icon-button menu-button" aria-label="Open menu">☰</button>
+        </div>
+      </header>
+
+      <main>
+        <section class="shell hero">
+          <div>
+            <span class="eyebrow">💗 Private-first family radio</span>
+            <h1>Every Family Deserves Its Own <span class="gradient-text">Radio Station</span></h1>
+            <p class="hero-copy">Create private songs, albums, and memories for the people you love. Share them with family—or with the world when you’re ready.</p>
+            <div class="hero-actions">
+              <a class="button button-primary" href="#create">♫ Create Family Song</a>
+              <a class="button button-secondary" href="#radio">◉ Explore Public Radio</a>
+            </div>
+            <div class="trust-line">
+              <span class="lock">🔒</span>
+              <span><strong>Your family’s songs start private.</strong><br />You choose what to share.</span>
+            </div>
+          </div>
+
+          <div class="album-stage" aria-label="Featured album carousel mockup">
+            <div class="album-row">
+              <article class="album-card left-2" style="--art: linear-gradient(145deg, #263c5b, #ad5f64);"><span class="album-title">Fox Trail</span></article>
+              <article class="album-card left-1" style="--art: linear-gradient(145deg, #ffe0b5, #ff8b83);"><span class="album-title">Sweet Potato Soul</span></article>
+              <article class="album-card center" style="--art: linear-gradient(160deg, #211330 0%, #b92873 48%, #f28a52 100%);">
+                <span class="badge">Latest</span>
+                <span class="album-title">Chilling with Cousin</span>
+                <span class="play-circle"><span class="play-triangle"></span></span>
+                <span class="album-meta">4 songs · latest tracks</span>
+              </article>
+              <article class="album-card right-1" style="--art: linear-gradient(145deg, #ffd3bd, #c87e86);"><span class="album-title">Songs for Grandma</span></article>
+              <article class="album-card right-2" style="--art: linear-gradient(145deg, #2f6a4e, #d29050);"><span class="album-title">Garden Radio</span></article>
+            </div>
+            <div class="dots" aria-hidden="true"><span class="dot active"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+          </div>
+        </section>
+
+        <section id="how" class="shell section-card how">
+          <h2 class="section-title">✧ How Cousin Radio Works ✧</h2>
+          <div class="steps">
+            <article class="step-card">
+              <div>
+                <div class="step-head"><span class="step-num">1</span><span>Tell a story</span></div>
+                <p>Tell Cousin Radio about a birthday, memory, joke, friendship, or everyday moment.</p>
+              </div>
+              <div class="mascot" aria-hidden="true">🎙️</div>
+            </article>
+            <article class="step-card">
+              <div>
+                <div class="step-head"><span class="step-num">2</span><span>Create a song</span></div>
+                <p>Cousin Radio helps turn your story into music, lyrics, cover art, and albums.</p>
+              </div>
+              <div class="mascot" aria-hidden="true">🎵</div>
+            </article>
+            <article class="step-card">
+              <div>
+                <div class="step-head"><span class="step-num">3</span><span>Share with family</span></div>
+                <p>Keep songs private, share by invitation, or publish selected songs to public radio.</p>
+              </div>
+              <div class="mascot" aria-hidden="true">💞</div>
+            </article>
+          </div>
+        </section>
+
+        <section class="shell grid-two">
+          <section id="radio" class="section-card panel">
+            <div class="panel-head"><h2>Featured Public Radio</h2><a href="#">View All</a></div>
+            <div class="radio-scroll" aria-label="Public song cards">
+              <article class="radio-item"><div class="cover" data-icon="🌱" style="--art: linear-gradient(145deg,#295f48,#d9a65d)"><span class="mini-play">▶</span></div><h3>Garden Radio</h3><p>The Lee Family</p></article>
+              <article class="radio-item"><div class="cover" data-icon="💗" style="--art: linear-gradient(145deg,#ffc8dd,#ff6fa7)"><span class="mini-play">▶</span></div><h3>Songs for Mom</h3><p>Nguyen Family</p></article>
+              <article class="radio-item"><div class="cover" data-icon="🍠" style="--art: linear-gradient(145deg,#ffe0aa,#ff8b6d)"><span class="mini-play">▶</span></div><h3>Sweet Potato Soul</h3><p>Cousin Radio</p></article>
+              <article class="radio-item"><div class="cover" data-icon="🌙" style="--art: linear-gradient(145deg,#18294f,#9b61ff)"><span class="mini-play">▶</span></div><h3>Bedtime Memories</h3><p>The Kim Family</p></article>
+              <article class="radio-item"><div class="cover" data-icon="🎂" style="--art: linear-gradient(145deg,#6924a8,#ff9f6e)"><span class="mini-play">▶</span></div><h3>Birthday Anthems</h3><p>Cousin Radio</p></article>
+            </div>
+            <div class="mini-player">
+              <div class="mini-cover">🍠</div>
+              <div><strong>Sweet Potato Soul</strong><div class="wave" aria-hidden="true"></div></div>
+              <div class="pause">Ⅱ</div>
+            </div>
+          </section>
+
+          <section id="family" class="section-card panel">
+            <div class="panel-head"><h2>Your Family Space</h2><a href="#">Go to My Space</a></div>
+            <div class="family-card">
+              <div class="family-top">
+                <div class="avatar" aria-hidden="true">👨‍👩‍👧</div>
+                <div>
+                  <p class="family-name">Nguyen Family</p>
+                  <span class="private-pill">Private</span>
+                </div>
+              </div>
+              <div class="stats">
+                <div class="stat"><strong>124</strong><span>Songs</span></div>
+                <div class="stat"><strong>12</strong><span>Albums</span></div>
+                <div class="stat"><strong>7</strong><span>Members</span></div>
+              </div>
+              <div class="memory-list">
+                <article class="memory"><div class="memory-thumb">🎂</div><div><h4>Birthday for Grandma</h4><p>May 12, 2026</p></div><button>▶</button></article>
+                <article class="memory"><div class="memory-thumb">🌱</div><div><h4>Garden Radio</h4><p>April 30, 2026</p></div><button>▶</button></article>
+                <article class="memory"><div class="memory-thumb">🌅</div><div><h4>Summer 2026</h4><p>April 10, 2026</p></div><button>▶</button></article>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <section class="shell section-card mission">
+          <div class="mission-copy">
+            <div class="heart">♡</div>
+            <h2>Songs for the People We Love</h2>
+            <div class="mission-columns">
+              <p>Birthdays.<br />Friendships.<br />Grandparents.<br />Gardens.<br />Inside jokes.<br />Ordinary Tuesdays.</p>
+              <p>The tiny moments become songs.<br />The songs become memories.<br />The memories become family culture.</p>
+            </div>
+          </div>
+          <div class="campfire" aria-label="Placeholder family gathering illustration"></div>
+        </section>
+
+        <section id="create" class="shell cta-band">
+          <div class="cta-icon">♫</div>
+          <div>
+            <h2>Create Your Family Radio Station</h2>
+            <p>Start your family’s music and memory journey today.</p>
+          </div>
+          <a class="button button-primary" href="#">♫ Create Family Song</a>
+        </section>
+
+        <section class="shell mobile-menu-preview" aria-label="Mobile menu preview">
+          <div class="brand"><span class="brand-mark">♡</span><span>Cousin Radio</span></div>
+          <div style="height:18px"></div>
+          <div class="menu-row active">⌂ Home</div>
+          <div class="menu-row">◉ Explore Public Radio</div>
+          <div class="menu-row">♡ How It Works</div>
+          <div class="menu-row">👥 Families</div>
+          <div class="menu-row">⌑ Pricing</div>
+          <div class="menu-row">⊞ Sign In</div>
+          <a class="button button-primary" style="width:100%; margin-top:16px" href="#">♫ Create Family Song</a>
+          <div class="menu-privacy">🔒<strong>Your family’s songs start private.</strong><span>You choose what to share.</span></div>
+        </section>
+      </main>
+
+      <footer class="shell footer">
+        <div class="footer-grid">
+          <div class="brand"><span class="brand-mark">♡</span><span>Cousin Radio</span></div>
+          <div class="footer-links"><a>About</a><a>Help</a><a>Privacy</a><a>Terms</a><a>Contact</a></div>
+          <div class="socials"><span>◎</span><span>♪</span><span>▶</span><span>✉</span></div>
+        </div>
+      </footer>
+
+      <nav class="bottom-nav" aria-label="Mobile bottom navigation">
+        <div class="bottom-nav-inner">
+          <a class="nav-item active" href="#"><svg viewBox="0 0 24 24" fill="none"><path d="M3 10.5 12 3l9 7.5V21h-6v-6H9v6H3V10.5Z" stroke="currentColor" stroke-width="2"/></svg><span>Home</span></a>
+          <a class="nav-item" href="#radio"><svg viewBox="0 0 24 24" fill="none"><path d="M9 18V5l11-2v13" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="2"/><circle cx="17" cy="16" r="3" stroke="currentColor" stroke-width="2"/></svg><span>Songs</span></a>
+          <a class="nav-item" href="#"><svg viewBox="0 0 24 24" fill="none"><path d="M20.8 8.4c0 5.4-8.8 10.6-8.8 10.6S3.2 13.8 3.2 8.4A4.6 4.6 0 0 1 12 6.5a4.6 4.6 0 0 1 8.8 1.9Z" stroke="currentColor" stroke-width="2"/></svg><span>Favs</span></a>
+          <a class="nav-item" href="#family"><svg viewBox="0 0 24 24" fill="none"><path d="M16 11a4 4 0 1 0-8 0" stroke="currentColor" stroke-width="2"/><path d="M5 21a7 7 0 0 1 14 0" stroke="currentColor" stroke-width="2"/><path d="M18 10a3 3 0 0 1 3 3" stroke="currentColor" stroke-width="2"/><path d="M6 10a3 3 0 0 0-3 3" stroke="currentColor" stroke-width="2"/></svg><span>Family</span></a>
+        </div>
+      </nav>
+    </div>
+  </body>
+</html>
