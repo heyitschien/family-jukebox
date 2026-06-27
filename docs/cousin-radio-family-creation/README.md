@@ -6,6 +6,12 @@ Cousin Radio can grow from a beautiful family jukebox into a family music creati
 
 The product should stay emotionally focused: love, memory, gratitude, celebration, family, friendship, children, elders, gardens, birthdays, anniversaries, migrations, meals, faith, and everyday joy.
 
+## Origin Story
+
+```text
+Cousin Radio began with morning walks, songs for friends and family, and a simple belief: every family deserves its own radio station.
+```
+
 ## The Core Experience
 
 1. Tap **Create Family Song**.
@@ -72,6 +78,7 @@ Cousin Radio should become private-first as soon as practical: public landing pa
 - [Privacy-First Migration Plan](./21-privacy-first-migration-plan.md)
 - [Mobile-First UI Makeover Spec](./22-mobile-first-ui-makeover-spec.md)
 - [UI Component Implementation Map](./23-ui-component-implementation-map.md)
+- [Origin Story: Morning Walks](./24-origin-story-morning-walks.md)
 
 ## First Build Principle
 
