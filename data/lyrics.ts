@@ -920,6 +920,43 @@ May this dance go on
 Long after the day is done
 For you my friend
 Celebrating life with you`,
+  "sun-and-the-stone": `Let's take a look at the
+Rooted deep, holding on
+While the hours slide away
+Abundance in the drought
+Ancient, woody and wild
+I'm sent to sharpen the mind
+Where the quiet things hide
+Sprawling green
+Holding the memory of life
+Ever present
+Resilient through the night
+A wild fragrant tether
+Breath of the earth
+Simple infinite magic
+Finding its worth
+Rub a spray between fingers
+A resinous sharp release
+Clearing this sharp release
+Clearing the mental fog
+Finding a point of peace
+It doesn't ask for much
+It doesn't ask for much
+Just the sun and the stone
+Growing in common ground
+Yet standing all on its own
+Sprawling green
+Holding the memory of life
+Ever present
+Resilient through the night
+A wild fragrant tether
+Breath of the earth
+Simple infinite magic
+Finding its worth
+Enduring presence
+Silver and deep
+Still there
+In the memory of the garden`,
   "sweet-potato-soul": `Felt the ground, golden hue Slow burn light, I drift to you
 No sudden rush, no jagged edge Just a quiet, steady pledge
 Wrapped in warmth, earthen spice Natural sugar, sweet and wise

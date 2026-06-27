@@ -1024,5 +1024,28 @@ export const songCopyrightRegistry: SongCopyrightRecord[] = [
     "coverAssetPath": "/assets/chilling-with-cousin/let-the-light-lean-in.jpg",
     "audioSha256": "d500d6d3ccff16e58cad47e624a4cc05659b681d84da2fceeed6d2200d55bc08",
     "coverSha256": "a65d9cb690c3f4bd74d9d463e9f76062cc4101cf17b609f7e77b4a8aa2a2a64a"
+  },
+  {
+    "registryId": "CR-2026-sun-and-the-stone",
+    "songSlug": "sun-and-the-stone",
+    "title": "Sun and the Stone",
+    "workType": "family-original",
+    "createdDate": "2026-06-27",
+    "registeredAt": "2026-06-27T17:00:20.823Z",
+    "primaryArtistSlug": "chilling-with-cousin",
+    "subjectMemberSlugs": [
+      "chilling-with-cousin"
+    ],
+    "catalogOwner": "Cousin Radio Family Collection",
+    "familyProducer": "Chien Family Production",
+    "familyCurator": "Tio Chien (HeyITSChien)",
+    "productionTool": "google-gemini",
+    "productionNotes": "Family-directed original \"Sun and the Stone\" produced for Cousin Radio (cousinradio.com). Audio generated with Google Gemini from family-written prompts and direction. Subject to Google Gemini / AI Studio terms in effect at creation time.",
+    "publicLicense": "all-rights-reserved",
+    "familyLicense": "cousin-radio-family-perpetual",
+    "audioAssetPath": "/assets/chilling-with-cousin/sun-and-the-stone.mp3",
+    "coverAssetPath": "/assets/chilling-with-cousin/sun-and-the-stone.jpg",
+    "audioSha256": "9f2a3f4eedbb5d8fd8e3317587f5869fc7edaca4947fe227da982d83e93a55b3",
+    "coverSha256": "01e0f2a0f81584d4c12513e7e2f16fe766f76542d88989bb0fe67f8db6f6cbb6"
   }
 ];

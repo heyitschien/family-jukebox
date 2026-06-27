@@ -189,10 +189,10 @@ const SERIES_ALBUM_DEFS: SeriesAlbumDef[] = [
   {
     slug: "study-lofi-lyric-album",
     title: "Study Lo-Fi · With Lyrics",
-    subtitle: "Where the Garden Sleeps · Lavender Wisdom · Let the Light Lean In · more coming",
+    subtitle: "Where the Garden Sleeps · Lavender Wisdom · Let the Light Lean In · Sun and the Stone · more coming",
     authorSlug: "chilling-with-cousin",
     coverSrc: "/assets/chilling-with-cousin/where-the-garden-sleeps.jpg",
-    songSlugs: ["where-the-garden-sleeps", "lavender-wisdom", "let-the-light-lean-in"],
+    songSlugs: ["where-the-garden-sleeps", "lavender-wisdom", "let-the-light-lean-in", "sun-and-the-stone"],
     dateCreated: "2026-06-24",
     story:
       "Vocal study lo-fi from Chilling with Cousin — soft lyrics, calm beats, and focus-friendly warmth.",
