@@ -1,6 +1,8 @@
-# Family Jukebox
+# Cousin Radio
 
-A warm, playful family music archive — songs by Marceline, Eliana, Solene, Ocean, and Tio Chien. Static song catalog in the repo; optional Neon analytics for play counts. See `docs/SECURITY-AND-ANALYTICS.md`.
+**Family Jukebox** — a warm family music archive and radio station at [cousinradio.com](https://cousinradio.com).
+
+Songs by cousins, tias, tios, Mama, and more. Static catalog in git; global player; growing album series; optional Neon play analytics.
 
 ## Run locally
 
@@ -12,61 +14,43 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Family members
+## Docs & direction
 
-| Person | Age | Role |
-|--------|-----|------|
-| Marceline | 3 | our girls |
-| Eliana | 6 | our girls |
-| Solene | 8 | our girls |
-| Ocean | 10 | our guy |
-| Tio Chien | 35 | Tio |
+| Doc | Purpose |
+|-----|---------|
+| [docs/TRACKS.md](./docs/TRACKS.md) | **GitHub issues ↔ specs ↔ status** — start here for what to build next |
+| [docs/COUSIN-RADIO-DIRECTION.md](./docs/COUSIN-RADIO-DIRECTION.md) | North star — mission, design principles, creative pipeline |
+| [docs/cousin-radio-family-creation/](./docs/cousin-radio-family-creation/) | Private-first platform vision (28-doc set) |
+| [docs/PROJECT-RECORD.md](./docs/PROJECT-RECORD.md) | Architecture + catalog snapshot (code-validated) |
+| [docs/README.md](./docs/README.md) | Full doc index |
 
-Bios and ages live in `data/members.ts`. Each person has a page at `/members/[slug]`.
+**Open issues:** [github.com/heyitschien/family-jukebox/issues](https://github.com/heyitschien/family-jukebox/issues)
 
-## How to add a new song
-
-```bash
-./scripts/add-song.sh <author-slug> <video.mp4> <song-slug>
-```
-
-Extracts MP3 + cover, transcribes lyrics, then follow the printed checklist (`data/songs.ts`, optional series album). Push to `main` → CI + Vercel deploy automatically.
-
-See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for the full checklist and examples.
-
-## Project record
-
-Architecture, features, design principles, and work history (validated against code): [docs/PROJECT-RECORD.md](./docs/PROJECT-RECORD.md).
-
-## Analytics (Neon)
-
-Play tracking uses Neon Postgres. Local setup:
+## Ship a song
 
 ```bash
-cp .env.example .env.local   # add DATABASE_URL from Neon
-./scripts/setup-neon.sh      # sync secrets to Vercel + verify schema
+npm run song:ship -- \
+  --author <slug> --input <video.mp4> --slug <song-slug> --title "Title" \
+  [--series album-slug] [--push]
 ```
 
-See [docs/SECURITY-AND-ANALYTICS.md](./docs/SECURITY-AND-ANALYTICS.md).
-
-## Compress from a music video (MP4)
-
-```bash
-./scripts/process-video.sh ocean ../family-music-asset-june-19/Ocean-10/Gravity_Shift.mp4 gravity-shift
-```
-
-Creates `public/assets/ocean/gravity-shift.mp3` and `.jpg`. Cover is extracted from the video automatically.
-
-## File size warning
-
-Keep files small. GitHub max is **100 MB** per file. Audio + cover only in the repo — skip big videos.
+See [docs/ADDING_SONGS.md](./docs/ADDING_SONGS.md) for the full checklist.
 
 ## Deploy
 
 **Production:** [cousinradio.com](https://cousinradio.com) (`main` branch)  
 **Staging:** [staging.cousinradio.com](https://staging.cousinradio.com) (`staging` branch)
 
-Domains, branches, and agent rules: [docs/DOMAINS-AND-ENVIRONMENTS.md](./docs/DOMAINS-AND-ENVIRONMENTS.md).
+Push to `main` → CI → Vercel deploy automatically. See [docs/CI-CD.md](./docs/CI-CD.md).
+
+## Analytics (Neon)
+
+```bash
+cp .env.example .env.local   # add DATABASE_URL from Neon
+./scripts/setup-neon.sh
+```
+
+See [docs/SECURITY-AND-ANALYTICS.md](./docs/SECURITY-AND-ANALYTICS.md).
 
 ## Tech stack
 

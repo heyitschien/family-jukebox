@@ -20,6 +20,9 @@ Private Family Creation Circle
 
 Each invited family member gets a free private account and 3 starter song credits to create and contribute songs to the private family library.
 
+**GitHub:** [#88 Milestone: Private Family Creation Circle](https://github.com/heyitschien/family-jukebox/issues/88)  
+**Full track index:** [../TRACKS.md](../TRACKS.md)
+
 ## Experience Principle
 
 The current CousinRadio.com music player is the heart of the product. The family service layer should build around it, not replace it.
@@ -86,15 +89,15 @@ Cousin Radio should become private-first as soon as practical: public landing pa
 - [Family Collaboration Proposal](./17-family-collaboration-proposal.md)
 - [Family Mastermind Meeting Guide](./18-family-mastermind-meeting-guide.md)
 - [Scalable Technology Architecture](./19-scalable-technology-architecture.md)
-- [Private-First and Public Radio Model](./20-private-first-public-radio-model.md)
+- [Private-First and Public Radio Model](./20-private-first-public-radio-model.md) · GitHub [#79](https://github.com/heyitschien/family-jukebox/issues/79)
 - [Privacy-First Migration Plan](./21-privacy-first-migration-plan.md)
-- [Mobile-First UI Makeover Spec](./22-mobile-first-ui-makeover-spec.md)
+- [Mobile-First UI Makeover Spec](./22-mobile-first-ui-makeover-spec.md) · GitHub [#80](https://github.com/heyitschien/family-jukebox/issues/80)
 - [UI Component Implementation Map](./23-ui-component-implementation-map.md)
 - [Origin Story: Morning Walks](./24-origin-story-morning-walks.md)
-- [Milestone: Private Family Accounts With Song Credits](./25-family-invite-song-credits-milestone.md)
+- [Milestone: Private Family Accounts With Song Credits](./25-family-invite-song-credits-milestone.md) · GitHub [#88](https://github.com/heyitschien/family-jukebox/issues/88)
 - [Natural Growth Financial Model and Experience Architecture](./26-natural-growth-financial-model-and-experience-architecture.md)
 - [Family Radio Home Preservation Spec](./27-family-radio-home-preservation-spec.md)
-- [Pricing and Launch Plan](./28-pricing-and-launch-plan.md)
+- [Pricing and Launch Plan](./28-pricing-and-launch-plan.md) · GitHub [#99](https://github.com/heyitschien/family-jukebox/issues/99)
 
 ## First Build Principle
 
