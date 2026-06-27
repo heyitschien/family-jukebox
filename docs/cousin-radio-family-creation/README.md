@@ -20,6 +20,10 @@ Private Family Creation Circle
 
 Each invited family member gets a free private account and 3 starter song credits to create and contribute songs to the private family library.
 
+## Experience Principle
+
+The current CousinRadio.com music player is the heart of the product. The family service layer should build around it, not replace it.
+
 ## The Core Experience
 
 1. Tap **Create Family Song**.
@@ -88,6 +92,8 @@ Cousin Radio should become private-first as soon as practical: public landing pa
 - [UI Component Implementation Map](./23-ui-component-implementation-map.md)
 - [Origin Story: Morning Walks](./24-origin-story-morning-walks.md)
 - [Milestone: Private Family Accounts With Song Credits](./25-family-invite-song-credits-milestone.md)
+- [Natural Growth Financial Model and Experience Architecture](./26-natural-growth-financial-model-and-experience-architecture.md)
+- [Family Radio Home Preservation Spec](./27-family-radio-home-preservation-spec.md)
 
 ## First Build Principle
 
