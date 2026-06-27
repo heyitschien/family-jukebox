@@ -319,28 +319,28 @@ Do not overcomplicate the experience. Every new feature should increase family c
 
 ---
 
-## 12. Suggested next implementation issue
+## 12. Active tracks (GitHub + docs)
 
-Title:
+**Index:** [docs/TRACKS.md](./TRACKS.md) — maps every open issue to specs and notes what’s already shipped in code.
 
-> Product direction: evolve Family Jukebox into Cousin Radio family cultural archive
+### Current P0 milestone
 
-Scope:
+**[#88 Private Family Creation Circle](https://github.com/heyitschien/family-jukebox/issues/88)** — each invited member gets a private account and 3 starter song credits. Spec: [25-family-invite-song-credits-milestone.md](./cousin-radio-family-creation/25-family-invite-song-credits-milestone.md).
 
-- Add Maria / Mama as family member or artist.
-- Add first “musical portrait” / tribute song entry.
-- Create or extend collection type for Family Portraits / Legacy Songs.
-- Add story/dedication metadata to songs.
-- Add UI treatment for “Why this song exists.”
-- Add docs note for future repo rename from `family-jukebox` to `cousin-radio`.
+Related P0 issues: [#79](https://github.com/heyitschien/family-jukebox/issues/79) private-first, [#80](https://github.com/heyitschien/family-jukebox/issues/80) mobile UI makeover, [#96](https://github.com/heyitschien/family-jukebox/issues/96) preserve the player as family radio home.
 
-Acceptance criteria:
+### Recently shipped (catalog)
 
-- Maria / Mama can appear as a featured person/artist.
-- Her song can be played from home and member/collection pages.
-- Lyrics and dedication/story can be viewed clearly on mobile.
-- Share preview looks beautiful in family chat.
-- Existing kids/family music experience remains simple and intact.
+- **Mama / Maria** — `tia-maria-album`, *Cornerstone at the Kitchen Table*
+- **Study Lo-Fi** — split into instrumental + lyric albums (Chilling with Cousin)
+- **Garden Radio** — Vegetable Grooves + Fruit Frequency series
+- **Full roster** — 13 members, 45 songs, 14 growing series (see [PROJECT-RECORD.md](./PROJECT-RECORD.md))
+
+### Still open from early direction
+
+- “Family Portraits / Legacy Songs” collection type beyond per-person albums
+- Richer “Why this song exists” UI on song pages
+- Optional repo rename `family-jukebox` → `cousin-radio` (after Vercel/CI audit)
 
 ---
 

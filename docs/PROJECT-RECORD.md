@@ -1,8 +1,9 @@
 # Family Jukebox — Project Record
 
-**Last validated:** 2026-06-23 (against `main` @ `e21ce0c`)  
+**Last validated:** 2026-06-27 (against `main` @ `4f70eec`)  
 **Live:** [cousinradio.com](https://cousinradio.com) · **Staging:** [staging.cousinradio.com](https://staging.cousinradio.com)  
 **Domains doc:** [docs/DOMAINS-AND-ENVIRONMENTS.md](./DOMAINS-AND-ENVIRONMENTS.md)  
+**Tracks & issues:** [docs/TRACKS.md](./TRACKS.md)  
 **Repo:** `heyitschien/family-jukebox`
 
 This document is the **source-of-truth snapshot** for architecture, features, design principles, and work history — cross-checked against the codebase, not aspirational specs alone.
@@ -21,6 +22,13 @@ A **family music jukebox**: Spotify-inspired UX, warm cousin/family branding, st
 
 | Commit / PR | What shipped |
 |-------------|--------------|
+| **#102** | **Sun and the Stone** — Study Lo-Fi · With Lyrics (track 4) |
+| **#101** | Study Lo-Fi split — instrumental vs lyric albums; **Lavender Wisdom**, **Let the Light Lean In** |
+| **#100** | Pricing & launch plan docs |
+| **#98** | Natural growth financial model + family radio home preservation spec |
+| **#94** | Family invite + song credits milestone spec |
+| **#64** | Family tab — kitchen-table circles |
+| **#52** | HomeFeed planner — deduped homepage discovery |
 | `e21ce0c` | **The Future in My Palm** — Tio Chien single + Sand to Signal cover art |
 | `b15a541` | Song ship pipeline hardening — auto series subtitles, data-driven smoke tests |
 | `726d65d` | Song ship CLI (`npm run song:ship`) + pipeline spec |
@@ -59,47 +67,33 @@ Run `npx tsx -e "..."` or inspect `data/songs.ts` / `data/albums.ts` to refresh 
 
 | Metric | Count | Source |
 |--------|-------|--------|
-| **Songs** | 12 | `data/songs.ts` |
-| **Members** | 6 | `data/members.ts` |
-| **Albums (browse)** | 7 | `data/albums.ts` → `getAllAlbums()` |
-| **Hero carousel slots** | 6 | `getPrimaryAlbums()` — one per artist |
+| **Songs** | 45 | `data/songs.ts` |
+| **Members** | 13 | `data/members.ts` |
+| **Albums (browse)** | 19 | `data/albums.ts` → `getAllAlbums()` |
+| **Growing series** | 14 | `getSeriesAlbums()` |
+| **Hero carousel slots** | 13 | `getPrimaryAlbums()` — one per artist with songs |
 
-### Members
+### Roster (13 members)
 
-| Slug | Name | Role |
-|------|------|------|
-| `marceline` | Marceline | girl, age 3 |
-| `eliana` | Eliana | girl, age 6 |
-| `solene` | Solene | girl, age 8 |
-| `ocean` | Ocean | boy, age 10 |
-| `tio-chien` | Tio Chien | tio, age 35 |
-| `evelyn` | Evelyn | family |
+`kaia`, `marceline`, `eliana`, `solene`, `ocean`, `tio-chien`, `evelyn`, `rachel`, `huyen`, `dieu`, `maria`, `sam-and-josh`, `chilling-with-cousin`
 
-### Songs by artist
+### Songs by artist (count)
 
 | Artist | Tracks |
 |--------|--------|
-| Marceline | Dash and Go |
-| Eliana | Pink Glasses Everywhere |
-| Solene | Foxes of the Garden, Solene's Painted Trail |
-| Ocean | Gravity Shift, Mountains to the Shore |
-| Tio Chien | Pixels into Magic, Crayon Planets, Miracle in the Sand |
-| Evelyn | Gold in the Tile, Orange Sweater Sun, Silver Pan Morning |
+| tio-chien | 22 |
+| chilling-with-cousin | 7 |
+| evelyn | 3 |
+| marceline, solene, ocean | 2 each |
+| kaia, eliana, rachel, huyen, dieu, maria, sam-and-josh | 1 each |
 
-### Album layout (browse vs carousel)
+### Growing series albums (14)
 
-**Browse (`/albums`) — 7 albums in 2 sections:**
+`the-smallest-heart-album`, `three-candles-for-marceline-album`, `legacy-in-the-lane-album`, `gold-in-the-tile-album`, `smallest-of-deeds-album`, `planting-every-gift-album`, `the-anchor-in-the-wild-album`, `tia-maria-album`, `miracle-in-the-sand-album`, `friendship-album`, `study-lofi-instrumental-album`, `study-lofi-lyric-album`, `vegetable-grooves-album`, `fruit-frequency-album`
 
-| Section | Albums |
-|---------|--------|
-| **Growing series** | `gold-in-the-tile-album`, `miracle-in-the-sand-album` |
-| **Full collections** | `marceline-album`, `eliana-album`, `solene-album`, `ocean-album`, `tio-chien-album` |
+**Study Lo-Fi split:** instrumental (3 tracks) + with lyrics (4 tracks) — see [garden-radio-release.md](./garden-radio-release.md) and issue [#35](https://github.com/heyitschien/family-jukebox/issues/35).
 
-**Hero 3D carousel — 6 primary albums (no duplicates):**
-
-`marceline-album`, `eliana-album`, `solene-album`, `ocean-album`, `tio-chien-album`, `gold-in-the-tile-album`
-
-**Off-carousel series surfaced on home:** `miracle-in-the-sand-album` (Tio’s studio collection is carousel primary; series gets its own “Growing series” shelf).
+**Hero carousel:** one primary album per member; latest growing series wins (e.g. `vegetable-grooves-album` for Tio Chien, `study-lofi-lyric-album` for Chilling with Cousin).
 
 ---
 
