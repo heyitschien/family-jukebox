@@ -94,6 +94,7 @@ Cousin Radio should become private-first as soon as practical: public landing pa
 - [Milestone: Private Family Accounts With Song Credits](./25-family-invite-song-credits-milestone.md)
 - [Natural Growth Financial Model and Experience Architecture](./26-natural-growth-financial-model-and-experience-architecture.md)
 - [Family Radio Home Preservation Spec](./27-family-radio-home-preservation-spec.md)
+- [Pricing and Launch Plan](./28-pricing-and-launch-plan.md)
 
 ## First Build Principle
 
