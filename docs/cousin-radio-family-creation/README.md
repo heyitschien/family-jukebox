@@ -12,6 +12,14 @@ The product should stay emotionally focused: love, memory, gratitude, celebratio
 Cousin Radio began with morning walks, songs for friends and family, and a simple belief: every family deserves its own radio station.
 ```
 
+## Next Milestone
+
+```text
+Private Family Creation Circle
+```
+
+Each invited family member gets a free private account and 3 starter song credits to create and contribute songs to the private family library.
+
 ## The Core Experience
 
 1. Tap **Create Family Song**.
@@ -79,6 +87,7 @@ Cousin Radio should become private-first as soon as practical: public landing pa
 - [Mobile-First UI Makeover Spec](./22-mobile-first-ui-makeover-spec.md)
 - [UI Component Implementation Map](./23-ui-component-implementation-map.md)
 - [Origin Story: Morning Walks](./24-origin-story-morning-walks.md)
+- [Milestone: Private Family Accounts With Song Credits](./25-family-invite-song-credits-milestone.md)
 
 ## First Build Principle
 
