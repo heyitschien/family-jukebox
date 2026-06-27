@@ -70,6 +70,8 @@ Cousin Radio should become private-first as soon as practical: public landing pa
 - [Scalable Technology Architecture](./19-scalable-technology-architecture.md)
 - [Private-First and Public Radio Model](./20-private-first-public-radio-model.md)
 - [Privacy-First Migration Plan](./21-privacy-first-migration-plan.md)
+- [Mobile-First UI Makeover Spec](./22-mobile-first-ui-makeover-spec.md)
+- [UI Component Implementation Map](./23-ui-component-implementation-map.md)
 
 ## First Build Principle
 
